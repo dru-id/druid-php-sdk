@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class Genetsis\core\RefreshToken</title>
+
+	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+				<h3>Namespaces</h3>
+			<ul>
+				<li class="active">
+					<a href="namespace-Genetsis.html">
+						Genetsis<span></span>
+					</a>
+
+						<ul>
+				<li class="active">
+					<a href="namespace-Genetsis.core.html">
+						core<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Genetsis.core.user.html">
+						user					</a>
+
+						</li>
+							</ul></li></ul></li>
+				<li>
+					<a href="namespace-None.html">
+						None					</a>
+
+						</li>
+			</ul>
+		</div>
+
+		<hr>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Genetsis.core.AccessToken.html">AccessToken</a></li>
+				<li><a href="class-Genetsis.core.ClientToken.html">ClientToken</a></li>
+				<li><a href="class-Genetsis.core.Encryption.html">Encryption</a></li>
+				<li><a href="class-Genetsis.core.FileCache.html">FileCache</a></li>
+				<li><a href="class-Genetsis.core.LogConfig.html">LogConfig</a></li>
+				<li><a href="class-Genetsis.core.LoginStatus.html">LoginStatus</a></li>
+				<li><a href="class-Genetsis.core.LoginStatusType.html">LoginStatusType</a></li>
+				<li><a href="class-Genetsis.core.OAuth.html">OAuth</a></li>
+				<li><a href="class-Genetsis.core.OAuthConfig.html">OAuthConfig</a></li>
+				<li><a href="class-Genetsis.core.OauthTemplate.html">OauthTemplate</a></li>
+				<li class="active"><a href="class-Genetsis.core.RefreshToken.html">RefreshToken</a></li>
+				<li><a href="class-Genetsis.core.Request.html">Request</a></li>
+				<li><a href="class-Genetsis.core.StoredToken.html">StoredToken</a></li>
+				<li><a href="class-Genetsis.core.Things.html">Things</a></li>
+			</ul>
+
+			<h3>Interfaces</h3>
+			<ul>
+				<li><a href="class-Genetsis.core.iTokenTypes.html">iTokenTypes</a></li>
+			</ul>
+
+
+			<h3>Exceptions</h3>
+			<ul>
+				<li><a href="class-Genetsis.core.InvalidGrantException.html">InvalidGrantException</a></li>
+			</ul>
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text" placeholder="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="namespace-Genetsis.core.html" title="Summary of Genetsis\core"><span>Namespace</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class RefreshToken</h1>
+
+
+	<div class="description">
+	<p>This class stores "refresh_token" data.</p>
+	</div>
+
+	<dl class="tree">
+		<dd style="padding-left:0px">
+			<a href="class-Genetsis.core.StoredToken.html"><span>Genetsis\core\StoredToken</span></a>
+			
+			
+			
+		</dd>
+		<dd style="padding-left:30px">
+			<img src="resources/inherit.png" alt="Extended by">
+<b><span>Genetsis\core\RefreshToken</span></b>			
+			
+			
+		</dd>
+	</dl>
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		<b>Namespace:</b> <a href="namespace-Genetsis.html">Genetsis</a>\<a href="namespace-Genetsis.core.html">core</a><br>
+		<b>Package:</b> Genetsis<br>
+
+				<b>Category:</b>
+				Bean<br>
+				<b>Version:</b>
+				1.0<br>
+				<b>Since:</b>
+				2011-09-08<br>
+			<b>Located at</b> <a href="source-class-Genetsis.core.RefreshToken.html#5-38" title="Go to source code">core/RefreshToken.php</a>
+		<br>
+	</div>
+
+
+
+	<table class="summary methods" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-Genetsis.core.RefreshToken.html#16-26" title="Go to source code">__construct</a>( <span>string <var>$value</var></span>, <span>integer <var>$expires_in</var> = <span class="php-num">0</span></span>, <span>integer <var>$expires_at</var> = <span class="php-num">0</span></span>, <span>string <var>$path</var> = <span class="php-quote">'/'</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$value</var></dt>
+					<dd>token value.</dd>
+					<dt><var>$expires_in</var></dt>
+					<dd>the seconds until the token expires.</dd>
+					<dt><var>$expires_at</var></dt>
+					<dd>when the token expires. As UNIX timestamp.</dd>
+					<dt><var>$path</var></dt>
+					<dd><p>path to the folder where cookies will be saved.
+    Only if necessary.</p></dd>
+				</dl></div>
+
+
+
+
+				<h4>Overrides</h4>
+				<div class="list"><code><a href="class-Genetsis.core.StoredToken.html#___construct">Genetsis\core\StoredToken::__construct()</a></code></div>
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setName" id="_setName">
+
+		<td class="attributes"><code>
+			 protected 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setName">#</a>
+		<code><a href="source-class-Genetsis.core.RefreshToken.html#28-37" title="Go to source code">setName</a>( )</code>
+
+		<div class="description short">
+			<p>Sets token name.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Sets token name.</p>
+
+
+
+
+
+				<h4>See</h4>
+				<div class="list">
+						<code><a href="class-Genetsis.core.iTokenTypes.html">Genetsis\core\iTokenTypes</a></code><br>
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+	<table class="summary inherited">
+	<caption>Methods inherited from <a href="class-Genetsis.core.StoredToken.html#methods">Genetsis\core\StoredToken</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Genetsis.core.StoredToken.html#_factory">factory()</a>, 
+			<a href="class-Genetsis.core.StoredToken.html#_getExpiresAt">getExpiresAt()</a>, 
+			<a href="class-Genetsis.core.StoredToken.html#_getExpiresIn">getExpiresIn()</a>, 
+			<a href="class-Genetsis.core.StoredToken.html#_getName">getName()</a>, 
+			<a href="class-Genetsis.core.StoredToken.html#_getPath">getPath()</a>, 
+			<a href="class-Genetsis.core.StoredToken.html#_getValue">getValue()</a>, 
+			<a href="class-Genetsis.core.StoredToken.html#_setExpiresAt">setExpiresAt()</a>, 
+			<a href="class-Genetsis.core.StoredToken.html#_setExpiresIn">setExpiresIn()</a>, 
+			<a href="class-Genetsis.core.StoredToken.html#_setPath">setPath()</a>, 
+			<a href="class-Genetsis.core.StoredToken.html#_setValue">setValue()</a>
+		</code></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary inherited">
+	<caption>Properties inherited from <a href="class-Genetsis.core.StoredToken.html#properties">Genetsis\core\StoredToken</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Genetsis.core.StoredToken.html#$expires_at"><var>$expires_at</var></a>, 
+			<a href="class-Genetsis.core.StoredToken.html#$expires_in"><var>$expires_in</var></a>, 
+			<a href="class-Genetsis.core.StoredToken.html#$name"><var>$name</var></a>, 
+			<a href="class-Genetsis.core.StoredToken.html#$path"><var>$path</var></a>, 
+			<a href="class-Genetsis.core.StoredToken.html#$value"><var>$value</var></a>
+		</code></td>
+	</tr>
+	</table>
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		 API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+</div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
+</body>
+</html>

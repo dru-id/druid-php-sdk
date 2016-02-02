@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class Genetsis\core\LogConfig</title>
+
+	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+				<h3>Namespaces</h3>
+			<ul>
+				<li class="active">
+					<a href="namespace-Genetsis.html">
+						Genetsis<span></span>
+					</a>
+
+						<ul>
+				<li class="active">
+					<a href="namespace-Genetsis.core.html">
+						core<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Genetsis.core.user.html">
+						user					</a>
+
+						</li>
+							</ul></li></ul></li>
+				<li>
+					<a href="namespace-None.html">
+						None					</a>
+
+						</li>
+			</ul>
+		</div>
+
+		<hr>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Genetsis.core.AccessToken.html">AccessToken</a></li>
+				<li><a href="class-Genetsis.core.ClientToken.html">ClientToken</a></li>
+				<li><a href="class-Genetsis.core.Encryption.html">Encryption</a></li>
+				<li><a href="class-Genetsis.core.FileCache.html">FileCache</a></li>
+				<li class="active"><a href="class-Genetsis.core.LogConfig.html">LogConfig</a></li>
+				<li><a href="class-Genetsis.core.LoginStatus.html">LoginStatus</a></li>
+				<li><a href="class-Genetsis.core.LoginStatusType.html">LoginStatusType</a></li>
+				<li><a href="class-Genetsis.core.OAuth.html">OAuth</a></li>
+				<li><a href="class-Genetsis.core.OAuthConfig.html">OAuthConfig</a></li>
+				<li><a href="class-Genetsis.core.OauthTemplate.html">OauthTemplate</a></li>
+				<li><a href="class-Genetsis.core.RefreshToken.html">RefreshToken</a></li>
+				<li><a href="class-Genetsis.core.Request.html">Request</a></li>
+				<li><a href="class-Genetsis.core.StoredToken.html">StoredToken</a></li>
+				<li><a href="class-Genetsis.core.Things.html">Things</a></li>
+			</ul>
+
+			<h3>Interfaces</h3>
+			<ul>
+				<li><a href="class-Genetsis.core.iTokenTypes.html">iTokenTypes</a></li>
+			</ul>
+
+
+			<h3>Exceptions</h3>
+			<ul>
+				<li><a href="class-Genetsis.core.InvalidGrantException.html">InvalidGrantException</a></li>
+			</ul>
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text" placeholder="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="namespace-Genetsis.core.html" title="Summary of Genetsis\core"><span>Namespace</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class LogConfig</h1>
+
+
+	<div class="description">
+	<p>This class stores the configuration for objects for logging.</p>
+	</div>
+
+	<dl class="tree">
+		<dd style="padding-left:0px">
+<b><span>Genetsis\core\LogConfig</span></b>			
+			 implements 
+				<a href="class-LoggerConfigurator.html"><span>LoggerConfigurator</span></a>
+			
+			
+		</dd>
+	</dl>
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		<b>Namespace:</b> <a href="namespace-Genetsis.html">Genetsis</a>\<a href="namespace-Genetsis.core.html">core</a><br>
+		<b>Package:</b> Genetsis<br>
+
+				<b>Category:</b>
+				Bean<br>
+				<b>Version:</b>
+				2.0<br>
+			<b>Located at</b> <a href="source-class-Genetsis.core.LogConfig.html#6-84" title="Go to source code">core/LogConfig.php</a>
+		<br>
+	</div>
+
+
+
+	<table class="summary methods" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-Genetsis.core.LogConfig.html#23-42" title="Go to source code">__construct</a>( <span>string <var>$levelInfo</var></span>, <span>string <var>$logPath</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$levelInfo</var></dt>
+					<dd><p>threshold for defining which messages should be
+stored.</p></dd>
+					<dt><var>$logPath</var></dt>
+					<dd>path to folder where logs will be saved.</dd>
+				</dl></div>
+
+
+				<h4>Throws</h4>
+				<div class="list">
+					Exception<br>If there is an error in the process.
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="configure" id="_configure">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_configure">#</a>
+		<code><a href="source-class-Genetsis.core.LogConfig.html#44-83" title="Go to source code">configure</a>( <span><code><a href="class-LoggerHierarchy.html">LoggerHierarchy</a></code> <var>$hierarchy</var></span>, <span>mixed <var>$input</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			<p>Initialize objects for logging. We have two logs files:
+- gid-last-request.log: to see logger for the last request
+- gid-all-requests.log: to see all logger for all request</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Initialize objects for logging. We have two logs files:
+- gid-last-request.log: to see logger for the last request
+- gid-all-requests.log: to see all logger for all request</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$hierarchy</var></dt>
+					<dd>to handle objects for logging.</dd>
+					<dt><var>$input</var></dt>
+					<dd><p>path to the config file or the configuration as
+    an array.</p></dd>
+				</dl></div>
+
+
+
+
+
+				<h4>Implementation of</h4>
+				<div class="list"><code><a href="class-LoggerConfigurator.html#_configure">LoggerConfigurator::configure()</a></code></div>
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary properties" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="threshold" id="$threshold">
+		<td class="attributes"><code>
+			protected  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Genetsis.core.LogConfig.html#17-19" title="Go to source code"><var>$threshold</var></a>
+
+			<div class="description short">
+				<p>The threshold for defining which messages should be
+stored.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>The threshold for defining which messages should be
+stored.</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$threshold" class="anchor">#</a>
+				<code><span class="php-quote">'OFF'</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="log_path" id="$log_path">
+		<td class="attributes"><code>
+			protected  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Genetsis.core.LogConfig.html#20-21" title="Go to source code"><var>$log_path</var></a>
+
+			<div class="description short">
+				<p>Full path to folder where logs will be saved.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Full path to folder where logs will be saved.</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$log_path" class="anchor">#</a>
+				<code><span class="php-quote">''</span></code>
+			</div>
+		</td>
+	</tr>
+	</table>
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		 API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+</div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
+</body>
+</html>

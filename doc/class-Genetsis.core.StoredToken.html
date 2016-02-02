@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class Genetsis\core\StoredToken</title>
+
+	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+				<h3>Namespaces</h3>
+			<ul>
+				<li class="active">
+					<a href="namespace-Genetsis.html">
+						Genetsis<span></span>
+					</a>
+
+						<ul>
+				<li class="active">
+					<a href="namespace-Genetsis.core.html">
+						core<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Genetsis.core.user.html">
+						user					</a>
+
+						</li>
+							</ul></li></ul></li>
+				<li>
+					<a href="namespace-None.html">
+						None					</a>
+
+						</li>
+			</ul>
+		</div>
+
+		<hr>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Genetsis.core.AccessToken.html">AccessToken</a></li>
+				<li><a href="class-Genetsis.core.ClientToken.html">ClientToken</a></li>
+				<li><a href="class-Genetsis.core.Encryption.html">Encryption</a></li>
+				<li><a href="class-Genetsis.core.FileCache.html">FileCache</a></li>
+				<li><a href="class-Genetsis.core.LogConfig.html">LogConfig</a></li>
+				<li><a href="class-Genetsis.core.LoginStatus.html">LoginStatus</a></li>
+				<li><a href="class-Genetsis.core.LoginStatusType.html">LoginStatusType</a></li>
+				<li><a href="class-Genetsis.core.OAuth.html">OAuth</a></li>
+				<li><a href="class-Genetsis.core.OAuthConfig.html">OAuthConfig</a></li>
+				<li><a href="class-Genetsis.core.OauthTemplate.html">OauthTemplate</a></li>
+				<li><a href="class-Genetsis.core.RefreshToken.html">RefreshToken</a></li>
+				<li><a href="class-Genetsis.core.Request.html">Request</a></li>
+				<li class="active"><a href="class-Genetsis.core.StoredToken.html">StoredToken</a></li>
+				<li><a href="class-Genetsis.core.Things.html">Things</a></li>
+			</ul>
+
+			<h3>Interfaces</h3>
+			<ul>
+				<li><a href="class-Genetsis.core.iTokenTypes.html">iTokenTypes</a></li>
+			</ul>
+
+
+			<h3>Exceptions</h3>
+			<ul>
+				<li><a href="class-Genetsis.core.InvalidGrantException.html">InvalidGrantException</a></li>
+			</ul>
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text" placeholder="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="namespace-Genetsis.core.html" title="Summary of Genetsis\core"><span>Namespace</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class StoredToken</h1>
+
+
+	<div class="description">
+	<p>Abstract class which aims to be the parent class of the different types
+of tokens.</p>
+	</div>
+
+
+
+	<div>
+		<h4>Direct known subclasses</h4>
+			<a href="class-Genetsis.core.AccessToken.html">Genetsis\core\AccessToken</a>, 
+			<a href="class-Genetsis.core.ClientToken.html">Genetsis\core\ClientToken</a>, 
+			<a href="class-Genetsis.core.RefreshToken.html">Genetsis\core\RefreshToken</a>
+	</div>
+
+
+
+
+
+
+	<div class="info">
+		<b>Abstract</b><br>
+		
+		<b>Namespace:</b> <a href="namespace-Genetsis.html">Genetsis</a>\<a href="namespace-Genetsis.core.html">core</a><br>
+		<b>Package:</b> Genetsis<br>
+
+				<b>Category:</b>
+				Bean<br>
+				<b>Version:</b>
+				1.0<br>
+				<b>Since:</b>
+				2011-09-08<br>
+			<b>Located at</b> <a href="source-class-Genetsis.core.StoredToken.html#4-194" title="Go to source code">core/StoredToken.php</a>
+		<br>
+	</div>
+
+
+
+	<table class="summary methods" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-Genetsis.core.StoredToken.html#27-42" title="Go to source code">__construct</a>( <span>string <var>$value</var></span>, <span>integer <var>$expires_in</var> = <span class="php-num">0</span></span>, <span>integer <var>$expires_at</var> = <span class="php-num">0</span></span>, <span>string <var>$path</var> = <span class="php-quote">'/'</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$value</var></dt>
+					<dd>token value.</dd>
+					<dt><var>$expires_in</var></dt>
+					<dd>the seconds until the token expires.</dd>
+					<dt><var>$expires_at</var></dt>
+					<dd>when the token expires. As UNIX timestamp.</dd>
+					<dt><var>$path</var></dt>
+					<dd><p>path to the folder where cookies will be saved.
+    Only if necessary.</p></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="factory" id="_factory">
+
+		<td class="attributes"><code>
+			 public static
+
+			boolean|<code><a href="class-Genetsis.core.AccessToken.html">Genetsis\core\AccessToken</a></code>|<code><a href="class-Genetsis.core.ClientToken.html">Genetsis\core\ClientToken</a></code>|<code><a href="class-Genetsis.core.RefreshToken.html">Genetsis\core\RefreshToken</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_factory">#</a>
+		<code><a href="source-class-Genetsis.core.StoredToken.html#44-66" title="Go to source code">factory</a>( <span>string <var>$name</var></span>, <span>sting <var>$value</var></span>, <span> <var>$expires_in</var></span>, <span> <var>$expires_at</var></span>, <span> <var>$path</var></span> )</code>
+
+		<div class="description short">
+			<p>Create an instance of an access token based on the name.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Create an instance of an access token based on the name.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$name</var></dt>
+					<dd>The token name.</dd>
+					<dt><var>$value</var></dt>
+					<dd>The token value.</dd>
+					<dt><var>$expires_in</var></dt>
+					<dd>the seconds until the token expires.</dd>
+					<dt><var>$expires_at</var></dt>
+					<dd>when the token expires. As UNIX timestamp.</dd>
+					<dt><var>$path</var></dt>
+					<dd>path to the folder where cookies will be saved.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					boolean|<code><a href="class-Genetsis.core.AccessToken.html">Genetsis\core\AccessToken</a></code>|<code><a href="class-Genetsis.core.ClientToken.html">Genetsis\core\ClientToken</a></code>|<code><a href="class-Genetsis.core.RefreshToken.html">Genetsis\core\RefreshToken</a></code><br><p>An object of type <code><a href="class-Genetsis.core.StoredToken.html">Genetsis\core\StoredToken</a></code> or FALSE if
+    unable to create it.</p>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getName" id="_getName">
+
+		<td class="attributes"><code>
+			 public 
+
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getName">#</a>
+		<code><a href="source-class-Genetsis.core.StoredToken.html#68-81" title="Go to source code">getName</a>( )</code>
+
+		<div class="description short">
+			<p>Returns the token name.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Returns the token name.</p>
+
+<p>We use it for serialization the token content.</p>
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					string<br>The token name.
+				</div>
+
+
+				<h4>See</h4>
+				<div class="list">
+						<code><a href="class-Genetsis.core.iTokenTypes.html">Genetsis\core\iTokenTypes</a></code><br>
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setName" id="_setName">
+
+		<td class="attributes"><code>
+			abstract protected 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setName">#</a>
+		<code><a href="source-class-Genetsis.core.StoredToken.html#83-91" title="Go to source code">setName</a>( )</code>
+
+		<div class="description short">
+			<p>Sets token name.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Sets token name.</p>
+
+<p>We delegate this method to child classes.</p>
+
+
+
+
+
+				<h4>See</h4>
+				<div class="list">
+						<code><a href="class-Genetsis.core.iTokenTypes.html">Genetsis\core\iTokenTypes</a></code><br>
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getValue" id="_getValue">
+
+		<td class="attributes"><code>
+			 public 
+
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getValue">#</a>
+		<code><a href="source-class-Genetsis.core.StoredToken.html#93-103" title="Go to source code">getValue</a>( )</code>
+
+		<div class="description short">
+			<p>Returns the token value.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Returns the token value.</p>
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					string<br>The token value. It could be empty.
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setValue" id="_setValue">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setValue">#</a>
+		<code><a href="source-class-Genetsis.core.StoredToken.html#105-114" title="Go to source code">setValue</a>( <span>string <var>$value</var></span> )</code>
+
+		<div class="description short">
+			<p>Sets token value.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Sets token value.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$value</var></dt>
+					<dd>value.</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getExpiresIn" id="_getExpiresIn">
+
+		<td class="attributes"><code>
+			 public 
+
+			integer
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getExpiresIn">#</a>
+		<code><a href="source-class-Genetsis.core.StoredToken.html#116-126" title="Go to source code">getExpiresIn</a>( )</code>
+
+		<div class="description short">
+			<p>Returns the number of seconds when token expires.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Returns the number of seconds when token expires.</p>
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					integer<br>The number of seconds.
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setExpiresIn" id="_setExpiresIn">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setExpiresIn">#</a>
+		<code><a href="source-class-Genetsis.core.StoredToken.html#128-142" title="Go to source code">setExpiresIn</a>( <span>integer <var>$expires_in</var></span> )</code>
+
+		<div class="description short">
+			<p>Sets the number of seconds when token expires.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Sets the number of seconds when token expires.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$expires_in</var></dt>
+					<dd>number of seconds it takes to die.</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getExpiresAt" id="_getExpiresAt">
+
+		<td class="attributes"><code>
+			 public 
+
+			integer
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getExpiresAt">#</a>
+		<code><a href="source-class-Genetsis.core.StoredToken.html#144-154" title="Go to source code">getExpiresAt</a>( )</code>
+
+		<div class="description short">
+			<p>Returns the date when the "token" should be dead.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Returns the date when the "token" should be dead.</p>
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					integer<br>UNIX timestamp with the date. Zero if not defined.
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setExpiresAt" id="_setExpiresAt">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setExpiresAt">#</a>
+		<code><a href="source-class-Genetsis.core.StoredToken.html#156-170" title="Go to source code">setExpiresAt</a>( <span>integer <var>$expires_at</var></span> )</code>
+
+		<div class="description short">
+			<p>Sets the date when the "token" should be dead.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Sets the date when the "token" should be dead.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$expires_at</var></dt>
+					<dd>timestamp.</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getPath" id="_getPath">
+
+		<td class="attributes"><code>
+			 public 
+
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getPath">#</a>
+		<code><a href="source-class-Genetsis.core.StoredToken.html#172-181" title="Go to source code">getPath</a>( )</code>
+
+		<div class="description short">
+			<p>Returns the path to cookie folder.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Returns the path to cookie folder.</p>
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					string<br><p>The full path to the folder where the cookies will be
+    saved.</p>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setPath" id="_setPath">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setPath">#</a>
+		<code><a href="source-class-Genetsis.core.StoredToken.html#183-193" title="Go to source code">setPath</a>( <span>string <var>$path</var></span> )</code>
+
+		<div class="description short">
+			<p>Sets the path where the cookies will be saved.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Sets the path where the cookies will be saved.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$path</var></dt>
+					<dd>path to the folder.</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary properties" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="name" id="$name">
+		<td class="attributes"><code>
+			protected  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Genetsis.core.StoredToken.html#16-17" title="Go to source code"><var>$name</var></a>
+
+			<div class="description short">
+				<p>The token name.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>The token name.</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$name" class="anchor">#</a>
+				<code><span class="php-keyword1">null</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="value" id="$value">
+		<td class="attributes"><code>
+			protected  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Genetsis.core.StoredToken.html#18-19" title="Go to source code"><var>$value</var></a>
+
+			<div class="description short">
+				<p>The token value.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>The token value.</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$value" class="anchor">#</a>
+				<code><span class="php-keyword1">null</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="expires_in" id="$expires_in">
+		<td class="attributes"><code>
+			protected  
+			integer
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Genetsis.core.StoredToken.html#20-21" title="Go to source code"><var>$expires_in</var></a>
+
+			<div class="description short">
+				<p>integer Number the seconds until the token expires.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>integer Number the seconds until the token expires.</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$expires_in" class="anchor">#</a>
+				<code><span class="php-keyword1">null</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="expires_at" id="$expires_at">
+		<td class="attributes"><code>
+			protected  
+			integer
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Genetsis.core.StoredToken.html#22-23" title="Go to source code"><var>$expires_at</var></a>
+
+			<div class="description short">
+				<p>Date when the token expires. As UNIX timestamp.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Date when the token expires. As UNIX timestamp.</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$expires_at" class="anchor">#</a>
+				<code><span class="php-keyword1">null</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="path" id="$path">
+		<td class="attributes"><code>
+			protected  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Genetsis.core.StoredToken.html#24-25" title="Go to source code"><var>$path</var></a>
+
+			<div class="description short">
+				<p>Full path to the folder where cookies will be saved.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Full path to the folder where cookies will be saved.</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#$path" class="anchor">#</a>
+				<code><span class="php-quote">'/'</span></code>
+			</div>
+		</td>
+	</tr>
+	</table>
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		 API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+</div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
+</body>
+</html>

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class Genetsis\URLBuilder</title>
+
+	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+				<h3>Namespaces</h3>
+			<ul>
+				<li class="active">
+					<a href="namespace-Genetsis.html">
+						Genetsis<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Genetsis.core.html">
+						core<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Genetsis.core.user.html">
+						user					</a>
+
+						</li>
+							</ul></li></ul></li>
+				<li>
+					<a href="namespace-None.html">
+						None					</a>
+
+						</li>
+			</ul>
+		</div>
+
+		<hr>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Genetsis.AutoloaderClass.html">AutoloaderClass</a></li>
+				<li><a href="class-Genetsis.Config.html">Config</a></li>
+				<li><a href="class-Genetsis.Identity.html">Identity</a></li>
+				<li class="active"><a href="class-Genetsis.URLBuilder.html">URLBuilder</a></li>
+				<li><a href="class-Genetsis.UserApi.html">UserApi</a></li>
+			</ul>
+
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text" placeholder="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="namespace-Genetsis.html" title="Summary of Genetsis"><span>Namespace</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class URLBuilder</h1>
+
+
+	<div class="description">
+	<p>This class is used to build the links to different services of Genetsis ID.</p>
+	</div>
+
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		<b>Namespace:</b> <a href="namespace-Genetsis.html">Genetsis</a><br>
+		<b>Package:</b> Genetsis<br>
+
+				<b>Category:</b>
+				Helper<br>
+				<b>Version:</b>
+				2.0<br>
+			<b>Located at</b> <a href="source-class-Genetsis.URLBuilder.html#7-392" title="Go to source code">URLBuilder.php</a>
+		<br>
+	</div>
+
+
+
+	<table class="summary methods" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="getUrlLogin" id="_getUrlLogin">
+
+		<td class="attributes"><code>
+			 public static
+
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getUrlLogin">#</a>
+		<code><a href="source-class-Genetsis.URLBuilder.html#17-37" title="Go to source code">getUrlLogin</a>( <span>string <var>$scope</var> = <span class="php-keyword1">null</span></span>, <span>string <var>$social</var> = <span class="php-keyword1">null</span></span>, <span>string <var>$urlCallback</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			<p>Returns the link for login process.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Returns the link for login process.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$scope</var></dt>
+					<dd><p>Section-key Identifier of the web client. The
+    section-key is located in "oauthconf.xml" file. If it's NULL,
+    the default section will be used.</p></dd>
+					<dt><var>$social</var></dt>
+					<dd><ul>
+<li>to force login with social network. Optional. Values 'facebook', 'twitter'</li>
+</ul></dd>
+					<dt><var>$urlCallback</var></dt>
+					<dd><p>Url for callback. A list of valid url is defined in "oauthconf.xml"
+    If it's NULL default url will be used.</p></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					string<br>The URL for login process.
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getUrlRegister" id="_getUrlRegister">
+
+		<td class="attributes"><code>
+			 public static
+
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getUrlRegister">#</a>
+		<code><a href="source-class-Genetsis.URLBuilder.html#39-56" title="Go to source code">getUrlRegister</a>( <span>string <var>$scope</var> = <span class="php-keyword1">null</span></span>, <span>string <var>$urlCallback</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			<p>Returns the link for register form page.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Returns the link for register form page.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$scope</var></dt>
+					<dd><p>Section-key Identifier of the web client. The
+    section-key is located in "oauthconf.xml" file. If it's NULL,
+    the default section will be used.</p></dd>
+					<dt><var>$urlCallback</var></dt>
+					<dd><p>Url for callback. A list of url is defined in "oauthconf.xml"
+    If it's NULL the default url will be used.</p></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					string<br>The URL for register process.
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getUrlEditAccount" id="_getUrlEditAccount">
+
+		<td class="attributes"><code>
+			 public static
+
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getUrlEditAccount">#</a>
+		<code><a href="source-class-Genetsis.URLBuilder.html#58-83" title="Go to source code">getUrlEditAccount</a>( <span>string <var>$scope</var> = <span class="php-keyword1">null</span></span>, <span>string <var>$urlCallback</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			<p>Returns the link for edit account form page.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Returns the link for edit account form page.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$scope</var></dt>
+					<dd><p>Section-key Identifier of the web client. The
+    section-key is located in "oauthconf.xml" file. If it's NULL,
+    the default section will be used.</p></dd>
+					<dt><var>$urlCallback</var></dt>
+					<dd><p>Url for callback. A list of url is defined in "oauthconf.xml"
+    If it's NULL the default url will be used.</p></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					string<br>The URL for edit account process.
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getUrlCompleteAccount" id="_getUrlCompleteAccount">
+
+		<td class="attributes"><code>
+			 public static
+
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getUrlCompleteAccount">#</a>
+		<code><a href="source-class-Genetsis.URLBuilder.html#85-107" title="Go to source code">getUrlCompleteAccount</a>( <span>string <var>$scope</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			<p>Returns the URL to complete the account for a section (scope) given.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Returns the URL to complete the account for a section (scope) given.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$scope</var></dt>
+					<dd><p>Section-key Identifier of the web client. The
+    section-key is located in "oauthconf.xml" file.</p></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					string<br>The URL for complete process.
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="buildSignupPromotionUrl" id="_buildSignupPromotionUrl">
+
+		<td class="attributes"><code>
+			 public static
+
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_buildSignupPromotionUrl">#</a>
+		<code><a href="source-class-Genetsis.URLBuilder.html#109-154" title="Go to source code">buildSignupPromotionUrl</a>( <span>string <var>$scope</var></span> )</code>
+
+		<div class="description short">
+			<p>This method is commonly used for promotions or sweepstakes: if a
+user wants to participate in a promotion, the web client must
+ensure that the user is logged and have all the fields filled
+in order to let him participate.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>This method is commonly used for promotions or sweepstakes: if a
+user wants to participate in a promotion, the web client must
+ensure that the user is logged and have all the fields filled
+in order to let him participate.</p>
+
+<ul>
+<li>If it is not logged, will return the login URL.</li>
+<li>If it is logged the method will check - If the user have not enough PII to access to a section, returns the URL needed to force a consumer to fill all the PII needed to enter into a section - Else will return false (user logged and completed)</li>
+</ul>
+
+<p>The "scope" (section) is a group of fields configured in Genetsis ID for
+a web client.</p>
+
+<p>A section can be also defined as a "part" (section) of the website
+(web client) that only can be accesed by a user who have filled a
+set of personal information configured in Genetsis ID (all of the fields
+required for that section).</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$scope</var></dt>
+					<dd><p>Identifier of the web client. The
+    section-key is located in "oauthconf.xml" file.</p></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					string<br><p>With generated URL. If the user is not connected,
+    will return login URL.</p>
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					Exception<br>if scope is empty.
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setCallbackRegister" id="_setCallbackRegister">
+
+		<td class="attributes"><code>
+			 public 
+
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setCallbackRegister">#</a>
+		<code><a href="source-class-Genetsis.URLBuilder.html#157-165" title="Go to source code">setCallbackRegister</a>( <span>string <var>$url</var></span> )</code>
+
+		<div class="description short">
+			<p>Set url for callback in redirectiosn section with regiter type.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Set url for callback in redirectiosn section with regiter type.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$url</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					boolean
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setCallbackConfirmUser" id="_setCallbackConfirmUser">
+
+		<td class="attributes"><code>
+			 public 
+
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setCallbackConfirmUser">#</a>
+		<code><a href="source-class-Genetsis.URLBuilder.html#167-175" title="Go to source code">setCallbackConfirmUser</a>( <span>string <var>$url</var></span> )</code>
+
+		<div class="description short">
+			<p>Set url for callback in redirections section with confirm user type.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Set url for callback in redirections section with confirm user type.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$url</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					boolean
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setCallbackPostLogin" id="_setCallbackPostLogin">
+
+		<td class="attributes"><code>
+			 public 
+
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setCallbackPostLogin">#</a>
+		<code><a href="source-class-Genetsis.URLBuilder.html#177-185" title="Go to source code">setCallbackPostLogin</a>( <span>string <var>$url</var></span> )</code>
+
+		<div class="description short">
+			<p>Set url for callback in redirections section with confirm postLogin type.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Set url for callback in redirections section with confirm postLogin type.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$url</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					boolean
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setCallbackPostChangeEmail" id="_setCallbackPostChangeEmail">
+
+		<td class="attributes"><code>
+			 public 
+
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setCallbackPostChangeEmail">#</a>
+		<code><a href="source-class-Genetsis.URLBuilder.html#187-195" title="Go to source code">setCallbackPostChangeEmail</a>( <span>string <var>$url</var></span> )</code>
+
+		<div class="description short">
+			<p>Set url for callback in redirections section with postChangeEmail type.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Set url for callback in redirections section with postChangeEmail type.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$url</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					boolean
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setCallbackPostEditAccount" id="_setCallbackPostEditAccount">
+
+		<td class="attributes"><code>
+			 public 
+
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setCallbackPostEditAccount">#</a>
+		<code><a href="source-class-Genetsis.URLBuilder.html#197-205" title="Go to source code">setCallbackPostEditAccount</a>( <span>string <var>$url</var></span> )</code>
+
+		<div class="description short">
+			<p>Set url for callback in redirections section with postEditAccount type.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Set url for callback in redirections section with postEditAccount type.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$url</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					boolean
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		 API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+</div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
+</body>
+</html>

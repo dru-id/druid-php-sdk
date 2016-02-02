@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class Genetsis\UserApi</title>
+
+	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+				<h3>Namespaces</h3>
+			<ul>
+				<li class="active">
+					<a href="namespace-Genetsis.html">
+						Genetsis<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Genetsis.core.html">
+						core<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Genetsis.core.user.html">
+						user					</a>
+
+						</li>
+							</ul></li></ul></li>
+				<li>
+					<a href="namespace-None.html">
+						None					</a>
+
+						</li>
+			</ul>
+		</div>
+
+		<hr>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Genetsis.AutoloaderClass.html">AutoloaderClass</a></li>
+				<li><a href="class-Genetsis.Config.html">Config</a></li>
+				<li><a href="class-Genetsis.Identity.html">Identity</a></li>
+				<li><a href="class-Genetsis.URLBuilder.html">URLBuilder</a></li>
+				<li class="active"><a href="class-Genetsis.UserApi.html">UserApi</a></li>
+			</ul>
+
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text" placeholder="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="namespace-Genetsis.html" title="Summary of Genetsis"><span>Namespace</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class UserApi</h1>
+
+
+	<div class="description">
+	<p>This class allow you to use the User Api</p>
+
+<p><code><a href="class-Genetsis.UserApi.html">Genetsis\UserApi</a></code> makes calls internally to the API to
+request user Data.</p>
+	</div>
+
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		<b>Namespace:</b> <a href="namespace-Genetsis.html">Genetsis</a><br>
+		<b>Package:</b> Genetsis<br>
+
+				<b>Category:</b>
+				Bean<br>
+				<b>Author:</b>
+				Israel Dominguez<br>
+				<b>Version:</b>
+				2.0<br>
+				<b>See:</b>
+				http://docs.cocacola.es<br>
+				<b>Revision:</b>
+				Alejandro Sánchez<br>
+			<b>Located at</b> <a href="source-class-Genetsis.UserApi.html#12-274" title="Go to source code">UserApi.php</a>
+		<br>
+	</div>
+
+
+
+	<table class="summary methods" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="getUserLogged" id="_getUserLogged">
+
+		<td class="attributes"><code>
+			 public static
+
+			Genetsis\core\User
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getUserLogged">#</a>
+		<code><a href="source-class-Genetsis.UserApi.html#28-50" title="Go to source code">getUserLogged</a>( )</code>
+
+		<div class="description short">
+			<p>Returns the personal data of the user logged.
+To check if user is logged, is not necessary call to this method, you must use Identity::isConnected().
+If you only need the User ID, you must use  <code><a href="class-Genetsis.UserApi.html#_getUserLoggedCkusid">Genetsis\UserApi::getUserLoggedCkusid()</a></code></p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Returns the personal data of the user logged.
+To check if user is logged, is not necessary call to this method, you must use Identity::isConnected().
+If you only need the User ID, you must use  <code><a href="class-Genetsis.UserApi.html#_getUserLoggedCkusid">Genetsis\UserApi::getUserLoggedCkusid()</a></code></p>
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					Genetsis\core\User<br>An object with the user logged personal data or null if is not logged
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getUserLoggedCkusid" id="_getUserLoggedCkusid">
+
+		<td class="attributes"><code>
+			 public static
+
+			integer
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getUserLoggedCkusid">#</a>
+		<code><a href="source-class-Genetsis.UserApi.html#52-67" title="Go to source code">getUserLoggedCkusid</a>( )</code>
+
+		<div class="description short">
+			<p>Returns User ID of user Logged, stored in Things Things
+You must use this method to get the ckusid of user logged</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Returns User ID of user Logged, stored in Things Things
+You must use this method to get the ckusid of user logged</p>
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					integer<br>User ID or null if user is not logged
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getUserLoggedOid" id="_getUserLoggedOid">
+
+		<td class="attributes"><code>
+			 public static
+
+			integer
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getUserLoggedOid">#</a>
+		<code><a href="source-class-Genetsis.UserApi.html#69-84" title="Go to source code">getUserLoggedOid</a>( )</code>
+
+		<div class="description short">
+			<p>Returns ObjectID of user Logged, stored in Things Things
+You must use this method to get the oid of user logged</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Returns ObjectID of user Logged, stored in Things Things
+You must use this method to get the oid of user logged</p>
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					integer<br>ObjectID or null if user is not logged
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getAvatarUrl" id="_getAvatarUrl">
+
+		<td class="attributes"><code>
+			 public static
+
+			String
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getAvatarUrl">#</a>
+		<code><a href="source-class-Genetsis.UserApi.html#86-105" title="Go to source code">getAvatarUrl</a>( <span> <var>$userid</var></span>, <span>integer <var>$width</var> = <span class="php-num">150</span></span>, <span>integer <var>$height</var> = <span class="php-num">150</span></span> )</code>
+
+		<div class="description short">
+			<p>Method to get User Profile Image available</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Method to get User Profile Image available</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$userid</var></dt>
+					<dd></dd>
+					<dt><var>$width</var></dt>
+					<dd>(optional) 150px by default</dd>
+					<dt><var>$height</var></dt>
+					<dd>(optional) 150px by default</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					String<br>url of profile image
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getAvatarImg" id="_getAvatarImg">
+
+		<td class="attributes"><code>
+			 public static
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getAvatarImg">#</a>
+		<code><a href="source-class-Genetsis.UserApi.html#107-115" title="Go to source code">getAvatarImg</a>( <span> <var>$userid</var></span>, <span> <var>$width</var> = <span class="php-num">150</span></span>, <span> <var>$height</var> = <span class="php-num">150</span></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getBrands" id="_getBrands">
+
+		<td class="attributes"><code>
+			 public static
+
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getBrands">#</a>
+		<code><a href="source-class-Genetsis.UserApi.html#146-187" title="Go to source code">getBrands</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					array
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="deleteCacheUser" id="_deleteCacheUser">
+
+		<td class="attributes"><code>
+			 public static
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_deleteCacheUser">#</a>
+		<code><a href="source-class-Genetsis.UserApi.html#189-212" title="Go to source code">deleteCacheUser</a>( <span> <var>$ckusid</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			<p>Delete cache data of a user, must call this method in a post-edit or a post-complete actions</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Delete cache data of a user, must call this method in a post-edit or a post-complete actions</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$ckusid</var></dt>
+					<dd>Identifier of user to delete cache data, if is not passed, the method get user logged</dd>
+				</dl></div>
+
+
+				<h4>Throws</h4>
+				<div class="list">
+					/Exception
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getUsers" id="_getUsers">
+
+		<td class="attributes"><code>
+			 public static
+
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getUsers">#</a>
+		<code><a href="source-class-Genetsis.UserApi.html#214-273" title="Go to source code">getUsers</a>( <span>array <var>$identifiers</var></span> )</code>
+
+		<div class="description short">
+			<p>Returns the user data stored trough the Genetsis ID personal identifier.
+The identifiers could be: id (ckusid), screenName, email, dni
+Sample: array('id'=>'XXXX','screenName'=>'xxxx');</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Returns the user data stored trough the Genetsis ID personal identifier.
+The identifiers could be: id (ckusid), screenName, email, dni
+Sample: array('id'=>'XXXX','screenName'=>'xxxx');</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$identifiers</var></dt>
+					<dd>Genetsis IDs identifier to search, 'identifier' => 'value'</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					array<br><p>A vector of Genetsis\core\User objects with user's
+    personal data. The array could be empty.</p>
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					/Exception
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		 API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+</div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
+</body>
+</html>

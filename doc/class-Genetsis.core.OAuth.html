@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class Genetsis\core\OAuth</title>
+
+	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+				<h3>Namespaces</h3>
+			<ul>
+				<li class="active">
+					<a href="namespace-Genetsis.html">
+						Genetsis<span></span>
+					</a>
+
+						<ul>
+				<li class="active">
+					<a href="namespace-Genetsis.core.html">
+						core<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-Genetsis.core.user.html">
+						user					</a>
+
+						</li>
+							</ul></li></ul></li>
+				<li>
+					<a href="namespace-None.html">
+						None					</a>
+
+						</li>
+			</ul>
+		</div>
+
+		<hr>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Genetsis.core.AccessToken.html">AccessToken</a></li>
+				<li><a href="class-Genetsis.core.ClientToken.html">ClientToken</a></li>
+				<li><a href="class-Genetsis.core.Encryption.html">Encryption</a></li>
+				<li><a href="class-Genetsis.core.FileCache.html">FileCache</a></li>
+				<li><a href="class-Genetsis.core.LogConfig.html">LogConfig</a></li>
+				<li><a href="class-Genetsis.core.LoginStatus.html">LoginStatus</a></li>
+				<li><a href="class-Genetsis.core.LoginStatusType.html">LoginStatusType</a></li>
+				<li class="active"><a href="class-Genetsis.core.OAuth.html">OAuth</a></li>
+				<li><a href="class-Genetsis.core.OAuthConfig.html">OAuthConfig</a></li>
+				<li><a href="class-Genetsis.core.OauthTemplate.html">OauthTemplate</a></li>
+				<li><a href="class-Genetsis.core.RefreshToken.html">RefreshToken</a></li>
+				<li><a href="class-Genetsis.core.Request.html">Request</a></li>
+				<li><a href="class-Genetsis.core.StoredToken.html">StoredToken</a></li>
+				<li><a href="class-Genetsis.core.Things.html">Things</a></li>
+			</ul>
+
+			<h3>Interfaces</h3>
+			<ul>
+				<li><a href="class-Genetsis.core.iTokenTypes.html">iTokenTypes</a></li>
+			</ul>
+
+
+			<h3>Exceptions</h3>
+			<ul>
+				<li><a href="class-Genetsis.core.InvalidGrantException.html">InvalidGrantException</a></li>
+			</ul>
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text" placeholder="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="namespace-Genetsis.core.html" title="Summary of Genetsis\core"><span>Namespace</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class OAuth</h1>
+
+
+	<div class="description">
+	<p>This class wraps all methods for interactions with OAuth service,
+for user authentication and validation. Also generates the URLs to
+perform this operations as register or login.</p>
+	</div>
+
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		<b>Namespace:</b> <a href="namespace-Genetsis.html">Genetsis</a>\<a href="namespace-Genetsis.core.html">core</a><br>
+		<b>Package:</b> Genetsis<br>
+
+				<b>Category:</b>
+				Helper<br>
+				<b>Version:</b>
+				1.0<br>
+			<b>Located at</b> <a href="source-class-Genetsis.core.OAuth.html#8-526" title="Go to source code">core/OAuth.php</a>
+		<br>
+	</div>
+
+
+
+	<table class="summary methods" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="doGetClientToken" id="_doGetClientToken">
+
+		<td class="attributes"><code>
+			 public static
+
+			mixed
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_doGetClientToken">#</a>
+		<code><a href="source-class-Genetsis.core.OAuth.html#35-75" title="Go to source code">doGetClientToken</a>( <span>string <var>$endpoint_url</var></span> )</code>
+
+		<div class="description short">
+			<p>Gets a "client_token" for the current web client.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Gets a "client_token" for the current web client.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$endpoint_url</var></dt>
+					<dd>The endpoint where "client_token" is requested.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					mixed<br><p>An instance of <code><a href="class-Genetsis.core.ClientToken.html">Genetsis\core\ClientToken</a></code> with data retrieved
+    or FALSE.</p>
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					Exception<br>If there is an error.
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="storeToken" id="_storeToken">
+
+		<td class="attributes"><code>
+			 public static
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_storeToken">#</a>
+		<code><a href="source-class-Genetsis.core.OAuth.html#100-116" title="Go to source code">storeToken</a>( <span><code><a href="class-Genetsis.core.StoredToken.html">Genetsis\core\StoredToken</a></code> <var>$token</var></span> )</code>
+
+		<div class="description short">
+			<p>Stores a token in a cookie</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Stores a token in a cookie</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$token</var></dt>
+					<dd>An object with token data to be stored.</dd>
+				</dl></div>
+
+
+				<h4>Throws</h4>
+				<div class="list">
+					Exception
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="doGetAccessToken" id="_doGetAccessToken">
+
+		<td class="attributes"><code>
+			 public static
+
+			mixed
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_doGetAccessToken">#</a>
+		<code><a href="source-class-Genetsis.core.OAuth.html#118-185" title="Go to source code">doGetAccessToken</a>( <span>string <var>$endpoint_url</var></span>, <span>string <var>$code</var></span>, <span>string <var>$redirect_url</var></span> )</code>
+
+		<div class="description short">
+			<p>Gets an "access_token" for the current web client.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Gets an "access_token" for the current web client.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$endpoint_url</var></dt>
+					<dd>The endpoint where "access_token" is requested.</dd>
+					<dt><var>$code</var></dt>
+					<dd>The authorization code returned by Genetsis ID.</dd>
+					<dt><var>$redirect_url</var></dt>
+					<dd>Where the user will be redirected.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					mixed<br><p>An instance of <code><a href="class-Genetsis.core.AccessToken.html">Genetsis\core\AccessToken</a></code> with data retrieved
+    or FALSE.</p>
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					Exception<br>If there is an error.
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="doRefreshToken" id="_doRefreshToken">
+
+		<td class="attributes"><code>
+			 public static
+
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_doRefreshToken">#</a>
+		<code><a href="source-class-Genetsis.core.OAuth.html#187-248" title="Go to source code">doRefreshToken</a>( <span>string <var>$endpoint_url</var></span> )</code>
+
+		<div class="description short">
+			<p>Updates tokens.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Updates tokens.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$endpoint_url</var></dt>
+					<dd>The endpoint where the request will be sent.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					boolean<br><p>TRUE if the tokens have been updated or FALSE
+    otherwise.</p>
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					Exception<br>If there is an error.
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="doValidateBearer" id="_doValidateBearer">
+
+		<td class="attributes"><code>
+			 public static
+
+			<code><a href="class-Genetsis.core.LoginStatus.html">Genetsis\core\LoginStatus</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_doValidateBearer">#</a>
+		<code><a href="source-class-Genetsis.core.OAuth.html#250-288" title="Go to source code">doValidateBearer</a>( <span>string <var>$endpoint_url</var></span> )</code>
+
+		<div class="description short">
+			<p>Checks if user is logged.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Checks if user is logged.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$endpoint_url</var></dt>
+					<dd>The endpoint where the request will be sent.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><a href="class-Genetsis.core.LoginStatus.html">Genetsis\core\LoginStatus</a></code><br>An object with user status.
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					Exception<br>If there is an error.
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="doExchangeSession" id="_doExchangeSession">
+
+		<td class="attributes"><code>
+			 public static
+
+			mixed
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_doExchangeSession">#</a>
+		<code><a href="source-class-Genetsis.core.OAuth.html#290-353" title="Go to source code">doExchangeSession</a>( <span>string <var>$endpoint_url</var></span>, <span>string <var>$cookie_value</var></span> )</code>
+
+		<div class="description short">
+			<p>Checks if user is logged by Exchange Session (SSO)</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Checks if user is logged by Exchange Session (SSO)</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$endpoint_url</var></dt>
+					<dd>The endpoint where the request will be sent.</dd>
+					<dt><var>$cookie_value</var></dt>
+					<dd>The content of the cookie that stores the SSO.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					mixed<br><p>An instance of <code><a href="class-Genetsis.core.AccessToken.html">Genetsis\core\AccessToken</a></code> if its connected or
+    NULL if not.</p>
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					Exception<br>If there is an error.
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="doLogout" id="_doLogout">
+
+		<td class="attributes"><code>
+			 public static
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_doLogout">#</a>
+		<code><a href="source-class-Genetsis.core.OAuth.html#355-387" title="Go to source code">doLogout</a>( <span>string <var>$endpoint_url</var></span> )</code>
+
+		<div class="description short">
+			<p>Performs revocation process. Removes all tokens from that user.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Performs revocation process. Removes all tokens from that user.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$endpoint_url</var></dt>
+					<dd>The endpoint where the request will be sent.</dd>
+				</dl></div>
+
+
+				<h4>Throws</h4>
+				<div class="list">
+					Exception<br>If there is an error.
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="deleteStoredToken" id="_deleteStoredToken">
+
+		<td class="attributes"><code>
+			 public static
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_deleteStoredToken">#</a>
+		<code><a href="source-class-Genetsis.core.OAuth.html#389-403" title="Go to source code">deleteStoredToken</a>( <span>string <var>$name</var></span> )</code>
+
+		<div class="description short">
+			<p>Removes a specific token.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Removes a specific token.</p>
+
+<p>It will removed from SESSION and COOKIE.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$name</var></dt>
+					<dd>token we want to remove. Are defined in <code><a href="class-Genetsis.core.iTokenTypes.html">Genetsis\core\iTokenTypes</a></code></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="hasToken" id="_hasToken">
+
+		<td class="attributes"><code>
+			 public static
+
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_hasToken">#</a>
+		<code><a href="source-class-Genetsis.core.OAuth.html#406-415" title="Go to source code">hasToken</a>( <span>string <var>$name</var></span> )</code>
+
+		<div class="description short">
+			<p>Checks if we have a specific token.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Checks if we have a specific token.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$name</var></dt>
+					<dd>The token we want to check. Are defined in <code><a href="class-Genetsis.core.iTokenTypes.html">Genetsis\core\iTokenTypes</a></code></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					boolean<br>TRUE if exists or FALSE otherwise.
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getStoredToken" id="_getStoredToken">
+
+		<td class="attributes"><code>
+			 public static
+
+			boolean|<code><a href="class-Genetsis.core.AccessToken.html">Genetsis\core\AccessToken</a></code>|<code><a href="class-Genetsis.core.ClientToken.html">Genetsis\core\ClientToken</a></code>|<code><a href="class-Genetsis.core.RefreshToken.html">Genetsis\core\RefreshToken</a></code>|mixed|string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getStoredToken">#</a>
+		<code><a href="source-class-Genetsis.core.OAuth.html#417-438" title="Go to source code">getStoredToken</a>( <span>string <var>$name</var></span> )</code>
+
+		<div class="description short">
+			<p>Returns a specific stored token.
+SESSION has more priority than COOKIE.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Returns a specific stored token.
+SESSION has more priority than COOKIE.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$name</var></dt>
+					<dd>The token we want to recover. Are defined in <code><a href="class-Genetsis.core.iTokenTypes.html">Genetsis\core\iTokenTypes</a></code></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					boolean|<code><a href="class-Genetsis.core.AccessToken.html">Genetsis\core\AccessToken</a></code>|<code><a href="class-Genetsis.core.ClientToken.html">Genetsis\core\ClientToken</a></code>|<code><a href="class-Genetsis.core.RefreshToken.html">Genetsis\core\RefreshToken</a></code>|mixed|string<br><p>An instance of <code><a href="class-Genetsis.core.StoredToken.html">Genetsis\core\StoredToken</a></code> or FALSE if we
+    can't recover it.</p>
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					Exception
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="doGetOpinator" id="_doGetOpinator">
+
+		<td class="attributes"><code>
+			 public static
+
+			mixed
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_doGetOpinator">#</a>
+		<code><a href="source-class-Genetsis.core.OAuth.html#440-478" title="Go to source code">doGetOpinator</a>( <span>string <var>$endpoint_url</var></span>, <span>string <var>$scope</var></span>, <span><code><a href="class-Genetsis.core.StoredToken.html">Genetsis\core\StoredToken</a></code> <var>$token</var></span> )</code>
+
+		<div class="description short">
+			<p>Get The Url for access to the Opinator.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Get The Url for access to the Opinator.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$endpoint_url</var></dt>
+					<dd>The endpoint where the request will be sent.</dd>
+					<dt><var>$scope</var></dt>
+					<dd>Section-key identifier of the web client propietary of Opinator</dd>
+					<dt><var>$token</var></dt>
+					<dd>Token</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					mixed<br>$token Token, an access_token if user is logged, a client_token if user is not login
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					Exception<br>If there is an error.
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="doCheckUserCompleted" id="_doCheckUserCompleted">
+
+		<td class="attributes"><code>
+			 public static
+
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_doCheckUserCompleted">#</a>
+		<code><a href="source-class-Genetsis.core.OAuth.html#480-525" title="Go to source code">doCheckUserCompleted</a>( <span>string <var>$endpoint_url</var></span>, <span>string <var>$scope</var></span> )</code>
+
+		<div class="description short">
+			<p>Checks if the user has completed all required data for the specified
+section (scope).</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Checks if the user has completed all required data for the specified
+section (scope).</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$endpoint_url</var></dt>
+					<dd>The endpoint where the request will be sent.</dd>
+					<dt><var>$scope</var></dt>
+					<dd><p>Section-key identifier of the web client. The
+    section-key is located in "oauthconf.xml" file.</p></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					boolean<br><p>TRUE if the user has completed all required data or
+    FALSE if not.</p>
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					Exception<br>If there is an error.
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+	<table class="summary constants" id="constants">
+	<caption>Constants summary</caption>
+	<tr data-order="GRANT_TYPE_AUTH_CODE" id="GRANT_TYPE_AUTH_CODE">
+
+		<td class="attributes"><code>string</code></td>
+		<td class="name">
+			<code>
+				<a href="source-class-Genetsis.core.OAuth.html#20-21" title="Go to source code"><b>GRANT_TYPE_AUTH_CODE</b></a>
+			</code>
+
+			<div class="description short">
+				<p>Different AUTH method.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Different AUTH method.</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#GRANT_TYPE_AUTH_CODE" class="anchor">#</a>
+				<code><span class="php-quote">'authorization_code'</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="GRANT_TYPE_REFRESH_TOKEN" id="GRANT_TYPE_REFRESH_TOKEN">
+
+		<td class="attributes"><code>string</code></td>
+		<td class="name">
+			<code>
+				<a href="source-class-Genetsis.core.OAuth.html#22" title="Go to source code"><b>GRANT_TYPE_REFRESH_TOKEN</b></a>
+			</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#GRANT_TYPE_REFRESH_TOKEN" class="anchor">#</a>
+				<code><span class="php-quote">'refresh_token'</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="GRANT_TYPE_CLIENT_CREDENTIALS" id="GRANT_TYPE_CLIENT_CREDENTIALS">
+
+		<td class="attributes"><code>string</code></td>
+		<td class="name">
+			<code>
+				<a href="source-class-Genetsis.core.OAuth.html#23" title="Go to source code"><b>GRANT_TYPE_CLIENT_CREDENTIALS</b></a>
+			</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#GRANT_TYPE_CLIENT_CREDENTIALS" class="anchor">#</a>
+				<code><span class="php-quote">'client_credentials'</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="GRANT_TYPE_VALIDATE_BEARER" id="GRANT_TYPE_VALIDATE_BEARER">
+
+		<td class="attributes"><code>string</code></td>
+		<td class="name">
+			<code>
+				<a href="source-class-Genetsis.core.OAuth.html#24" title="Go to source code"><b>GRANT_TYPE_VALIDATE_BEARER</b></a>
+			</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#GRANT_TYPE_VALIDATE_BEARER" class="anchor">#</a>
+				<code><span class="php-quote">'urn:es.cocacola:oauth2:grant_type:validate_bearer'</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="GRANT_TYPE_EXCHANGE_SESSION" id="GRANT_TYPE_EXCHANGE_SESSION">
+
+		<td class="attributes"><code>string</code></td>
+		<td class="name">
+			<code>
+				<a href="source-class-Genetsis.core.OAuth.html#25" title="Go to source code"><b>GRANT_TYPE_EXCHANGE_SESSION</b></a>
+			</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#GRANT_TYPE_EXCHANGE_SESSION" class="anchor">#</a>
+				<code><span class="php-quote">'urn:es.cocacola:oauth2:grant_type:exchange_session'</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="DEFAULT_EXPIRES_IN" id="DEFAULT_EXPIRES_IN">
+
+		<td class="attributes"><code>integer</code></td>
+		<td class="name">
+			<code>
+				<a href="source-class-Genetsis.core.OAuth.html#26-27" title="Go to source code"><b>DEFAULT_EXPIRES_IN</b></a>
+			</code>
+
+			<div class="description short">
+				<p>Default expiration time. In seconds.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Default expiration time. In seconds.</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#DEFAULT_EXPIRES_IN" class="anchor">#</a>
+				<code><span class="php-num">900</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="SAFETY_RANGE_EXPIRES_IN" id="SAFETY_RANGE_EXPIRES_IN">
+
+		<td class="attributes"><code>float</code></td>
+		<td class="name">
+			<code>
+				<a href="source-class-Genetsis.core.OAuth.html#28-31" title="Go to source code"><b>SAFETY_RANGE_EXPIRES_IN</b></a>
+			</code>
+
+			<div class="description short">
+				<p>Indicates the percentage to be subtracted from the number of
+seconds of "expires_in" to not be so close to the expiration date
+of the token.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Indicates the percentage to be subtracted from the number of
+seconds of "expires_in" to not be so close to the expiration date
+of the token.</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#SAFETY_RANGE_EXPIRES_IN" class="anchor">#</a>
+				<code><span class="php-num">0.10</span></code>
+			</div>
+		</td>
+	</tr>
+	<tr data-order="SSO_COOKIE_NAME" id="SSO_COOKIE_NAME">
+
+		<td class="attributes"><code>string</code></td>
+		<td class="name">
+			<code>
+				<a href="source-class-Genetsis.core.OAuth.html#32-33" title="Go to source code"><b>SSO_COOKIE_NAME</b></a>
+			</code>
+
+			<div class="description short">
+				<p>Cookie name for SSO (Single Sign-Out).</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Cookie name for SSO (Single Sign-Out).</p>
+
+			</div>
+		</td>
+		<td class="value">
+			<div>
+				<a href="#SSO_COOKIE_NAME" class="anchor">#</a>
+				<code><span class="php-quote">'datr'</span></code>
+			</div>
+		</td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		 API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+</div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
+</body>
+</html>

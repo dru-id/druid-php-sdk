@@ -1,0 +1,27 @@
+{
+  "name": "genetsis/gid-sdk-php",
+  "version": "1.0.2",
+  "description": "GID SDK for PHP",
+  "license": "Apache-2.0",
+  "minimum-stability": "dev",
+  "keywords": ["dru-id", "druid", "sdk"],
+  "type": "library",
+  "homepage": "http://developers.dru-id.com/",
+  "authors": [
+    {
+      "name": "dru-id",
+      "homepage": "https://github.com/dru-id/druid-php-sdk/graphs/contributors"
+    }
+  ],
+  "require": {
+    "lib-curl": "*",
+    "ext-mcrypt" : "*",
+    "ext-dom" : "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Genetsis\\": "src"
+    }
+  }
+}
+
