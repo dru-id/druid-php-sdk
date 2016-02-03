@@ -1,10 +1,10 @@
 {
-  "name": "genetsis/gid-sdk-php",
+  "name": "druid/php-sdk",
   "version": "1.0.2",
-  "description": "GID SDK for PHP",
+  "description": "DRUID SDK for PHP",
   "license": "Apache-2.0",
   "minimum-stability": "dev",
-  "keywords": ["dru-id", "druid", "sdk"],
+  "keywords": ["dru-id", "druid", "sdk", "php"],
   "type": "library",
   "homepage": "http://developers.dru-id.com/",
   "authors": [
