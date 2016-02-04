@@ -75,14 +75,14 @@ class Identity
      *
      * @param string $gid_client GID Client to load
      * @param boolean $sync Indicates if automatic data synchronization with the server is enabled
-     * @param string $ini_path path of the configuration of the library (gid.ini file) if no argument passed, the default path and file will be /config/gid.ini
+     * @param string $ini_path path of the configuration of the library (druid.ini file) if no argument passed, the default path and file will be /config/druid.ini
      * @throws Exception
      */
     public static function init($gid_client = 'default', $sync = true, $ini_path = null)
     {
         try {
             if (!self::$initialized) {
-                if (!isset($ini_path)) $ini_path = dirname(__FILE__) . '/../config/gid.ini';
+                if (!isset($ini_path)) $ini_path = dirname(__FILE__) . '/../config/druid.ini';
                 Config::$ini_path = $ini_path;
                 self::$initialized = true;
                 AutoloaderClass::init();

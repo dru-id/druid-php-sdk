@@ -1,0 +1,7 @@
+{
+    "packages": {
+	    "druid/php-sdk": {
+		    "dev-master": { @composer.json }
+	    }
+    }										       
+}

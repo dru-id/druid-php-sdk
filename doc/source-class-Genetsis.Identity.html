@@ -272,14 +272,14 @@
 </span></span><span id="75" class="l"><a href="#75"> 75: </a><span class="php-comment">     *
 </span></span><span id="76" class="l"><a href="#76"> 76: </a><span class="php-comment">     * @param string $gid_client GID Client to load
 </span></span><span id="77" class="l"><a href="#77"> 77: </a><span class="php-comment">     * @param boolean $sync Indicates if automatic data synchronization with the server is enabled
-</span></span><span id="78" class="l"><a href="#78"> 78: </a><span class="php-comment">     * @param string $ini_path path of the configuration of the library (gid.ini file) if no argument passed, the default path and file will be /config/gid.ini
+</span></span><span id="78" class="l"><a href="#78"> 78: </a><span class="php-comment">     * @param string $ini_path path of the configuration of the library (druid.ini file) if no argument passed, the default path and file will be /config/druid.ini
 </span></span><span id="79" class="l"><a href="#79"> 79: </a><span class="php-comment">     * @throws Exception
 </span></span><span id="80" class="l"><a href="#80"> 80: </a><span class="php-comment">     */</span>
 </span><span id="81" class="l"><a href="#81"> 81: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">static</span> <span class="php-keyword1">function</span> init(<span class="php-var">$gid_client</span> = <span class="php-quote">'default'</span>, <span class="php-var">$sync</span> = <span class="php-keyword1">true</span>, <span class="php-var">$ini_path</span> = <span class="php-keyword1">null</span>)
 </span><span id="82" class="l"><a href="#82"> 82: </a>    {
 </span><span id="83" class="l"><a href="#83"> 83: </a>        <span class="php-keyword1">try</span> {
 </span><span id="84" class="l"><a href="#84"> 84: </a>            <span class="php-keyword1">if</span> (!self::<span class="php-var">$initialized</span>) {
-</span><span id="85" class="l"><a href="#85"> 85: </a>                <span class="php-keyword1">if</span> (!<span class="php-keyword1">isset</span>(<span class="php-var">$ini_path</span>)) <span class="php-var">$ini_path</span> = <span class="php-keyword2">dirname</span>(__FILE__) . <span class="php-quote">'/../config/gid.ini'</span>;
+</span><span id="85" class="l"><a href="#85"> 85: </a>                <span class="php-keyword1">if</span> (!<span class="php-keyword1">isset</span>(<span class="php-var">$ini_path</span>)) <span class="php-var">$ini_path</span> = <span class="php-keyword2">dirname</span>(__FILE__) . <span class="php-quote">'/../config/druid.ini'</span>;
 </span><span id="86" class="l"><a href="#86"> 86: </a>                Config::<span class="php-var">$ini_path</span> = <span class="php-var">$ini_path</span>;
 </span><span id="87" class="l"><a href="#87"> 87: </a>                self::<span class="php-var">$initialized</span> = <span class="php-keyword1">true</span>;
 </span><span id="88" class="l"><a href="#88"> 88: </a>                AutoloaderClass::init();

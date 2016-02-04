@@ -4,7 +4,12 @@
   "description": "DRUID SDK for PHP",
   "license": "Apache-2.0",
   "minimum-stability": "dev",
-  "keywords": ["dru-id", "druid", "sdk", "php"],
+  "keywords": [
+    "dru-id",
+    "druid",
+    "sdk",
+    "php"
+  ],
   "type": "library",
   "homepage": "http://developers.dru-id.com/",
   "authors": [
@@ -15,13 +20,21 @@
   ],
   "require": {
     "lib-curl": "*",
-    "ext-mcrypt" : "*",
-    "ext-dom" : "*"
+    "ext-mcrypt": "*",
+    "ext-dom": "*"
+  },
+  "config": {
+    "vendor-dir": "src/main/php/lib/vendor"
   },
   "autoload": {
     "psr-4": {
       "Genetsis\\": "src"
     }
+  },
+  "scripts": {
+    "post-create-project-cmd": [
+      "php -r \"mkdir('src/main/php/lib', 0777, true);\""
+    ]
   }
 }
 
