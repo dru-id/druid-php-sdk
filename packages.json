@@ -7,8 +7,7 @@
 			 "dist": {
 			      "url": "https://github.com/dru-id/druid-php-sdk",
 			      "type": "vcs"
-									    }
-			    }
+			 }
 		    }
 	    }
     }										       
