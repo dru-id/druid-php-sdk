@@ -6,7 +6,7 @@
 			 "version": "1.0.2",
 			 "dist": {
 			      "url": "https://github.com/dru-id/druid-php-sdk",
-			      "type": "vcs"
+			      "type": "git"
 			 }
 		    }
 	    }
