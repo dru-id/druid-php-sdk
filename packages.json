@@ -1,7 +1,15 @@
 {
     "packages": {
 	    "druid/php-sdk": {
-		    "dev-master": { @composer.json }
+		    "dev-master": {
+			 "name": "druid/php-sdk",
+			 "version": "1.0.2",
+			 "dist": {
+			      "url": "https://github.com/dru-id/druid-php-sdk",
+			      "type": "vcs"
+									    }
+			    }
+		    }
 	    }
     }										       
 }
