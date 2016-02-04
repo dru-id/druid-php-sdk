@@ -27,21 +27,21 @@
     </sections>
 
     <endpoints>
-        <url id="authorization_endpoint">https://auth.dru-id.com/oauth2/authorize</url>
-        <url id="signup_endpoint">https://auth.dru-id.com/oauth2/authorize</url>
-        <url id="token_endpoint">http://auth.dru-id.com/oauth2/token</url>
-        <url id="next_url">https://auth.dru-id.com/oauth2/authorize/redirect</url>
-        <url id="cancel_url">https://auth.dru-id.com/oauth2/authorize/redirect</url>
-        <url id="logout_endpoint">https://auth.dru-id.com/oauth2/revoke</url>
-        <url id="edit_account_endpoint">https://register.dru-id.com/register/edit_account_input</url>
-        <url id="complete_account_endpoint">https://register.dru-id.com/register/complete_account_input</url>
+        <url id="authorization_endpoint">https://auth.ci.dru-id.com/oauth2/authorize</url>
+        <url id="signup_endpoint">https://auth.ci.dru-id.com/oauth2/authorize</url>
+        <url id="token_endpoint">http://auth.ci.dru-id.com/oauth2/token</url>
+        <url id="next_url">https://auth.ci.dru-id.com/oauth2/authorize/redirect</url>
+        <url id="cancel_url">https://auth.ci.dru-id.com/oauth2/authorize/redirect</url>
+        <url id="logout_endpoint">https://auth.ci.dru-id.com/oauth2/revoke</url>
+        <url id="edit_account_endpoint">https://register.ci.dru-id.com/register/edit_account_input</url>
+        <url id="complete_account_endpoint">https://register.ci.dru-id.com/register/complete_account_input</url>
     </endpoints>
 
     <apis>
-        <api base-url="http://api.dru-id.com/api" id="api.user:v1" name="api.user" version="1">
+        <api base-url="http://api.ci.dru-id.com/api" id="api.user:v1" name="api.user" version="1">
             <url id="user">/user</url>
         </api>
-        <api base-url="http://graph.dru-id.com/activityid" id="api.activityid:v1" name="api.activityid" substitution-var="{objectType}" version="1">
+        <api base-url="http://graph.ci.dru-id.com/activityid" id="api.activityid:v1" name="api.activityid" substitution-var="{objectType}" version="1">
             <url id="participate">/v1/game/request</url>
             <url id="reject_participation">/v1/game/reject</url>
             <url id="win_prize_content">/v1/product/win</url>
