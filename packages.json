@@ -5,7 +5,7 @@
 			 "name": "druid/php-sdk",
 			 "version": "1.0.2",
 			 "dist": {
-			      "url": "https://github.com/dru-id/druid-php-sdk",
+			      "url": "https://github.com/dru-id/druid-php-sdk/archive/master.zip",
 			      "type": "zip"
 			 }
 		    }
