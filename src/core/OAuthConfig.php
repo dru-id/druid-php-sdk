@@ -23,7 +23,7 @@ class OAuthConfig
     {
         self::$config = FileCache::get('config');
         if (!self::$config) {
-            self::loadXml(dirname(__FILE__) . '/' . Config::configPath());
+            self::loadXml($_SERVER['DOCUMENT_ROOT'] . '/' . Config::configPath());
         }
     }
 

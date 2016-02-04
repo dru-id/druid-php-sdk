@@ -31,7 +31,7 @@ class LogConfig implements \LoggerConfigurator
         if (!is_null($levelInfo)) {
             $this->threshold = $levelInfo;
         }
-        $this->log_path = dirname(__FILE__) . '/' . $logPath;
+        $this->log_path = $_SERVER['DOCUMENT_ROOT'] . '/' . $logPath;
 
         if (!is_dir($this->log_path) || !is_writable($this->log_path)) {
             $auto_create = mkdir($this->log_path, 0777, true);

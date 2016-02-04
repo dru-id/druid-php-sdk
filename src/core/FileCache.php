@@ -34,7 +34,7 @@ class FileCache
             throw new Exception('Cache needs the JSON PHP extensions.');
         }
 
-        self::$cache_dir = dirname(__FILE__) . '/' . $path;
+        self::$cache_dir = $_SERVER['DOCUMENT_ROOT'] . '/' . $path;
         self::$prefix = $pref;
 
         if (!is_dir(self::$cache_dir) || !is_writable(self::$cache_dir)) {
