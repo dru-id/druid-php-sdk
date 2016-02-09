@@ -259,8 +259,8 @@ class UserApi
                     if (($response['code'] != 200) || (!isset($response['result']->data)) || ($response['result']->count == '0')) {
                         throw new Exception('The data retrieved is empty');
                     }
-                    $gid_user = $response['result']->data;
                     FileCache::set('user-' . reset($identifiers), $response['result']->data, 3600);
+                    $gid_user = FileCache::get('user-' . reset($identifiers));
                 } else {
                     Identity::getLogger()->debug('Identifier: ' . reset($identifiers) . ' is in Cache System');
                     $gid_user = $gid_user_data;
