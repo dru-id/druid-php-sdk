@@ -223,11 +223,11 @@ class UserApi
      */
     public static function getUsers($identifiers)
     {
-        $gid_user = array();
+        $druid_user = array();
 
         if (is_array($identifiers)) {
             try {
-                if (!$gid_user_data = FileCache::get('user-' . reset($identifiers))) {
+                if (!$druid_user_data = FileCache::get('user-' . reset($identifiers))) {
                     Identity::getLogger()->debug('Identifier: ' . reset($identifiers) . ' is Not in Cache System');
 
                     $client_token = Identity::getThings()->getClientToken();
@@ -259,17 +259,17 @@ class UserApi
                     if (($response['code'] != 200) || (!isset($response['result']->data)) || ($response['result']->count == '0')) {
                         throw new Exception('The data retrieved is empty');
                     }
-                    FileCache::set('user-' . reset($identifiers), $response['result']->data, 3600);
-                    $gid_user = FileCache::get('user-' . reset($identifiers));
+                    $druid_user = $response['result']->data;
+                    FileCache::set('user-' . reset($identifiers), $druid_user, 3600);
                 } else {
                     Identity::getLogger()->debug('Identifier: ' . reset($identifiers) . ' is in Cache System');
-                    $gid_user = $gid_user_data;
+                    $druid_user = json_decode(json_encode($druid_user_data));
                 }
             } catch (Exception $e) {
                 Identity::getLogger()->error($e->getMessage());
             }
         }
-        return $gid_user;
+        return $druid_user;
     }
 }
 
