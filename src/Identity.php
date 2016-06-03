@@ -221,10 +221,28 @@ class Identity
     private static function checkSSO()
     {
         try {
-            if ((isset($_COOKIE['datr']) && ($_COOKIE['datr'] != ''))||(isset($_COOKIE['datr_']) && ($_COOKIE['datr_'] != ''))) {
+            $datr = call_user_func(function(){
+                if (!isset($_COOKIE) || !is_array($_COOKIE)) {
+                    return false;
+                }
+
+                if (isset($_COOKIE['datr']) && !empty($_COOKIE['datr'])) {
+                    return $_COOKIE['datr'];
+                }
+
+                foreach ($_COOKIE as $key => $val) {
+                    if (strpos($key, 'datr_') === 0) {
+                        return $val;
+                    }
+                }
+
+                return false;
+            });
+
+            if ($datr) {
                 self::$logger->info('DATR cookie was found.');
 
-                $response = OAuth::doExchangeSession(OauthConfig::getEndpointUrl('token_endpoint'), ($_COOKIE['datr'] != '') ? $_COOKIE['datr'] : $_COOKIE['datr_']);
+                $response = OAuth::doExchangeSession(OauthConfig::getEndpointUrl('token_endpoint'), $datr);
                 self::$gid_things->setAccessToken($response['access_token']);
                 self::$gid_things->setRefreshToken($response['refresh_token']);
                 self::$gid_things->setLoginStatus($response['login_status']);
@@ -233,7 +251,7 @@ class Identity
             }
         } catch (InvalidGrantException $e) {
             unset($_COOKIE[OAuth::SSO_COOKIE_NAME]);
-            setcookie(OAuth::SSO_COOKIE_NAME, null, -1, null, '.cocacola.es');
+            setcookie(OAuth::SSO_COOKIE_NAME, null, -1, null);
 
             self::$logger->warn('Invalid Grant, check an invalid DATR');
             throw $e;
