@@ -523,4 +523,58 @@ class OAuth
             throw new Exception('Error [' . __FUNCTION__ . '] - '.$e->getMessage());
         }
     }
+
+    /**
+     * Checks if the user has accepted terms and conditions for the specified section (scope).
+     *
+     * @param string $endpoint_url The endpoint where the request will be sent.
+     * @param string $scope Section-key identifier of the web client. The section-key is located in "oauthconf.xml" file.
+     * @return boolean TRUE if the user need to accept the terms and conditions (not accepted yet) or
+     *      FALSE if it has already accepted them (no action required).
+     * @throws \Exception If there is an error.
+     */
+    public static function doCheckUserNeedAcceptTerms($endpoint_url, $scope)
+    {
+        try {
+            if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
+                throw new Exception ('Endpoint URL is empty');
+            }
+
+            if (($scope = trim((string)$scope)) == '') {
+                throw new Exception ('Scope is empty');
+            }
+
+            if (!(($access_token = Identity::getThings()->getAccessToken()) instanceof AccessToken) || ($access_token->getValue() == '')) {
+                throw new Exception ('Access token is empty');
+            }
+
+            // Send request.
+            $params = array();
+            $params['oauth_token'] = $access_token->getValue();
+            $params['s'] = "needsToCompleteData";
+            $params['f'] = "UserMeta";
+            $params['w.section'] = $scope;
+
+            $response = Request::execute($endpoint_url, $params, Request::HTTP_POST);
+
+            self::checkErrors($response);
+
+            if (isset($response['code']) && ($response['code'] == 200)) {
+                return call_user_func(function($result){
+                        if (isset($result->data) && is_array($result->data)) {
+                            foreach ($result->data as $data) {
+                                if (isset($data->meta->name) && ($data->meta->name === 'needsToAcceptTerms')) {
+                                    return (isset($data->meta->value) && ($data->meta->value === 'true'));
+                                }
+                            }
+                        }
+                        return false;
+                    }, $response['result']);
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            throw new Exception('Error [' . __FUNCTION__ . '] - '.$e->getMessage());
+        }
+    }
 }

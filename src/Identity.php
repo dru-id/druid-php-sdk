@@ -221,10 +221,28 @@ class Identity
     private static function checkSSO()
     {
         try {
-            if ((isset($_COOKIE['datr']) && ($_COOKIE['datr'] != ''))||(isset($_COOKIE['datr_']) && ($_COOKIE['datr_'] != ''))) {
+            $datr = call_user_func(function(){
+                if (!isset($_COOKIE) || !is_array($_COOKIE)) {
+                    return false;
+                }
+
+                if (isset($_COOKIE['datr']) && !empty($_COOKIE['datr'])) {
+                    return $_COOKIE['datr'];
+                }
+
+                foreach ($_COOKIE as $key => $val) {
+                    if (strpos($key, 'datr_') === 0) {
+                        return $val;
+                    }
+                }
+
+                return false;
+            });
+
+            if ($datr) {
                 self::$logger->info('DATR cookie was found.');
 
-                $response = OAuth::doExchangeSession(OauthConfig::getEndpointUrl('token_endpoint'), ($_COOKIE['datr'] != '') ? $_COOKIE['datr'] : $_COOKIE['datr_']);
+                $response = OAuth::doExchangeSession(OauthConfig::getEndpointUrl('token_endpoint'), $datr);
                 self::$gid_things->setAccessToken($response['access_token']);
                 self::$gid_things->setRefreshToken($response['refresh_token']);
                 self::$gid_things->setLoginStatus($response['login_status']);
@@ -233,7 +251,7 @@ class Identity
             }
         } catch (InvalidGrantException $e) {
             unset($_COOKIE[OAuth::SSO_COOKIE_NAME]);
-            setcookie(OAuth::SSO_COOKIE_NAME, null, -1, null, '.cocacola.es');
+            setcookie(OAuth::SSO_COOKIE_NAME, null, -1, null);
 
             self::$logger->warn('Invalid Grant, check an invalid DATR');
             throw $e;
@@ -421,12 +439,43 @@ class Identity
             self::$logger->info('Checking if the user has filled its data out for this section:' . $scope);
 
             if (self::isConnected()) {
-                $userCompleted = OAuth::doCheckUserCompleted(OAuthConfig::getApiUrl('user-api', 'base_url') . OauthConfig::getApiUrl('api.user', 'user'), $scope);
+                $userCompleted = OAuth::doCheckUserCompleted(OAuthConfig::getApiUrl('api.user', 'base_url') . OauthConfig::getApiUrl('api.user', 'user'), $scope);
             }
         } catch (Exception $e) {
             self::$logger->error($e->getMessage());
         }
         return $userCompleted;
+    }
+
+    /**
+     * Checks if the user needs to accept terms and conditions for that section.
+     *
+     * The "scope" (section) is a group of fields configured in DruID for
+     * a web client.
+     *
+     * A section can be also defined as a "part" (section) of the website
+     * (web client) that only can be accessed by a user who have filled a
+     * set of personal information configured in DruID.
+     *
+     * @param $scope string Section-key identifier of the web client. The
+     *     section-key is located in "oauthconf.xml" file.
+     * @throws \Exception
+     * @return boolean TRUE if the user need to accept terms and conditions, FALSE if it has
+     *      already accepted them.
+     */
+    public static function checkUserNeedAcceptTerms($scope)
+    {
+        $status = false;
+        try {
+            self::$logger->info('Checking if the user has accepted terms and conditions for this section:' . $scope);
+
+            if (self::isConnected()) {
+                $status = OAuth::doCheckUserNeedAcceptTerms(OAuthConfig::getApiUrl('api.user', 'base_url') . OauthConfig::getApiUrl('api.user', 'user'), $scope);
+            }
+        } catch (Exception $e) {
+            self::$logger->error($e->getMessage());
+        }
+        return $status;
     }
 
     /**
