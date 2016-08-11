@@ -62,13 +62,30 @@ class OAuthConfig
             foreach ($credentials->childNodes as $node) {
                 if ($node->nodeName === 'clientid') {
                     self::$config['clientid'] = $node->nodeValue;
-                }
-                if ($node->nodeName === 'clientsecret') {
+                } else if ($node->nodeName === 'clientsecret') {
                     self::$config['clientsecret'] = $node->nodeValue;
                 }
             }
             if ((!isset(self::$config['clientid'])) || (!isset(self::$config['clientsecret']))) {
                 throw new Exception('Not defined credentials');
+            }
+
+            //data
+            if (!$data = $xmlObj->getElementsByTagName("data")->item(0)) {
+                throw new Exception('No data node');
+            }
+
+            foreach ($data->childNodes as $node) {
+                if ($node->nodeName === 'name') {
+                    self::$config['name'] = $node->nodeValue;
+                } else if ($node->nodeName === 'brand') {
+                    self::$config['brand'] = $node->nodeValue;
+                } else if ($node->nodeName === 'opi') {
+                    self::$config['opi'] = $node->nodeValue;
+                }
+            }
+            if (!isset(self::$config['name'])) {
+                throw new Exception('No name defined');
             }
 
             self::getParserXML($xmlObj, 'redirections', 'type');
@@ -197,6 +214,36 @@ class OAuthConfig
     public static function getClientSecret()
     {
         return (isset(self::$config['clientsecret']) ? self::$config['clientsecret'] : false);
+    }
+
+    /**
+     * Returns App name
+     *
+     * @return string App name
+     */
+    public static function getAppName()
+    {
+        return (isset(self::$config['name']) ? self::$config['name'] : false);
+    }
+
+    /**
+     * Returns Brand asociated to this App (if defined)
+     *
+     * @return string Brand associated. It could be empty
+     */
+    public static function getBrand()
+    {
+        return (isset(self::$config['brand']) ? self::$config['brand'] : false);
+    }
+
+    /**
+     * Returns Brand asociated to this App (if defined)
+     *
+     * @return string Brand associated. It could be empty
+     */
+    public static function getOpi()
+    {
+        return (isset(self::$config['opi']) ? self::$config['opi'] : false);
     }
 
     /**
