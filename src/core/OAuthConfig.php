@@ -79,7 +79,7 @@ class OAuthConfig
                 if ($node->nodeName === 'name') {
                     self::$config['name'] = $node->nodeValue;
                 } else if ($node->nodeName === 'brand') {
-                    self::$config['brand'] = $node->nodeValue;
+                    self::$config['brand'] = $node->attributes->getNamedItem('key')->nodeValue;
                 } else if ($node->nodeName === 'opi') {
                     self::$config['opi'] = $node->nodeValue;
                 }
