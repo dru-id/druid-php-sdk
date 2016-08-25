@@ -19,7 +19,7 @@ use Genetsis\core\Request;
 class Opi
 {
 
-    private static $OPINATOR_SERVER = "https://www.opinator.com/opi";
+    private static $OPINATOR_SERVER = "https://www.opinator.com/opi/r";
 
     /**
      * redirect to a specified opi
