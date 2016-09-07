@@ -97,9 +97,7 @@ class OAuthConfig
                 if ($singleApi->nodeType == XML_ELEMENT_NODE) {
                     $apiName = trim($singleApi->getAttribute('name'));
 
-                    if ($apiName == 'api.activityid' || $apiName == 'api.user') {
-                        self::$config['apis'][$apiName]['base_url'] = trim($singleApi->getAttribute('base-url'));
-                    }
+                    self::$config['apis'][$apiName]['base_url'] = trim($singleApi->getAttribute('base-url'));
 
                     foreach ($singleApi->childNodes as $urlNode) {
                         if ($urlNode->nodeType == XML_ELEMENT_NODE) {
