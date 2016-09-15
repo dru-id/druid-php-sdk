@@ -52,19 +52,22 @@ class Opi
 
         try {
             $birthday = $info->user->user_data->birthday->value;
-            $birthday = explode("/", $birthday);
 
-            $age = (date("md", date("U", mktime(0, 0, 0, $birthday[0], $birthday[1], $birthday[2]))) > date("md")
-                ? ((date("Y") - $birthday[2]) - 1)
-                : (date("Y") - $birthday[2]));
-            if (18 <= $age && $age <= 24) {
-                $opi_age = 1;
-            } else if (25 <= $age && $age <= 34) {
-                $opi_age = 2;
-            } if (35 <= $age && $age <= 44) {
-                $opi_age = 3;
-            } if (45 <= $age && $age <= 64) {
-                $opi_age = 4;
+            if($birthday != null){
+            	$birthday = explode("/", $birthday);
+
+            	$age = (date("md", date("U", mktime(0, 0, 0, $birthday[2], $birthday[1], $birthday[0]))) > date("md")
+                	? ((date("Y") - $birthday[2]) - 1)
+                	: (date("Y") - $birthday[2]));
+            	if (18 <= $age && $age <= 24) {
+                	$opi_age = 1;
+            	} else if (25 <= $age && $age <= 34) {
+                	$opi_age = 2;
+            	} if (35 <= $age && $age <= 44) {
+                	$opi_age = 3;
+            	} if (45 <= $age && $age <= 64) {
+                	$opi_age = 4;
+            	}
             }
         } catch (Exception $e) {}
 
