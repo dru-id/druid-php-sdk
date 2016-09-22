@@ -25,6 +25,9 @@ use Genetsis\core\user\Brand;
  */
 class UserApi
 {
+    const USER_TTL = 3600;
+    const BRANDS_TTL = 3600;
+
     /**
      * Returns the personal data of the user logged.
      * To check if user is logged, is not necessary call to this method, you must use Identity::isConnected().
@@ -84,6 +87,17 @@ class UserApi
     }
 
     /**
+     * Method to get User Logged Profile Image available
+     *
+     * @param int $width (optional) 150px by default
+     * @param int $height (optional) 150px by default
+     * @return String url of profile image
+     */
+    public static function getUserLoggedAvatarUrl($width = 150, $height = 150) {
+        return self::getAvatarUrl(UserApi::getUserLogged()->user->oid, $width, $height);
+    }
+
+    /**
      * Method to get User Profile Image available
      *
      * @param $userid
@@ -93,15 +107,12 @@ class UserApi
      */
     public static function getAvatarUrl($userid, $width = 150, $height = 150)
     {
-        $url = '';
         try {
-            $url = OAuthConfig::getApiUrl('api.activityid' , 'base_url') . OAuthConfig::getApiUrl('api.activityid' , 'public_image').'/'.$userid;
-            $url .= '?width='.$width.'&height='.$height;
-
+            return self::getAvatar($userid, $width, $height, 'false');
         } catch (Exception $e) {
             Identity::getLogger()->error($e->getMessage());
+            return '';
         }
-        return $url;
     }
 
     public static function getAvatarImg($userid, $width = 150, $height = 150)
@@ -132,15 +143,26 @@ class UserApi
 
         $response = Request::execute(OAuthConfig::getApiUrl('api.activityid' , 'base_url') . OAuthConfig::getApiUrl('api.activityid' , 'public_image').'/'.$userid, $params, Request::HTTP_GET, Request::NOT_SECURED);
 
+        $ret = null;
+
         if (isset($response['code']) && ($response['code'] == 200)) {
             if ($redirect === 'true') {
-                return $response['result'];
+                $ret = $response['result'];
             } else {
-                return $response['result']->url;
+                $ret = $response['result']->url;
+            }
+        } else if (isset($response['code']) && ($response['code'] == 204)) { //user does not have avatar
+            if ($redirect === 'true') {
+                //$ret = "";
+                throw new Exception('not implemented. better use getAvatarUrl or getUserLoggedAvatarUrl');
+            } else {
+                $ret = "/assets/img/placeholder.png";
             }
         } else {
             throw new Exception('Error [' . __FUNCTION__ . '] - ' . $response['code'] . ' - ' . $response['result']);
         }
+
+        return $ret;
     }
 
     /**
@@ -177,7 +199,7 @@ class UserApi
                     $brands[] = $gid_brand;
                 }
 
-                FileCache::set('brands', serialize($brands), 3600);
+                FileCache::set('brands', serialize($brands), self::BRANDS_TTL);
             }
 
         } catch ( Exception $e ) {
@@ -260,7 +282,7 @@ class UserApi
                         throw new Exception('The data retrieved is empty');
                     }
                     $druid_user = $response['result']->data;
-                    FileCache::set('user-' . reset($identifiers), $druid_user, 3600);
+                    FileCache::set('user-' . reset($identifiers), $druid_user, self::USER_TTL);
                 } else {
                     Identity::getLogger()->debug('Identifier: ' . reset($identifiers) . ' is in Cache System');
                     $druid_user = json_decode(json_encode($druid_user_data));
