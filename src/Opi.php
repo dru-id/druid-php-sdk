@@ -51,7 +51,7 @@ class Opi
         $opi_gender = false;
 
         try {
-            $birthday = $info->user->user_data->birthday->value;
+            $birthday = isset($info->user->user_data->birthday) ? $info->user->user_data->birthday->value : null;
 
             if($birthday != null){
             	$birthday = explode("/", $birthday);
@@ -72,7 +72,7 @@ class Opi
         } catch (Exception $e) {}
 
         try {
-            $gender = $info->user->user_data->gender->vid;
+            $gender = isset($info->user->user_data->gender) ? $info->user->user_data->gender->vid : null;
             if ($gender == 1) {
                 $opi_gender = 2;
             } else if ($gender == 2) {
