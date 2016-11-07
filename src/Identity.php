@@ -12,13 +12,14 @@ namespace Genetsis;
 require_once(dirname(__FILE__) . "/Autoloader.php");
 
 use Exception;
-use Genetsis\core\ClientToken;
+use Genetsis\core\OAuth\Beans\ClientToken;
 use Genetsis\core\Things;
 use Genetsis\core\FileCache;
 use Genetsis\core\InvalidGrantException;
-use Genetsis\core\iTokenTypes;
+use Genetsis\core\OAuth\Collections\TokenTypes as TokenTypesCollection;
 use Genetsis\core\LogConfig;
 use Genetsis\core\LoginStatusType;
+use Genetsis\core\OAuth\Contracts\OAuthInterface;
 use Genetsis\core\OAuth;
 use Genetsis\core\OAuthConfig;
 
@@ -48,6 +49,8 @@ if (session_id() === '') {
  */
 class Identity
 {
+    /** @var \Genetsis\core\OAuth\Contracts\OAuthInterface $oauth */
+    private static $oauth;
     /** @var Things Object to store Genetsis ID's session data. */
     private static $gid_things;
     /** @var \Logger Object for logging actions. */
@@ -106,6 +109,7 @@ class Identity
                 FileCache::init(Config::cachePath(), Config::environment());
                 // Initialize OAuth Config
                 OAuthConfig::init();
+                static::$oauth = new OAuth();
 
                 self::$gid_things = new Things();
 
@@ -186,12 +190,12 @@ class Identity
             if (!(($client_token = unserialize(FileCache::get('client_token'))) instanceof ClientToken) || ($client_token->getValue() == '')) {
                 self::$logger->debug('Get Client token');
 
-                if ((self::$gid_things->getClientToken() == null) || (OAuth::getStoredToken(iTokenTypes::CLIENT_TOKEN) == null)) {
+                if ((self::$gid_things->getClientToken() == null) || (static::$oauth->getStoredToken(TokenTypesCollection::CLIENT_TOKEN) == null)) {
                     self::$logger->debug('Not has clientToken in session or cookie');
 
-                    if (!$client_token = OAuth::getStoredToken(iTokenTypes::CLIENT_TOKEN)) {
+                    if (!$client_token = static::$oauth->getStoredToken(TokenTypesCollection::CLIENT_TOKEN)) {
                         self::$logger->debug('Token Cookie does not exists. Requesting a new one.');
-                        $client_token = OAuth::doGetClientToken(OauthConfig::getEndpointUrl('token_endpoint'));
+                        $client_token = static::$oauth->doGetClientToken(OauthConfig::getEndpointUrl('token_endpoint'));
                     }
                     self::$gid_things->setClientToken($client_token);
                 } else {
@@ -224,7 +228,7 @@ class Identity
             if ((isset($_COOKIE['datr']) && ($_COOKIE['datr'] != ''))||(isset($_COOKIE['datr_']) && ($_COOKIE['datr_'] != ''))) {
                 self::$logger->info('DATR cookie was found.');
 
-                $response = OAuth::doExchangeSession(OauthConfig::getEndpointUrl('token_endpoint'), ($_COOKIE['datr'] != '') ? $_COOKIE['datr'] : $_COOKIE['datr_']);
+                $response = static::$oauth->doExchangeSession(OauthConfig::getEndpointUrl('token_endpoint'), ($_COOKIE['datr'] != '') ? $_COOKIE['datr'] : $_COOKIE['datr_']);
                 self::$gid_things->setAccessToken($response['access_token']);
                 self::$gid_things->setRefreshToken($response['refresh_token']);
                 self::$gid_things->setLoginStatus($response['login_status']);
@@ -232,7 +236,7 @@ class Identity
                 self::$logger->debug('DATR cookie not exist, user is not logged');
             }
         } catch (InvalidGrantException $e) {
-            unset($_COOKIE[OAuth::SSO_COOKIE_NAME]);
+            unset($_COOKIE[static::$oauth->SSO_COOKIE_NAME]);
             setcookie(OAuth::SSO_COOKIE_NAME, null, -1, null, '.cocacola.es');
 
             self::$logger->warn('Invalid Grant, check an invalid DATR');
@@ -291,8 +295,8 @@ class Identity
         self::$gid_things->setRefreshToken(null);
         self::$gid_things->setLoginStatus(null);
 
-        OAuth::deleteStoredToken(iTokenTypes::ACCESS_TOKEN);
-        OAuth::deleteStoredToken(iTokenTypes::REFRESH_TOKEN);
+        OAuth::deleteStoredToken(TokenTypesCollection::ACCESS_TOKEN);
+        OAuth::deleteStoredToken(TokenTypesCollection::REFRESH_TOKEN);
 
         if (isset($_SESSION)) {
             unset($_SESSION['Things']);
@@ -531,11 +535,11 @@ class Identity
             if (is_null(self::$gid_things->getAccessToken())){
                 self::$logger->debug('Load access token from cookie');
 
-                if (OAuth::hasToken(iTokenTypes::ACCESS_TOKEN)) {
-                    self::$gid_things->setAccessToken(OAuth::getStoredToken(iTokenTypes::ACCESS_TOKEN));
+                if (OAuth::hasToken(TokenTypesCollection::ACCESS_TOKEN)) {
+                    self::$gid_things->setAccessToken(OAuth::getStoredToken(TokenTypesCollection::ACCESS_TOKEN));
                 }
-                if (OAuth::hasToken(iTokenTypes::REFRESH_TOKEN)) {
-                    self::$gid_things->setRefreshToken(OAuth::getStoredToken(iTokenTypes::REFRESH_TOKEN));
+                if (OAuth::hasToken(TokenTypesCollection::REFRESH_TOKEN)) {
+                    self::$gid_things->setRefreshToken(OAuth::getStoredToken(TokenTypesCollection::REFRESH_TOKEN));
                 }
             }
 

@@ -1,5 +1,7 @@
-<?php
-namespace Genetsis\core;
+<?php  namespace Genetsis\core\OAuth\Beans;
+
+use Genetsis\core\OAuth\Contracts\StoredTokenInterface;
+use Genetsis\core\OAuth\Collections\TokenTypes as TokenTypesCollection;
 
 /**
  * Abstract class which aims to be the parent class of the different types
@@ -11,10 +13,10 @@ namespace Genetsis\core;
  * @access    public
  * @since     2011-09-08
  */
-abstract class StoredToken
+class StoredToken implements StoredTokenInterface
 {
     /** @var string The token name. */
-    protected $name = null;
+    protected $name = '';
     /** @var string The token value. */
     protected $value = null;
     /** @var integer integer Number the seconds until the token expires. */
@@ -25,10 +27,10 @@ abstract class StoredToken
     protected $path = '/';
 
     /**
-     * @param string The token value.
-     * @param integer Number the seconds until the token expires.
-     * @param integer Date when the token expires. As UNIX timestamp.
-     * @param string Full path to the folder where cookies will be saved.
+     * @param string $value The token value.
+     * @param integer $expires_in Number the seconds until the token expires.
+     * @param integer $expires_at Date when the token expires. As UNIX timestamp.
+     * @param string $path Full path to the folder where cookies will be saved.
      *     Only if necessary.
      */
     public function __construct($value, $expires_in = 0, $expires_at = 0, $path = '/')
@@ -37,8 +39,6 @@ abstract class StoredToken
         $this->setExpiresIn($expires_in);
         $this->setExpiresAt($expires_at);
         $this->setPath($path);
-
-        $this->setName();
     }
 
     /**
@@ -49,46 +49,37 @@ abstract class StoredToken
      * @param $expires_in Number the seconds until the token expires.
      * @param $expires_at Date when the token expires. As UNIX timestamp.
      * @param $path Full path to the folder where cookies will be saved.
-     * @return bool|AccessToken|ClientToken|RefreshToken An object of type {@link StoredToken} or FALSE if
-     *     unable to create it.
+     * @return boolean|StoredTokenInterface FALSE if we are not able to create it.
      */
-    public static function factory($name, $value, $expires_in, $expires_at, $path)
+    public static function factory ($name, $value, $expires_in, $expires_at, $path)
     {
         switch (trim((string)$name)) {
-            case iTokenTypes::ACCESS_TOKEN:
+            case TokenTypesCollection::ACCESS_TOKEN:
                 return new AccessToken ($value, $expires_in, $expires_at, $path);
-            case iTokenTypes::CLIENT_TOKEN:
+            case TokenTypesCollection::CLIENT_TOKEN:
                 return new ClientToken ($value, $expires_in, $expires_at, $path);
-            case iTokenTypes::REFRESH_TOKEN:
+            case TokenTypesCollection::REFRESH_TOKEN:
                 return new RefreshToken($value, $expires_in, $expires_at, $path);
         }
         return false;
     }
 
     /**
-     * Returns the token name.
-     *
-     * We use it for serialization the token content.
-     *
-     * @return string The token name.
-     * @see iTokenTypes
+     * @inheritDoc
      */
     public function getName()
     {
-        return ((!isset($this->name) || ($this->name === null))
-            ? ''
-            : $this->name);
+        return $this->name;
     }
 
     /**
-     * Sets token name.
-     *
-     * We delegate this method to child classes.
-     *
-     * @return void
-     * @see iTokenTypes
+     * @inheritDoc
      */
-    abstract protected function setName();
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
 
     /**
      * Returns the token value.

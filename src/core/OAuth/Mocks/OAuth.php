@@ -1,18 +1,14 @@
 <?php
-namespace Genetsis\core;
+namespace Genetsis\core\OAuth\Mocks;
 
 use Exception;
 use Genetsis\Identity;
 use Genetsis\core\InvalidGrantException;
 
-use Genetsis\core\OAuth\Beans\StoredToken;
-use Genetsis\core\OAuth\Beans\AccessToken;
-use Genetsis\core\OAuth\Beans\RefreshToken;
-use Genetsis\core\OAuth\Beans\ClientToken;
-use Genetsis\core\OAuth\Contracts\StoredTokenInterface;
 use Genetsis\core\OAuth\Contracts\OAuthInterface;
 use Genetsis\core\OAuth\Collections\AuthMethods as AuthMethodsCollection;
 use Genetsis\core\OAuth\Collections\TokenTypes as TokenTypesCollection;
+use Genetsis\core\Request;
 
 /**
  * This class wraps all methods for interactions with OAuth service,
@@ -38,7 +34,7 @@ class OAuth implements OAuthInterface
     /**
      * @inheritDoc
      */
-    public static function doGetClientToken ($endpoint_url)
+    public static function doGetClientToken($endpoint_url)
     {
         try {
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
@@ -98,11 +94,16 @@ class OAuth implements OAuthInterface
     /**
      * Stores a token in a cookie
      *
-     * @param StoredTokenInterface $token An object with token data to be stored.
+     * @param StoredToken $token An object with token data to be stored.
      * @throws \Exception
      */
-    public static function storeToken (StoredTokenInterface $token)
+    public static function storeToken($token)
     {
+        if (!($token instanceof StoredToken)) {
+            throw new Exception('Token is not valid');
+        }
+
+        // Save it in COOKIE
         $encryption = new Encryption(OAuthConfig::getClientId());
         $cod = $encryption->encode($token->getValue());
         @setcookie($token->getName(), $cod, $token->getExpiresAt(), $token->getPath(), '', false, true);
@@ -118,7 +119,7 @@ class OAuth implements OAuthInterface
      *     or FALSE.
      * @throws \Exception If there is an error.
      */
-    public static function doGetAccessToken ($endpoint_url, $code, $redirect_url)
+    public static function doGetAccessToken($endpoint_url, $code, $redirect_url)
     {
         try {
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
@@ -154,8 +155,8 @@ class OAuth implements OAuthInterface
             $expires_at = (time() + $expires_in);
             $refresh_expires_at = ($expires_at + (60*60*24*12));
 
-            $result['access_token'] = new AccessToken(trim($response ['result']->access_token), $expires_in, $expires_at, '/');
-            $result['refresh_token'] = new RefreshToken(trim($response ['result']->refresh_token), 0, $refresh_expires_at, '/');
+            $result['access_token'] = new AccessToken (trim($response ['result']->access_token), $expires_in, $expires_at, '/');
+            $result['refresh_token'] = new RefreshToken (trim($response ['result']->refresh_token), 0, $refresh_expires_at, '/');
 
             self::storeToken($result['access_token']);
             self::storeToken($result['refresh_token']);
@@ -384,7 +385,7 @@ class OAuth implements OAuthInterface
      *
      * It will removed from SESSION and COOKIE.
      *
-     * @param string The token we want to remove. Are defined in {@link TokenTypesCollection}
+     * @param string The token we want to remove. Are defined in {@link \Genetsis\core\OAuth\Collections\TokenTypes}
      * @return void
      */
     public static function deleteStoredToken ($name)
@@ -399,20 +400,20 @@ class OAuth implements OAuthInterface
     /**
      * Checks if we have a specific token.
      *
-     * @param string $name The token we want to check. Are defined in {@link TokenTypesCollection}
+     * @param string $name The token we want to check. Are defined in {@link \Genetsis\core\OAuth\Collections\TokenTypes}
      * @return bool TRUE if exists or FALSE otherwise.
      */
     public static function hasToken($name)
     {
-        return (self::getStoredToken($name) instanceof StoredTokenInterface);
+        return (self::getStoredToken($name) instanceof StoredToken);
     }
 
     /**
      * Returns a specific stored token.
      * SESSION has more priority than COOKIE.
      *
-     * @param string $name The token we want to recover. Are defined in {@link TokenTypesCollection}
-     * @return bool|AccessToken|ClientToken|RefreshToken|mixed|string An instance of {@link StoredTokenInterface} or FALSE if we
+     * @param string $name The token we want to recover. Are defined in {@link \Genetsis\core\OAuth\Collections\TokenTypes}
+     * @return bool|AccessToken|ClientToken|RefreshToken|mixed|string An instance of {@link StoredToken} or FALSE if we
      *     can't recover it.
      * @throws \Exception
      */
@@ -435,11 +436,11 @@ class OAuth implements OAuthInterface
      *
      * @param string $endpoint_url The endpoint where the request will be sent.
      * @param string $scope Section-key identifier of the web client propietary of Opinator
-     * @param StoredTokenInterface $token Token
+     * @param StoredToken $token Token
      * @return mixed $token Token, an access_token if user is logged, a client_token if user is not login
      * @throws \Exception If there is an error.
      */
-    public static function doGetOpinator($endpoint_url, $scope, StoredTokenInterface $token)
+    public static function doGetOpinator($endpoint_url, $scope, $token)
     {
         try {
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
@@ -450,7 +451,7 @@ class OAuth implements OAuthInterface
                 throw new Exception ('Scope is empty');
             }
 
-            if ($token->getValue() == '') {
+            if (($token->getValue() == '') || (!($token instanceof StoredToken))) {
                 throw new Exception ('Token is not valid');
             }
 
