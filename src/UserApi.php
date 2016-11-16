@@ -8,6 +8,7 @@ use Genetsis\core\Request;
 use Genetsis\core\FileCache;
 use Genetsis\core\OAuthConfig;
 use Genetsis\core\user\Brand;
+use Genetsis\core\ServiceContainer\Services\ServiceContainer;
 
 /**
  * This class allow you to use the User Api
@@ -35,7 +36,7 @@ class UserApi
     public static function getUserLogged()
     {
         try {
-            Identity::getLogger()->debug('Get user Logged info');
+            ServiceContainer::getLogger()->debug('Get user Logged info', __METHOD__, __LINE__);
 
             if ((Identity::getThings()->getLoginStatus()!=null)&&(Identity::getThings()->getLoginStatus()->getConnectState() == LoginStatusType::connected)) {
                 $user_logged = self::getUsers(array('id' => Identity::getThings()->getLoginStatus()->getCkUsid()));
@@ -44,7 +45,7 @@ class UserApi
                 }
             }
         } catch (Exception $e) {
-            Identity::getLogger()->error($e->getMessage());
+            ServiceContainer::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
         }
         return null;
     }
@@ -57,7 +58,7 @@ class UserApi
      */
     public static function getUserLoggedCkusid()
     {
-        Identity::getLogger()->debug('Get user Logged info');
+        ServiceContainer::getLogger()->debug('Get user Logged info', __METHOD__, __LINE__);
 
         if ((Identity::getThings()->getLoginStatus()!=null)&&(Identity::getThings()->getLoginStatus()->getConnectState() == LoginStatusType::connected)) {
             return Identity::getThings()->getLoginStatus()->getCkUsid();
@@ -74,7 +75,7 @@ class UserApi
      */
     public static function getUserLoggedOid()
     {
-        Identity::getLogger()->debug('Get user Logged info');
+        ServiceContainer::getLogger()->debug('Get user Logged info', __METHOD__, __LINE__);
 
         if ((Identity::getThings()->getLoginStatus()!=null)&&(Identity::getThings()->getLoginStatus()->getConnectState() == LoginStatusType::connected)) {
             return Identity::getThings()->getLoginStatus()->getOid();
@@ -99,7 +100,7 @@ class UserApi
             $url .= '?width='.$width.'&height='.$height;
 
         } catch (Exception $e) {
-            Identity::getLogger()->error($e->getMessage());
+            ServiceContainer::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
         }
         return $url;
     }
@@ -109,7 +110,7 @@ class UserApi
         try {
             return self::getAvatar($userid, $width, $height, 'true');
         } catch (Exception $e) {
-            Identity::getLogger()->error($e->getMessage());
+            ServiceContainer::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
             return '';
         }
     }
@@ -123,7 +124,7 @@ class UserApi
      * @throws \Exception If an error occurred
      */
     private static function getAvatar($userid, $width, $height, $redirect){
-        Identity::getLogger()->debug('Get user Avatar');
+        ServiceContainer::getLogger()->debug('Get user Avatar', __METHOD__, __LINE__);
         $params = array(
             'width' => $width,
             'height' => $height,
@@ -150,9 +151,9 @@ class UserApi
         try {
             $brands = array();
 
-            Identity::getLogger()->debug('Get list of Brands');
+            ServiceContainer::getLogger()->debug('Get list of Brands', __METHOD__, __LINE__);
             if (!$brands = unserialize(FileCache::get('brands'))) {
-                Identity::getLogger()->debug('Brands not cached');
+                ServiceContainer::getLogger()->debug('Brands not cached', __METHOD__, __LINE__);
                 if (!$client_token = Identity::getThings()->getClientToken()) {
                     throw new Exception('The clientToken is empty');
                 }
@@ -181,7 +182,7 @@ class UserApi
             }
 
         } catch ( Exception $e ) {
-            Identity::getLogger()->error($e->getMessage());
+            ServiceContainer::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
         }
         return $brands;
     }
@@ -196,7 +197,7 @@ class UserApi
      */
     public static function deleteCacheUser($ckusid = null) {
         try {
-            Identity::getLogger()->debug('Delete cache of user');
+            ServiceContainer::getLogger()->debug('Delete cache of user', __METHOD__, __LINE__);
 
             if ($ckusid == null) {
                 if ((Identity::getThings()->getLoginStatus()!=null)&&(Identity::getThings()->getLoginStatus()->getConnectState() == LoginStatusType::connected)) {
@@ -206,7 +207,7 @@ class UserApi
                 FileCache::delete('user-' . $ckusid);
             }
         } catch ( Exception $e ) {
-            Identity::getLogger()->error($e->getMessage());
+            ServiceContainer::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
         }
         return null;
     }
@@ -228,7 +229,7 @@ class UserApi
         if (is_array($identifiers)) {
             try {
                 if (!$druid_user_data = FileCache::get('user-' . reset($identifiers))) {
-                    Identity::getLogger()->debug('Identifier: ' . reset($identifiers) . ' is Not in Cache System');
+                    ServiceContainer::getLogger()->debug('Identifier: ' . reset($identifiers) . ' is Not in Cache System', __METHOD__, __LINE__);
 
                     $client_token = Identity::getThings()->getClientToken();
 
@@ -262,11 +263,11 @@ class UserApi
                     $druid_user = $response['result']->data;
                     FileCache::set('user-' . reset($identifiers), $druid_user, 3600);
                 } else {
-                    Identity::getLogger()->debug('Identifier: ' . reset($identifiers) . ' is in Cache System');
+                    ServiceContainer::getLogger()->debug('Identifier: ' . reset($identifiers) . ' is in Cache System', __METHOD__, __LINE__);
                     $druid_user = json_decode(json_encode($druid_user_data));
                 }
             } catch (Exception $e) {
-                Identity::getLogger()->error($e->getMessage());
+                ServiceContainer::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
             }
         }
         return $druid_user;

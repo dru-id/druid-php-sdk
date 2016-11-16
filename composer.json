@@ -21,7 +21,8 @@
   "require": {
     "lib-curl": "*",
     "ext-mcrypt": "*",
-    "ext-dom": "*"
+    "ext-dom": "*",
+    "monolog/monolog": "1.21.*"
   },
   "config": {
     "vendor-dir": "src/main/php/lib/vendor"
@@ -37,4 +38,3 @@
     ]
   }
 }
-

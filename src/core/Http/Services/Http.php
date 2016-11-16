@@ -5,39 +5,23 @@ use \Exception;
 use Genetsis\Config;
 use Genetsis\Identity;
 use Genetsis\Logger;
+use Genetsis\core\Http\Contracts\HttpInterface;
+use Genetsis\core\Http\Collections\HttpMethods as HttpMethodsCollection;
 use Genetsis\core\ServiceContainer\Services\ServiceContainer;
 
 
-class Request
-{
-    /** Http Methods */
-    const HTTP_POST = 'POST';
-    const HTTP_PUT = 'PUT';
-    const HTTP_GET = 'GET';
-    const HTTP_DELETE = 'DELETE';
-    const HTTP_HEAD = 'HEAD';
+/**
+ * Class to performs HTTP request calls.
+ *
+ * @package   Genetsis
+ * @category  Service
+ */
+class Http implements HttpInterface {
 
-    const SECURED = true;
-    const NOT_SECURED = false;
     /**
-     * @param string $url Endpoint where the request is sent. Without params.
-     * @param array $parameters mixed Associative vector with request params. Use key as param name, and value as value. The values shouldn't be prepared.
-     * @param string $http_method string HTTP method. One of them:
-     *        - {@link self::HTTP_GET}
-     *        - {@link self::HTTP_POST}
-     *        - {@link self::HTTP_METHOD_HEAD}
-     *        - {@link self::HTTP_METHOD_PUT}
-     *        - {@link self::HTTP_METHOD_DELETE}
-     * @param bool $credentials If true, client_id and client_secret are included in params
-     * @param array $http_headers A vector of strings with HTTP headers or FALSE if no additional headers to sent.
-     * @param array $cookies A vector of strings with cookie data or FALSE if no cookies to sent. One line per cookie ("key=value"), without trailing semicolon.
-     * @return array An associative array with that items:
-     *     - result: An string or array on success, or FALSE if there is no result.
-     *     - code: HTTP code.
-     *     - content-type: Content-type related to result
-     * @throws \Exception If there is an error.
+     * @inheritDoc
      */
-    public static function execute($url, $parameters = array(), $http_method = self::HTTP_GET, $credentials = self::NOT_SECURED, $http_headers = array(), $cookies = array())
+    public function execute($url, $parameters = array(), $http_method = HttpMethodsCollection::GET, $credentials = false, $http_headers = array(), $cookies = array())
     {
         if (!extension_loaded('curl')) {
             throw new Exception('The PHP extension curl must be installed to use this library.');
@@ -71,7 +55,7 @@ class Request
         }
 
         switch ($http_method) {
-            case self::HTTP_POST:
+            case HttpMethodsCollection::POST:
                 $curl_options[CURLOPT_POST] = true;
                 // Check if parameters must to be in json format
                 if (isset($http_headers['Content-Type'])
@@ -86,14 +70,14 @@ class Request
                 }
                 break;
 
-            case self::HTTP_PUT:
+            case HttpMethodsCollection::PUT:
                 $curl_options[CURLOPT_POSTFIELDS] = http_build_query($parameters);
                 break;
 
-            case self::HTTP_HEAD:
+            case HttpMethodsCollection::HEAD:
                 $curl_options[CURLOPT_NOBODY] = true;
-            /* No break */
-            case self::HTTP_DELETE:
+                /* The 'break' is intentionally omitted. */
+            case HttpMethodsCollection::DELETE:
                 // Check if parameters are in json
                 if (isset($http_headers['Content-Type'])
                     && $http_headers['Content-Type'] == 'application/json'
@@ -105,7 +89,7 @@ class Request
                     $url .= '?' . http_build_query($parameters, null, '&');
                 }
                 break;
-            case self::HTTP_GET:
+            case HttpMethodsCollection::GET:
                 if (!empty($parameters)) {
                     $url .= '?' . http_build_query($parameters, null, '&');
                 }

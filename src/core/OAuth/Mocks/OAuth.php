@@ -2,6 +2,7 @@
 namespace Genetsis\core\OAuth\Mocks;
 
 use Exception;
+use Genetsis\core\ServiceContainer\Services\ServiceContainer;
 use Genetsis\Identity;
 use Genetsis\core\InvalidGrantException;
 
@@ -63,7 +64,7 @@ class OAuth implements OAuthInterface
 
             return $client_token;
         } catch (Exception $e) {
-            Identity::getLogger()->error('Error [' . __FUNCTION__ . '] - ' . $e->getMessage());
+            ServiceContainer::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
             throw $e;
         }
     }

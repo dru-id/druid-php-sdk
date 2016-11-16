@@ -3,6 +3,7 @@ namespace Genetsis;
 
 use Exception;
 use Genetsis\core\OAuthConfig;
+use Genetsis\core\ServiceContainer\Services\ServiceContainer;
 
 /**
  * This class is used to build the links to different services of Genetsis ID.
@@ -149,7 +150,7 @@ class URLBuilder
             }
             return false;
         } catch (\Exception $e) {
-            Identity::getLogger()->debug('Error [' . __FUNCTION__ . '] - ' . $e->getMessage());
+            ServiceContainer::getLogger()->debug($e->getMessage(), __METHOD__, __LINE__);
         }
     }
 
@@ -243,7 +244,7 @@ class URLBuilder
 
             return $endpoint_url . '?' . http_build_query($params, null, '&');
         } catch (Exception $e) {
-            Identity::getLogger()->debug('Error [' . __FUNCTION__ . '] - ' . $e->getMessage());
+            ServiceContainer::getLogger()->debug($e->getMessage(), __METHOD__, __LINE__);
         }
     }
 
@@ -292,7 +293,7 @@ class URLBuilder
 
             return $endpoint_url . '?' . http_build_query($params, null, '&');
         } catch (Exception $e) {
-            Identity::getLogger()->debug('Error [' . __FUNCTION__ . '] - ' . $e->getMessage());
+            ServiceContainer::getLogger()->debug($e->getMessage(), __METHOD__, __LINE__);
         }
     }
 
@@ -325,7 +326,7 @@ class URLBuilder
 
             return $url . '&' . http_build_query($params, null, '&');
         } catch (Exception $e) {
-            Identity::getLogger()->debug('Error [' . __FUNCTION__ . '] - ' . $e->getMessage());
+            ServiceContainer::getLogger()->debug($e->getMessage(), __METHOD__, __LINE__);
         }
     }
 
@@ -374,7 +375,7 @@ class URLBuilder
 
             return $endpoint_url . '?' . http_build_query($params, null, '&');
         } catch (Exception $e) {
-            Identity::getLogger()->debug('Error [' . __FUNCTION__ . '] - ' . $e->getMessage());
+            ServiceContainer::getLogger()->debug($e->getMessage(), __METHOD__, __LINE__);
         }
     }
 
