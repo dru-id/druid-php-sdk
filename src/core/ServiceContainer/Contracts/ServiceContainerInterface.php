@@ -1,6 +1,7 @@
 <?php namespace Genetsis\core\ServiceContainer\Contracts;
 
 use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
+use Genetsis\core\Http\Contracts\HttpServiceInterface;
 
 /**
  * Service container interface.
@@ -29,5 +30,16 @@ interface ServiceContainerInterface {
      * @return void
      */
     public static function setLogger (LoggerServiceInterface $service);
+
+    /**
+     * @return HttpServiceInterface
+     */
+    public static function getHttpService();
+
+    /**
+     * @param HttpServiceInterface $service
+     * @return void
+     */
+    public static function setHttpService(HttpServiceInterface $service);
 
 }

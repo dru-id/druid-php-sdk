@@ -4,11 +4,11 @@ namespace Genetsis;
 use Exception;
 use Genetsis\core\User;
 use Genetsis\core\LoginStatusType;
-use Genetsis\core\Request;
 use Genetsis\core\FileCache;
 use Genetsis\core\OAuthConfig;
 use Genetsis\core\user\Brand;
 use Genetsis\core\ServiceContainer\Services\ServiceContainer;
+use Genetsis\core\Http\Collections\HttpMethods as HttpMethodsCollection;
 
 /**
  * This class allow you to use the User Api
@@ -131,7 +131,7 @@ class UserApi
             'redirect' => $redirect
         );
 
-        $response = Request::execute(OAuthConfig::getApiUrl('api.activityid' , 'base_url') . OAuthConfig::getApiUrl('api.activityid' , 'public_image').'/'.$userid, $params, Request::HTTP_GET, Request::NOT_SECURED);
+        $response = ServiceContainer::getHttpService()->execute(OAuthConfig::getApiUrl('api.activityid' , 'base_url') . OAuthConfig::getApiUrl('api.activityid' , 'public_image').'/'.$userid, $params, HttpMethodsCollection::GET, false);
 
         if (isset($response['code']) && ($response['code'] == 200)) {
             if ($redirect === 'true') {
@@ -164,7 +164,7 @@ class UserApi
                     'From' => '452200208393481-main'
                 );
 
-                $response = Request::execute(OAuthConfig::getApiUrl('api.activityid' , 'base_url').OAuthConfig::getApiUrl('api.activityid' , 'brands'), array(), Request::HTTP_GET, Request::NOT_SECURED, $header_params);
+                $response = ServiceContainer::getHttpService()->execute(OAuthConfig::getApiUrl('api.activityid' , 'base_url').OAuthConfig::getApiUrl('api.activityid' , 'brands'), array(), HttpMethodsCollection::GET, false, $header_params);
 
                 if (($response['code'] != 200) || (!isset($response['result']->items))) {
                     throw new Exception('The data retrieved is empty');
@@ -255,7 +255,7 @@ class UserApi
                     $base = OAuthConfig::getApiUrl('api.user', 'base_url');
                     $api = OAuthConfig::getApiUrl('api.user', 'user');
 
-                    $response = Request::execute($base . $api, $params, Request::HTTP_POST);
+                    $response = ServiceContainer::getHttpService()->execute($base . $api, $params, HttpMethodsCollection::POST);
 
                     if (($response['code'] != 200) || (!isset($response['result']->data)) || ($response['result']->count == '0')) {
                         throw new Exception('The data retrieved is empty');

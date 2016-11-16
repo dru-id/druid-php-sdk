@@ -1,13 +1,10 @@
-<?php
-namespace Genetsis\core;
+<?php namespace Genetsis\core\Http\Services;
 
 use \Exception;
-use Genetsis\Config;
-use Genetsis\Identity;
-use Genetsis\Logger;
-use Genetsis\core\Http\Contracts\HttpInterface;
+use Genetsis\core\Http\Contracts\HttpServiceInterface;
 use Genetsis\core\Http\Collections\HttpMethods as HttpMethodsCollection;
 use Genetsis\core\ServiceContainer\Services\ServiceContainer;
+use Genetsis\core\OAuthConfig;
 
 
 /**
@@ -16,7 +13,7 @@ use Genetsis\core\ServiceContainer\Services\ServiceContainer;
  * @package   Genetsis
  * @category  Service
  */
-class Http implements HttpInterface {
+class Http implements HttpServiceInterface {
 
     /**
      * @inheritDoc

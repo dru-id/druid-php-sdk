@@ -5,17 +5,16 @@ use Exception;
 use Genetsis\Identity;
 use Genetsis\core\InvalidGrantException;
 
-use Genetsis\core\Request;
 use Genetsis\core\OAuth\Beans\StoredToken;
 use Genetsis\core\OAuth\Beans\AccessToken;
 use Genetsis\core\OAuth\Beans\RefreshToken;
 use Genetsis\core\OAuth\Beans\ClientToken;
 use Genetsis\core\OAuth\Contracts\StoredTokenInterface;
 use Genetsis\core\OAuth\Contracts\OAuthInterface;
-use Genetsis\core\Http\Contracts\HttpInterface;
 use Genetsis\core\OAuth\Collections\AuthMethods as AuthMethodsCollection;
 use Genetsis\core\OAuth\Collections\TokenTypes as TokenTypesCollection;
 use Genetsis\core\ServiceContainer\Services\ServiceContainer;
+use Genetsis\core\Http\Collections\HttpMethods as HttpMethodsCollection;
 
 /**
  * This class wraps all methods for interactions with OAuth service,
@@ -38,33 +37,11 @@ class OAuth implements OAuthInterface
     /** Cookie name for SSO (Single Sign-Out). */
     const SSO_COOKIE_NAME = 'datr';
 
-    /** @var Request $http_service  */
-    private static $http_service = null;
-
-//    public function __construct(HttpInterface $http_service)
-//    {
-//        $this->$http_service = $http_service;
-//    }
-
-    /**
-     *
-     */
-    public static function init($http_service = null)
-    {
-        if ($http_service instanceof HttpInterface) {
-            static::$http_service = $http_service;
-        } elseif (!isset(static::$http_service) || !(static::$http_service instanceof Request)) {
-            static::$http_service = new Request();
-        }
-    }
-
     /**
      * @inheritDoc
      */
     public static function doGetClientToken ($endpoint_url)
     {
-        static::init();
-
         try {
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
                 throw new Exception ('Endpoint URL is empty');
@@ -72,7 +49,7 @@ class OAuth implements OAuthInterface
 
             $params = array();
             $params ['grant_type'] = AuthMethodsCollection::GRANT_TYPE_CLIENT_CREDENTIALS;
-            $response = static::$http_service->execute($endpoint_url, $params, Request::HTTP_POST, Request::SECURED);
+            $response = ServiceContainer::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST, true);
 
             self::checkErrors($response);
 
@@ -160,7 +137,7 @@ class OAuth implements OAuthInterface
             $params ['grant_type'] = AuthMethodsCollection::GRANT_TYPE_AUTH_CODE;
             $params ['code'] = $code;
             $params ['redirect_uri'] = $redirect_url;
-            $response = Request::execute($endpoint_url, $params, Request::HTTP_POST, Request::SECURED);
+            $response = ServiceContainer::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST, true);
 
             self::checkErrors($response);
 
@@ -224,7 +201,7 @@ class OAuth implements OAuthInterface
             $params = array();
             $params['grant_type'] = AuthMethodsCollection::GRANT_TYPE_REFRESH_TOKEN;
             $params['refresh_token'] = $refresh_token->getValue();
-            $response = Request::execute($endpoint_url, $params, Request::HTTP_POST, Request::SECURED);
+            $response = ServiceContainer::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST, true);
 
             self::checkErrors($response);
 
@@ -286,7 +263,7 @@ class OAuth implements OAuthInterface
             $params ['grant_type'] = AuthMethodsCollection::GRANT_TYPE_VALIDATE_BEARER;
             $params ['oauth_token'] = $access_token->getValue();
             unset ($access_token);
-            $response = Request::execute($endpoint_url, $params, Request::HTTP_POST, Request::SECURED);
+            $response = ServiceContainer::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST, true);
 
             self::checkErrors($response);
 
@@ -328,7 +305,7 @@ class OAuth implements OAuthInterface
 
             $params = array();
             $params ['grant_type'] = AuthMethodsCollection::GRANT_TYPE_EXCHANGE_SESSION;
-            $response = Request::execute($endpoint_url, $params, Request::HTTP_POST, Request::SECURED, null, array(self::SSO_COOKIE_NAME . '=' . $cookie_value));
+            $response = ServiceContainer::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST, true, null, array(self::SSO_COOKIE_NAME . '=' . $cookie_value));
 
             self::checkErrors($response);
 
@@ -391,7 +368,7 @@ class OAuth implements OAuthInterface
             $params ['token'] = $refresh_token->getValue();
             $params ['token_type'] = 'refresh_token';
             unset ($refresh_token);
-            Request::execute($endpoint_url, $params, Request::HTTP_POST, Request::SECURED);
+            ServiceContainer::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST, true);
 
             unset($_COOKIE[self::SSO_COOKIE_NAME]);
             setcookie(self::SSO_COOKIE_NAME, null, -1,null,'.cocacola.es');
@@ -482,7 +459,7 @@ class OAuth implements OAuthInterface
             // Send request.
             $params = array();
             $params ['oauth_token'] = $token->getValue();
-            $response = Request::execute($endpoint_url . '/' . $scope, $params, Request::HTTP_POST, Request::SECURED);
+            $response = ServiceContainer::getHttpService()->execute($endpoint_url . '/' . $scope, $params, HttpMethodsCollection::POST, true);
 
             if (isset($response['code']) && ($response['code'] == 200)) {
                 return $response['result'];
@@ -528,7 +505,7 @@ class OAuth implements OAuthInterface
             $params['f'] = "UserMeta";
             $params['w.section'] = $scope;
 
-            $response = Request::execute($endpoint_url, $params, Request::HTTP_POST);
+            $response = ServiceContainer::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST);
 
             self::checkErrors($response);
 
@@ -573,7 +550,7 @@ class OAuth implements OAuthInterface
             $params['f'] = "UserMeta";
             $params['w.section'] = $scope;
 
-            $response = Request::execute($endpoint_url, $params, Request::HTTP_POST);
+            $response = ServiceContainer::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST);
 
             self::checkErrors($response);
 
