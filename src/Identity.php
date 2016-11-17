@@ -73,6 +73,7 @@ class Identity
      *
      * @param array $settings Accepts:
      *      - 'app': (string) The app to load. The default app is 'default'.
+     *      - 'xml': (string) The configuration XML.
      *      - 'sync': (boolean) Indicates whether to automatically synchronize data against the server. Default is TRUE.
      *      - 'ini_path': (string) If defined should be the internal path to the configuration file of the library (the druid.ini file).
      *          If this property is not defined then the library will search for this file at the default folder.
@@ -112,8 +113,10 @@ class Identity
 
                 // Initialize Cache.
                 FileCache::init(Config::cachePath(), Config::environment());
+
                 // Initialize OAuth Config
-                OAuthConfig::init();
+                if (!isset($settings['xml'])) { $settings['xml'] = ''; }
+                OAuthConfig::init($settings['xml']);
                 static::$oauth = new OAuth();
 
                 self::$gid_things = new Things();

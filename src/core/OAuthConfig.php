@@ -4,6 +4,7 @@ namespace Genetsis\core;
 use DOMDocument;
 use Exception;
 use Genetsis\Config;
+use Genetsis\core\ServiceContainer\Services\ServiceContainer;
 
 /**
  * Manages OAuth configuration file.
@@ -19,29 +20,37 @@ class OAuthConfig
     /** @var array Where the settings are saved. */
     private static $config = array();
 
-    public static function init()
+    public static function init($xml = '')
     {
         self::$config = FileCache::get('config');
         if (!self::$config) {
-            self::loadXml($_SERVER['DOCUMENT_ROOT'] . '/' . Config::configPath());
+            if (empty($xml)) {
+                $xml = realpath($_SERVER['DOCUMENT_ROOT'] . '/' . Config::configPath());
+                ServiceContainer::getLogger()->info('XML not defined. Trying to load from file: '.$xml, __METHOD__, __LINE__);
+                if (!$xml || !file_exists($xml) || !is_file($xml) || !is_readable($xml)) {
+                    throw new Exception('The config file is not found or can´t be readable' . $xml);
+                }
+                $xml = file_get_contents($xml);
+            } else {
+                ServiceContainer::getLogger()->info('XML defined. Skip loading from file.');
+            }
+            self::loadXml($xml);
         }
     }
 
     /**
      * Loads a XML from file.
      *
-     * @param string Full path to file.
+     * @param string $xml XML to be loaded.
      * @return void
      * @throws \Exception If there is an error: file doesn't exists, not well-formed, ...
      */
-    private static function loadXml($file)
+    private static function loadXml($xml)
     {
-        if ((($file = trim((string)$file)) == '') || !file_exists($file) || !is_file($file) || !is_readable($file)) {
-            throw new Exception('The config file is not found or can´t be readable' . $file);
-        }
-
         $xmlObj = new DOMDocument();
-        $xmlObj->load($file);
+        if (!$xmlObj->loadXML($xml)) {
+            throw new Exception('We are not able to load the configuration file.');
+        }
 
         try {
 

@@ -37,6 +37,17 @@ class OAuth implements OAuthInterface
     /** Cookie name for SSO (Single Sign-Out). */
     const SSO_COOKIE_NAME = 'datr';
 
+    /** @var OAuthConfigInterface $config */
+    private $config = null;
+
+    /**
+     * @param OAuthConfigInterface $config
+     */
+//    public function __construct(OAuthConfigInterface $config)
+//    {
+//        $this->config = $config;
+//    }
+
     /**
      * @inheritDoc
      */
