@@ -1,13 +1,18 @@
 <?php namespace Genetsis\core\OAuth\Contracts;
 
+/**
+ * OAuth service interface.
+ *
+ * @package   Genetsis
+ * @category  Contract
+ */
 interface OAuthInterface {
 
     /**
      * Gets a "client_token" for the current web client.
      *
      * @param string $endpoint_url The endpoint where "client_token" is requested.
-     * @return mixed An instance of {@link ClientToken} with data retrieved
-     *     or FALSE.
+     * @return mixed An instance of {@link \Genetsis\core\OAuth\Beans\ClientToken} with data retrieved or FALSE.
      * @throws \Exception If there is an error.
      */
     public static function doGetClientToken ($endpoint_url);
@@ -26,8 +31,7 @@ interface OAuthInterface {
      * @param string $endpoint_url The endpoint where "access_token" is requested.
      * @param string $code The authorization code returned by Genetsis ID.
      * @param string $redirect_url Where the user will be redirected.
-     * @return mixed An instance of {@link AccessToken} with data retrieved
-     *     or FALSE.
+     * @return mixed An instance of {@link \Genetsis\core\OAuth\Beans\AccessToken} with data retrieved or FALSE.
      * @throws \Exception If there is an error.
      */
     public static function doGetAccessToken ($endpoint_url, $code, $redirect_url);
@@ -36,8 +40,7 @@ interface OAuthInterface {
      * Updates tokens.
      *
      * @param string $endpoint_url The endpoint where the request will be sent.
-     * @return boolean TRUE if the tokens have been updated or FALSE
-     *     otherwise.
+     * @return boolean TRUE if the tokens have been updated or FALSE otherwise.
      * @throws \Exception If there is an error.
      */
     public static function doRefreshToken ($endpoint_url);
@@ -56,8 +59,7 @@ interface OAuthInterface {
      *
      * @param string $endpoint_url The endpoint where the request will be sent.
      * @param string $cookie_value The content of the cookie that stores the SSO.
-     * @return mixed An instance of {@link AccessToken} if its connected or
-     *     NULL if not.
+     * @return mixed An instance of {@link \Genetsis\core\OAuth\Beans\AccessToken} if its connected or NULL if not.
      * @throws \Exception If there is an error.
      */
     public static function doExchangeSession ($endpoint_url, $cookie_value);
@@ -76,10 +78,10 @@ interface OAuthInterface {
      *
      * It will removed from SESSION and COOKIE.
      *
-     * @param string The token we want to remove. Are defined in {@link \Genetsis\core\OAuth\Collections\TokenTypes}
+     * @param string $name The token we want to remove. Must be one value defined in {@link \Genetsis\core\OAuth\Collections\TokenTypes}
      * @return void
      */
-    public static function deleteStoredToken ($name);
+    public static function deleteStoredToken($name);
 
 
     /**
@@ -95,8 +97,7 @@ interface OAuthInterface {
      * SESSION has more priority than COOKIE.
      *
      * @param string $name The token we want to recover. Are defined in {@link \Genetsis\core\OAuth\Collections\TokenTypes}
-     * @return bool|AccessToken|ClientToken|RefreshToken|mixed|string An instance of {@link StoredToken} or FALSE if we
-     *     can't recover it.
+     * @return bool|StoredTokenInterface|mixed|string An instance of {@link StoredTokenInterface} or FALSE if we can't recover it.
      * @throws \Exception
      */
     public static function getStoredToken ($name);
