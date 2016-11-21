@@ -14,8 +14,8 @@ class Config {
     /** @var string $client_secret */
     protected $client_secret = '';
 
-    /** @var string $host */
-    protected $host = '';
+    /** @var array $hosts A set of {@link EndPoint} instances. */
+    protected $hosts = [];
 
     /** @var array $endpoints A set of {@link EndPoint} instances. */
     protected $endpoints = [];
@@ -66,20 +66,52 @@ class Config {
     }
 
     /**
-     * @return string
+     * @return array Array returned:
+     *      [
+     *          host_id => host_data,
+     *          host_id => host_data,
+     *          ...
+     *      ]
+     *
+     *      - "host_id" refers to host identifier.
+     *      - "host_data" is an instance of {@link Host}
      */
-    public function getHost()
+    public function getHosts()
     {
-        return $this->host;
+        return $this->hosts;
     }
 
     /**
-     * @param string $host
+     * @param string $id Host identifier.
+     * @return Host|false
+     */
+    public function getHost($id)
+    {
+        return ($id && isset($this->hosts[$id])) ? $this->hosts[$id] : false;
+    }
+
+    /**
+     * @param array $hosts A set of {@link Host} objects.
      * @return Config
      */
-    public function setHost($host)
+    public function setHosts(array $hosts)
     {
-        $this->host = $host;
+        $this->hosts = [];
+        foreach ($hosts as $h) {
+            if ($h instanceof Host) {
+                $this->addHost($h);
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * @param Host $host
+     * @return Config
+     */
+    public function addHost(Host $host)
+    {
+        $this->hosts[$host->getId()] = $host;
         return $this;
     }
 
@@ -124,7 +156,7 @@ class Config {
     }
 
     /**
-     * @param EndPoint $end_point string $id EndPoint ID.
+     * @param EndPoint $end_point
      * @return Config
      */
     public function addEndPoint(EndPoint $end_point)

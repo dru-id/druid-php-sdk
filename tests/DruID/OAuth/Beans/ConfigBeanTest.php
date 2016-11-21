@@ -1,9 +1,10 @@
-<?php namespace Genetsis\tests\OAuth;
+<?php namespace Genetsis\tests\OAuth\Beans;
 
 use Genetsis\core\OAuth\Beans\OAuthConfig\Api;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Config;
 use Genetsis\core\OAuth\Beans\OAuthConfig\EndPoint;
 use Genetsis\core\OAuth\Beans\OAuthConfig\EntryPoint;
+use Genetsis\core\OAuth\Beans\OAuthConfig\Host;
 use Genetsis\core\OAuth\Beans\OAuthConfig\RedirectUrl;
 use PHPUnit\Framework\TestCase;
 
@@ -22,9 +23,17 @@ class ConfigBeanTest extends TestCase
         $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $config->setClientSecret('my-secret'));
         $this->assertEquals('my-secret-2', $config->setClientSecret('my-secret-2')->getClientSecret());
 
-        // Host
-        $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $config->setHost('my-host'));
-        $this->assertEquals('my-host-2', $config->setHost('my-host-2')->getHost());
+        // Hosts
+        $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $config->setHosts([
+            new Host(['id' => 1, 'url' => 'www.foo.com']),
+            new Host(['id' => 2, 'url' => 'www.bar.com']),
+        ]));
+        $this->assertCount(2, $config->getHosts());
+        $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $config->addHost(new Host(['id' => 3, 'url' => 'www.fuu.com'])));
+        $this->assertCount(3, $config->getHosts());
+        $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Host', $config->getHost(1));
+        $this->assertEquals(1, $config->getHost(1)->getId());
+        $this->assertFalse($config->getHost(4));
 
         // EndPoints
         $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $config->setEndPoints([

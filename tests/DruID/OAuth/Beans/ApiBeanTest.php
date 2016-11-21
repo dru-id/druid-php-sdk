@@ -1,4 +1,4 @@
-<?php namespace Genetsis\tests\OAuth;
+<?php namespace Genetsis\tests\OAuth\Beans;
 
 use PHPUnit\Framework\TestCase;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Api;
