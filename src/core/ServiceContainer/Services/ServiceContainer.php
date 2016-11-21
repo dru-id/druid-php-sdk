@@ -4,6 +4,7 @@ use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\Http\Contracts\HttpServiceInterface;
 use Genetsis\core\Http\Services\Http as HttpService;
 use Genetsis\core\Logger\Services\EmptyLogger;
+use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\core\ServiceContainer\Contracts\ServiceContainerInterface;
 
 /**
@@ -20,6 +21,9 @@ class ServiceContainer implements ServiceContainerInterface {
     /** @var HttpServiceInterface $http_service */
     private static $http_service = null;
 
+    /** @var OAuthServiceInterface  */
+    private static $oauth = null;
+
     /**
      * @inheritDoc
      */
@@ -32,15 +36,21 @@ class ServiceContainer implements ServiceContainerInterface {
             if ($service instanceof HttpServiceInterface) {
                 static::setHttpService($service);
             }
+            if ($service instanceof OAuthServiceInterface) {
+                static::setOAuthService($service);
+            }
         }
 
-        // Default logger service.
+        // Default services.
         if (!isset(static::$logger)) {
             static::$logger = new EmptyLogger();
         }
         if (!isset(static::$http_service)) {
             static::$http_service = new HttpService();
         }
+//        if (!isset(static::$oauth)) {
+//            static::$oauth = new OAuth();
+//        }
     }
 
     /**
@@ -74,6 +84,22 @@ class ServiceContainer implements ServiceContainerInterface {
     public static function setHttpService(HttpServiceInterface $service)
     {
         static::$http_service = $service;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getOAuthService()
+    {
+        return static::$oauth;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function setOAuthService(OAuthServiceInterface $service)
+    {
+        static::$oauth = $service;
     }
 
 }

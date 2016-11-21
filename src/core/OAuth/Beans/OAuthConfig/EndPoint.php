@@ -28,6 +28,14 @@ class EndPoint {
     }
 
     /**
+     * @return string The URL.
+     */
+    public function __toString()
+    {
+        return $this->url;
+    }
+
+    /**
      * @return string
      */
     public function getId()

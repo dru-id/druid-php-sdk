@@ -18,23 +18,45 @@ use Genetsis\core\ServiceContainer\Services\ServiceContainer;
 class OAuthConfig {
 
     /**
-     * Returns a configuration object filled from XML data.
+     * Builds a configuration object from a XML data stored in a file.
      *
-     * @param string $xml
-     * @param string $version
-     * @return Config|false
+     * @param string $file Full path to configuration file.
+     * @param string $version Version expected. We will use this value to check if the configuration file comply with
+     *      the expected version.
+     * @return Config
      * @throws \Exception
      */
-    public function buildConfigFromXml($xml, $version)
+    public static function buildConfigFromXmlFile($file, $version)
     {
+        if (!$file || !file_exists($file) || !is_file($file) || !is_readable($file)) {
+            ServiceContainer::getLogger()->error('', __METHOD__, __LINE__);
+            throw new \Exception('Invalid configuration file.');
+        }
+        return static::buildConfigFromXml(file_get_contents($file), $version);
+    }
+
+    /**
+     * Returns a configuration object filled from XML data.
+     *
+     * @param string $xml The XML to be parsed.
+     * @param string $version Version expected. We will use this value to check if the configuration file comply with
+     *      the expected version.
+     * @return Config
+     * @throws \Exception
+     */
+    public static function buildConfigFromXml($xml, $version)
+    {
+        // TODO: it remains to implement the cache system.
+
+
         if (!$xml) {
-            ServiceContainer::getLogger()->info('The XML is empty.', __METHOD__, __LINE__);
+            ServiceContainer::getLogger()->error('The XML is empty.', __METHOD__, __LINE__);
             throw new \Exception('Invalid configuration file.');
         }
 
         $xml_obj = new DOMDocument();
         if (!$xml_obj->loadXML($xml)) {
-            ServiceContainer::getLogger()->info('The XML is invalid.', __METHOD__, __LINE__);
+            ServiceContainer::getLogger()->error('The XML is invalid.', __METHOD__, __LINE__);
             throw new \Exception('Invalid configuration file.');
         }
 
@@ -47,7 +69,7 @@ class OAuthConfig {
                 }
             }
             if (!$xml_version || ($xml_version != $version)) {
-                ServiceContainer::getLogger()->info('Invalid XML version: '.$xml_version.' (expected '.$version.')', __METHOD__, __LINE__);
+                ServiceContainer::getLogger()->error('Invalid XML version: '.$xml_version.' (expected '.$version.')', __METHOD__, __LINE__);
                 throw new \Exception('Invalid version. You are trying load a configuration file for another version of the service.');
             }
 
@@ -56,7 +78,7 @@ class OAuthConfig {
             // Client ID.
             $temp = $xml_obj->getElementsByTagName('clientid');
             if (($temp->length == 0) || !($temp->item(0) instanceof \DOMElement) || !$temp->item(0)->nodeValue) {
-                ServiceContainer::getLogger()->info('Value of "clientid" is not defined', __METHOD__, __LINE__);
+                ServiceContainer::getLogger()->error('Value of "clientid" is not defined', __METHOD__, __LINE__);
                 throw new \Exception('Invalid credentials');
             }
             $config->setClientId($temp->item(0)->nodeValue);
@@ -64,7 +86,7 @@ class OAuthConfig {
             // Client Secret.
             $temp = $xml_obj->getElementsByTagName('clientsecret');
             if (($temp->length == 0) || !($temp->item(0) instanceof \DOMElement) || !$temp->item(0)->nodeValue) {
-                ServiceContainer::getLogger()->info('Value of "clientsecret" is not defined', __METHOD__, __LINE__);
+                ServiceContainer::getLogger()->error('Value of "clientsecret" is not defined', __METHOD__, __LINE__);
                 throw new \Exception('Invalid credentials');
             }
             $config->setClientSecret($temp->item(0)->nodeValue);
@@ -85,7 +107,7 @@ class OAuthConfig {
             // Redirects.
             $temp = $xml_obj->getElementsByTagName('redirections');
             if ($temp->length == 0) {
-                ServiceContainer::getLogger()->info('The "redirections" node is not defined.', __METHOD__, __LINE__);
+                ServiceContainer::getLogger()->error('The "redirections" node is not defined.', __METHOD__, __LINE__);
                 throw new \Exception('The XML is invalid.');
             }
             foreach ($temp->item(0)->childNodes as $node) {
@@ -101,7 +123,7 @@ class OAuthConfig {
             // Endpoints.
             $temp = $xml_obj->getElementsByTagName('endpoints');
             if ($temp->length == 0) {
-                ServiceContainer::getLogger()->info('The "endpoints" node is not defined.', __METHOD__, __LINE__);
+                ServiceContainer::getLogger()->error('The "endpoints" node is not defined.', __METHOD__, __LINE__);
                 throw new \Exception('The XML is invalid.');
             }
             foreach ($temp->item(0)->childNodes as $node) {
@@ -116,7 +138,7 @@ class OAuthConfig {
             // Entry points.
             $temp = $xml_obj->getElementsByTagName('sections');
             if ($temp->length == 0) {
-                ServiceContainer::getLogger()->info('The "sections" node is not defined.', __METHOD__, __LINE__);
+                ServiceContainer::getLogger()->error('The "sections" node is not defined.', __METHOD__, __LINE__);
                 throw new \Exception('The XML is invalid.');
             }
             foreach ($temp->item(0)->childNodes as $node) {

@@ -2,6 +2,7 @@
 
 use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\Http\Contracts\HttpServiceInterface;
+use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 
 /**
  * Service container interface.
@@ -41,5 +42,16 @@ interface ServiceContainerInterface {
      * @return void
      */
     public static function setHttpService(HttpServiceInterface $service);
+
+    /**
+     * @return OAuthServiceInterface
+     */
+    public static function getOAuthService();
+
+    /**
+     * @param OAuthServiceInterface $service
+     * @return void
+     */
+    public static function setOAuthService(OAuthServiceInterface $service);
 
 }

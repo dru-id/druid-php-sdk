@@ -18,6 +18,8 @@ class RedirectUrlBeanTest extends TestCase
 
         $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\RedirectUrl', $obj->setIsDefault(true));
         $this->assertTrue($obj->getIsDefault());
+
+        $this->assertEquals('http://www.bar.com', $obj);
     }
 
     /**

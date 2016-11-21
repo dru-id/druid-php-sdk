@@ -5,9 +5,8 @@ use Exception;
 use Genetsis\core\User;
 use Genetsis\core\LoginStatusType;
 use Genetsis\core\FileCache;
-use Genetsis\core\OAuthConfig;
 use Genetsis\core\user\Brand;
-use Genetsis\core\ServiceContainer\Services\ServiceContainer;
+use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
 use Genetsis\core\Http\Collections\HttpMethods as HttpMethodsCollection;
 
 /**
@@ -36,7 +35,7 @@ class UserApi
     public static function getUserLogged()
     {
         try {
-            ServiceContainer::getLogger()->debug('Get user Logged info', __METHOD__, __LINE__);
+            SC::getLogger()->debug('Get user Logged info', __METHOD__, __LINE__);
 
             if ((Identity::getThings()->getLoginStatus()!=null)&&(Identity::getThings()->getLoginStatus()->getConnectState() == LoginStatusType::connected)) {
                 $user_logged = self::getUsers(array('id' => Identity::getThings()->getLoginStatus()->getCkUsid()));
@@ -45,7 +44,7 @@ class UserApi
                 }
             }
         } catch (Exception $e) {
-            ServiceContainer::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
+            SC::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
         }
         return null;
     }
@@ -58,7 +57,7 @@ class UserApi
      */
     public static function getUserLoggedCkusid()
     {
-        ServiceContainer::getLogger()->debug('Get user Logged info', __METHOD__, __LINE__);
+        SC::getLogger()->debug('Get user Logged info', __METHOD__, __LINE__);
 
         if ((Identity::getThings()->getLoginStatus()!=null)&&(Identity::getThings()->getLoginStatus()->getConnectState() == LoginStatusType::connected)) {
             return Identity::getThings()->getLoginStatus()->getCkUsid();
@@ -75,7 +74,7 @@ class UserApi
      */
     public static function getUserLoggedOid()
     {
-        ServiceContainer::getLogger()->debug('Get user Logged info', __METHOD__, __LINE__);
+        SC::getLogger()->debug('Get user Logged info', __METHOD__, __LINE__);
 
         if ((Identity::getThings()->getLoginStatus()!=null)&&(Identity::getThings()->getLoginStatus()->getConnectState() == LoginStatusType::connected)) {
             return Identity::getThings()->getLoginStatus()->getOid();
@@ -96,11 +95,11 @@ class UserApi
     {
         $url = '';
         try {
-            $url = OAuthConfig::getApiUrl('api.activityid' , 'base_url') . OAuthConfig::getApiUrl('api.activityid' , 'public_image').'/'.$userid;
+            $url = SC::getOAuthService()->getConfig()->getApi('api.activityid')->getEndpoint('public_image', true).'/'.$userid;
             $url .= '?width='.$width.'&height='.$height;
 
         } catch (Exception $e) {
-            ServiceContainer::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
+            SC::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
         }
         return $url;
     }
@@ -110,7 +109,7 @@ class UserApi
         try {
             return self::getAvatar($userid, $width, $height, 'true');
         } catch (Exception $e) {
-            ServiceContainer::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
+            SC::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
             return '';
         }
     }
@@ -124,14 +123,14 @@ class UserApi
      * @throws \Exception If an error occurred
      */
     private static function getAvatar($userid, $width, $height, $redirect){
-        ServiceContainer::getLogger()->debug('Get user Avatar', __METHOD__, __LINE__);
+        SC::getLogger()->debug('Get user Avatar', __METHOD__, __LINE__);
         $params = array(
             'width' => $width,
             'height' => $height,
             'redirect' => $redirect
         );
 
-        $response = ServiceContainer::getHttpService()->execute(OAuthConfig::getApiUrl('api.activityid' , 'base_url') . OAuthConfig::getApiUrl('api.activityid' , 'public_image').'/'.$userid, $params, HttpMethodsCollection::GET, false);
+        $response = SC::getHttpService()->execute(SC::getOAuthService()->getConfig()->getApi('api.activityid')->getEndpoint('public_image', true).'/'.$userid, $params, HttpMethodsCollection::GET, false);
 
         if (isset($response['code']) && ($response['code'] == 200)) {
             if ($redirect === 'true') {
@@ -151,9 +150,9 @@ class UserApi
         try {
             $brands = array();
 
-            ServiceContainer::getLogger()->debug('Get list of Brands', __METHOD__, __LINE__);
+            SC::getLogger()->debug('Get list of Brands', __METHOD__, __LINE__);
             if (!$brands = unserialize(FileCache::get('brands'))) {
-                ServiceContainer::getLogger()->debug('Brands not cached', __METHOD__, __LINE__);
+                SC::getLogger()->debug('Brands not cached', __METHOD__, __LINE__);
                 if (!$client_token = Identity::getThings()->getClientToken()) {
                     throw new Exception('The clientToken is empty');
                 }
@@ -164,7 +163,7 @@ class UserApi
                     'From' => '452200208393481-main'
                 );
 
-                $response = ServiceContainer::getHttpService()->execute(OAuthConfig::getApiUrl('api.activityid' , 'base_url').OAuthConfig::getApiUrl('api.activityid' , 'brands'), array(), HttpMethodsCollection::GET, false, $header_params);
+                $response = SC::getHttpService()->execute(SC::getOAuthService()->getConfig()->getApi('api.activityid')->getEndpoint('brands', true), array(), HttpMethodsCollection::GET, false, $header_params);
 
                 if (($response['code'] != 200) || (!isset($response['result']->items))) {
                     throw new Exception('The data retrieved is empty');
@@ -182,7 +181,7 @@ class UserApi
             }
 
         } catch ( Exception $e ) {
-            ServiceContainer::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
+            SC::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
         }
         return $brands;
     }
@@ -197,7 +196,7 @@ class UserApi
      */
     public static function deleteCacheUser($ckusid = null) {
         try {
-            ServiceContainer::getLogger()->debug('Delete cache of user', __METHOD__, __LINE__);
+            SC::getLogger()->debug('Delete cache of user', __METHOD__, __LINE__);
 
             if ($ckusid == null) {
                 if ((Identity::getThings()->getLoginStatus()!=null)&&(Identity::getThings()->getLoginStatus()->getConnectState() == LoginStatusType::connected)) {
@@ -207,7 +206,7 @@ class UserApi
                 FileCache::delete('user-' . $ckusid);
             }
         } catch ( Exception $e ) {
-            ServiceContainer::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
+            SC::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
         }
         return null;
     }
@@ -229,7 +228,7 @@ class UserApi
         if (is_array($identifiers)) {
             try {
                 if (!$druid_user_data = FileCache::get('user-' . reset($identifiers))) {
-                    ServiceContainer::getLogger()->debug('Identifier: ' . reset($identifiers) . ' is Not in Cache System', __METHOD__, __LINE__);
+                    SC::getLogger()->debug('Identifier: ' . reset($identifiers) . ' is Not in Cache System', __METHOD__, __LINE__);
 
                     $client_token = Identity::getThings()->getClientToken();
 
@@ -252,22 +251,18 @@ class UserApi
                         $params['w.' . $key] = $val;
                     }
 
-                    $base = OAuthConfig::getApiUrl('api.user', 'base_url');
-                    $api = OAuthConfig::getApiUrl('api.user', 'user');
-
-                    $response = ServiceContainer::getHttpService()->execute($base . $api, $params, HttpMethodsCollection::POST);
-
+                    $response = SC::getHttpService()->execute(SC::getOAuthService()->getConfig()->getApi('api.user')->getEndpoint('user', true), $params, HttpMethodsCollection::POST);
                     if (($response['code'] != 200) || (!isset($response['result']->data)) || ($response['result']->count == '0')) {
                         throw new Exception('The data retrieved is empty');
                     }
                     $druid_user = $response['result']->data;
                     FileCache::set('user-' . reset($identifiers), $druid_user, 3600);
                 } else {
-                    ServiceContainer::getLogger()->debug('Identifier: ' . reset($identifiers) . ' is in Cache System', __METHOD__, __LINE__);
+                    SC::getLogger()->debug('Identifier: ' . reset($identifiers) . ' is in Cache System', __METHOD__, __LINE__);
                     $druid_user = json_decode(json_encode($druid_user_data));
                 }
             } catch (Exception $e) {
-                ServiceContainer::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
+                SC::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
             }
         }
         return $druid_user;

@@ -1,7 +1,9 @@
-<?php
-namespace Genetsis\core;
+<?php namespace Genetsis\core\OAuth\Services;
 
 use Exception;
+use Genetsis\core\Encryption;
+use Genetsis\core\LoginStatus;
+use Genetsis\core\OAuth\Beans\OAuthConfig\Config;
 use Genetsis\Identity;
 use Genetsis\core\InvalidGrantException;
 
@@ -10,6 +12,7 @@ use Genetsis\core\OAuth\Beans\AccessToken;
 use Genetsis\core\OAuth\Beans\RefreshToken;
 use Genetsis\core\OAuth\Beans\ClientToken;
 use Genetsis\core\OAuth\Contracts\StoredTokenInterface;
+use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\core\OAuth\Collections\AuthMethods as AuthMethodsCollection;
 use Genetsis\core\OAuth\Collections\TokenTypes as TokenTypesCollection;
 use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
@@ -25,7 +28,7 @@ use Genetsis\core\Http\Collections\HttpMethods as HttpMethodsCollection;
  * @version   1.0
  * @access    private
  */
-class OAuth
+class OAuth implements OAuthServiceInterface
 {
     /** Default expiration time. In seconds. */
     const DEFAULT_EXPIRES_IN = 900;
@@ -36,10 +39,37 @@ class OAuth
     /** Cookie name for SSO (Single Sign-Out). */
     const SSO_COOKIE_NAME = 'datr';
 
+    /** @var Config $config */
+    private $config = null;
+
+    /**
+     * @param Config $config
+     */
+    public function __construct(Config $config)
+    {
+        $this->setConfig($config);
+    }
+
     /**
      * @inheritDoc
      */
-    public static function doGetClientToken ($endpoint_url)
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setConfig(Config $config)
+    {
+        $this->config = $config;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function doGetClientToken ($endpoint_url)
     {
         try {
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
@@ -86,7 +116,7 @@ class OAuth
             if (isset($response['result']->type)) {
                 switch ($response['result']->type) {
                     case 'InvalidGrantException' :
-                        throw new InvalidGrantException($response['result']->error . ' (' . (isset($response['result']->type) ? trim($response['result']->type) : '') . ')');;
+                        throw new InvalidGrantException($response['result']->error . ' (' . (isset($response['result']->type) ? trim($response['result']->type) : '') . ')');
                 }
             }
             throw new Exception($response['result']->error . ' (' . (isset($response['result']->type) ? trim($response['result']->type) : '') . ')');
@@ -102,7 +132,7 @@ class OAuth
      * @param StoredTokenInterface $token An object with token data to be stored.
      * @throws \Exception
      */
-    public static function storeToken (StoredTokenInterface $token)
+    public function storeToken (StoredTokenInterface $token)
     {
         $encryption = new Encryption(SC::getOAuthService()->getConfig()->getClientId());
         $cod = $encryption->encode($token->getValue());
@@ -119,7 +149,7 @@ class OAuth
      *     or FALSE.
      * @throws \Exception If there is an error.
      */
-    public static function doGetAccessToken ($endpoint_url, $code, $redirect_url)
+    public function doGetAccessToken ($endpoint_url, $code, $redirect_url)
     {
         try {
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
@@ -186,7 +216,7 @@ class OAuth
      *     otherwise.
      * @throws \Exception If there is an error.
      */
-    public static function doRefreshToken($endpoint_url)
+    public function doRefreshToken($endpoint_url)
     {
         try {
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
@@ -248,7 +278,7 @@ class OAuth
      * @return LoginStatus An object with user status.
      * @throws \Exception If there is an error.
      */
-    public static function doValidateBearer($endpoint_url)
+    public function doValidateBearer($endpoint_url)
     {
         try {
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
@@ -290,7 +320,7 @@ class OAuth
      *     NULL if not.
      * @throws \Exception If there is an error.
      */
-    public static function doExchangeSession($endpoint_url, $cookie_value)
+    public function doExchangeSession($endpoint_url, $cookie_value)
     {
         try {
             $access_token = null;
@@ -353,7 +383,7 @@ class OAuth
      * @return void
      * @throws \Exception If there is an error.
      */
-    public static function doLogout($endpoint_url)
+    public function doLogout($endpoint_url)
     {
         try {
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
@@ -385,10 +415,10 @@ class OAuth
      *
      * It will removed from SESSION and COOKIE.
      *
-     * @param string The token we want to remove. Are defined in {@link TokenTypesCollection}
+     * @param string $name The token we want to remove. Are defined in {@link TokenTypesCollection}
      * @return void
      */
-    public static function deleteStoredToken ($name)
+    public function deleteStoredToken ($name)
     {
         if (isset($_COOKIE[$name])) {
             setcookie($name, '', time()-42000, '/');
@@ -403,7 +433,7 @@ class OAuth
      * @param string $name The token we want to check. Are defined in {@link TokenTypesCollection}
      * @return bool TRUE if exists or FALSE otherwise.
      */
-    public static function hasToken($name)
+    public function hasToken($name)
     {
         return (self::getStoredToken($name) instanceof StoredTokenInterface);
     }
@@ -417,7 +447,7 @@ class OAuth
      *     can't recover it.
      * @throws \Exception
      */
-    public static function getStoredToken($name)
+    public function getStoredToken($name)
     {
         if (($name = trim((string)$name)) == '') {
             throw new Exception ('Token type not exist');
@@ -440,7 +470,7 @@ class OAuth
      * @return mixed $token Token, an access_token if user is logged, a client_token if user is not login
      * @throws \Exception If there is an error.
      */
-    public static function doGetOpinator($endpoint_url, $scope, StoredTokenInterface $token)
+    public function doGetOpinator($endpoint_url, $scope, StoredTokenInterface $token)
     {
         try {
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
@@ -482,7 +512,7 @@ class OAuth
      *     FALSE if not.
      * @throws \Exception If there is an error.
      */
-    public static function doCheckUserCompleted($endpoint_url, $scope)
+    public function doCheckUserCompleted($endpoint_url, $scope)
     {
         try {
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
@@ -527,7 +557,7 @@ class OAuth
      *      FALSE if it has already accepted them (no action required).
      * @throws \Exception If there is an error.
      */
-    public static function doCheckUserNeedAcceptTerms($endpoint_url, $scope)
+    public function doCheckUserNeedAcceptTerms($endpoint_url, $scope)
     {
         try {
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {

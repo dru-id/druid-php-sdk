@@ -8,9 +8,7 @@ class OAuthConfigServiceTest extends TestCase
 
     public function testBuildFromXml_v1_4()
     {
-        $oauth_config = new OAuthConfig();
-
-        $config = $oauth_config->buildConfigFromXml($this->getXmlExample_v1_4(), '1.4');
+        $config = OAuthConfig::buildConfigFromXml($this->getXmlExample_v1_4(), '1.4');
         $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $config);
 
         $this->assertEquals('XXXXXXX', $config->getClientId());

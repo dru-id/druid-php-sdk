@@ -16,6 +16,8 @@ use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\Logger\Services\DruIDLogger;
 use Genetsis\core\Logger\Services\EmptyLogger;
 use Genetsis\core\OAuth\Beans\ClientToken;
+use Genetsis\core\OAuth\Services\OAuth;
+use Genetsis\core\OAuth\Services\OAuthConfig as OAuthConfigService;
 use Genetsis\core\Things;
 use Genetsis\core\FileCache;
 use Genetsis\core\InvalidGrantException;
@@ -23,12 +25,7 @@ use Genetsis\core\OAuth\Collections\TokenTypes as TokenTypesCollection;
 use Genetsis\core\LogConfig;
 use Genetsis\core\Logger\Collections\LogLevels as LogLevelsCollection;
 use Genetsis\core\LoginStatusType;
-use Genetsis\core\OAuth\Contracts\OAuthInterface;
-use Genetsis\core\OAuth;
-use Genetsis\core\OAuthConfig;
-use Genetsis\core\ServiceContainer\Services\ServiceContainer;
-
-
+use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
 
 
 if (session_id() === '') {
@@ -57,8 +54,6 @@ if (session_id() === '') {
  */
 class Identity
 {
-    /** @var \Genetsis\core\OAuth\Contracts\OAuthInterface $oauth */
-    private static $oauth;
     /** @var Things Object to store Genetsis ID's session data. */
     private static $gid_things;
     /** @var boolean Inidicates if Identity has been initialized */
@@ -98,12 +93,12 @@ class Identity
                 Config::init($settings['app'], $settings['ini_path']);
 
                 if (isset($settings['logger']) && ($settings['logger'] instanceof LoggerServiceInterface)) { // Custom logger.
-                    ServiceContainer::setLogger($settings['logger']);
+                    SC::setLogger($settings['logger']);
                 } else { // Default logger based on configuration.
                     if ((Config::logLevel() === 'OFF') && (!isset($_COOKIE['gidlog']))) {
-                        ServiceContainer::setLogger(new EmptyLogger());
+                        SC::setLogger(new EmptyLogger());
                     } else {
-                        ServiceContainer::setLogger(new DruIDLogger($_SERVER['DOCUMENT_ROOT'] . '/' . Config::logPath(), LogLevelsCollection::DEBUG));
+                        SC::setLogger(new DruIDLogger($_SERVER['DOCUMENT_ROOT'] . '/' . Config::logPath(), LogLevelsCollection::DEBUG));
                         if (!class_exists('Logger')) {
                             include_once dirname(__FILE__) . '/core/log4php/Logger.php';
                         }
@@ -115,9 +110,15 @@ class Identity
                 FileCache::init(Config::cachePath(), Config::environment());
 
                 // Initialize OAuth Config
-                if (!isset($settings['xml'])) { $settings['xml'] = ''; }
-                OAuthConfig::init($settings['xml']);
-                static::$oauth = new OAuth();
+                // TODO: check if there is a cache for the OAuth.
+                $config = (isset($settings['xml']) && $settings['xml'])
+                    ? OAuthConfigService::buildConfigFromXml($settings['xml'], Config::CONF_VERSION)
+                    : call_user_func(function() {
+                        $file = realpath($_SERVER['DOCUMENT_ROOT'] . '/' . Config::configPath());
+                        SC::getLogger()->info('XML not defined. Trying to load from file: ' . $file, __METHOD__, __LINE__);
+                        return OAuthConfigService::buildConfigFromXmlFile($file, Config::CONF_VERSION);
+                    });
+                SC::setOAuthService(new OAuth($config));
 
                 self::$gid_things = new Things();
 
@@ -126,7 +127,7 @@ class Identity
                 }
             }
         } catch (Exception $e) {
-            ServiceContainer::getLogger()->error($e, __METHOD__, __LINE__);
+            SC::getLogger()->error($e, __METHOD__, __LINE__);
             throw $e;
         }
     }
@@ -191,33 +192,33 @@ class Identity
             self::$synchronized = true;
 
             try {
-                ServiceContainer::getLogger()->debug('Synchronizing session with server', __METHOD__, __LINE__);
+                SC::getLogger()->debug('Synchronizing session with server', __METHOD__, __LINE__);
                 self::checkAndUpdateClientToken();
 
                 self::loadUserTokenFromPersistence();
 
                 if (self::$gid_things->getAccessToken() == null) {
-                    ServiceContainer::getLogger()->debug('User is not logged, check SSO', __METHOD__, __LINE__);
+                    SC::getLogger()->debug('User is not logged, check SSO', __METHOD__, __LINE__);
                     self::checkSSO();
                     if (self::$gid_things->getRefreshToken() != null) {
-                        ServiceContainer::getLogger()->debug('User not logged but has Refresh Token', __METHOD__, __LINE__);
+                        SC::getLogger()->debug('User not logged but has Refresh Token', __METHOD__, __LINE__);
                         self::checkAndRefreshAccessToken();
                     }
                 } else {
                     if (self::isExpired(self::$gid_things->getAccessToken()->getExpiresAt())) {
-                        ServiceContainer::getLogger()->debug('User logged but Access Token is expires', __METHOD__, __LINE__);
+                        SC::getLogger()->debug('User logged but Access Token is expires', __METHOD__, __LINE__);
                         self::checkAndRefreshAccessToken();
                     } else {
-                        ServiceContainer::getLogger()->debug('User logged - check Validate Bearer', __METHOD__, __LINE__);
+                        SC::getLogger()->debug('User logged - check Validate Bearer', __METHOD__, __LINE__);
                         self::checkLoginStatus();
                     }
                     if (!self::isConnected()) {
-                        ServiceContainer::getLogger()->warn('User logged but is not connected (something wrong) - clear session data', __METHOD__, __LINE__);
+                        SC::getLogger()->warn('User logged but is not connected (something wrong) - clear session data', __METHOD__, __LINE__);
                         self::clearLocalSessionData();
                     }
                 }
             } catch (Exception $e) {
-                ServiceContainer::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
+                SC::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
             }
             $_SESSION['Things'] = @serialize(self::$gid_things);
         }
@@ -235,24 +236,24 @@ class Identity
     private static function checkAndUpdateClientToken()
     {
         try {
-            ServiceContainer::getLogger()->debug('Checking and update client_token.', __METHOD__, __LINE__);
+            SC::getLogger()->debug('Checking and update client_token.', __METHOD__, __LINE__);
             if (!(($client_token = unserialize(FileCache::get('client_token'))) instanceof ClientToken) || ($client_token->getValue() == '')) {
-                ServiceContainer::getLogger()->debug('Get Client token', __METHOD__, __LINE__);
+                SC::getLogger()->debug('Get Client token', __METHOD__, __LINE__);
 
-                if ((self::$gid_things->getClientToken() == null) || (static::$oauth->getStoredToken(TokenTypesCollection::CLIENT_TOKEN) == null)) {
-                    ServiceContainer::getLogger()->debug('Not has clientToken in session or cookie', __METHOD__, __LINE__);
+                if ((self::$gid_things->getClientToken() == null) || (SC::getOAuthService()->getStoredToken(TokenTypesCollection::CLIENT_TOKEN) == null)) {
+                    SC::getLogger()->debug('Not has clientToken in session or cookie', __METHOD__, __LINE__);
 
-                    if (!$client_token = static::$oauth->getStoredToken(TokenTypesCollection::CLIENT_TOKEN)) {
-                        ServiceContainer::getLogger()->debug('Token Cookie does not exists. Requesting a new one.', __METHOD__, __LINE__);
-                        $client_token = static::$oauth->doGetClientToken(OauthConfig::getEndpointUrl('token_endpoint'));
+                    if (!$client_token = SC::getOAuthService()->getStoredToken(TokenTypesCollection::CLIENT_TOKEN)) {
+                        SC::getLogger()->debug('Token Cookie does not exists. Requesting a new one.', __METHOD__, __LINE__);
+                        $client_token = SC::getOAuthService()->doGetClientToken((string)SC::getOAuthService()->getConfig()->getEndPoint('token_endpoint'));
                     }
                     self::$gid_things->setClientToken($client_token);
                 } else {
-                    ServiceContainer::getLogger()->debug('Client Token from session', __METHOD__, __LINE__);
+                    SC::getLogger()->debug('Client Token from session', __METHOD__, __LINE__);
                 }
                 FileCache::set('client_token', serialize(self::$gid_things->getClientToken()), self::$gid_things->getClientToken()->getExpiresIn());
             } else {
-                ServiceContainer::getLogger()->debug('Client Token from cache', __METHOD__, __LINE__);
+                SC::getLogger()->debug('Client Token from cache', __METHOD__, __LINE__);
                 self::$gid_things->setClientToken($client_token);
             }
         } catch (Exception $e) {
@@ -275,20 +276,22 @@ class Identity
     {
         try {
             if ((isset($_COOKIE['datr']) && ($_COOKIE['datr'] != ''))||(isset($_COOKIE['datr_']) && ($_COOKIE['datr_'] != ''))) {
-                ServiceContainer::getLogger()->info('DATR cookie was found.', __METHOD__, __LINE__);
-
-                $response = static::$oauth->doExchangeSession(OauthConfig::getEndpointUrl('token_endpoint'), ($_COOKIE['datr'] != '') ? $_COOKIE['datr'] : $_COOKIE['datr_']);
+                SC::getLogger()->info('DATR cookie was found.', __METHOD__, __LINE__);
+                $response = SC::getOAuthService()->doExchangeSession(
+                    (string)SC::getOAuthService()->getConfig()->getEndPoint('token_endpoint'),
+                    (isset($_COOKIE['dart']) && ($_COOKIE['datr'] != '')) ? $_COOKIE['datr'] : $_COOKIE['datr_']
+                );
                 self::$gid_things->setAccessToken($response['access_token']);
                 self::$gid_things->setRefreshToken($response['refresh_token']);
                 self::$gid_things->setLoginStatus($response['login_status']);
             } else {
-                ServiceContainer::getLogger()->debug('DATR cookie not exist, user is not logged', __METHOD__, __LINE__);
+                SC::getLogger()->debug('DATR cookie not exist, user is not logged', __METHOD__, __LINE__);
             }
         } catch (InvalidGrantException $e) {
-            unset($_COOKIE[static::$oauth->SSO_COOKIE_NAME]);
+            unset($_COOKIE[OAuth::SSO_COOKIE_NAME]);
             setcookie(OAuth::SSO_COOKIE_NAME, null, -1, null, '.cocacola.es');
 
-            ServiceContainer::getLogger()->warn('Invalid Grant, check an invalid DATR', __METHOD__, __LINE__);
+            SC::getLogger()->warn('Invalid Grant, check an invalid DATR', __METHOD__, __LINE__);
             throw $e;
         } catch (Exception $e) {
             throw $e;
@@ -318,9 +321,8 @@ class Identity
     private static function checkAndRefreshAccessToken()
     {
         try {
-            ServiceContainer::getLogger()->debug('Checking and refreshing the AccessToken.', __METHOD__, __LINE__);
-
-            $response = OAuth::doRefreshToken(OauthConfig::getEndpointUrl('token_endpoint'));
+            SC::getLogger()->debug('Checking and refreshing the AccessToken.', __METHOD__, __LINE__);
+            $response = SC::getOAuthService()->doRefreshToken((string)SC::getOAuthService()->getConfig()->getEndPoint('token_endpoint'));
             self::$gid_things->setAccessToken($response['access_token']);
             self::$gid_things->setRefreshToken($response['refresh_token']);
             self::$gid_things->setLoginStatus($response['login_status']);
@@ -339,13 +341,13 @@ class Identity
      */
     private static function clearLocalSessionData()
     {
-        ServiceContainer::getLogger()->debug('Clear Session Data', __METHOD__, __LINE__);
+        SC::getLogger()->debug('Clear Session Data', __METHOD__, __LINE__);
         self::$gid_things->setAccessToken(null);
         self::$gid_things->setRefreshToken(null);
         self::$gid_things->setLoginStatus(null);
 
-        OAuth::deleteStoredToken(TokenTypesCollection::ACCESS_TOKEN);
-        OAuth::deleteStoredToken(TokenTypesCollection::REFRESH_TOKEN);
+        SC::getOAuthService()->deleteStoredToken(TokenTypesCollection::ACCESS_TOKEN);
+        SC::getOAuthService()->deleteStoredToken(TokenTypesCollection::REFRESH_TOKEN);
 
         if (isset($_SESSION)) {
             unset($_SESSION['Things']);
@@ -367,14 +369,14 @@ class Identity
     private static function checkLoginStatus()
     {
         try {
-            ServiceContainer::getLogger()->debug('Checking login status', __METHOD__, __LINE__);
+            SC::getLogger()->debug('Checking login status', __METHOD__, __LINE__);
             if (self::$gid_things->getLoginStatus()->getConnectState() == LoginStatusType::connected) {
-                ServiceContainer::getLogger()->debug('User is connected, check access token', __METHOD__, __LINE__);
-                $loginStatus = OAuth::doValidateBearer(OauthConfig::getEndpointUrl('token_endpoint'));
+                SC::getLogger()->debug('User is connected, check access token', __METHOD__, __LINE__);
+                $loginStatus = SC::getOAuthService()->doValidateBearer((string)SC::getOAuthService()->getConfig()->getEndPoint('token_endpoint'));
                 self::$gid_things->setLoginStatus($loginStatus);
             }
         } catch (InvalidGrantException $e) {
-            ServiceContainer::getLogger()->warn('Invalid Grant, maybe access token is expires and sdk not checkit - call to refresh token', __METHOD__, __LINE__);
+            SC::getLogger()->warn('Invalid Grant, maybe access token is expires and sdk not checkit - call to refresh token', __METHOD__, __LINE__);
             self::checkAndRefreshAccessToken();
         } catch (Exception $e) {
             throw $e;
@@ -424,13 +426,13 @@ class Identity
     public static function authorizeUser($code)
     {
         try {
-            ServiceContainer::getLogger()->debug('Authorize user', __METHOD__, __LINE__);
+            SC::getLogger()->debug('Authorize user', __METHOD__, __LINE__);
 
             if ($code == '') {
                 throw new Exception('Authorize Code is empty');
             }
 
-            $response = OAuth::doGetAccessToken(OauthConfig::getEndpointUrl('token_endpoint'), $code, OauthConfig::getRedirectUrl('postLogin'));
+            $response = SC::getOAuthService()->doGetAccessToken((string)SC::getOAuthService()->getConfig()->getEndPoint('token_endpoint'), $code, (string)SC::getOAuthService()->getConfig()->getRedirect('postLogin'));
             self::$gid_things->setAccessToken($response['access_token']);
             self::$gid_things->setRefreshToken($response['refresh_token']);
             self::$gid_things->setLoginStatus($response['login_status']);
@@ -438,9 +440,9 @@ class Identity
             $_SESSION['Things'] = @serialize(self::$gid_things);
 
         } catch ( \Genetsis\core\InvalidGrantException $e) {
-            ServiceContainer::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
+            SC::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
         } catch (Exception $e) {
-            ServiceContainer::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
+            SC::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
         }
     }
 
@@ -471,13 +473,13 @@ class Identity
     {
         $userCompleted = false;
         try {
-            ServiceContainer::getLogger()->info('Checking if the user has filled its data out for this section:' . $scope, __METHOD__, __LINE__);
+            SC::getLogger()->info('Checking if the user has filled its data out for this section:' . $scope, __METHOD__, __LINE__);
 
             if (self::isConnected()) {
-                $userCompleted = OAuth::doCheckUserCompleted(OAuthConfig::getApiUrl('api.user', 'base_url') . OauthConfig::getApiUrl('api.user', 'user'), $scope);
+                $userCompleted = SC::getOAuthService()->doCheckUserCompleted(SC::getOAuthService()->getConfig()->getApi('api.user')->getEndpoint('user', true), $scope);
             }
         } catch (Exception $e) {
-            ServiceContainer::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
+            SC::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
         }
         return $userCompleted;
     }
@@ -502,13 +504,13 @@ class Identity
     {
         $status = false;
         try {
-            ServiceContainer::getLogger()->info('Checking if the user has accepted terms and conditions for this section:' . $scope, __METHOD__, __LINE__);
+            SC::getLogger()->info('Checking if the user has accepted terms and conditions for this section:' . $scope, __METHOD__, __LINE__);
 
             if (self::isConnected()) {
-                $status = OAuth::doCheckUserNeedAcceptTerms(OAuthConfig::getApiUrl('api.user', 'base_url') . OauthConfig::getApiUrl('api.user', 'user'), $scope);
+                $status = SC::getOAuthService()->doCheckUserNeedAcceptTerms(SC::getOAuthService()->getConfig()->getApi('api.user')->getEndpoint('user', true), $scope);
             }
         } catch (Exception $e) {
-            ServiceContainer::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
+            SC::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
         }
         return $status;
     }
@@ -528,14 +530,14 @@ class Identity
     {
         try {
             if ((self::$gid_things->getAccessToken() != null) && (self::$gid_things->getRefreshToken() != null)) {
-                ServiceContainer::getLogger()->info('User Single Sign Logout', __METHOD__, __LINE__);
+                SC::getLogger()->info('User Single Sign Logout', __METHOD__, __LINE__);
                 UserApi::deleteCacheUser(self::$gid_things->getLoginStatus()->getCkUsid());
 
-                OAuth::doLogout(OauthConfig::getEndpointUrl('logout_endpoint'));
+                SC::getOAuthService()->doLogout((string)SC::getOAuthService()->getConfig()->getEndPoint('logout_endpoint'));
                 self::clearLocalSessionData();
             }
         } catch (Exception $e) {
-            ServiceContainer::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
+            SC::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
         }
     }
 
@@ -550,14 +552,14 @@ class Identity
     {
         try {
             if (!is_null(self::$gid_things->getAccessToken())) {
-                ServiceContainer::getLogger()->debug('Get AccessToken, user logged', __METHOD__, __LINE__);
+                SC::getLogger()->debug('Get AccessToken, user logged', __METHOD__, __LINE__);
                 return self::$gid_things->getAccessToken();
             } else {
-                ServiceContainer::getLogger()->debug('Get ClientToken, user is NOT logged', __METHOD__, __LINE__);
+                SC::getLogger()->debug('Get ClientToken, user is NOT logged', __METHOD__, __LINE__);
                 return self::$gid_things->getClientToken();
             }
         } catch (Exception $e) {
-            ServiceContainer::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
+            SC::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
             throw new Exception('Not valid token');
         }
     }
@@ -570,7 +572,7 @@ class Identity
      */
     public static function getLogger()
     {
-        return ServiceContainer::getLogger();
+        return SC::getLogger();
     }
 
     /**
@@ -583,19 +585,19 @@ class Identity
     {
         try {
             if (is_null(self::$gid_things->getAccessToken())){
-                ServiceContainer::getLogger()->debug('Load access token from cookie', __METHOD__, __LINE__);
+                SC::getLogger()->debug('Load access token from cookie', __METHOD__, __LINE__);
 
-                if (OAuth::hasToken(TokenTypesCollection::ACCESS_TOKEN)) {
-                    self::$gid_things->setAccessToken(OAuth::getStoredToken(TokenTypesCollection::ACCESS_TOKEN));
+                if (SC::getOAuthService()->hasToken(TokenTypesCollection::ACCESS_TOKEN)) {
+                    self::$gid_things->setAccessToken(SC::getOAuthService()->getStoredToken(TokenTypesCollection::ACCESS_TOKEN));
                 }
-                if (OAuth::hasToken(TokenTypesCollection::REFRESH_TOKEN)) {
-                    self::$gid_things->setRefreshToken(OAuth::getStoredToken(TokenTypesCollection::REFRESH_TOKEN));
+                if (SC::getOAuthService()->hasToken(TokenTypesCollection::REFRESH_TOKEN)) {
+                    self::$gid_things->setRefreshToken(SC::getOAuthService()->getStoredToken(TokenTypesCollection::REFRESH_TOKEN));
                 }
             }
 
 
         } catch (Exception $e) {
-            ServiceContainer::getLogger()->error('['.__CLASS__.']['.__FUNCTION__.']['.__LINE__.']'.$e->getMessage(), __METHOD__, __LINE__);
+            SC::getLogger()->error('['.__CLASS__.']['.__FUNCTION__.']['.__LINE__.']'.$e->getMessage(), __METHOD__, __LINE__);
         }
     }
 }

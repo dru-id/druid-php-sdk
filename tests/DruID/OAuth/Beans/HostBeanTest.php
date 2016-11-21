@@ -15,6 +15,8 @@ class HostBeanTest extends TestCase
 
         $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Host', $obj->setUrl('http://www.foo.com'));
         $this->assertEquals('http://www.bar.com', $obj->setUrl('http://www.bar.com')->getUrl());
+
+        $this->assertEquals('http://www.bar.com', $obj);
     }
 
     /**

@@ -2,8 +2,7 @@
 namespace Genetsis;
 
 use Exception;
-use Genetsis\core\OAuthConfig;
-use Genetsis\core\ServiceContainer\Services\ServiceContainer;
+use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
 
 /**
  * This class is used to build the links to different services of Genetsis ID.
@@ -30,8 +29,8 @@ class URLBuilder
     {
 
         return self::buildLoginUrl(
-            OAuthConfig::getEndpointUrl('authorization_endpoint'),
-            OAuthConfig::getRedirectUrl('postLogin', $urlCallback),
+            (string)SC::getOAuthService()->getConfig()->getEndPoint('authorization_endpoint'),
+            (string)SC::getOAuthService()->getConfig()->getRedirect('postLogin', $urlCallback),
             $scope,
             $social
         );
@@ -50,8 +49,8 @@ class URLBuilder
     public static function getUrlRegister($scope = null, $urlCallback = null)
     {
         return self::buildSignupUrl(
-            OAuthConfig::getEndpointUrl('signup_endpoint'),
-            OAuthConfig::getRedirectUrl('register', $urlCallback),
+            (string)SC::getOAuthService()->getConfig()->getEndPoint('signup_endpoint'),
+            (string)SC::getOAuthService()->getConfig()->getRedirect('register', $urlCallback),
             $scope
         );
     }
@@ -69,14 +68,14 @@ class URLBuilder
     public static function getUrlEditAccount($scope = null, $urlCallback = null)
     {
         $params = array();
-        $params['client_id'] = OAuthConfig::getClientid();
-        $params['redirect_uri'] = OAuthConfig::getRedirectUrl('postEditAccount', $urlCallback);
-        $next_url = (OAuthConfig::getEndpointUrl('next_url') . '?' . http_build_query($params));
-        $cancel_url = (OAuthConfig::getEndpointUrl('cancel_url') . '?' . http_build_query($params));
+        $params['client_id'] = SC::getOAuthService()->getConfig()->getClientId();
+        $params['redirect_uri'] = (string)SC::getOAuthService()->getConfig()->getRedirect('postEditAccount', $urlCallback);
+        $next_url = ((string)SC::getOAuthService()->getConfig()->getEndPoint('next_url') . '?' . http_build_query($params));
+        $cancel_url = ((string)SC::getOAuthService()->getConfig()->getEndPoint('cancel_url') . '?' . http_build_query($params));
         unset($params);
 
         return self::buildEditAccountUrl(
-            OAuthConfig::getEndpointUrl('edit_account_endpoint'),
+            (string)SC::getOAuthService()->getConfig()->getEndPoint('edit_account_endpoint'),
             $next_url,
             $cancel_url,
             $scope
@@ -93,14 +92,14 @@ class URLBuilder
     public static function getUrlCompleteAccount($scope = null)
     {
         $params = array();
-        $params['client_id'] = OAuthConfig::getClientid();
-        $params['redirect_uri'] = OAuthConfig::getRedirectUrl('postEditAccount');
-        $next_url = OAuthConfig::getEndpointUrl('next_url') . '?' . http_build_query($params);
-        $cancel_url = OAuthConfig::getEndpointUrl('cancel_url') . '?' . http_build_query($params);
+        $params['client_id'] = SC::getOAuthService()->getConfig()->getClientId();
+        $params['redirect_uri'] = (string)SC::getOAuthService()->getConfig()->getRedirect('postEditAccount');
+        $next_url = (string)SC::getOAuthService()->getConfig()->getEndPoint('next_url') . '?' . http_build_query($params);
+        $cancel_url = (string)SC::getOAuthService()->getConfig()->getEndPoint('cancel_url') . '?' . http_build_query($params);
         unset($params);
 
         return self::buildCompleteAccountUrl(
-            OAuthConfig::getEndpointUrl('complete_account_endpoint'),
+            (string)SC::getOAuthService()->getConfig()->getEndPoint('complete_account_endpoint'),
             $next_url,
             $cancel_url,
             $scope
@@ -150,59 +149,8 @@ class URLBuilder
             }
             return false;
         } catch (\Exception $e) {
-            ServiceContainer::getLogger()->debug($e->getMessage(), __METHOD__, __LINE__);
+            SC::getLogger()->debug($e->getMessage(), __METHOD__, __LINE__);
         }
-    }
-
-
-    /**
-     * Set url for callback in redirectiosn section with regiter type.
-     * @param string $url
-     * @return boolean
-     */
-    public function setCallbackRegister($url)
-    {
-        return OAuthConfig::setCallbackRegister($url);
-    }
-
-    /**
-     * Set url for callback in redirections section with confirm user type.
-     * @param string $url
-     * @return boolean
-     */
-    public function setCallbackConfirmUser($url)
-    {
-        return OAuthConfig::setCallbackConfirmUser($url);
-    }
-
-    /**
-     * Set url for callback in redirections section with confirm postLogin type.
-     * @param string $url
-     * @return boolean
-     */
-    public function setCallbackPostLogin($url)
-    {
-        return OAuthConfig::setCallbackPostLogin($url);
-    }
-
-    /**
-     * Set url for callback in redirections section with postChangeEmail type.
-     * @param string $url
-     * @return boolean
-     */
-    public function setCallbackPostChangeEmail($url)
-    {
-        return OAuthConfig::setCallbackPostChangeEmail($url);
-    }
-
-    /**
-     * Set url for callback in redirections section with postEditAccount type.
-     * @param string $url
-     * @return boolean
-     */
-    public function setCallbackPostEditAccount($url)
-    {
-        return OAuthConfig::setCallbackPostEditAccount($url);
     }
 
     /**
@@ -231,7 +179,7 @@ class URLBuilder
 
             $endpoint_url = rtrim($endpoint_url, '?');
             $params = array();
-            $params['client_id'] = OAuthConfig::getClientid();
+            $params['client_id'] = SC::getOAuthService()->getConfig()->getClientId();
             $params['redirect_uri'] = $redirect_url;
             $params['response_type'] = 'code';
             if (!is_null($scope)) {
@@ -244,7 +192,7 @@ class URLBuilder
 
             return $endpoint_url . '?' . http_build_query($params, null, '&');
         } catch (Exception $e) {
-            ServiceContainer::getLogger()->debug($e->getMessage(), __METHOD__, __LINE__);
+            SC::getLogger()->debug($e->getMessage(), __METHOD__, __LINE__);
         }
     }
 
@@ -293,7 +241,7 @@ class URLBuilder
 
             return $endpoint_url . '?' . http_build_query($params, null, '&');
         } catch (Exception $e) {
-            ServiceContainer::getLogger()->debug($e->getMessage(), __METHOD__, __LINE__);
+            SC::getLogger()->debug($e->getMessage(), __METHOD__, __LINE__);
         }
     }
 
@@ -326,7 +274,7 @@ class URLBuilder
 
             return $url . '&' . http_build_query($params, null, '&');
         } catch (Exception $e) {
-            ServiceContainer::getLogger()->debug($e->getMessage(), __METHOD__, __LINE__);
+            SC::getLogger()->debug($e->getMessage(), __METHOD__, __LINE__);
         }
     }
 
@@ -375,7 +323,7 @@ class URLBuilder
 
             return $endpoint_url . '?' . http_build_query($params, null, '&');
         } catch (Exception $e) {
-            ServiceContainer::getLogger()->debug($e->getMessage(), __METHOD__, __LINE__);
+            SC::getLogger()->debug($e->getMessage(), __METHOD__, __LINE__);
         }
     }
 

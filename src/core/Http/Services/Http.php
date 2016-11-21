@@ -3,9 +3,7 @@
 use \Exception;
 use Genetsis\core\Http\Contracts\HttpServiceInterface;
 use Genetsis\core\Http\Collections\HttpMethods as HttpMethodsCollection;
-use Genetsis\core\ServiceContainer\Services\ServiceContainer;
-use Genetsis\core\OAuthConfig;
-
+use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
 
 /**
  * Class to performs HTTP request calls.
@@ -47,8 +45,8 @@ class Http implements HttpServiceInterface {
         }
 
         if ($credentials) {
-            $parameters['client_id'] = OAuthConfig::getClientId();
-            $parameters['client_secret'] = OAuthConfig::getClientSecret();
+            $parameters['client_id'] = SC::getOAuthService()->getConfig()->getClientId();
+            $parameters['client_secret'] = SC::getOAuthService()->getConfig()->getClientSecret();
         }
 
         switch ($http_method) {
@@ -124,13 +122,13 @@ class Http implements HttpServiceInterface {
         $total_time = curl_getinfo($ch, CURLINFO_TOTAL_TIME);
         curl_close($ch);
 
-        ServiceContainer::getLogger()->debug('### BEGIN REQUEST ###', __METHOD__, __LINE__);
-        ServiceContainer::getLogger()->debug(sprintf('URL -> [%s][%s] %s', $http_method, ($is_ssl ? 'ssl' : 'no ssl'), var_export($url, true)), __METHOD__, __LINE__);
-        ServiceContainer::getLogger()->debug('Params -> ' . var_export($parameters, true), __METHOD__, __LINE__);
-        ServiceContainer::getLogger()->debug('Headers -> ' . var_export($http_headers, true), __METHOD__, __LINE__);
-        ServiceContainer::getLogger()->debug(sprintf("Response -> [%s][%s]\n%s", $content_type, $http_code, var_export($result, true)), __METHOD__, __LINE__);
-        ServiceContainer::getLogger()->debug('Total Time -> ' . var_export($total_time, true), __METHOD__, __LINE__);
-        ServiceContainer::getLogger()->debug('### END REQUEST ###', __METHOD__, __LINE__);
+        SC::getLogger()->debug('### BEGIN REQUEST ###', __METHOD__, __LINE__);
+        SC::getLogger()->debug(sprintf('URL -> [%s][%s] %s', $http_method, ($is_ssl ? 'ssl' : 'no ssl'), var_export($url, true)), __METHOD__, __LINE__);
+        SC::getLogger()->debug('Params -> ' . var_export($parameters, true), __METHOD__, __LINE__);
+        SC::getLogger()->debug('Headers -> ' . var_export($http_headers, true), __METHOD__, __LINE__);
+        SC::getLogger()->debug(sprintf("Response -> [%s][%s]\n%s", $content_type, $http_code, var_export($result, true)), __METHOD__, __LINE__);
+        SC::getLogger()->debug('Total Time -> ' . var_export($total_time, true), __METHOD__, __LINE__);
+        SC::getLogger()->debug('### END REQUEST ###', __METHOD__, __LINE__);
 
         return array(
             'result' => ($content_type === 'application/json') ? ((null === json_decode($result)) ? $result : json_decode($result)) : $result,
