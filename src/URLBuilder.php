@@ -14,6 +14,10 @@ use Genetsis\core\OAuthConfig;
  */
 class URLBuilder
 {
+    private static $ids = array("email", "screen_name", "national_id", "phone_number");
+    private static $location = array("telephone");
+    private static $location_address = array("streetAddress", "locality", "region", "postalCode", "country");
+
     /**
      * Returns the link for login process.
      *
@@ -23,16 +27,19 @@ class URLBuilder
      * @param string $social - to force login with social network. Optional. Values 'facebook', 'twitter'
      * @param string $urlCallback Url for callback. A list of valid url is defined in "oauthconf.xml"
      *     If it's NULL default url will be used.
+     * @param string $urlCallback Url for callback. A list of valid url is defined in "oauthconf.xml"
+     *     If it's NULL default url will be used.
      * @return string The URL for login process.
      */
-    public static function getUrlLogin($scope = null, $social = null, $urlCallback = null)
+    public static function getUrlLogin($scope = null, $social = null, $urlCallback = null, array $prefill = array())
     {
 
         return self::buildLoginUrl(
             OAuthConfig::getEndpointUrl('authorization_endpoint'),
             OAuthConfig::getRedirectUrl('postLogin', $urlCallback),
             $scope,
-            $social
+            $social,
+            $prefill
         );
     }
 
@@ -46,12 +53,13 @@ class URLBuilder
      *     If it's NULL the default url will be used.
      * @return string The URL for register process.
      */
-    public static function getUrlRegister($scope = null, $urlCallback = null)
+    public static function getUrlRegister($scope = null, $urlCallback = null, array $prefill = array())
     {
         return self::buildSignupUrl(
             OAuthConfig::getEndpointUrl('signup_endpoint'),
             OAuthConfig::getRedirectUrl('register', $urlCallback),
-            $scope
+            $scope,
+            $prefill
         );
     }
 
@@ -205,6 +213,29 @@ class URLBuilder
     }
 
     /**
+     *
+     */
+    private static function arrayToUserJson(array $userInfo) {
+
+
+        $user = array("objectType" => "user");
+
+        foreach ($userInfo as $field => $value) {
+            if (in_array($field, self::$ids)) {
+                $user["ids"][$field] = array("value" => $value);
+            } else if (in_array($field, self::$location)) {
+                $user["location"][$field] = $value;
+            } else if (in_array($field, self::$location_address)) {
+                $user["location"]["address"][$field] = $value;
+            } else { //is a data
+                $user["datas"][$field] = array("value" => $value);
+            }
+        }
+
+        return json_encode($user);
+    }
+
+    /**
      * Builds the URL to login process.
      *
      * @param string $endpoint_url The endpoint. Normally the 'authorization_endpoint' of
@@ -217,7 +248,7 @@ class URLBuilder
      * @return string The URL generated.
      * @throws \Exception If there is an error.
      */
-    private static function buildLoginUrl($endpoint_url, $redirect_url, $scope = null, $social = null)
+    private static function buildLoginUrl($endpoint_url, $redirect_url, $scope = null, $social = null, array $prefill = array())
     {
 
         try {
@@ -239,6 +270,10 @@ class URLBuilder
 
             if ($social != null) {
                 $params['ck_auth_provider'] = $social;
+            }
+
+            if (!empty($prefill)) {
+                $params['x_prefill'] = base64_encode(self::arrayToUserJson($prefill));
             }
 
             return $endpoint_url . '?' . http_build_query($params, null, '&');
@@ -308,7 +343,7 @@ class URLBuilder
      * @return string The URL generated.
      * @throws \Exception If there is an error.
      */
-    private static function buildSignupUrl($endpoint_url, $redirect_url, $scope = null)
+    private static function buildSignupUrl($endpoint_url, $redirect_url, $scope = null, array $prefill = array())
     {
         try {
 
@@ -321,6 +356,10 @@ class URLBuilder
             $params['x_method'] = 'sign_up';
             if (!is_null($scope)) {
                 $params ['scope'] = $scope;
+            }
+
+            if (!empty($prefill)) {
+                $params['x_prefill'] = base64_encode(self::arrayToUserJson($prefill));
             }
 
             return $url . '&' . http_build_query($params, null, '&');
