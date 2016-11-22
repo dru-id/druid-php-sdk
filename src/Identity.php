@@ -24,8 +24,8 @@ use Genetsis\core\Things;
 use Genetsis\core\FileCache;
 use Genetsis\core\OAuth\Collections\TokenTypes as TokenTypesCollection;
 use Genetsis\core\Logger\Collections\LogLevels as LogLevelsCollection;
-use Genetsis\core\LoginStatusType;
 use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
+use Genetsis\core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
 
 
 if (session_id() === '') {
@@ -368,7 +368,7 @@ class Identity
     {
         try {
             SC::getLogger()->debug('Checking login status', __METHOD__, __LINE__);
-            if (self::$gid_things->getLoginStatus()->getConnectState() == LoginStatusType::connected) {
+            if (self::$gid_things->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED) {
                 SC::getLogger()->debug('User is connected, check access token', __METHOD__, __LINE__);
                 $loginStatus = SC::getOAuthService()->doValidateBearer((string)SC::getOAuthService()->getConfig()->getEndPoint('token_endpoint'));
                 self::$gid_things->setLoginStatus($loginStatus);
@@ -389,7 +389,7 @@ class Identity
     public static function isConnected()
     {
         if ((!is_null(self::getThings())) && (!is_null(self::getThings()->getAccessToken())) &&
-            (!is_null(self::getThings()->getLoginStatus()) && (self::getThings()->getLoginStatus()->getConnectState() == LoginStatusType::connected))
+            (!is_null(self::getThings()->getLoginStatus()) && (self::getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED))
         ) {
             return true;
         }

@@ -3,11 +3,11 @@ namespace Genetsis;
 
 use Exception;
 use Genetsis\core\User;
-use Genetsis\core\LoginStatusType;
 use Genetsis\core\FileCache;
 use Genetsis\core\user\Brand;
-use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
 use Genetsis\core\Http\Collections\HttpMethods as HttpMethodsCollection;
+use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
+use Genetsis\core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
 
 /**
  * This class allow you to use the User Api
@@ -37,7 +37,7 @@ class UserApi
         try {
             SC::getLogger()->debug('Get user Logged info', __METHOD__, __LINE__);
 
-            if ((Identity::getThings()->getLoginStatus()!=null)&&(Identity::getThings()->getLoginStatus()->getConnectState() == LoginStatusType::connected)) {
+            if ((Identity::getThings()->getLoginStatus()!=null)&&(Identity::getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
                 $user_logged = self::getUsers(array('id' => Identity::getThings()->getLoginStatus()->getCkUsid()));
                 if (count($user_logged)>0) {
                     return $user_logged[0];
@@ -59,7 +59,7 @@ class UserApi
     {
         SC::getLogger()->debug('Get user Logged info', __METHOD__, __LINE__);
 
-        if ((Identity::getThings()->getLoginStatus()!=null)&&(Identity::getThings()->getLoginStatus()->getConnectState() == LoginStatusType::connected)) {
+        if ((Identity::getThings()->getLoginStatus()!=null)&&(Identity::getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
             return Identity::getThings()->getLoginStatus()->getCkUsid();
         }
 
@@ -76,7 +76,7 @@ class UserApi
     {
         SC::getLogger()->debug('Get user Logged info', __METHOD__, __LINE__);
 
-        if ((Identity::getThings()->getLoginStatus()!=null)&&(Identity::getThings()->getLoginStatus()->getConnectState() == LoginStatusType::connected)) {
+        if ((Identity::getThings()->getLoginStatus()!=null)&&(Identity::getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
             return Identity::getThings()->getLoginStatus()->getOid();
         }
 
@@ -199,7 +199,7 @@ class UserApi
             SC::getLogger()->debug('Delete cache of user', __METHOD__, __LINE__);
 
             if ($ckusid == null) {
-                if ((Identity::getThings()->getLoginStatus()!=null)&&(Identity::getThings()->getLoginStatus()->getConnectState() == LoginStatusType::connected)) {
+                if ((Identity::getThings()->getLoginStatus()!=null)&&(Identity::getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
                     FileCache::delete('user-' . Identity::getThings()->getLoginStatus()->getCkUsid());
                 }
             } else {

@@ -2,9 +2,9 @@
 
 use Exception;
 use Genetsis\core\Encryption\Services\Encryption;
-use Genetsis\core\LoginStatus;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Config;
 use Genetsis\core\OAuth\Exceptions\InvalidGrantException;
+use Genetsis\core\User\Beans\LoginStatus;
 use Genetsis\Identity;
 use Genetsis\core\OAuth\Beans\StoredToken;
 use Genetsis\core\OAuth\Beans\AccessToken;
