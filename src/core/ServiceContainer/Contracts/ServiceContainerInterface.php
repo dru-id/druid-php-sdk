@@ -3,6 +3,7 @@
 use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\Http\Contracts\HttpServiceInterface;
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
+use Genetsis\core\ServiceContainer\Exceptions\InvalidServiceException;
 
 /**
  * Service container interface.
@@ -18,11 +19,16 @@ interface ServiceContainerInterface {
     /**
      * @param array $services List of services. Accepts any of these:
      *      - LoggerServiceInterface
+     *      - HttpServiceInterface
+     *      - OAuthServiceInterface
+     * @return void
+     * @throws InvalidServiceException
      */
     public static function init (array $services = array());
 
     /**
      * @return LoggerServiceInterface
+     * @throws InvalidServiceException
      */
     public static function getLogger ();
 
@@ -34,6 +40,7 @@ interface ServiceContainerInterface {
 
     /**
      * @return HttpServiceInterface
+     * @throws InvalidServiceException
      */
     public static function getHttpService();
 
@@ -45,6 +52,7 @@ interface ServiceContainerInterface {
 
     /**
      * @return OAuthServiceInterface
+     * @throws InvalidServiceException
      */
     public static function getOAuthService();
 

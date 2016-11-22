@@ -12,6 +12,7 @@ namespace Genetsis;
 require_once(dirname(__FILE__) . "/Autoloader.php");
 
 use Exception;
+use Genetsis\core\Http\Services\Http;
 use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\Logger\Services\DruIDLogger;
 use Genetsis\core\Logger\Services\EmptyLogger;
@@ -91,6 +92,8 @@ class Identity
                 if (!isset($settings['app'])) { $settings['app'] = 'default'; }
                 if (!isset($settings['sync'])) { $settings['sync'] = true; }
                 Config::init($settings['app'], $settings['ini_path']);
+
+                SC::setHttpService(new Http());
 
                 if (isset($settings['logger']) && ($settings['logger'] instanceof LoggerServiceInterface)) { // Custom logger.
                     SC::setLogger($settings['logger']);

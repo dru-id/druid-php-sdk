@@ -27,7 +27,6 @@ class URLBuilder
      */
     public static function getUrlLogin($scope = null, $social = null, $urlCallback = null)
     {
-
         return self::buildLoginUrl(
             (string)SC::getOAuthService()->getConfig()->getEndPoint('authorization_endpoint'),
             (string)SC::getOAuthService()->getConfig()->getRedirect('postLogin', $urlCallback),

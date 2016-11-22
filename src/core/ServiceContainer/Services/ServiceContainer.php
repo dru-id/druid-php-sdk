@@ -6,6 +6,7 @@ use Genetsis\core\Http\Services\Http as HttpService;
 use Genetsis\core\Logger\Services\EmptyLogger;
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\core\ServiceContainer\Contracts\ServiceContainerInterface;
+use Genetsis\core\ServiceContainer\Exceptions\InvalidServiceException;
 
 /**
  * DruID service container.
@@ -32,25 +33,14 @@ class ServiceContainer implements ServiceContainerInterface {
         foreach ($services as $service) {
             if ($service instanceof LoggerServiceInterface) {
                 static::setLogger($service);
-            }
-            if ($service instanceof HttpServiceInterface) {
+            } elseif ($service instanceof HttpServiceInterface) {
                 static::setHttpService($service);
-            }
-            if ($service instanceof OAuthServiceInterface) {
+            } elseif ($service instanceof OAuthServiceInterface) {
                 static::setOAuthService($service);
+            } else {
+                throw new InvalidServiceException('Service "'.(is_object($service) ? get_class($service) : $service).'" is not a valid service.');
             }
         }
-
-        // Default services.
-        if (!isset(static::$logger)) {
-            static::$logger = new EmptyLogger();
-        }
-        if (!isset(static::$http_service)) {
-            static::$http_service = new HttpService();
-        }
-//        if (!isset(static::$oauth)) {
-//            static::$oauth = new OAuth();
-//        }
     }
 
     /**
@@ -58,7 +48,9 @@ class ServiceContainer implements ServiceContainerInterface {
      */
     public static function getLogger()
     {
-        static::init();
+        if (!isset(static::$logger) || !(static::$logger instanceof LoggerServiceInterface)) {
+            throw new InvalidServiceException('Logger service not defined');
+        }
         return static::$logger;
     }
 
@@ -75,6 +67,9 @@ class ServiceContainer implements ServiceContainerInterface {
      */
     public static function getHttpService()
     {
+        if (!isset(static::$http_service) || !(static::$http_service instanceof HttpServiceInterface)) {
+            throw new InvalidServiceException('Http service not defined');
+        }
         return static::$http_service;
     }
 
@@ -91,6 +86,9 @@ class ServiceContainer implements ServiceContainerInterface {
      */
     public static function getOAuthService()
     {
+        if (!isset(static::$oauth) || !(static::$oauth instanceof OAuthServiceInterface)) {
+            throw new InvalidServiceException('OAuth service not defined');
+        }
         return static::$oauth;
     }
 
