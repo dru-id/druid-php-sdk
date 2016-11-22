@@ -1,22 +1,18 @@
-<?php
-
-namespace Genetsis\core;
+<?php namespace Genetsis\core\Encryption\Services;
 
 /**
  * This class is used to wrap encryption functions.
  *
  * @package   Genetsis
- * @category  Helper
- * @version   1.0
- * @access    private
+ * @category  Service
  */
 class Encryption
 {
-    /** @var string The secret key to encrypt data. */
-    private $_skey = "yourSecretKey";
+    /** @var string $_skey The secret key to encrypt data. */
+    private $_skey = '';
 
     /**
-     * @param string The secret key to encrypt data.
+     * @param string $client_secret The secret key to encrypt data.
      */
     public function __construct($client_secret)
     {
@@ -26,8 +22,8 @@ class Encryption
     /**
      * Encodes a string using a secret key.
      *
-     * @param string The string to be encoded.
-     * @return mixed The string encoded or FALSE.
+     * @param string $value The string to be encoded.
+     * @return string|false The string encoded. FALSE if there is a problem encoding the value.
      */
     public function encode($value)
     {
@@ -43,7 +39,7 @@ class Encryption
     /**
      * Encodes a string using base64.
      *
-     * @param $string The string to be encoded.
+     * @param $string $string The string to be encoded.
      * @return mixed The encoded string.
      */
     public function safe_b64encode($string)
@@ -54,8 +50,8 @@ class Encryption
     /**
      * Decodes a string using a secret key.
      *
-     * @param string The string to be decoded.
-     * @return mixed The string decoded or FALSE.
+     * @param string $value The string to be decoded. This string must be encoded with the {@link Encryption::encode} method.
+     * @return string|false The string decoded. FALSE if there is a problem decoding the value.
      */
     public function decode($value)
     {
@@ -71,8 +67,8 @@ class Encryption
     /**
      * Decodes base64 encoded string.
      *
-     * @param $string The string to be decoded.
-     * @return The string decoded.
+     * @param $string $string The string to be decoded.
+     * @return string|false The string decoded o FALSE on failure.
      */
     public function safe_b64decode($string)
     {

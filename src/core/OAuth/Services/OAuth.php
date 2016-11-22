@@ -1,12 +1,11 @@
 <?php namespace Genetsis\core\OAuth\Services;
 
 use Exception;
-use Genetsis\core\Encryption;
+use Genetsis\core\Encryption\Services\Encryption;
 use Genetsis\core\LoginStatus;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Config;
 use Genetsis\Identity;
 use Genetsis\core\InvalidGrantException;
-
 use Genetsis\core\OAuth\Beans\StoredToken;
 use Genetsis\core\OAuth\Beans\AccessToken;
 use Genetsis\core\OAuth\Beans\RefreshToken;
@@ -134,9 +133,7 @@ class OAuth implements OAuthServiceInterface
      */
     public function storeToken (StoredTokenInterface $token)
     {
-        $encryption = new Encryption($this->config->getClientId());
-        $cod = $encryption->encode($token->getValue());
-        @setcookie($token->getName(), $cod, $token->getExpiresAt(), $token->getPath(), '', false, true);
+        @setcookie($token->getName(), (new Encryption($this->config->getClientId()))->encode($token->getValue()), $token->getExpiresAt(), $token->getPath(), '', false, true);
     }
 
     /**
@@ -453,12 +450,9 @@ class OAuth implements OAuthServiceInterface
             throw new Exception ('Token type not exist');
         }
 
-        $encryption = new Encryption($this->config->getClientId());
-        if (isset($_COOKIE[$name])) {
-            return StoredToken::factory($name, $encryption->decode($_COOKIE[$name]), 0, 0, '/');
-        } else {
-            return null;
-        }
+        return (isset($_COOKIE[$name]) && $_COOKIE[$name])
+            ? StoredToken::factory($name, (new Encryption($this->config->getClientId()))->decode($_COOKIE[$name]), 0, 0, '/')
+            : null;
     }
 
     /**
