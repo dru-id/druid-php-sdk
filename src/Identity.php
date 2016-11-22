@@ -17,11 +17,11 @@ use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\Logger\Services\DruIDLogger;
 use Genetsis\core\Logger\Services\EmptyLogger;
 use Genetsis\core\OAuth\Beans\ClientToken;
+use Genetsis\core\OAuth\Exceptions\InvalidGrantException;
 use Genetsis\core\OAuth\Services\OAuth;
 use Genetsis\core\OAuth\Services\OAuthConfig as OAuthConfigService;
 use Genetsis\core\Things;
 use Genetsis\core\FileCache;
-use Genetsis\core\InvalidGrantException;
 use Genetsis\core\OAuth\Collections\TokenTypes as TokenTypesCollection;
 use Genetsis\core\LogConfig;
 use Genetsis\core\Logger\Collections\LogLevels as LogLevelsCollection;
@@ -438,7 +438,7 @@ class Identity
 
             $_SESSION['Things'] = @serialize(self::$gid_things);
 
-        } catch ( \Genetsis\core\InvalidGrantException $e) {
+        } catch (InvalidGrantException $e) {
             SC::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
         } catch (Exception $e) {
             SC::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
