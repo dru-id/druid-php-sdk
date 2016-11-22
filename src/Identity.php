@@ -102,10 +102,6 @@ class Identity
                         SC::setLogger(new EmptyLogger());
                     } else {
                         SC::setLogger(new DruIDLogger($_SERVER['DOCUMENT_ROOT'] . '/' . Config::logPath(), LogLevelsCollection::DEBUG));
-                        if (!class_exists('Logger')) {
-                            include_once dirname(__FILE__) . '/core/log4php/Logger.php';
-                        }
-                        \Logger::configure('main', new LogConfig(Config::logLevel(), Config::logPath()));
                     }
                 }
 
