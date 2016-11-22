@@ -23,7 +23,6 @@ use Genetsis\core\OAuth\Services\OAuthConfig as OAuthConfigService;
 use Genetsis\core\Things;
 use Genetsis\core\FileCache;
 use Genetsis\core\OAuth\Collections\TokenTypes as TokenTypesCollection;
-use Genetsis\core\LogConfig;
 use Genetsis\core\Logger\Collections\LogLevels as LogLevelsCollection;
 use Genetsis\core\LoginStatusType;
 use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
