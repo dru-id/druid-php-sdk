@@ -20,11 +20,11 @@ use Genetsis\core\OAuth\Beans\ClientToken;
 use Genetsis\core\OAuth\Exceptions\InvalidGrantException;
 use Genetsis\core\OAuth\Services\OAuth;
 use Genetsis\core\OAuth\Services\OAuthConfig as OAuthConfigService;
-use Genetsis\core\Things;
 use Genetsis\core\FileCache;
 use Genetsis\core\OAuth\Collections\TokenTypes as TokenTypesCollection;
 use Genetsis\core\Logger\Collections\LogLevels as LogLevelsCollection;
 use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
+use Genetsis\core\User\Beans\Things;
 use Genetsis\core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
 
 
@@ -54,11 +54,11 @@ if (session_id() === '') {
  */
 class Identity
 {
-    /** @var Things Object to store Genetsis ID's session data. */
+    /** @var Things $gid_things Object to store Genetsis ID's session data. */
     private static $gid_things;
-    /** @var boolean Inidicates if Identity has been initialized */
+    /** @var boolean $initialized Indicates if Identity has been initialized */
     private static $initialized = false;
-    /** @var boolean Inidicates if synchronizeSessionWithServer has been called */
+    /** @var boolean $synchronized Indicates if synchronizeSessionWithServer has been called */
     private static $synchronized = false;
 
 
@@ -118,7 +118,9 @@ class Identity
                     });
                 SC::setOAuthService(new OAuth($config));
 
-                self::$gid_things = new Things();
+                self::$gid_things = (isset($_SESSION['Things']) && (($my_things = @unserialize($_SESSION['Things'])) instanceof Things))
+                    ? $my_things
+                    : new Things();
 
                 if ($settings['sync']) {
                     self::synchronizeSessionWithServer();
@@ -399,7 +401,7 @@ class Identity
     /**
      * Helper to access library data
      *
-     * @return \Genetsis\core\Things
+     * @return Things
      */
     public static function getThings()
     {
