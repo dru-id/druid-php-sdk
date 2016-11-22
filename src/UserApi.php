@@ -2,9 +2,9 @@
 namespace Genetsis;
 
 use Exception;
+use Genetsis\core\User\Beans\Brand;
 use Genetsis\core\User;
 use Genetsis\core\FileCache;
-use Genetsis\core\user\Brand;
 use Genetsis\core\Http\Collections\HttpMethods as HttpMethodsCollection;
 use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
 use Genetsis\core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
@@ -171,10 +171,9 @@ class UserApi
 
                 $brands = array();
                 foreach ($response['result']->items as $brand) {
-                    $gid_brand = new Brand();
-                    $gid_brand->setKey($brand->id);
-                    $gid_brand->setName($brand->displayName->es_ES);
-                    $brands[] = $gid_brand;
+                    if (isset($brand->id, $brand->displayName, $brand->displayName->es_ES)) {
+                        $brands[] = new Brand(['key' => $brand->id, 'name' => $brand->displayName->es_ES]);
+                    }
                 }
 
                 FileCache::set('brands', serialize($brands), 3600);
