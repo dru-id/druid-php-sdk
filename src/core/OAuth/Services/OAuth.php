@@ -63,7 +63,7 @@ class OAuth implements OAuthServiceInterface
      */
     public function setConfig(Config $config)
     {
-        $this->config = $config;
+        $this->config = clone $config;
     }
 
     /**
@@ -80,7 +80,7 @@ class OAuth implements OAuthServiceInterface
             $params ['grant_type'] = AuthMethodsCollection::GRANT_TYPE_CLIENT_CREDENTIALS;
             $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST, true);
 
-            self::checkErrors($response);
+            $this->checkErrors($response);
 
             if (!isset ($response['result']->access_token) || ($response['result']->access_token == '')) {
                 throw new Exception ('The client_token retrieved is empty');
@@ -94,7 +94,7 @@ class OAuth implements OAuthServiceInterface
             $expires_in = ($expires_in - ($expires_in * self::SAFETY_RANGE_EXPIRES_IN));
             $expires_at = (time() + $expires_in);
             $client_token = new ClientToken(trim($response['result']->access_token), $expires_in, $expires_at, '/');
-            self::storeToken($client_token);
+            $this->storeToken($client_token);
 
             return $client_token;
         } catch (Exception $e) {
@@ -110,7 +110,7 @@ class OAuth implements OAuthServiceInterface
      * @return void
      * @throws \Exception If there is an error in the response.
      */
-    private static function checkErrors($response)
+    private function checkErrors($response)
     {
         if (isset($response['result']->error)) {
             if (isset($response['result']->type)) {
@@ -134,7 +134,7 @@ class OAuth implements OAuthServiceInterface
      */
     public function storeToken (StoredTokenInterface $token)
     {
-        $encryption = new Encryption(SC::getOAuthService()->getConfig()->getClientId());
+        $encryption = new Encryption($this->config->getClientId());
         $cod = $encryption->encode($token->getValue());
         @setcookie($token->getName(), $cod, $token->getExpiresAt(), $token->getPath(), '', false, true);
     }
@@ -168,7 +168,7 @@ class OAuth implements OAuthServiceInterface
             $params ['redirect_uri'] = $redirect_url;
             $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST, true);
 
-            self::checkErrors($response);
+            $this->checkErrors($response);
 
             if (!isset ($response ['result']->access_token) || ($response ['result']->access_token == '')) {
                 throw new Exception ('The access_token retrieved is empty');
@@ -188,8 +188,8 @@ class OAuth implements OAuthServiceInterface
             $result['access_token'] = new AccessToken(trim($response ['result']->access_token), $expires_in, $expires_at, '/');
             $result['refresh_token'] = new RefreshToken(trim($response ['result']->refresh_token), 0, $refresh_expires_at, '/');
 
-            self::storeToken($result['access_token']);
-            self::storeToken($result['refresh_token']);
+            $this->storeToken($result['access_token']);
+            $this->storeToken($result['refresh_token']);
 
             $loginStatus = new LoginStatus();
             if (isset ($response ['result']->login_status)) {
@@ -232,7 +232,7 @@ class OAuth implements OAuthServiceInterface
             $params['refresh_token'] = $refresh_token->getValue();
             $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST, true);
 
-            self::checkErrors($response);
+            $this->checkErrors($response);
 
             if (!isset ($response ['result']->access_token) || ($response ['result']->access_token == '')) {
                 throw new Exception ('The access_token retrieved is empty');
@@ -294,7 +294,7 @@ class OAuth implements OAuthServiceInterface
             unset ($access_token);
             $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST, true);
 
-            self::checkErrors($response);
+            $this->checkErrors($response);
 
             $loginStatus = new LoginStatus();
             if (isset ($response ['result']->login_status)) {
@@ -336,7 +336,7 @@ class OAuth implements OAuthServiceInterface
             $params ['grant_type'] = AuthMethodsCollection::GRANT_TYPE_EXCHANGE_SESSION;
             $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST, true, null, array(self::SSO_COOKIE_NAME . '=' . $cookie_value));
 
-            self::checkErrors($response);
+            $this->checkErrors($response);
 
             if (!isset ($response ['result']->access_token) || ($response ['result']->access_token == '')) {
                 throw new Exception ('The access_token retrieved is empty');
@@ -453,7 +453,7 @@ class OAuth implements OAuthServiceInterface
             throw new Exception ('Token type not exist');
         }
 
-        $encryption = new Encryption(SC::getOAuthService()->getConfig()->getClientId());
+        $encryption = new Encryption($this->config->getClientId());
         if (isset($_COOKIE[$name])) {
             return StoredToken::factory($name, $encryption->decode($_COOKIE[$name]), 0, 0, '/');
         } else {
@@ -536,7 +536,7 @@ class OAuth implements OAuthServiceInterface
 
             $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST);
 
-            self::checkErrors($response);
+            $this->checkErrors($response);
 
             if (isset($response['code']) && ($response['code'] == 200)) {
                 return (($response['result']->data[0]->meta->value) === 'false') ? true : false;
@@ -581,7 +581,7 @@ class OAuth implements OAuthServiceInterface
 
             $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST);
 
-            self::checkErrors($response);
+            $this->checkErrors($response);
 
             if (isset($response['code']) && ($response['code'] == 200)) {
                 return call_user_func(function($result){
