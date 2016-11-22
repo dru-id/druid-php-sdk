@@ -18,20 +18,16 @@ class StoredToken implements StoredTokenInterface
     /** @var string The token name. */
     protected $name = '';
     /** @var string The token value. */
-    protected $value = null;
+    protected $value = '';
     /** @var integer integer Number the seconds until the token expires. */
-    protected $expires_in = null;
+    protected $expires_in = 0;
     /** @var integer Date when the token expires. As UNIX timestamp. */
-    protected $expires_at = null;
+    protected $expires_at = 0;
     /** @var string Full path to the folder where cookies will be saved. */
     protected $path = '/';
 
     /**
-     * @param string $value The token value.
-     * @param integer $expires_in Number the seconds until the token expires.
-     * @param integer $expires_at Date when the token expires. As UNIX timestamp.
-     * @param string $path Full path to the folder where cookies will be saved.
-     *     Only if necessary.
+     * @inheritDoc
      */
     public function __construct($value, $expires_in = 0, $expires_at = 0, $path = '/')
     {
@@ -42,18 +38,11 @@ class StoredToken implements StoredTokenInterface
     }
 
     /**
-     * Create an instance of an access token based on the name.
-     *
-     * @param string $name The token name.
-     * @param sting $value The token value.
-     * @param $expires_in Number the seconds until the token expires.
-     * @param $expires_at Date when the token expires. As UNIX timestamp.
-     * @param $path Full path to the folder where cookies will be saved.
-     * @return boolean|StoredTokenInterface FALSE if we are not able to create it.
+     * @inheritDoc
      */
-    public static function factory ($name, $value, $expires_in, $expires_at, $path)
+    public static function factory($name, $value, $expires_in = 0, $expires_at = 0, $path = '/')
     {
-        switch (trim((string)$name)) {
+        switch ($name) {
             case TokenTypesCollection::ACCESS_TOKEN:
                 return new AccessToken ($value, $expires_in, $expires_at, $path);
             case TokenTypesCollection::CLIENT_TOKEN:
@@ -63,6 +52,7 @@ class StoredToken implements StoredTokenInterface
         }
         return false;
     }
+
 
     /**
      * @inheritDoc
@@ -77,94 +67,73 @@ class StoredToken implements StoredTokenInterface
      */
     public function setName($name)
     {
+        if (!TokenTypesCollection::check($name)) {
+            throw new \InvalidArgumentException('Invalid token name');
+        }
         $this->name = $name;
+        return $this;
     }
 
 
     /**
-     * Returns the token value.
-     *
-     * @return string The token value. It could be empty.
+     * @inheritDoc
      */
     public function getValue()
     {
-        return ((!isset($this->value) || ($this->value === null))
-            ? ''
-            : $this->value);
+        return $this->value;
     }
 
     /**
-     * Sets token value.
-     *
-     * @param string Token value.
-     * @return void
+     * @inheritDoc
      */
     public function setValue($value)
     {
-        $this->value = trim((string)$value);
+        $this->value = (string)$value;
+        return $this;
     }
 
     /**
-     * Returns the number of seconds when token expires.
-     *
-     * @return integer The number of seconds.
+     * @inheritDoc
      */
     public function getExpiresIn()
     {
-        return ((!isset($this->expires_in) || ($this->expires_in === null))
-            ? 0
-            : $this->expires_in);
+        return $this->expires_in;
     }
 
     /**
-     * Sets the number of seconds when token expires.
-     *
-     * @param integer The number of seconds it takes to die.
-     * @return void
+     * @inheritDoc
      */
     public function setExpiresIn($expires_in)
     {
-        $this->expires_in = (is_integer($expires_in)
-            ? $expires_in
-            : (int)$expires_in);
+        $this->expires_in = (int)$expires_in;
         if ($this->expires_in < 0) {
             $this->expires_in = 0;
         }
+        return $this;
     }
 
     /**
-     * Returns the date when the "token" should be dead.
-     *
-     * @return integer UNIX timestamp with the date. Zero if not defined.
+     * @inheritDoc
      */
     public function getExpiresAt()
     {
-        return ((!isset($this->expires_at) || ($this->expires_at === null))
-            ? 0
-            : $this->expires_at);
+        return $this->expires_at;
     }
 
     /**
-     * Sets the date when the "token" should be dead.
-     *
-     * @param integer UNIX timestamp.
-     * @return void
+     * @inheritDoc
      */
     public function setExpiresAt($expires_at)
     {
-        $this->expires_at = (is_integer($expires_at)
-            ? $expires_at
-            : (int)$expires_at);
+        $this->expires_at = (int)$expires_at;
         if ($this->expires_at < 0) {
             $this->expires_at = 0;
         }
+        return $this;
     }
 
     /**
-     * Returns the path to cookie folder.
-     *
-     * @return string The full path to the folder where the cookies will be
-     *     saved.
+     * @inheritDoc
      */
     public function getPath()
     {
@@ -172,14 +141,11 @@ class StoredToken implements StoredTokenInterface
     }
 
     /**
-     * Sets the path where the cookies will be saved.
-     *
-     * @param string Full path to the folder.
-     * @return void
-     * @todo Checks if path exists and is writable.
+     * @inheritDoc
      */
     public function setPath($path)
     {
-        $this->path = trim((string)$path);
+        $this->path = (string)$path;
+        return $this;
     }
 }

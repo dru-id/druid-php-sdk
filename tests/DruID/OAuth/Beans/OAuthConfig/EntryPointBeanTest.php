@@ -1,8 +1,12 @@
-<?php namespace Genetsis\tests\OAuth\Beans;
+<?php namespace Genetsis\tests\OAuth\Beans\OAuthConfig;
 
 use PHPUnit\Framework\TestCase;
 use Genetsis\core\OAuth\Beans\OAuthConfig\EntryPoint;
 
+/**
+ * @package Genetsis
+ * @category TestCase
+ */
 class EntryPointBeanTest extends TestCase
 {
 

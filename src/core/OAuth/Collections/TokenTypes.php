@@ -12,5 +12,14 @@ class TokenTypes {
     const ACCESS_TOKEN = '__uas';
     const REFRESH_TOKEN = '__urs';
 
+    /**
+     * @param string $value
+     * @return boolean TRUE if it is a valid value or FALSE otherwise.
+     */
+    public static function check($value)
+    {
+        return in_array($value, [self::CLIENT_TOKEN, self::ACCESS_TOKEN, self::REFRESH_TOKEN]);
+    }
+
 }
 	

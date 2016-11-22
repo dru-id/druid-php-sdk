@@ -20,14 +20,14 @@ interface StoredTokenInterface {
     /**
      * Create an instance of an access token based on the name.
      *
-     * @param string $name The token name.
+     * @param string $name One of the values defined in {@link \Genetsis\core\OAuth\Collections\TokenTypes}
      * @param string $value The token value.
      * @param integer $expires_in Number the seconds until the token expires.
      * @param integer $expires_at Date when the token expires. As UNIX timestamp.
      * @param string $path Full path to the folder where cookies will be saved.
      * @return bool|StoredTokenInterface An object with the token data or FALSE if we are not able to create it.
      */
-    public static function factory ($name, $value, $expires_in, $expires_at, $path);
+    public static function factory ($name, $value, $expires_in = 0, $expires_at = 0, $path = '/');
 
     /**
      * Returns the token name.
@@ -43,7 +43,8 @@ interface StoredTokenInterface {
      * Sets the token name.
      *
      * @param string $name One of the values defined in {@link \Genetsis\core\OAuth\Collections\TokenTypes}
-     * @return void
+     * @return StoredTokenInterface
+     * @throws \InvalidArgumentException If the name is invalid.
      */
     public function setName($name);
 
@@ -58,7 +59,7 @@ interface StoredTokenInterface {
      * Sets token value.
      *
      * @param string $value Token value.
-     * @return void
+     * @return StoredTokenInterface
      */
     public function setValue($value);
 
@@ -73,7 +74,7 @@ interface StoredTokenInterface {
      * Sets the number of seconds when token expires.
      *
      * @param integer $expires_in The number of seconds it takes to die.
-     * @return void
+     * @return StoredTokenInterface
      */
     public function setExpiresIn($expires_in);
 
@@ -88,7 +89,7 @@ interface StoredTokenInterface {
      * Sets the date when the "token" should be dead.
      *
      * @param integer $expires_at UNIX timestamp.
-     * @return void
+     * @return StoredTokenInterface
      */
     public function setExpiresAt($expires_at);
 
@@ -104,7 +105,7 @@ interface StoredTokenInterface {
      * Sets the path where the cookies will be saved.
      *
      * @param string $path Full path to the folder.
-     * @return void
+     * @return StoredTokenInterface
      */
     public function setPath($path);
 

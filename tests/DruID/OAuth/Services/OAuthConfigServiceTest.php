@@ -3,6 +3,10 @@
 use Genetsis\core\OAuth\Services\OAuthConfig;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @package Genetsis
+ * @category TestCase
+ */
 class OAuthConfigServiceTest extends TestCase
 {
 

@@ -1,4 +1,4 @@
-<?php namespace Genetsis\tests\OAuth\Beans;
+<?php namespace Genetsis\tests\OAuth\Beans\OAuthConfig;
 
 use Genetsis\core\OAuth\Beans\OAuthConfig\Api;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Config;
@@ -8,6 +8,10 @@ use Genetsis\core\OAuth\Beans\OAuthConfig\Host;
 use Genetsis\core\OAuth\Beans\OAuthConfig\RedirectUrl;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @package Genetsis
+ * @category TestCase
+ */
 class ConfigBeanTest extends TestCase
 {
 

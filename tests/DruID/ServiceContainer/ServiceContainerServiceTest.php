@@ -12,6 +12,10 @@ use Genetsis\core\ServiceContainer\Exceptions\InvalidServiceException;
 use Genetsis\core\ServiceContainer\Services\ServiceContainer;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @package Genetsis
+ * @category TestCase
+ */
 class ServiceContainerServiceTest extends TestCase
 {
     public function testLogger()
@@ -86,9 +90,21 @@ class ServiceContainerServiceTest extends TestCase
     }
 }
 
+/**
+ * Foo class for testing purpose.
+ *
+ * @package Genetsis
+ * @category TestCase\FooClass
+ */
 class FooClass {
 }
 
+/**
+ * Foo class for testing purpose.
+ *
+ * @package Genetsis
+ * @category TestCase\FooClass
+ */
 class FooLogger implements LoggerServiceInterface {
 
     /**
@@ -189,6 +205,12 @@ class FooLogger implements LoggerServiceInterface {
 
 }
 
+/**
+ * Foo class for testing purpose.
+ *
+ * @package Genetsis
+ * @category TestCase\FooClass
+ */
 class FooHttp implements HttpServiceInterface {
 
     /**
@@ -200,6 +222,12 @@ class FooHttp implements HttpServiceInterface {
 
 }
 
+/**
+ * Foo class for testing purpose.
+ *
+ * @package Genetsis
+ * @category TestCase\FooClass
+ */
 class FooOAuth implements OAuthServiceInterface {
     /**
      * @inheritDoc
