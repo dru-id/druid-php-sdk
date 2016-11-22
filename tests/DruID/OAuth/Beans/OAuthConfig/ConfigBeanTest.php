@@ -1,6 +1,7 @@
 <?php namespace Genetsis\tests\OAuth\Beans\OAuthConfig;
 
 use Genetsis\core\OAuth\Beans\OAuthConfig\Api;
+use Genetsis\core\OAuth\Beans\OAuthConfig\Brand;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Config;
 use Genetsis\core\OAuth\Beans\OAuthConfig\EndPoint;
 use Genetsis\core\OAuth\Beans\OAuthConfig\EntryPoint;
@@ -26,6 +27,19 @@ class ConfigBeanTest extends TestCase
         // ClientSecret
         $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $config->setClientSecret('my-secret'));
         $this->assertEquals('my-secret-2', $config->setClientSecret('my-secret-2')->getClientSecret());
+
+        // App name
+        $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $config->setAppName('my-app-name'));
+        $this->assertEquals('my-app-name', $config->getAppName());
+
+        // Brand
+        $this->assertNull($config->getBrand());
+        $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $config->setBrand(new Brand(['key' => 'my-brand-key', 'name' => 'my-brand-name'])));
+        $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Brand', $config->getBrand());
+
+        // Opi
+        $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $config->setOpi('my-opi-code'));
+        $this->assertEquals('my-opi-code', $config->getOpi());
 
         // Hosts
         $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $config->setHosts([

@@ -1,5 +1,6 @@
 <?php namespace Genetsis\tests\OAuth\Services;
 
+use Genetsis\core\OAuth\Beans\OAuthConfig\Brand;
 use Genetsis\core\OAuth\Services\OAuthConfig;
 use PHPUnit\Framework\TestCase;
 
@@ -18,6 +19,14 @@ class OAuthConfigServiceTest extends TestCase
         $this->assertEquals('XXXXXXX', $config->getClientId());
 
         $this->assertEquals('YYYYYYY', $config->getClientSecret());
+
+        $this->assertEquals('My Awesome App', $config->getAppName());
+
+        $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Brand', $config->getBrand());
+        $this->assertEquals('my-brand-key', $config->getBrand()->getKey());
+        $this->assertEquals('Brand Name', $config->getBrand()->getName());
+
+        $this->assertEquals('my-opi-tag', $config->getOpi());
 
         $this->assertCount(2, $config->getHosts());
         $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Host', $config->getHost('my-host-2'));
@@ -60,9 +69,9 @@ class OAuthConfigServiceTest extends TestCase
     </hosts>
 
     <data>
-        <name>Beefeater In-Edit (test)</name>
-        <brand key="beefeater">Beefeater</brand>
-        <opi>SPIRIT-ID-REGLAS</opi>
+        <name>My Awesome App</name>
+        <brand key="my-brand-key">Brand Name</brand>
+        <opi>my-opi-tag</opi>
     </data>
 
     <redirections>

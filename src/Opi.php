@@ -6,6 +6,9 @@ use Genetsis\core\OAuth;
 use Genetsis\core\OAuthConfig;
 use Genetsis\core\Request;
 
+use Genetsis\core\OAuth\Beans\OAuthConfig\Brand;
+use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
+
 /**
  * This class wraps all methods for interactions with OPI
  *
@@ -33,7 +36,7 @@ class Opi
     public static function get($opi=false, $redirect_url=false)
     {
         if (!$opi) {
-            $opi = OAuthConfig::getOpi();
+            $opi = SC::getOAuthService()->getConfig()->getOpi();
         }
 
         if (!$opi) {
@@ -42,7 +45,9 @@ class Opi
 
         $params = array(
             "id" => urlencode(UserApi::getUserLoggedOid()),
-            "sc" => urlencode(OAuthConfig::getBrand()),
+            "sc" => urlencode(
+                (SC::getOAuthService()->getConfig()->getBrand() instanceof Brand) ? SC::getOAuthService()->getConfig()->getBrand()->getName() : ''
+            ),
             "carry_url" => urlencode($redirect_url));
 
         $info = UserApi::getUserLogged();
@@ -94,6 +99,6 @@ class Opi
             $query[] = "$param=$value";
         }
 
-        return OAuthConfig::getApiUrl('opi','base_url') . OAuthConfig::getApiUrl('opi','rules') . "/" . $opi . "?" . implode('&', $query);
+        return SC::getOAuthService()->getConfig()->getApi('opi')->getEndpoint('rules', true).'/'.$opi.'?'.implode('&', $query);
     }
 }

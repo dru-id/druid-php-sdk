@@ -14,6 +14,15 @@ class Config {
     /** @var string $client_secret */
     protected $client_secret = '';
 
+    /** @var string $app_name */
+    protected $app_name = '';
+
+    /** @var Brand $brand */
+    protected $brand = null;
+
+    /** @var string $opi */
+    protected $opi = '';
+
     /** @var array $hosts A set of {@link EndPoint} instances. */
     protected $hosts = [];
 
@@ -62,6 +71,60 @@ class Config {
     public function setClientSecret($client_secret)
     {
         $this->client_secret = trim($client_secret);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAppName()
+    {
+        return $this->app_name;
+    }
+
+    /**
+     * @param string $app_name
+     * @return Config
+     */
+    public function setAppName($app_name)
+    {
+        $this->app_name = $app_name;
+        return $this;
+    }
+
+    /**
+     * @return Brand|null
+     */
+    public function getBrand()
+    {
+        return $this->brand;
+    }
+
+    /**
+     * @param Brand $brand
+     * @return Config
+     */
+    public function setBrand(Brand $brand)
+    {
+        $this->brand = $brand;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOpi()
+    {
+        return $this->opi;
+    }
+
+    /**
+     * @param string $opi
+     * @return Config
+     */
+    public function setOpi($opi)
+    {
+        $this->opi = $opi;
         return $this;
     }
 

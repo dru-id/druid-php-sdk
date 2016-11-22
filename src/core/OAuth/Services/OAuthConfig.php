@@ -4,6 +4,7 @@ use DOMDocument;
 use Genetsis\core\FileCache;
 use Genetsis\Config as IniConfig;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Api;
+use Genetsis\core\OAuth\Beans\OAuthConfig\Brand;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Config;
 use Genetsis\core\OAuth\Beans\OAuthConfig\EndPoint;
 use Genetsis\core\OAuth\Beans\OAuthConfig\EntryPoint;
@@ -90,6 +91,20 @@ class OAuthConfig {
                 throw new \Exception('Invalid credentials');
             }
             $config->setClientSecret($temp->item(0)->nodeValue);
+
+            // Data. This node is not mandatory.
+            $temp = $xml_obj->getElementsByTagName('data');
+            if ($temp->length > 0) {
+                foreach ($temp->item(0)->childNodes as $node) {
+                    if ($node instanceof \DOMElement) {
+                        switch ($node->nodeName) {
+                            case 'name': $config->setAppName(trim($node->nodeValue)); break;
+                            case 'brand': $config->setBrand(new Brand(['key' => $node->getAttribute('key'), 'name' => $node->nodeValue])); break;
+                            case 'opi': $config->setOpi(trim($node->nodeValue)); break;
+                        }
+                    }
+                }
+            }
 
             // Hosts. This node is not mandatory.
             $temp = $xml_obj->getElementsByTagName('hosts');
