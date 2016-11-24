@@ -16,7 +16,7 @@ class Http implements HttpServiceInterface {
     /**
      * @inheritDoc
      */
-    public function execute($url, $parameters = array(), $http_method = HttpMethodsCollection::GET, $credentials = false, $http_headers = array(), $cookies = array())
+    public function execute($url, $parameters = array(), $http_method = HttpMethodsCollection::GET, $http_headers = array(), $cookies = array())
     {
         if (!extension_loaded('curl')) {
             throw new Exception('The PHP extension curl must be installed to use this library.');
@@ -34,7 +34,7 @@ class Http implements HttpServiceInterface {
         $curl_options = array(
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST => $http_method,
-            CURLOPT_USERAGENT => $_SERVER['HTTP_USER_AGENT']
+            CURLOPT_USERAGENT => isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : ''
         );
 
         if ($is_ssl) {
@@ -42,11 +42,6 @@ class Http implements HttpServiceInterface {
             $curl_options[CURLOPT_SSL_VERIFYHOST] = 0;
         } else {
             $curl_options[CURLOPT_SSL_VERIFYPEER] = true;
-        }
-
-        if ($credentials) {
-            $parameters['client_id'] = SC::getOAuthService()->getConfig()->getClientId();
-            $parameters['client_secret'] = SC::getOAuthService()->getConfig()->getClientSecret();
         }
 
         switch ($http_method) {

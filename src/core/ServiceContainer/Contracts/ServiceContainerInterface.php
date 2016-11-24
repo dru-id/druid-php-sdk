@@ -28,7 +28,6 @@ interface ServiceContainerInterface {
 
     /**
      * @return LoggerServiceInterface
-     * @throws InvalidServiceException
      */
     public static function getLogger ();
 

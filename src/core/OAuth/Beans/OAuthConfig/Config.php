@@ -169,7 +169,7 @@ class Config {
     }
 
     /**
-     * @param Host $host
+     * @param Host $host If the host already exists then will be overwritten.
      * @return Config
      */
     public function addHost(Host $host)

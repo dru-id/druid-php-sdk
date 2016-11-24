@@ -76,8 +76,10 @@ class OAuth implements OAuthServiceInterface
             }
 
             $params = array();
-            $params ['grant_type'] = AuthMethodsCollection::GRANT_TYPE_CLIENT_CREDENTIALS;
-            $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST, true);
+            $params['grant_type'] = AuthMethodsCollection::GRANT_TYPE_CLIENT_CREDENTIALS;
+            $params['client_id'] = $this->getConfig()->getClientId();
+            $params['client_secret'] = $this->getConfig()->getClientSecret();
+            $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST);
 
             $this->checkErrors($response);
 
@@ -142,9 +144,14 @@ class OAuth implements OAuthServiceInterface
      * @param string $endpoint_url The endpoint where "access_token" is requested.
      * @param string $code The authorization code returned by Genetsis ID.
      * @param string $redirect_url Where the user will be redirected.
-     * @return mixed An instance of {@link AccessToken} with data retrieved
-     *     or FALSE.
+     * @return array An array with the following data:
+     *      [
+     *          'access_token' => An instance of {@link AccessToken}
+     *          'refresh_token' => An instance of {@link RefreshToken}
+     *          'login_status' => An instance of {@link LoginStatus}
+     *      ]
      * @throws \Exception If there is an error.
+     * @throws InvalidGrantException
      */
     public function doGetAccessToken ($endpoint_url, $code, $redirect_url)
     {
@@ -159,11 +166,13 @@ class OAuth implements OAuthServiceInterface
                 throw new Exception ('Redirect URL is empty');
             }
 
-            $params = array();
-            $params ['grant_type'] = AuthMethodsCollection::GRANT_TYPE_AUTH_CODE;
-            $params ['code'] = $code;
-            $params ['redirect_uri'] = $redirect_url;
-            $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST, true);
+            $params = [];
+            $params['grant_type'] = AuthMethodsCollection::GRANT_TYPE_AUTH_CODE;
+            $params['code'] = $code;
+            $params['redirect_uri'] = $redirect_url;
+            $params['client_id'] = $this->getConfig()->getClientId();
+            $params['client_secret'] = $this->getConfig()->getClientSecret();
+            $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST);
 
             $this->checkErrors($response);
 
@@ -189,10 +198,10 @@ class OAuth implements OAuthServiceInterface
             $this->storeToken($result['refresh_token']);
 
             $loginStatus = new LoginStatus();
-            if (isset ($response ['result']->login_status)) {
-                $loginStatus->setCkusid($response['result']->login_status->uid);
-                $loginStatus->setOid($response['result']->login_status->oid);
-                $loginStatus->setConnectState($response['result']->login_status->connect_state);
+            if (isset($response['result']->login_status)) {
+                $loginStatus->setCkusid(isset($response['result']->login_status->uid) ? $response['result']->login_status->uid : '');
+                $loginStatus->setOid(isset($response['result']->login_status->oid) ? $response['result']->login_status->oid : '');
+                $loginStatus->setConnectState(isset($response['result']->login_status->connect_state) ? $response['result']->login_status->connect_state : '');
             }
 
             $result['login_status'] = $loginStatus;
@@ -227,7 +236,9 @@ class OAuth implements OAuthServiceInterface
             $params = array();
             $params['grant_type'] = AuthMethodsCollection::GRANT_TYPE_REFRESH_TOKEN;
             $params['refresh_token'] = $refresh_token->getValue();
-            $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST, true);
+            $params['client_id'] = $this->getConfig()->getClientId();
+            $params['client_secret'] = $this->getConfig()->getClientSecret();
+            $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST);
 
             $this->checkErrors($response);
 
@@ -286,10 +297,12 @@ class OAuth implements OAuthServiceInterface
             }
 
             $params = array();
-            $params ['grant_type'] = AuthMethodsCollection::GRANT_TYPE_VALIDATE_BEARER;
-            $params ['oauth_token'] = $access_token->getValue();
+            $params['grant_type'] = AuthMethodsCollection::GRANT_TYPE_VALIDATE_BEARER;
+            $params['oauth_token'] = $access_token->getValue();
+            $params['client_id'] = $this->getConfig()->getClientId();
+            $params['client_secret'] = $this->getConfig()->getClientSecret();
+            $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST);
             unset ($access_token);
-            $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST, true);
 
             $this->checkErrors($response);
 
@@ -330,8 +343,10 @@ class OAuth implements OAuthServiceInterface
             }
 
             $params = array();
-            $params ['grant_type'] = AuthMethodsCollection::GRANT_TYPE_EXCHANGE_SESSION;
-            $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST, true, null, array(self::SSO_COOKIE_NAME . '=' . $cookie_value));
+            $params['grant_type'] = AuthMethodsCollection::GRANT_TYPE_EXCHANGE_SESSION;
+            $params['client_id'] = $this->getConfig()->getClientId();
+            $params['client_secret'] = $this->getConfig()->getClientSecret();
+            $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST, [], [self::SSO_COOKIE_NAME . '=' . $cookie_value]);
 
             $this->checkErrors($response);
 
@@ -391,10 +406,12 @@ class OAuth implements OAuthServiceInterface
             }
 
             $params = array();
-            $params ['token'] = $refresh_token->getValue();
-            $params ['token_type'] = 'refresh_token';
+            $params['token'] = $refresh_token->getValue();
+            $params['token_type'] = 'refresh_token';
+            $params['client_id'] = $this->getConfig()->getClientId();
+            $params['client_secret'] = $this->getConfig()->getClientSecret();
+            SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST);
             unset ($refresh_token);
-            SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST, true);
 
             unset($_COOKIE[self::SSO_COOKIE_NAME]);
             setcookie(self::SSO_COOKIE_NAME, null, -1,null,'.cocacola.es');
@@ -481,8 +498,10 @@ class OAuth implements OAuthServiceInterface
 
             // Send request.
             $params = array();
-            $params ['oauth_token'] = $token->getValue();
-            $response = SC::getHttpService()->execute($endpoint_url . '/' . $scope, $params, HttpMethodsCollection::POST, true);
+            $params['oauth_token'] = $token->getValue();
+            $params['client_id'] = $this->getConfig()->getClientId();
+            $params['client_secret'] = $this->getConfig()->getClientSecret();
+            $response = SC::getHttpService()->execute($endpoint_url . '/' . $scope, $params, HttpMethodsCollection::POST);
 
             if (isset($response['code']) && ($response['code'] == 200)) {
                 return $response['result'];

@@ -141,7 +141,7 @@ class UserApi
             'redirect' => $redirect
         );
 
-        $response = SC::getHttpService()->execute(SC::getOAuthService()->getConfig()->getApi('api.activityid')->getEndpoint('public_image', true).'/'.$userid, $params, HttpMethodsCollection::GET, false);
+        $response = SC::getHttpService()->execute(SC::getOAuthService()->getConfig()->getApi('api.activityid')->getEndpoint('public_image', true).'/'.$userid, $params, HttpMethodsCollection::GET);
 
         $ret = null;
 
@@ -185,7 +185,7 @@ class UserApi
                     'From' => '452200208393481-main'
                 );
 
-                $response = SC::getHttpService()->execute(SC::getOAuthService()->getConfig()->getApi('api.activityid')->getEndpoint('brands', true), array(), HttpMethodsCollection::GET, false, $header_params);
+                $response = SC::getHttpService()->execute(SC::getOAuthService()->getConfig()->getApi('api.activityid')->getEndpoint('brands', true), [], HttpMethodsCollection::GET, $header_params);
 
                 if (($response['code'] != 200) || (!isset($response['result']->items))) {
                     throw new Exception('The data retrieved is empty');

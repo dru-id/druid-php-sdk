@@ -48,8 +48,9 @@ class ServiceContainer implements ServiceContainerInterface {
      */
     public static function getLogger()
     {
+        // Logger is the only service which should be return a default logger if not defined.
         if (!isset(static::$logger) || !(static::$logger instanceof LoggerServiceInterface)) {
-            throw new InvalidServiceException('Logger service not defined');
+            return static::$logger = new EmptyLogger();
         }
         return static::$logger;
     }
