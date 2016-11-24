@@ -1,0 +1,7 @@
+# Codeception Test Suite Configuration
+#
+# Suite for integration tests.
+class_name: IntegrationTester
+modules:
+    enabled:
+        - \Helper\Integration

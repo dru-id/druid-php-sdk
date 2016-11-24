@@ -20,8 +20,7 @@ class ServiceContainerServiceTest extends TestCase
 {
     public function testLogger()
     {
-        $this->expectException(InvalidServiceException::class);
-        ServiceContainer::getLogger();
+        $this->assertInstanceOf('\Genetsis\core\Logger\Services\EmptyLogger', ServiceContainer::getLogger());
 
         $logger = new FooLogger();
         ServiceContainer::setLogger($logger);
@@ -216,7 +215,7 @@ class FooHttp implements HttpServiceInterface {
     /**
      * @inheritDoc
      */
-    public function execute($url, $parameters = array(), $http_method = HttpMethodsCollection::GET, $credentials = false, $http_headers = array(), $cookies = array())
+    public function execute($url, $parameters = array(), $http_method = HttpMethodsCollection::GET, $http_headers = array(), $cookies = array())
     {
     }
 
