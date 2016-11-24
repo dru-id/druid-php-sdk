@@ -33,6 +33,7 @@ class OAuthIntegrationTest extends Unit
 
     protected function _before()
     {
+        SC::reset();
         SC::setLogger(new SyslogLogger(LogLevelsCollection::DEBUG));
 
         $http = $this->createMock(Http::class);

@@ -42,35 +42,76 @@ class ServiceContainerServiceTest extends Unit {
         }, ['throws' => 'Genetsis\core\ServiceContainer\Exceptions\InvalidServiceException']);
     }
 
+    /**
+     * @depends testInitEmpty
+     */
     public function testLogger()
     {
-        $this->assertInstanceOf('\Genetsis\core\Logger\Services\EmptyLogger', ServiceContainer::getLogger());
+        $this->specify('Checks default logger.', function() {
+            $this->assertInstanceOf('\Genetsis\core\Logger\Services\EmptyLogger', ServiceContainer::getLogger());
+        });
 
-        $logger = new FooLogger();
-        ServiceContainer::setLogger($logger);
-        $this->assertInstanceOf('\Genetsis\UnitTest\ServiceContainer\FooLogger', ServiceContainer::getLogger());
+        $this->specify('Checks setter and getter for "Logger" service.', function() {
+            $logger = new FooLogger();
+            ServiceContainer::setLogger($logger);
+            $this->assertInstanceOf('\Genetsis\UnitTest\ServiceContainer\FooLogger', ServiceContainer::getLogger());
+        });
+
+        $this->specify('Checks if the service has been reset.', function() {
+            $logger = new FooLogger();
+            ServiceContainer::setLogger($logger);
+            $this->assertInstanceOf('\Genetsis\UnitTest\ServiceContainer\FooLogger', ServiceContainer::getLogger());
+            ServiceContainer::setLogger(null);
+            $this->assertInstanceOf('\Genetsis\core\Logger\Services\EmptyLogger', ServiceContainer::getLogger());
+        });
     }
 
+    /**
+     * @depends testInitEmpty
+     */
     public function testHttp()
     {
         $this->specify('Checks if an exception is thrown when we request a service and the "ServiceContainer" is not been initialized.', function() {
             ServiceContainer::getHttpService();
         }, ['throws' => 'Genetsis\core\ServiceContainer\Exceptions\InvalidServiceException']);
 
-        $http = new FooHttp();
-        ServiceContainer::setHttpService($http);
-        $this->assertInstanceOf('\Genetsis\UnitTest\ServiceContainer\FooHttp', ServiceContainer::getHttpService());
+        $this->specify('Checks setter and getter for "Http" service.', function() {
+            $http = new FooHttp();
+            ServiceContainer::setHttpService($http);
+            $this->assertInstanceOf('\Genetsis\UnitTest\ServiceContainer\FooHttp', ServiceContainer::getHttpService());
+        });
+
+        $this->specify('Checks if the service has been reset.', function() {
+            $http = new FooHttp();
+            ServiceContainer::setHttpService($http);
+            $this->assertInstanceOf('\Genetsis\UnitTest\ServiceContainer\FooHttp', ServiceContainer::getHttpService());
+            ServiceContainer::setHttpService(null);
+            ServiceContainer::getHttpService();
+        }, ['throws' => 'Genetsis\core\ServiceContainer\Exceptions\InvalidServiceException']);
     }
 
+    /**
+     * @depends testInitEmpty
+     */
     public function testOAuth()
     {
         $this->specify('Checks if an exception is thrown when we request a service and the "ServiceContainer" is not been initialized.', function() {
             ServiceContainer::getOAuthService();
         }, ['throws' => 'Genetsis\core\ServiceContainer\Exceptions\InvalidServiceException']);
 
-        $oauth = new FooOAuth();
-        ServiceContainer::setOAuthService($oauth);
-        $this->assertInstanceOf('\Genetsis\UnitTest\ServiceContainer\FooOAuth', ServiceContainer::getOAuthService());
+        $this->specify('Checks setter and getter for "OAuth" service.', function() {
+            $oauth = new FooOAuth();
+            ServiceContainer::setOAuthService($oauth);
+            $this->assertInstanceOf('\Genetsis\UnitTest\ServiceContainer\FooOAuth', ServiceContainer::getOAuthService());
+        });
+
+        $this->specify('Checks if the service has been reset.', function() {
+            $oauth = new FooOAuth();
+            ServiceContainer::setOAuthService($oauth);
+            $this->assertInstanceOf('\Genetsis\UnitTest\ServiceContainer\FooOAuth', ServiceContainer::getOAuthService());
+            ServiceContainer::setOAuthService(null);
+            ServiceContainer::getOAuthService();
+        }, ['throws' => 'Genetsis\core\ServiceContainer\Exceptions\InvalidServiceException']);
     }
 
     /**
@@ -93,14 +134,33 @@ class ServiceContainerServiceTest extends Unit {
      */
     public function testInitWithServices()
     {
-        ServiceContainer::init([
-            new FooHttp(),
-            new FooLogger(),
-            new FooOAuth()
-        ]);
+        ServiceContainer::init([ new FooHttp(), new FooLogger(), new FooOAuth() ]);
         $this->assertInstanceOf('\Genetsis\UnitTest\ServiceContainer\FooLogger', ServiceContainer::getLogger());
         $this->assertInstanceOf('\Genetsis\UnitTest\ServiceContainer\FooHttp', ServiceContainer::getHttpService());
         $this->assertInstanceOf('\Genetsis\UnitTest\ServiceContainer\FooOAuth', ServiceContainer::getOAuthService());
+    }
+
+    /**
+     * @depends testLogger
+     * @depends testHttp
+     * @depends testOAuth
+     */
+    public function testResetServices()
+    {
+        ServiceContainer::init([ new FooHttp(), new FooLogger(), new FooOAuth() ]);
+        $this->assertInstanceOf('\Genetsis\UnitTest\ServiceContainer\FooLogger', ServiceContainer::getLogger());
+        $this->assertInstanceOf('\Genetsis\UnitTest\ServiceContainer\FooHttp', ServiceContainer::getHttpService());
+        $this->assertInstanceOf('\Genetsis\UnitTest\ServiceContainer\FooOAuth', ServiceContainer::getOAuthService());
+        ServiceContainer::reset();
+        $this->specify('Checks if the service has been reset.', function() {
+            $this->assertInstanceOf('\Genetsis\core\Logger\Services\EmptyLogger', ServiceContainer::getLogger());
+        });
+        $this->specify('Checks if the service has been reset.', function() {
+            ServiceContainer::getHttpService();
+        }, ['throws' => 'Genetsis\core\ServiceContainer\Exceptions\InvalidServiceException']);
+        $this->specify('Checks if the service has been reset.', function() {
+            ServiceContainer::getOAuthService();
+        }, ['throws' => 'Genetsis\core\ServiceContainer\Exceptions\InvalidServiceException']);
     }
 }
 

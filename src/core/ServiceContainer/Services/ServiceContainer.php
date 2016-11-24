@@ -17,13 +17,13 @@ use Genetsis\core\ServiceContainer\Exceptions\InvalidServiceException;
 class ServiceContainer implements ServiceContainerInterface {
 
     /** @var LoggerServiceInterface $logger */
-    private static $logger = null;
+    protected static $logger = null;
 
     /** @var HttpServiceInterface $http_service */
-    private static $http_service = null;
+    protected static $http_service = null;
 
     /** @var OAuthServiceInterface  */
-    private static $oauth = null;
+    protected static $oauth = null;
 
     /**
      * @inheritDoc
@@ -46,6 +46,16 @@ class ServiceContainer implements ServiceContainerInterface {
     /**
      * @inheritDoc
      */
+    public static function reset()
+    {
+        static::$logger = null;
+        static::$http_service = null;
+        static::$oauth = null;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public static function getLogger()
     {
         // Logger is the only service which should be return a default logger if not defined.
@@ -58,9 +68,13 @@ class ServiceContainer implements ServiceContainerInterface {
     /**
      * @inheritDoc
      */
-    public static function setLogger(LoggerServiceInterface $service)
+    public static function setLogger($service)
     {
-        static::$logger = $service;
+        if (is_null($service) || ($service instanceof LoggerServiceInterface)) {
+            static::$logger = $service;
+        } else {
+            throw new InvalidServiceException('Invalid service.');
+        }
     }
 
     /**
@@ -77,9 +91,13 @@ class ServiceContainer implements ServiceContainerInterface {
     /**
      * @inheritDoc
      */
-    public static function setHttpService(HttpServiceInterface $service)
+    public static function setHttpService($service)
     {
-        static::$http_service = $service;
+        if (is_null($service) || ($service instanceof HttpServiceInterface)) {
+            static::$http_service = $service;
+        } else {
+            throw new InvalidServiceException('Invalid service.');
+        }
     }
 
     /**
@@ -96,9 +114,13 @@ class ServiceContainer implements ServiceContainerInterface {
     /**
      * @inheritDoc
      */
-    public static function setOAuthService(OAuthServiceInterface $service)
+    public static function setOAuthService($service)
     {
-        static::$oauth = $service;
+        if (is_null($service) || ($service instanceof OAuthServiceInterface)) {
+            static::$oauth = $service;
+        } else {
+            throw new InvalidServiceException('Invalid service.');
+        }
     }
 
 }

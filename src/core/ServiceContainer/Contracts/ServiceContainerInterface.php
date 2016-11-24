@@ -27,15 +27,23 @@ interface ServiceContainerInterface {
     public static function init (array $services = array());
 
     /**
+     * Removes all services.
+     *
+     * @return void
+     */
+    public static function reset();
+
+    /**
      * @return LoggerServiceInterface
      */
     public static function getLogger ();
 
     /**
-     * @param LoggerServiceInterface $service
+     * @param LoggerServiceInterface|null $service Set to NULL to remove service.
      * @return void
+     * @throws InvalidServiceException
      */
-    public static function setLogger (LoggerServiceInterface $service);
+    public static function setLogger ($service);
 
     /**
      * @return HttpServiceInterface
@@ -44,10 +52,11 @@ interface ServiceContainerInterface {
     public static function getHttpService();
 
     /**
-     * @param HttpServiceInterface $service
+     * @param HttpServiceInterface|null $service Set to NULL to remove service.
      * @return void
+     * @throws InvalidServiceException
      */
-    public static function setHttpService(HttpServiceInterface $service);
+    public static function setHttpService($service);
 
     /**
      * @return OAuthServiceInterface
@@ -56,9 +65,10 @@ interface ServiceContainerInterface {
     public static function getOAuthService();
 
     /**
-     * @param OAuthServiceInterface $service
+     * @param OAuthServiceInterface|null $service Set to NULL to remove service.
      * @return void
+     * @throws InvalidServiceException
      */
-    public static function setOAuthService(OAuthServiceInterface $service);
+    public static function setOAuthService($service);
 
 }
