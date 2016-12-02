@@ -3,47 +3,172 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Overview</title>
+	<title>DruID reference manual</title>
 
-	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
+	<link rel="stylesheet" href="resources/bootstrap.min.css?973e37a8502921d56bc02bb55321f45b072b6f71">
+	<link rel="stylesheet" href="resources/style.css?49f43d3208c5d7e33fa16d36107a345bf11cc00d">
 
 </head>
 
 <body>
-<div id="left">
+	<nav id="navigation" class="navbar navbar-default navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a href="index.html" class="navbar-brand">DruID reference manual</a>
+			</div>
+			<div class="collapse navbar-collapse">
+
+                <form id="search" class="navbar-form navbar-left" role="search">
+                    <input type="hidden" name="cx" value="">
+                    <input type="hidden" name="ie" value="UTF-8">
+                    <div class="form-group">
+                        <input type="text" name="q" class="search-query form-control" placeholder="Search" autofocus>
+					</div>
+				</form>
+
+				<ul class="nav navbar-nav">
+					<li>
+<span>Namespace</span>					</li>
+					<li>
+<span>Class</span>					</li>
+
+
+
+
+
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div id="left">
 	<div id="menu">
-<span>Overview</span>
 
 		<div id="groups">
 				<h3>Namespaces</h3>
 			<ul>
-				<li>
-					<a href="namespace-Genetsis.html">
-						Genetsis<span></span>
-					</a>
-
-						<ul>
-				<li>
-					<a href="namespace-Genetsis.core.html">
-						core<span></span>
-					</a>
-
-						<ul>
-				<li>
-					<a href="namespace-Genetsis.core.user.html">
-						user					</a>
-
-						</li>
-							</ul></li></ul></li>
-				<li>
-					<a href="namespace-None.html">
-						None					</a>
-
-						</li>
+					<li>
+						<a href="namespace-Genetsis.html">
+							Genetsis<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="namespace-Genetsis.core.html">
+							core<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="namespace-Genetsis.core.Encryption.html">
+							Encryption<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="namespace-Genetsis.core.Encryption.Services.html">
+							Services						</a>
+							</li>
+								</ul></li>
+					<li>
+						<a href="namespace-Genetsis.core.Http.html">
+							Http<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="namespace-Genetsis.core.Http.Collections.html">
+							Collections						</a>
+							</li>
+					<li>
+						<a href="namespace-Genetsis.core.Http.Contracts.html">
+							Contracts						</a>
+							</li>
+					<li>
+						<a href="namespace-Genetsis.core.Http.Services.html">
+							Services						</a>
+							</li>
+								</ul></li>
+					<li>
+						<a href="namespace-Genetsis.core.Logger.html">
+							Logger<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="namespace-Genetsis.core.Logger.Collections.html">
+							Collections						</a>
+							</li>
+					<li>
+						<a href="namespace-Genetsis.core.Logger.Contracts.html">
+							Contracts						</a>
+							</li>
+					<li>
+						<a href="namespace-Genetsis.core.Logger.Services.html">
+							Services						</a>
+							</li>
+								</ul></li>
+					<li>
+						<a href="namespace-Genetsis.core.OAuth.html">
+							OAuth<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="namespace-Genetsis.core.OAuth.Beans.html">
+							Beans<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="namespace-Genetsis.core.OAuth.Beans.OAuthConfig.html">
+							OAuthConfig						</a>
+							</li>
+								</ul></li>
+					<li>
+						<a href="namespace-Genetsis.core.OAuth.Collections.html">
+							Collections						</a>
+							</li>
+					<li>
+						<a href="namespace-Genetsis.core.OAuth.Contracts.html">
+							Contracts						</a>
+							</li>
+					<li>
+						<a href="namespace-Genetsis.core.OAuth.Exceptions.html">
+							Exceptions						</a>
+							</li>
+					<li>
+						<a href="namespace-Genetsis.core.OAuth.Services.html">
+							Services						</a>
+							</li>
+								</ul></li>
+					<li>
+						<a href="namespace-Genetsis.core.ServiceContainer.html">
+							ServiceContainer<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="namespace-Genetsis.core.ServiceContainer.Contracts.html">
+							Contracts						</a>
+							</li>
+					<li>
+						<a href="namespace-Genetsis.core.ServiceContainer.Exceptions.html">
+							Exceptions						</a>
+							</li>
+					<li>
+						<a href="namespace-Genetsis.core.ServiceContainer.Services.html">
+							Services						</a>
+							</li>
+								</ul></li>
+					<li>
+						<a href="namespace-Genetsis.core.User.html">
+							User<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="namespace-Genetsis.core.User.Beans.html">
+							Beans						</a>
+							</li>
+					<li>
+						<a href="namespace-Genetsis.core.User.Collections.html">
+							Collections						</a>
+							</li>
+								</ul></li></ul></li></ul></li>
 			</ul>
 		</div>
-
-		<hr>
 
 
 		<div id="elements">
@@ -51,115 +176,55 @@
 			<ul>
 				<li><a href="class-Genetsis.AutoloaderClass.html">Genetsis\AutoloaderClass</a></li>
 				<li><a href="class-Genetsis.Config.html">Genetsis\Config</a></li>
-				<li><a href="class-Genetsis.core.AccessToken.html">Genetsis\core\AccessToken</a></li>
-				<li><a href="class-Genetsis.core.ClientToken.html">Genetsis\core\ClientToken</a></li>
-				<li><a href="class-Genetsis.core.Encryption.html">Genetsis\core\Encryption</a></li>
+				<li><a href="class-Genetsis.core.Encryption.Services.Encryption.html">Genetsis\core\Encryption\Services\Encryption</a></li>
 				<li><a href="class-Genetsis.core.FileCache.html">Genetsis\core\FileCache</a></li>
-				<li><a href="class-Genetsis.core.LogConfig.html">Genetsis\core\LogConfig</a></li>
-				<li><a href="class-Genetsis.core.LoginStatus.html">Genetsis\core\LoginStatus</a></li>
-				<li><a href="class-Genetsis.core.LoginStatusType.html">Genetsis\core\LoginStatusType</a></li>
-				<li><a href="class-Genetsis.core.OAuth.html">Genetsis\core\OAuth</a></li>
-				<li><a href="class-Genetsis.core.OAuthConfig.html">Genetsis\core\OAuthConfig</a></li>
+				<li><a href="class-Genetsis.core.Http.Collections.HttpMethods.html">Genetsis\core\Http\Collections\HttpMethods</a></li>
+				<li><a href="class-Genetsis.core.Http.Services.Http.html">Genetsis\core\Http\Services\Http</a></li>
+				<li><a href="class-Genetsis.core.Logger.Collections.LogLevels.html">Genetsis\core\Logger\Collections\LogLevels</a></li>
+				<li><a href="class-Genetsis.core.Logger.Services.DruIDLogger.html">Genetsis\core\Logger\Services\DruIDLogger</a></li>
+				<li><a href="class-Genetsis.core.Logger.Services.EmptyLogger.html">Genetsis\core\Logger\Services\EmptyLogger</a></li>
+				<li><a href="class-Genetsis.core.Logger.Services.SyslogLogger.html">Genetsis\core\Logger\Services\SyslogLogger</a></li>
+				<li><a href="class-Genetsis.core.OAuth.Beans.AccessToken.html">Genetsis\core\OAuth\Beans\AccessToken</a></li>
+				<li><a href="class-Genetsis.core.OAuth.Beans.ClientToken.html">Genetsis\core\OAuth\Beans\ClientToken</a></li>
+				<li><a href="class-Genetsis.core.OAuth.Beans.OAuthConfig.Api.html">Genetsis\core\OAuth\Beans\OAuthConfig\Api</a></li>
+				<li><a href="class-Genetsis.core.OAuth.Beans.OAuthConfig.Brand.html">Genetsis\core\OAuth\Beans\OAuthConfig\Brand</a></li>
+				<li><a href="class-Genetsis.core.OAuth.Beans.OAuthConfig.Config.html">Genetsis\core\OAuth\Beans\OAuthConfig\Config</a></li>
+				<li><a href="class-Genetsis.core.OAuth.Beans.OAuthConfig.EndPoint.html">Genetsis\core\OAuth\Beans\OAuthConfig\EndPoint</a></li>
+				<li><a href="class-Genetsis.core.OAuth.Beans.OAuthConfig.EntryPoint.html">Genetsis\core\OAuth\Beans\OAuthConfig\EntryPoint</a></li>
+				<li><a href="class-Genetsis.core.OAuth.Beans.OAuthConfig.Host.html">Genetsis\core\OAuth\Beans\OAuthConfig\Host</a></li>
+				<li><a href="class-Genetsis.core.OAuth.Beans.OAuthConfig.RedirectUrl.html">Genetsis\core\OAuth\Beans\OAuthConfig\RedirectUrl</a></li>
+				<li><a href="class-Genetsis.core.OAuth.Beans.RefreshToken.html">Genetsis\core\OAuth\Beans\RefreshToken</a></li>
+				<li><a href="class-Genetsis.core.OAuth.Beans.StoredToken.html">Genetsis\core\OAuth\Beans\StoredToken</a></li>
+				<li><a href="class-Genetsis.core.OAuth.Collections.AuthMethods.html">Genetsis\core\OAuth\Collections\AuthMethods</a></li>
+				<li><a href="class-Genetsis.core.OAuth.Collections.TokenTypes.html">Genetsis\core\OAuth\Collections\TokenTypes</a></li>
+				<li><a href="class-Genetsis.core.OAuth.Services.OAuth.html">Genetsis\core\OAuth\Services\OAuth</a></li>
+				<li><a href="class-Genetsis.core.OAuth.Services.OAuthConfig.html">Genetsis\core\OAuth\Services\OAuthConfig</a></li>
 				<li><a href="class-Genetsis.core.OauthTemplate.html">Genetsis\core\OauthTemplate</a></li>
-				<li><a href="class-Genetsis.core.RefreshToken.html">Genetsis\core\RefreshToken</a></li>
-				<li><a href="class-Genetsis.core.Request.html">Genetsis\core\Request</a></li>
-				<li><a href="class-Genetsis.core.StoredToken.html">Genetsis\core\StoredToken</a></li>
-				<li><a href="class-Genetsis.core.Things.html">Genetsis\core\Things</a></li>
-				<li><a href="class-Genetsis.core.user.Brand.html">Genetsis\core\user\Brand</a></li>
+				<li><a href="class-Genetsis.core.ServiceContainer.Services.ServiceContainer.html">Genetsis\core\ServiceContainer\Services\ServiceContainer</a></li>
+				<li><a href="class-Genetsis.core.User.Beans.Brand.html">Genetsis\core\User\Beans\Brand</a></li>
+				<li><a href="class-Genetsis.core.User.Beans.LoginStatus.html">Genetsis\core\User\Beans\LoginStatus</a></li>
+				<li><a href="class-Genetsis.core.User.Beans.Things.html">Genetsis\core\User\Beans\Things</a></li>
+				<li><a href="class-Genetsis.core.User.Collections.LoginStatusTypes.html">Genetsis\core\User\Collections\LoginStatusTypes</a></li>
 				<li><a href="class-Genetsis.Identity.html">Genetsis\Identity</a></li>
+				<li><a href="class-Genetsis.Opi.html">Genetsis\Opi</a></li>
 				<li><a href="class-Genetsis.URLBuilder.html">Genetsis\URLBuilder</a></li>
 				<li><a href="class-Genetsis.UserApi.html">Genetsis\UserApi</a></li>
-				<li><a href="class-Logger.html" class="invalid">Logger</a></li>
-				<li><a href="class-LoggerAppender.html">LoggerAppender</a></li>
-				<li><a href="class-LoggerAppenderConsole.html">LoggerAppenderConsole</a></li>
-				<li><a href="class-LoggerAppenderDailyFile.html">LoggerAppenderDailyFile</a></li>
-				<li><a href="class-LoggerAppenderDailyRollingFile.html">LoggerAppenderDailyRollingFile</a></li>
-				<li><a href="class-LoggerAppenderEcho.html">LoggerAppenderEcho</a></li>
-				<li><a href="class-LoggerAppenderFile.html">LoggerAppenderFile</a></li>
-				<li><a href="class-LoggerAppenderFirePHP.html">LoggerAppenderFirePHP</a></li>
-				<li><a href="class-LoggerAppenderMail.html">LoggerAppenderMail</a></li>
-				<li><a href="class-LoggerAppenderMailEvent.html">LoggerAppenderMailEvent</a></li>
-				<li><a href="class-LoggerAppenderMongoDB.html">LoggerAppenderMongoDB</a></li>
-				<li><a href="class-LoggerAppenderNull.html">LoggerAppenderNull</a></li>
-				<li><a href="class-LoggerAppenderPDO.html">LoggerAppenderPDO</a></li>
-				<li><a href="class-LoggerAppenderPhp.html">LoggerAppenderPhp</a></li>
-				<li><a href="class-LoggerAppenderPool.html">LoggerAppenderPool</a></li>
-				<li><a href="class-LoggerAppenderRollingFile.html">LoggerAppenderRollingFile</a></li>
-				<li><a href="class-LoggerAppenderSocket.html">LoggerAppenderSocket</a></li>
-				<li><a href="class-LoggerAppenderSyslog.html">LoggerAppenderSyslog</a></li>
-				<li><a href="class-LoggerAutoloader.html">LoggerAutoloader</a></li>
-				<li><a href="class-LoggerConfigurable.html">LoggerConfigurable</a></li>
-				<li><a href="class-LoggerConfigurationAdapterINI.html">LoggerConfigurationAdapterINI</a></li>
-				<li><a href="class-LoggerConfigurationAdapterPHP.html">LoggerConfigurationAdapterPHP</a></li>
-				<li><a href="class-LoggerConfigurationAdapterXML.html">LoggerConfigurationAdapterXML</a></li>
-				<li><a href="class-LoggerConfiguratorDefault.html">LoggerConfiguratorDefault</a></li>
-				<li><a href="class-LoggerFilter.html">LoggerFilter</a></li>
-				<li><a href="class-LoggerFilterDenyAll.html">LoggerFilterDenyAll</a></li>
-				<li><a href="class-LoggerFilterLevelMatch.html">LoggerFilterLevelMatch</a></li>
-				<li><a href="class-LoggerFilterLevelRange.html">LoggerFilterLevelRange</a></li>
-				<li><a href="class-LoggerFilterStringMatch.html">LoggerFilterStringMatch</a></li>
-				<li><a href="class-LoggerFormattingInfo.html">LoggerFormattingInfo</a></li>
-				<li><a href="class-LoggerHierarchy.html">LoggerHierarchy</a></li>
-				<li><a href="class-LoggerLayout.html">LoggerLayout</a></li>
-				<li><a href="class-LoggerLayoutHtml.html">LoggerLayoutHtml</a></li>
-				<li><a href="class-LoggerLayoutPattern.html">LoggerLayoutPattern</a></li>
-				<li><a href="class-LoggerLayoutSerialized.html">LoggerLayoutSerialized</a></li>
-				<li><a href="class-LoggerLayoutSimple.html">LoggerLayoutSimple</a></li>
-				<li><a href="class-LoggerLayoutTTCC.html" class="deprecated">LoggerLayoutTTCC</a></li>
-				<li><a href="class-LoggerLayoutXml.html">LoggerLayoutXml</a></li>
-				<li><a href="class-LoggerLevel.html">LoggerLevel</a></li>
-				<li><a href="class-LoggerLocationInfo.html">LoggerLocationInfo</a></li>
-				<li><a href="class-LoggerLoggingEvent.html">LoggerLoggingEvent</a></li>
-				<li><a href="class-LoggerMDC.html">LoggerMDC</a></li>
-				<li><a href="class-LoggerNDC.html">LoggerNDC</a></li>
-				<li><a href="class-LoggerOptionConverter.html">LoggerOptionConverter</a></li>
-				<li><a href="class-LoggerPatternConverter.html">LoggerPatternConverter</a></li>
-				<li><a href="class-LoggerPatternConverterClass.html">LoggerPatternConverterClass</a></li>
-				<li><a href="class-LoggerPatternConverterCookie.html">LoggerPatternConverterCookie</a></li>
-				<li><a href="class-LoggerPatternConverterDate.html">LoggerPatternConverterDate</a></li>
-				<li><a href="class-LoggerPatternConverterEnvironment.html">LoggerPatternConverterEnvironment</a></li>
-				<li><a href="class-LoggerPatternConverterFile.html">LoggerPatternConverterFile</a></li>
-				<li><a href="class-LoggerPatternConverterLevel.html">LoggerPatternConverterLevel</a></li>
-				<li><a href="class-LoggerPatternConverterLine.html">LoggerPatternConverterLine</a></li>
-				<li><a href="class-LoggerPatternConverterLiteral.html">LoggerPatternConverterLiteral</a></li>
-				<li><a href="class-LoggerPatternConverterLocation.html">LoggerPatternConverterLocation</a></li>
-				<li><a href="class-LoggerPatternConverterLogger.html">LoggerPatternConverterLogger</a></li>
-				<li><a href="class-LoggerPatternConverterMDC.html">LoggerPatternConverterMDC</a></li>
-				<li><a href="class-LoggerPatternConverterMessage.html">LoggerPatternConverterMessage</a></li>
-				<li><a href="class-LoggerPatternConverterMethod.html">LoggerPatternConverterMethod</a></li>
-				<li><a href="class-LoggerPatternConverterNDC.html">LoggerPatternConverterNDC</a></li>
-				<li><a href="class-LoggerPatternConverterNewLine.html">LoggerPatternConverterNewLine</a></li>
-				<li><a href="class-LoggerPatternConverterProcess.html">LoggerPatternConverterProcess</a></li>
-				<li><a href="class-LoggerPatternConverterRelative.html">LoggerPatternConverterRelative</a></li>
-				<li><a href="class-LoggerPatternConverterRequest.html">LoggerPatternConverterRequest</a></li>
-				<li><a href="class-LoggerPatternConverterServer.html">LoggerPatternConverterServer</a></li>
-				<li><a href="class-LoggerPatternConverterSession.html">LoggerPatternConverterSession</a></li>
-				<li><a href="class-LoggerPatternConverterSessionID.html">LoggerPatternConverterSessionID</a></li>
-				<li><a href="class-LoggerPatternConverterSuperglobal.html">LoggerPatternConverterSuperglobal</a></li>
-				<li><a href="class-LoggerPatternConverterThrowable.html">LoggerPatternConverterThrowable</a></li>
-				<li><a href="class-LoggerPatternParser.html">LoggerPatternParser</a></li>
-				<li><a href="class-LoggerReflectionUtils.html">LoggerReflectionUtils</a></li>
-				<li><a href="class-LoggerRendererDefault.html">LoggerRendererDefault</a></li>
-				<li><a href="class-LoggerRendererException.html">LoggerRendererException</a></li>
-				<li><a href="class-LoggerRendererMap.html">LoggerRendererMap</a></li>
-				<li><a href="class-LoggerRoot.html">LoggerRoot</a></li>
-				<li><a href="class-LoggerThrowableInformation.html">LoggerThrowableInformation</a></li>
-				<li><a href="class-LoggerUtils.html">LoggerUtils</a></li>
 			</ul>
 
 			<h3>Interfaces</h3>
 			<ul>
-				<li><a href="class-Genetsis.core.iTokenTypes.html">Genetsis\core\iTokenTypes</a></li>
-				<li><a href="class-LoggerConfigurationAdapter.html">LoggerConfigurationAdapter</a></li>
-				<li><a href="class-LoggerConfigurator.html">LoggerConfigurator</a></li>
-				<li><a href="class-LoggerRenderer.html">LoggerRenderer</a></li>
+				<li><a href="class-Genetsis.core.Http.Contracts.HttpServiceInterface.html">Genetsis\core\Http\Contracts\HttpServiceInterface</a></li>
+				<li><a href="class-Genetsis.core.Logger.Contracts.LoggerServiceInterface.html">Genetsis\core\Logger\Contracts\LoggerServiceInterface</a></li>
+				<li><a href="class-Genetsis.core.OAuth.Contracts.OAuthServiceInterface.html">Genetsis\core\OAuth\Contracts\OAuthServiceInterface</a></li>
+				<li><a href="class-Genetsis.core.OAuth.Contracts.StoredTokenInterface.html">Genetsis\core\OAuth\Contracts\StoredTokenInterface</a></li>
+				<li><a href="class-Genetsis.core.ServiceContainer.Contracts.ServiceContainerInterface.html">Genetsis\core\ServiceContainer\Contracts\ServiceContainerInterface</a></li>
 			</ul>
 
 
 			<h3>Exceptions</h3>
 			<ul>
-				<li><a href="class-Genetsis.core.InvalidGrantException.html">Genetsis\core\InvalidGrantException</a></li>
-				<li><a href="class-LoggerException.html">LoggerException</a></li>
+				<li><a href="class-Genetsis.core.OAuth.Exceptions.InvalidGrantException.html">Genetsis\core\OAuth\Exceptions\InvalidGrantException</a></li>
+				<li><a href="class-Genetsis.core.ServiceContainer.Exceptions.InvalidServiceException.html">Genetsis\core\ServiceContainer\Exceptions\InvalidServiceException</a></li>
 			</ul>
 
 
@@ -170,57 +235,104 @@
 <div id="splitter"></div>
 
 <div id="right">
-<div id="rightInner">
-	<form id="search">
-		<input type="hidden" name="cx" value="">
-		<input type="hidden" name="ie" value="UTF-8">
-		<input type="text" name="q" class="text" placeholder="Search" autofocus>
-	</form>
-
-	<div id="navigation">
-		<ul>
-			<li class="active">
-<span>Overview</span>			</li>
-			<li>
-<span>Namespace</span>			</li>
-			<li>
-<span>Class</span>			</li>
-		</ul>
-		<ul>
-		</ul>
-		<ul>
-		</ul>
-	</div>
-
+	<div id="rightInner">
 <div id="content">
-	<h1>Overview</h1>
+	<h1>DruID reference manual</h1>
 
 
-	<table class="summary" id="namespaces">
-		<caption>Namespaces summary</caption>
-			<tr>
-				<td class="name"><a href="namespace-Genetsis.html">Genetsis</a></td>
-			</tr>
-			<tr>
-				<td class="name"><a href="namespace-Genetsis.core.html">Genetsis\core</a></td>
-			</tr>
-			<tr>
-				<td class="name"><a href="namespace-Genetsis.core.user.html">Genetsis\core\user</a></td>
-			</tr>
-			<tr>
-				<td class="name"><a href="namespace-None.html">None</a></td>
-			</tr>
-	</table>
+		<div class="panel panel-default">
+            <div class="panel-heading"><h2>Namespaces summary</h2></div>
+			<table class="summary table table-bordered table-striped" id="namespaces">
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.html">Genetsis</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.html">Genetsis\core</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.Encryption.html">Genetsis\core\Encryption</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.Encryption.Services.html">Genetsis\core\Encryption\Services</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.Http.html">Genetsis\core\Http</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.Http.Collections.html">Genetsis\core\Http\Collections</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.Http.Contracts.html">Genetsis\core\Http\Contracts</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.Http.Services.html">Genetsis\core\Http\Services</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.Logger.html">Genetsis\core\Logger</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.Logger.Collections.html">Genetsis\core\Logger\Collections</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.Logger.Contracts.html">Genetsis\core\Logger\Contracts</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.Logger.Services.html">Genetsis\core\Logger\Services</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.OAuth.html">Genetsis\core\OAuth</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.OAuth.Beans.html">Genetsis\core\OAuth\Beans</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.OAuth.Beans.OAuthConfig.html">Genetsis\core\OAuth\Beans\OAuthConfig</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.OAuth.Collections.html">Genetsis\core\OAuth\Collections</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.OAuth.Contracts.html">Genetsis\core\OAuth\Contracts</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.OAuth.Exceptions.html">Genetsis\core\OAuth\Exceptions</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.OAuth.Services.html">Genetsis\core\OAuth\Services</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.ServiceContainer.html">Genetsis\core\ServiceContainer</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.ServiceContainer.Contracts.html">Genetsis\core\ServiceContainer\Contracts</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.ServiceContainer.Exceptions.html">Genetsis\core\ServiceContainer\Exceptions</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.ServiceContainer.Services.html">Genetsis\core\ServiceContainer\Services</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.User.html">Genetsis\core\User</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.User.Beans.html">Genetsis\core\User\Beans</a></td>
+					</tr>
+					<tr>
+						<td class="name"><a href="namespace-Genetsis.core.User.Collections.html">Genetsis\core\User\Collections</a></td>
+					</tr>
+			</table>
+		</div>
 
 
 </div>
+	</div>
 
 	<div id="footer">
-		 API documentation generated by <a href="http://apigen.org">ApiGen</a>
+		DruID reference manual API documentation generated by <a href="http://apigen.org">ApiGen</a>
 	</div>
 </div>
-</div>
-<script src="resources/combined.js?cd021bc814832c24a7cec5319ea03335bfba1caf"></script>
-<script src="elementlist.js?15de66cbef9bee6df2caf0eab64f6f75d5194436"></script>
+<script src="resources/combined.js?533e23ef2f02bd4b20548834a028566b6eb403e0"></script>
+<script src="elementlist.js?f2dd4ea3e69b89daced0eb6187f48be5f037afc5"></script>
 </body>
 </html>

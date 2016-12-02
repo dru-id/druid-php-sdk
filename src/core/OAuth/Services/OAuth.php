@@ -63,6 +63,7 @@ class OAuth implements OAuthServiceInterface
     public function setConfig(Config $config)
     {
         $this->config = clone $config;
+        return $this;
     }
 
     /**

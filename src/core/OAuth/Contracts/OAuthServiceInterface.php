@@ -17,7 +17,7 @@ interface OAuthServiceInterface {
 
     /**
      * @param Config $config
-     * @return void
+     * @return OAuthServiceInterface
      */
     public function setConfig(Config $config);
 
