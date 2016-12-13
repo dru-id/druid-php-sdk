@@ -1,6 +1,6 @@
 <?php
-namespace Genetsis;
-
+namespace Genetsiss;
+die('Deprecated!');
 use Exception;
 use Genetsis\core\OAuth;
 use Genetsis\core\OAuthConfig;

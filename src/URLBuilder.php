@@ -1,6 +1,6 @@
 <?php
-namespace Genetsis;
-
+namespace Genetsiss;
+die('Deprecated!');
 use Exception;
 use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
 

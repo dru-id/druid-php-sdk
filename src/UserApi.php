@@ -1,6 +1,6 @@
 <?php
-namespace Genetsis;
-
+namespace Genetsiss;
+die('Deprecated!');
 use Exception;
 use Genetsis\core\User\Beans\Brand;
 use Genetsis\core\User;

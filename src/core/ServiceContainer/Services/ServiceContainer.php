@@ -1,125 +1,86 @@
 <?php namespace Genetsis\core\ServiceContainer\Services;
 
-use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
-use Genetsis\core\Http\Contracts\HttpServiceInterface;
-use Genetsis\core\Http\Services\Http as HttpService;
-use Genetsis\core\Logger\Services\EmptyLogger;
-use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\core\ServiceContainer\Contracts\ServiceContainerInterface;
 use Genetsis\core\ServiceContainer\Exceptions\InvalidServiceException;
 
 /**
- * DruID service container.
+ * Service container implementation.
  *
  * @package   Genetsis
  * @category  Contract
  */
 class ServiceContainer implements ServiceContainerInterface {
 
-    /** @var LoggerServiceInterface $logger */
-    protected static $logger = null;
-
-    /** @var HttpServiceInterface $http_service */
-    protected static $http_service = null;
-
-    /** @var OAuthServiceInterface  */
-    protected static $oauth = null;
+    /** @var array $factories List of registered service factories. */
+    protected static $factories = [];
+    /** @var array $instances List of instantiated services. */
+    protected static $instances = [];
 
     /**
      * @inheritDoc
      */
-    public static function init(array $services = [])
+    public function register($name, $closure)
     {
-        foreach ($services as $service) {
-            if ($service instanceof LoggerServiceInterface) {
-                static::setLogger($service);
-            } elseif ($service instanceof HttpServiceInterface) {
-                static::setHttpService($service);
-            } elseif ($service instanceof OAuthServiceInterface) {
-                static::setOAuthService($service);
-            } else {
-                throw new InvalidServiceException('Service "'.(is_object($service) ? get_class($service) : $service).'" is not a valid service.');
-            }
+        if (!$name) {
+            throw new \InvalidArgumentException('Service name cannot be empty.');
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function reset()
-    {
-        static::$logger = null;
-        static::$http_service = null;
-        static::$oauth = null;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function getLogger()
-    {
-        // Logger is the only service which should be return a default logger if not defined.
-        if (!isset(static::$logger) || !(static::$logger instanceof LoggerServiceInterface)) {
-            return static::$logger = new EmptyLogger();
+        if (!is_callable($closure)) {
+            throw new \InvalidArgumentException('Service declaration must be callable.');
         }
-        return static::$logger;
+
+        if ($this->resolved($name)) {
+            $this->remove($name);
+        }
+
+        static::$factories[$name] = $closure;
+        return $this;
     }
 
     /**
      * @inheritDoc
      */
-    public static function setLogger($service)
+    public function registered($name)
     {
-        if (is_null($service) || ($service instanceof LoggerServiceInterface)) {
-            static::$logger = $service;
+        return ($name && isset(static::$factories[$name]) && is_callable(static::$factories[$name]));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function resolved($name)
+    {
+        return ($name && isset(static::$instances[$name]));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function need($name)
+    {
+        if (!$name) {
+            throw new \InvalidArgumentException('Service name cannot be empty.');
+        }
+
+        if ($this->resolved($name)) {
+            return static::$instances[$name];
+        } elseif ($this->registered($name)) {
+            static::$instances[$name] = call_user_func(static::$factories[$name]);
+            return static::$instances[$name];
         } else {
-            throw new InvalidServiceException('Invalid service.');
+            throw new InvalidServiceException('Service required is not registered yet.');
         }
     }
 
     /**
      * @inheritDoc
      */
-    public static function getHttpService()
+    public function remove($name)
     {
-        if (!isset(static::$http_service) || !(static::$http_service instanceof HttpServiceInterface)) {
-            throw new InvalidServiceException('Http service not defined');
+        if ($this->registered($name)) {
+            unset(static::$factories[$name]);
         }
-        return static::$http_service;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function setHttpService($service)
-    {
-        if (is_null($service) || ($service instanceof HttpServiceInterface)) {
-            static::$http_service = $service;
-        } else {
-            throw new InvalidServiceException('Invalid service.');
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function getOAuthService()
-    {
-        if (!isset(static::$oauth) || !(static::$oauth instanceof OAuthServiceInterface)) {
-            throw new InvalidServiceException('OAuth service not defined');
-        }
-        return static::$oauth;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function setOAuthService($service)
-    {
-        if (is_null($service) || ($service instanceof OAuthServiceInterface)) {
-            static::$oauth = $service;
-        } else {
-            throw new InvalidServiceException('Invalid service.');
+        if ($this->resolved($name)) {
+            unset(static::$instances[$name]);
         }
     }
 

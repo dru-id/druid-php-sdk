@@ -1,4 +1,5 @@
-<?php namespace Genetsis\core\Encryption\Services;
+<?php
+namespace Genetsis\core\Encryption\Services;
 
 /**
  * This class is used to wrap encryption functions.
@@ -6,8 +7,8 @@
  * @package   Genetsis
  * @category  Service
  */
-class Encryption
-{
+class Encryption {
+
     /** @var string $_skey The secret key to encrypt data. */
     private $_skey = '';
 

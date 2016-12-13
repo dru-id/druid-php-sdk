@@ -1,74 +1,61 @@
-<?php namespace Genetsis\core\ServiceContainer\Contracts;
+<?php
+namespace Genetsis\core\ServiceContainer\Contracts;
 
-use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
-use Genetsis\core\Http\Contracts\HttpServiceInterface;
-use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\core\ServiceContainer\Exceptions\InvalidServiceException;
 
 /**
  * Service container interface.
  *
- * A service container is a kind of container that stores service instances to be used across all the library, so you
- * can use these services without instantiating them manually or worrying how to create them.
- *
  * @package   Genetsis
  * @category  Contract
  */
-interface ServiceContainerInterface {
+interface ServiceContainerInterface
+{
 
     /**
-     * @param array $services List of services. Accepts any of these:
-     *      - LoggerServiceInterface
-     *      - HttpServiceInterface
-     *      - OAuthServiceInterface
-     * @return void
-     * @throws InvalidServiceException
-     */
-    public static function init (array $services = array());
-
-    /**
-     * Removes all services.
+     * Register a new service into container.
      *
+     * @param string $name Service name. If exists this service will be overwritten.
+     * @param callable $closure Function which returns a configured service. It won't be called until the service is
+     *      used for the first time.
+     * @return ServiceContainerInterface
+     * @throws \InvalidArgumentException
+     */
+    public function register($name, $closure);
+
+    /**
+     * Checks if a service has been registered.
+     *
+     * @param string $name Service name.
+     * @return boolean
+     */
+    public function registered($name);
+
+    /**
+     * Checks if a service has been resolved.
+     *
+     * @param string $name
+     * @return boolean
+     */
+    public function resolved($name);
+
+    /**
+     * Returns the service instance.
+     *
+     * @param string $name Service name.
+     * @return mixed
+     * @throws \InvalidArgumentException
+     * @throws InvalidServiceException
+     * @throws \Exception Maybe an exception will be thrown when resolving service instantiation.
+     */
+    public function need($name);
+
+    /**
+     * Removes an specific service.
+     *
+     * @param string $name Service name.
      * @return void
      */
-    public static function reset();
-
-    /**
-     * @return LoggerServiceInterface
-     */
-    public static function getLogger ();
-
-    /**
-     * @param LoggerServiceInterface|null $service Set to NULL to remove service.
-     * @return void
-     * @throws InvalidServiceException
-     */
-    public static function setLogger ($service);
-
-    /**
-     * @return HttpServiceInterface
-     * @throws InvalidServiceException
-     */
-    public static function getHttpService();
-
-    /**
-     * @param HttpServiceInterface|null $service Set to NULL to remove service.
-     * @return void
-     * @throws InvalidServiceException
-     */
-    public static function setHttpService($service);
-
-    /**
-     * @return OAuthServiceInterface
-     * @throws InvalidServiceException
-     */
-    public static function getOAuthService();
-
-    /**
-     * @param OAuthServiceInterface|null $service Set to NULL to remove service.
-     * @return void
-     * @throws InvalidServiceException
-     */
-    public static function setOAuthService($service);
+    public function remove($name);
 
 }

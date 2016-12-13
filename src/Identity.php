@@ -7,8 +7,8 @@
  * @version    2.0
  * @see       http://developers.dru-id.com
  */
-namespace Genetsis;
-
+namespace Genetsiss;
+die('Deprecated!');
 require_once(dirname(__FILE__) . "/Autoloader.php");
 
 use Exception;

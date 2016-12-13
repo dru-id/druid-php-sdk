@@ -1,11 +1,12 @@
 <?php namespace Genetsis\core\OAuth\Services;
 
-use Exception;
 use Genetsis\core\Encryption\Services\Encryption;
+use Genetsis\core\Http\Contracts\HttpServiceInterface;
+use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Config;
 use Genetsis\core\OAuth\Exceptions\InvalidGrantException;
 use Genetsis\core\User\Beans\LoginStatus;
-use Genetsis\Identity;
+use Genetsis\DruID;
 use Genetsis\core\OAuth\Beans\StoredToken;
 use Genetsis\core\OAuth\Beans\AccessToken;
 use Genetsis\core\OAuth\Beans\RefreshToken;
@@ -14,7 +15,6 @@ use Genetsis\core\OAuth\Contracts\StoredTokenInterface;
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\core\OAuth\Collections\AuthMethods as AuthMethodsCollection;
 use Genetsis\core\OAuth\Collections\TokenTypes as TokenTypesCollection;
-use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
 use Genetsis\core\Http\Collections\HttpMethods as HttpMethodsCollection;
 
 /**
@@ -40,13 +40,21 @@ class OAuth implements OAuthServiceInterface
 
     /** @var Config $config */
     private $config = null;
+    /** @var HttpServiceInterface $http */
+    private $http;
+    /** @var LoggerServiceInterface $logger */
+    private $logger;
 
     /**
      * @param Config $config
+     * @param HttpServiceInterface $http
+     * @param LoggerServiceInterface $logger
      */
-    public function __construct(Config $config)
+    public function __construct(Config $config, HttpServiceInterface $http, LoggerServiceInterface $logger)
     {
         $this->setConfig($config);
+        $this->http = $http;
+        $this->logger = $logger;
     }
 
     /**
@@ -73,19 +81,19 @@ class OAuth implements OAuthServiceInterface
     {
         try {
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
-                throw new Exception ('Endpoint URL is empty');
+                throw new \Exception ('Endpoint URL is empty');
             }
 
             $params = array();
             $params['grant_type'] = AuthMethodsCollection::GRANT_TYPE_CLIENT_CREDENTIALS;
             $params['client_id'] = $this->getConfig()->getClientId();
             $params['client_secret'] = $this->getConfig()->getClientSecret();
-            $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST);
+            $response = $this->http->execute($endpoint_url, $params, HttpMethodsCollection::POST);
 
             $this->checkErrors($response);
 
             if (!isset ($response['result']->access_token) || ($response['result']->access_token == '')) {
-                throw new Exception ('The client_token retrieved is empty');
+                throw new \Exception ('The client_token retrieved is empty');
             }
 
             $expires_in = self::DEFAULT_EXPIRES_IN;
@@ -99,8 +107,8 @@ class OAuth implements OAuthServiceInterface
             $this->storeToken($client_token);
 
             return $client_token;
-        } catch (Exception $e) {
-            SC::getLogger()->error($e->getMessage(), __METHOD__, __LINE__);
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage(), __METHOD__, __LINE__);
             throw $e;
         }
     }
@@ -121,10 +129,10 @@ class OAuth implements OAuthServiceInterface
                         throw new InvalidGrantException($response['result']->error . ' (' . (isset($response['result']->type) ? trim($response['result']->type) : '') . ')');
                 }
             }
-            throw new Exception($response['result']->error . ' (' . (isset($response['result']->type) ? trim($response['result']->type) : '') . ')');
+            throw new \Exception($response['result']->error . ' (' . (isset($response['result']->type) ? trim($response['result']->type) : '') . ')');
         }
         if (isset($response['code']) && ($response['code'] != 200)) {
-            throw new Exception('Error: ' .$response['code']);
+            throw new \Exception('Error: ' .$response['code']);
         }
     }
 
@@ -158,13 +166,13 @@ class OAuth implements OAuthServiceInterface
     {
         try {
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
-                throw new Exception ('Endpoint URL is empty');
+                throw new \Exception ('Endpoint URL is empty');
             }
             if (($code = trim(( string )$code)) == '') {
-                throw new Exception ('Code is empty');
+                throw new \Exception ('Code is empty');
             }
             if (($redirect_url = trim(( string )$redirect_url)) == '') {
-                throw new Exception ('Redirect URL is empty');
+                throw new \Exception ('Redirect URL is empty');
             }
 
             $params = [];
@@ -173,15 +181,15 @@ class OAuth implements OAuthServiceInterface
             $params['redirect_uri'] = $redirect_url;
             $params['client_id'] = $this->getConfig()->getClientId();
             $params['client_secret'] = $this->getConfig()->getClientSecret();
-            $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST);
+            $response = $this->http->execute($endpoint_url, $params, HttpMethodsCollection::POST);
 
             $this->checkErrors($response);
 
             if (!isset ($response ['result']->access_token) || ($response ['result']->access_token == '')) {
-                throw new Exception ('The access_token retrieved is empty');
+                throw new \Exception ('The access_token retrieved is empty');
             }
             if (!isset ($response ['result']->refresh_token) || ($response ['result']->refresh_token == '')) {
-                throw new Exception ('The refresh_token retrieved is empty');
+                throw new \Exception ('The refresh_token retrieved is empty');
             }
 
             $expires_in = self::DEFAULT_EXPIRES_IN;
@@ -210,8 +218,8 @@ class OAuth implements OAuthServiceInterface
             return $result;
         } catch (InvalidGrantException $e) {
             throw new InvalidGrantException('Error [' . __FUNCTION__ . '] - Maybe "code" is reused - '.$e->getMessage());
-        } catch (Exception $e) {
-            throw new Exception('Error [' . __FUNCTION__ . '] - '.$e->getMessage());
+        } catch (\Exception $e) {
+            throw new \Exception('Error [' . __FUNCTION__ . '] - '.$e->getMessage());
         }
     }
 
@@ -227,10 +235,10 @@ class OAuth implements OAuthServiceInterface
     {
         try {
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
-                throw new Exception ('Endpoint URL is empty');
+                throw new \Exception ('Endpoint URL is empty');
             }
-            if (!($refresh_token = Identity::getThings()->getRefreshToken()) instanceof RefreshToken) {
-                throw new Exception ('Refresh token is empty');
+            if (!($refresh_token = DruID::identity()->getThings()->getRefreshToken()) instanceof RefreshToken) { // TODO: "Things" shouldn't be used like that.
+                throw new \Exception ('Refresh token is empty');
             }
 
             // Send request.
@@ -239,15 +247,15 @@ class OAuth implements OAuthServiceInterface
             $params['refresh_token'] = $refresh_token->getValue();
             $params['client_id'] = $this->getConfig()->getClientId();
             $params['client_secret'] = $this->getConfig()->getClientSecret();
-            $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST);
+            $response = $this->http->execute($endpoint_url, $params, HttpMethodsCollection::POST);
 
             $this->checkErrors($response);
 
             if (!isset ($response ['result']->access_token) || ($response ['result']->access_token == '')) {
-                throw new Exception ('The access_token retrieved is empty');
+                throw new \Exception ('The access_token retrieved is empty');
             }
             if (!isset ($response ['result']->refresh_token) || ($response ['result']->refresh_token == '')) {
-                throw new Exception ('The refresh_token retrieved is empty');
+                throw new \Exception ('The refresh_token retrieved is empty');
             }
 
             $expires_in = self::DEFAULT_EXPIRES_IN;
@@ -275,8 +283,8 @@ class OAuth implements OAuthServiceInterface
             return $result;
         } catch (InvalidGrantException $e) {
             throw new InvalidGrantException('Error [' . __FUNCTION__ . '] - '.$e->getMessage());
-        } catch (Exception $e) {
-            throw new Exception('Error [' . __FUNCTION__ . '] - '.$e->getMessage());
+        } catch (\Exception $e) {
+            throw new \Exception('Error [' . __FUNCTION__ . '] - '.$e->getMessage());
         }
     }
 
@@ -291,10 +299,10 @@ class OAuth implements OAuthServiceInterface
     {
         try {
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
-                throw new Exception ('Endpoint URL is empty');
+                throw new \Exception ('Endpoint URL is empty');
             }
-            if (!(($access_token = Identity::getThings()->getAccessToken()) instanceof AccessToken) || ($access_token->getValue() == '')) {
-                throw new Exception ('Access token is empty');
+            if (!(($access_token = DruID::identity()->getThings()->getAccessToken()) instanceof AccessToken) || ($access_token->getValue() == '')) {
+                throw new \Exception ('Access token is empty');
             }
 
             $params = array();
@@ -302,7 +310,7 @@ class OAuth implements OAuthServiceInterface
             $params['oauth_token'] = $access_token->getValue();
             $params['client_id'] = $this->getConfig()->getClientId();
             $params['client_secret'] = $this->getConfig()->getClientSecret();
-            $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST);
+            $response = $this->http->execute($endpoint_url, $params, HttpMethodsCollection::POST);
             unset ($access_token);
 
             $this->checkErrors($response);
@@ -317,8 +325,8 @@ class OAuth implements OAuthServiceInterface
             return $loginStatus;
         } catch (InvalidGrantException $e) {
             throw new InvalidGrantException('Error [' . __FUNCTION__ . '] - '.$e->getMessage());
-        } catch (Exception $e) {
-            throw new Exception('Error [' . __FUNCTION__ . '] - '.$e->getMessage());
+        } catch (\Exception $e) {
+            throw new \Exception('Error [' . __FUNCTION__ . '] - '.$e->getMessage());
         }
     }
 
@@ -337,25 +345,25 @@ class OAuth implements OAuthServiceInterface
             $access_token = null;
 
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
-                throw new Exception ('Endpoint URL is empty');
+                throw new \Exception ('Endpoint URL is empty');
             }
             if (($cookie_value = trim($cookie_value)) == '') {
-                throw new Exception ('SSO cookie is empty');
+                throw new \Exception ('SSO cookie is empty');
             }
 
             $params = array();
             $params['grant_type'] = AuthMethodsCollection::GRANT_TYPE_EXCHANGE_SESSION;
             $params['client_id'] = $this->getConfig()->getClientId();
             $params['client_secret'] = $this->getConfig()->getClientSecret();
-            $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST, [], [self::SSO_COOKIE_NAME . '=' . $cookie_value]);
+            $response = $this->http->execute($endpoint_url, $params, HttpMethodsCollection::POST, [], [self::SSO_COOKIE_NAME . '=' . $cookie_value]);
 
             $this->checkErrors($response);
 
             if (!isset ($response ['result']->access_token) || ($response ['result']->access_token == '')) {
-                throw new Exception ('The access_token retrieved is empty');
+                throw new \Exception ('The access_token retrieved is empty');
             }
             if (!isset ($response ['result']->refresh_token) || ($response ['result']->refresh_token == '')) {
-                throw new Exception ('The refresh_token retrieved is empty');
+                throw new \Exception ('The refresh_token retrieved is empty');
             }
 
             $expires_in = self::DEFAULT_EXPIRES_IN;
@@ -384,8 +392,8 @@ class OAuth implements OAuthServiceInterface
             return $result;
         } catch (InvalidGrantException $e) {
             throw new InvalidGrantException('Error [' . __FUNCTION__ . '] - '.$e->getMessage());
-        } catch (Exception $e) {
-            throw new Exception('Error [' . __FUNCTION__ . '] - '.$e->getMessage());
+        } catch (\Exception $e) {
+            throw new \Exception('Error [' . __FUNCTION__ . '] - '.$e->getMessage());
         }
     }
 
@@ -400,10 +408,10 @@ class OAuth implements OAuthServiceInterface
     {
         try {
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
-                throw new Exception ('Endpoint URL is empty');
+                throw new \Exception ('Endpoint URL is empty');
             }
-            if (!($refresh_token = Identity::getThings()->getRefreshToken()) instanceof RefreshToken) {
-                throw new Exception ('Refresh token is empty');
+            if (!($refresh_token = DruID::identity()->getThings()->getRefreshToken()) instanceof RefreshToken) {
+                throw new \Exception ('Refresh token is empty');
             }
 
             $params = array();
@@ -411,7 +419,7 @@ class OAuth implements OAuthServiceInterface
             $params['token_type'] = 'refresh_token';
             $params['client_id'] = $this->getConfig()->getClientId();
             $params['client_secret'] = $this->getConfig()->getClientSecret();
-            SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST);
+            $this->http->execute($endpoint_url, $params, HttpMethodsCollection::POST);
             unset ($refresh_token);
 
             unset($_COOKIE[self::SSO_COOKIE_NAME]);
@@ -420,8 +428,8 @@ class OAuth implements OAuthServiceInterface
             self::deleteStoredToken(TokenTypesCollection::ACCESS_TOKEN);
             self::deleteStoredToken(TokenTypesCollection::REFRESH_TOKEN);
 
-        } catch (Exception $e) {
-            throw new Exception('Error [' . __FUNCTION__ . '] - '.$e->getMessage());
+        } catch (\Exception $e) {
+            throw new \Exception('Error [' . __FUNCTION__ . '] - '.$e->getMessage());
         }
     }
 
@@ -465,7 +473,7 @@ class OAuth implements OAuthServiceInterface
     public function getStoredToken($name)
     {
         if (($name = trim((string)$name)) == '') {
-            throw new Exception ('Token type not exist');
+            throw new \Exception ('Token type not exist');
         }
 
         return (isset($_COOKIE[$name]) && $_COOKIE[$name])
@@ -486,15 +494,15 @@ class OAuth implements OAuthServiceInterface
     {
         try {
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
-                throw new Exception ('Endpoint Opinator URL is empty');
+                throw new \Exception ('Endpoint Opinator URL is empty');
             }
 
             if (($scope = trim((string)$scope)) == '') {
-                throw new Exception ('Scope is empty');
+                throw new \Exception ('Scope is empty');
             }
 
             if ($token->getValue() == '') {
-                throw new Exception ('Token is not valid');
+                throw new \Exception ('Token is not valid');
             }
 
             // Send request.
@@ -502,16 +510,16 @@ class OAuth implements OAuthServiceInterface
             $params['oauth_token'] = $token->getValue();
             $params['client_id'] = $this->getConfig()->getClientId();
             $params['client_secret'] = $this->getConfig()->getClientSecret();
-            $response = SC::getHttpService()->execute($endpoint_url . '/' . $scope, $params, HttpMethodsCollection::POST);
+            $response = $this->http->execute($endpoint_url . '/' . $scope, $params, HttpMethodsCollection::POST);
 
             if (isset($response['code']) && ($response['code'] == 200)) {
                 return $response['result'];
             } else {
-                throw new Exception('Error [' . __FUNCTION__ . '] - ' . $response['code'] . ' - ' . $response['result']);
+                throw new \Exception('Error [' . __FUNCTION__ . '] - ' . $response['code'] . ' - ' . $response['result']);
             }
 
-        } catch (Exception $e) {
-            throw new Exception('Error [' . __FUNCTION__ . '] - ' . $e->getMessage());
+        } catch (\Exception $e) {
+            throw new \Exception('Error [' . __FUNCTION__ . '] - ' . $e->getMessage());
         }
     }
 
@@ -530,15 +538,15 @@ class OAuth implements OAuthServiceInterface
     {
         try {
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
-                throw new Exception ('Endpoint URL is empty');
+                throw new \Exception ('Endpoint URL is empty');
             }
 
             if (($scope = trim((string)$scope)) == '') {
-                throw new Exception ('Scope is empty');
+                throw new \Exception ('Scope is empty');
             }
 
-            if (!(($access_token = Identity::getThings()->getAccessToken()) instanceof AccessToken) || ($access_token->getValue() == '')) {
-                throw new Exception ('Access token is empty');
+            if (!(($access_token = DruID::identity()->getThings()->getAccessToken()) instanceof AccessToken) || ($access_token->getValue() == '')) {
+                throw new \Exception ('Access token is empty');
             }
 
             // Send request.
@@ -548,7 +556,7 @@ class OAuth implements OAuthServiceInterface
             $params['f'] = "UserMeta";
             $params['w.section'] = $scope;
 
-            $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST);
+            $response = $this->http->execute($endpoint_url, $params, HttpMethodsCollection::POST);
 
             $this->checkErrors($response);
 
@@ -557,8 +565,8 @@ class OAuth implements OAuthServiceInterface
             } else {
                 return false;
             }
-        } catch (Exception $e) {
-            throw new Exception('Error [' . __FUNCTION__ . '] - '.$e->getMessage());
+        } catch (\Exception $e) {
+            throw new \Exception('Error [' . __FUNCTION__ . '] - '.$e->getMessage());
         }
     }
 
@@ -575,15 +583,15 @@ class OAuth implements OAuthServiceInterface
     {
         try {
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
-                throw new Exception ('Endpoint URL is empty');
+                throw new \Exception ('Endpoint URL is empty');
             }
 
             if (($scope = trim((string)$scope)) == '') {
-                throw new Exception ('Scope is empty');
+                throw new \Exception ('Scope is empty');
             }
 
-            if (!(($access_token = Identity::getThings()->getAccessToken()) instanceof AccessToken) || ($access_token->getValue() == '')) {
-                throw new Exception ('Access token is empty');
+            if (!(($access_token = DruID::identity()->getThings()->getAccessToken()) instanceof AccessToken) || ($access_token->getValue() == '')) {
+                throw new \Exception ('Access token is empty');
             }
 
             // Send request.
@@ -593,7 +601,7 @@ class OAuth implements OAuthServiceInterface
             $params['f'] = "UserMeta";
             $params['w.section'] = $scope;
 
-            $response = SC::getHttpService()->execute($endpoint_url, $params, HttpMethodsCollection::POST);
+            $response = $this->http->execute($endpoint_url, $params, HttpMethodsCollection::POST);
 
             $this->checkErrors($response);
 
@@ -611,8 +619,8 @@ class OAuth implements OAuthServiceInterface
             } else {
                 return false;
             }
-        } catch (Exception $e) {
-            throw new Exception('Error [' . __FUNCTION__ . '] - '.$e->getMessage());
+        } catch (\Exception $e) {
+            throw new \Exception('Error [' . __FUNCTION__ . '] - '.$e->getMessage());
         }
     }
 }

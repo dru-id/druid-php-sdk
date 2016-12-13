@@ -1,8 +1,9 @@
-<?php namespace Genetsis\core\Http\Services;
+<?php
+namespace Genetsis\core\Http\Services;
 
-use \Exception;
 use Genetsis\core\Http\Contracts\HttpServiceInterface;
 use Genetsis\core\Http\Collections\HttpMethods as HttpMethodsCollection;
+use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
 
 /**
@@ -13,13 +14,24 @@ use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
  */
 class Http implements HttpServiceInterface {
 
+    /** @var LoggerServiceInterface $logger */
+    protected $logger;
+
+    /**
+     * @param LoggerServiceInterface $logger
+     */
+    public function __construct(LoggerServiceInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
     /**
      * @inheritDoc
      */
     public function execute($url, $parameters = array(), $http_method = HttpMethodsCollection::GET, $http_headers = array(), $cookies = array())
     {
         if (!extension_loaded('curl')) {
-            throw new Exception('The PHP extension curl must be installed to use this library.');
+            throw new \Exception('The PHP extension curl must be installed to use this library.');
         }
 
         if (($url = trim($url)) == '') {
@@ -117,13 +129,13 @@ class Http implements HttpServiceInterface {
         $total_time = curl_getinfo($ch, CURLINFO_TOTAL_TIME);
         curl_close($ch);
 
-        SC::getLogger()->debug('### BEGIN REQUEST ###', __METHOD__, __LINE__);
-        SC::getLogger()->debug(sprintf('URL -> [%s][%s] %s', $http_method, ($is_ssl ? 'ssl' : 'no ssl'), var_export($url, true)), __METHOD__, __LINE__);
-        SC::getLogger()->debug('Params -> ' . var_export($parameters, true), __METHOD__, __LINE__);
-        SC::getLogger()->debug('Headers -> ' . var_export($http_headers, true), __METHOD__, __LINE__);
-        SC::getLogger()->debug(sprintf("Response -> [%s][%s]\n%s", $content_type, $http_code, var_export($result, true)), __METHOD__, __LINE__);
-        SC::getLogger()->debug('Total Time -> ' . var_export($total_time, true), __METHOD__, __LINE__);
-        SC::getLogger()->debug('### END REQUEST ###', __METHOD__, __LINE__);
+        $this->logger->debug('### BEGIN REQUEST ###', __METHOD__, __LINE__);
+        $this->logger->debug(sprintf('URL -> [%s][%s] %s', $http_method, ($is_ssl ? 'ssl' : 'no ssl'), var_export($url, true)), __METHOD__, __LINE__);
+        $this->logger->debug('Params -> ' . var_export($parameters, true), __METHOD__, __LINE__);
+        $this->logger->debug('Headers -> ' . var_export($http_headers, true), __METHOD__, __LINE__);
+        $this->logger->debug(sprintf("Response -> [%s][%s]\n%s", $content_type, $http_code, var_export($result, true)), __METHOD__, __LINE__);
+        $this->logger->debug('Total Time -> ' . var_export($total_time, true), __METHOD__, __LINE__);
+        $this->logger->debug('### END REQUEST ###', __METHOD__, __LINE__);
 
         return array(
             'result' => ($content_type === 'application/json') ? ((null === json_decode($result)) ? $result : json_decode($result)) : $result,
