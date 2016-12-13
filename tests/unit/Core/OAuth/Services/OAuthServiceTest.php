@@ -30,7 +30,7 @@ class OAuthServiceTest extends Unit {
     public function testSettersAndGetters()
     {
         $this->specify('Checks setter and getter for "config" property.', function(){
-            $oauth = new OAuth((new Config())->setClientId('foo'), new Http(), new EmptyLogger());
+            $oauth = new OAuth((new Config())->setClientId('foo'), new Http(new EmptyLogger()), new EmptyLogger());
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $oauth->getConfig());
             $this->assertEquals('foo', $oauth->getConfig()->getClientId());
             $this->assertInstanceOf('\Genetsis\core\OAuth\Services\OAuth', $oauth->setConfig((new Config())->setClientId('bar')));

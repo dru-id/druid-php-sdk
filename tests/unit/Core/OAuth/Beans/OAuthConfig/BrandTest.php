@@ -1,9 +1,9 @@
 <?php
-namespace Genetsis\UnitTest\User\Beans;
+namespace Genetsis\UnitTest\Core\OAuth\Beans\OAuthConfig;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
-use Genetsis\core\User\Beans\Brand;
+use Genetsis\core\OAuth\Beans\OAuthConfig\Brand;
 
 /**
  * @package Genetsis
@@ -16,7 +16,7 @@ class BrandTest extends Unit {
     protected $tester;
 
     /** @var Brand $brand */
-    private $brand;
+    protected $brand;
 
     protected function _before()
     {
@@ -31,13 +31,13 @@ class BrandTest extends Unit {
     {
         $this->brand = new Brand();
 
-        $this->specify('Checks setter and getter for "key" property.', function() {
-            $this->assertInstanceOf('\Genetsis\core\User\Beans\Brand', $this->brand->setKey('my-key'));
+        $this->specify('Checks setter and getter for "key" property.', function(){
+            $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Brand', $this->brand->setKey('my-key'));
             $this->assertEquals('my-key', $this->brand->getKey());
         });
 
-        $this->specify('Checks setter and getter for "name" property.', function() {
-            $this->assertInstanceOf('\Genetsis\core\User\Beans\Brand', $this->brand->setName('my-name'));
+        $this->specify('Checks setter and getter for "name" property.', function(){
+            $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Brand', $this->brand->setName('my-name'));
             $this->assertEquals('my-name', $this->brand->getName());
         });
     }
@@ -48,7 +48,11 @@ class BrandTest extends Unit {
     public function testConstructor()
     {
         $this->brand = new Brand(['key' => 'my-key', 'name' => 'my-name']);
-        $this->assertEquals('my-key', $this->brand->getKey());
-        $this->assertEquals('my-name', $this->brand->getName());
+
+        $this->specify('Checks that constructor has assigned those variables properly.', function() {
+            $this->assertEquals('my-key', $this->brand->getKey());
+            $this->assertEquals('my-name', $this->brand->getName());
+        });
     }
+
 }

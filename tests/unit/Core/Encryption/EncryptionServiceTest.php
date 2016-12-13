@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\UnitTest\Encryption;
+namespace Genetsis\UnitTest\Core\Encryption;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;

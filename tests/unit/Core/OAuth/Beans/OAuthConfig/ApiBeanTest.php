@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\UnitTest\OAuth\Beans\OAuthConfig;
+namespace Genetsis\UnitTest\Core\OAuth\Beans\OAuthConfig;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;

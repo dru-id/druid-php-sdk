@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\UnitTest\User\Beans;
+namespace Genetsis\UnitTest\Core\User\Beans;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;

@@ -4,7 +4,6 @@ namespace Genetsis\core\Http\Services;
 use Genetsis\core\Http\Contracts\HttpServiceInterface;
 use Genetsis\core\Http\Collections\HttpMethods as HttpMethodsCollection;
 use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
-use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
 
 /**
  * Class to performs HTTP request calls.
