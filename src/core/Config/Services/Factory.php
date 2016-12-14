@@ -4,6 +4,7 @@ namespace Genetsis\core\Config\Services;
 use Genetsis\core\Config\Beans\Config;
 use Genetsis\core\Config\Beans\Log;
 
+
 class Factory {
 
     /**

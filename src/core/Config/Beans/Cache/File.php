@@ -1,31 +1,41 @@
 <?php
 namespace Genetsis\core\Config\Beans\Cache;
 
-class File {
+/**
+ * This class keeps config parameters when cache should be stored in files.
+ *
+ * @package  Genetsis
+ * @category Bean
+ */
+class File extends AbstractCache {
 
-    /** @var string $cache_folder */
-    private $cache_folder;
+    /** @var string $folder Path to folder where all cache files will be generated. */
+    private $folder;
 
-    public function __construct($cache_folder)
+    /**
+     * @param string $folder Path to folder where all cache files will be generated. This folder must have granted write
+     *      permissions. 
+     */
+    public function __construct($folder)
     {
-        $this->setCacheFolder($cache_folder);
+        $this->setFolder($folder);
     }
 
     /**
      * @return string
      */
-    public function getCacheFolder()
+    public function getFolder()
     {
-        return $this->cache_folder;
+        return $this->folder;
     }
 
     /**
-     * @param string $cache_folder
+     * @param string $folder
      * @return File
      */
-    public function setCacheFolder($cache_folder)
+    public function setFolder($folder)
     {
-        $this->cache_folder = $cache_folder;
+        $this->folder = $folder;
         return $this;
     }
 

@@ -3,13 +3,15 @@ namespace Genetsis;
 
 use Genetsis\core\Config\Beans\Cache;
 use Genetsis\core\Config\Beans\Config as DruIDConfig;
-use Genetsis\core\Config\Beans\Log;
+use Genetsis\core\Config\Beans\Log\File as FileLogConfig;
+use Genetsis\core\Config\Beans\Log\Syslog as SyslogConfig;
 use Genetsis\core\Http\Contracts\HttpServiceInterface;
 use Genetsis\core\Http\Services\Http;
 use Genetsis\core\Logger\Collections\LogLevels as LogLevelsCollection;
 use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\Logger\Services\DruIDLogger;
 use Genetsis\core\Logger\Services\EmptyLogger;
+use Genetsis\core\Logger\Services\SyslogLogger;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Config as OAuthConfig;
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\core\OAuth\Services\OAuth;
@@ -29,7 +31,13 @@ use Genetsis\UserApi\Services\UserApi;
  */
 class DruID {
 
+    // Indicates which is the OAuth configuration file version is accepted by this library.
     const CONF_VERSION = '1.4';
+
+    /** @var boolean $setup_done Indicates if the setup process has been done or not. */
+    private static $setup_done = false;
+    /** @var boolean $sync_done Indicates if the synchronization process has been done or not. */
+    private static $sync_done = false;
 
     /** @var OAuthServiceInterface $oauth */
     private static $oauth;
@@ -38,8 +46,6 @@ class DruID {
     /** @var LoggerServiceInterface $logger */
     private static $logger;
 
-    /** @var DruIDConfig $druid_config */
-    private static $druid_config;
     /** @var IdentityServiceInterface $identity */
     private static $identity;
     /** @var UrlBuilderServiceInterface $url_builder */
@@ -50,24 +56,29 @@ class DruID {
     private static $opi;
 
     /**
+     * Configures the application defining parameters such as registry system or cache, as well as which configuration
+     * file to use to use DruID web services.
+     *
+     * This method does not make an initial call to DruID web services to synchronize the library, for this you must
+     * call {@link DruID::init()}.
+     *
      * @param DruIDConfig $druid_config
      * @param OAuthConfig $oauth_config
      * @return void
      */
-    public static function init(DruIDConfig $druid_config, OAuthConfig $oauth_config)
+    public static function setup(DruIDConfig $druid_config, OAuthConfig $oauth_config)
     {
-        self::$druid_config = $druid_config;
-
-        // Logger service.
-        if (isset($settings['logger']) && ($settings['logger'] instanceof LoggerServiceInterface)) { // Custom logger.
-            self::$logger = $settings['logger'];
-        } else { // Default logger based on configuration.
-            if (isset($settings['log-level']) && ($settings['log-level'] != 'off')) {
-                self::$logger = new DruIDLogger(self::$druid_config->getLog()->getLogFolder().'/'.$oauth_config->getClientId(), LogLevelsCollection::DEBUG); // TODO: check if log leves if defined by user through configuration.
-            } else {
-                self::$logger = new EmptyLogger();
-            }
+        // Log service.
+        if ($druid_config->getLog() instanceof FileLogConfig) {
+            self::$logger = new DruIDLogger($druid_config->getLog()->getFolder().'/'.$oauth_config->getClientId(), LogLevelsCollection::DEBUG);
+        } elseif ($druid_config->getLog() instanceof SyslogConfig) {
+            self::$logger = new SyslogLogger($druid_config->getLog()->getLevel());
+        } else {
+            self::$logger = new EmptyLogger();
         }
+
+        // Cache service
+        // TODO: implement cache service.
 
         // Http service.
         self::$http = new Http(self::$logger);
@@ -80,53 +91,96 @@ class DruID {
         self::$url_builder = new UrlBuilder(self::$oauth, self::$logger);
         self::$user_api = new UserApi(self::$oauth, self::$http, self::$logger);
         self::$opi = new Opi(self::$oauth);
+
+        self::$setup_done = true;
     }
 
     /**
+     * Start the synchronization with DruID services.
+     *
+     * This action will be done once, so if you make multiple calls of this method those will be ignored.
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public static function init()
+    {
+        self::checkSetup();
+        if (!self::$sync_done) {
+            self::$identity->synchronizeSessionWithServer();
+            self::$sync_done = true;
+        }
+    }
+
+    /**
+     * @throws \Exception If the library is not setup.
+     */
+    private static function checkSetup()
+    {
+        if (!self::$setup_done) {
+            throw new \Exception('DruID library is not setup.');
+        }
+    }
+
+    /**
+     * @throws \Exception If the library is not synced with DruID services.
+     */
+    private static function checkSync()
+    {
+        if (!self::$sync_done) {
+            throw new \Exception('DruID library is not synced.');
+        }
+    }
+
+    /**
+     * Returns an instance of identity service.
+     *
      * @return IdentityServiceInterface
      * @throws \Exception
      */
     public static function identity()
     {
-        if (!isset(self::$identity) || !(self::$identity instanceof IdentityServiceInterface)) {
-            throw new \Exception('Identity service not defined.');
-        }
+        self::checkSetup();
+        self::checkSync();
         return self::$identity;
     }
 
     /**
+     * Returns an instance of URL builder service.
+     *
      * @return UrlBuilderServiceInterface
      * @throws \Exception
      */
     public static function urlBuilder()
     {
-        if (!isset(self::$url_builder) || !(self::$url_builder instanceof UrlBuilderServiceInterface)) {
-            throw new \Exception('UrlBuilder service not defined.');
-        }
+        self::checkSetup();
+        self::checkSync();
         return self::$url_builder;
     }
 
     /**
+     * Returns an instance of user API service.
+     *
      * @return UserApiServiceInterface
      * @throws \Exception
      */
     public static function userApi()
     {
-        if (!isset(self::$user_api) || !(self::$user_api instanceof UserApiServiceInterface)) {
-            throw new \Exception('UserApi service not defined.');
-        }
+        self::checkSetup();
+        self::checkSync();
         return self::$user_api;
     }
 
     /**
+     * Returns an instance of OPI service.
+     *
      * @return OpiServiceInterface
      * @throws \Exception
      */
     public static function opi()
     {
-        if (!isset(self::$opi) || !(self::$opi instanceof OpiServiceInterface)) {
-            throw new \Exception('Opi service not defined.');
-        }
+        self::checkSetup();
+        self::checkSync();
         return self::$opi;
     }
 

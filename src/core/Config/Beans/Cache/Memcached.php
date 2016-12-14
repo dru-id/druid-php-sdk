@@ -1,7 +1,13 @@
 <?php
 namespace Genetsis\core\Config\Beans\Cache;
 
-class Memcached {
+/**
+ * This class keeps config parameters when cache should be stored in memcached.
+ *
+ * @package  Genetsis
+ * @category Bean
+ */
+class Memcached extends AbstractCache {
 
     /** @var string $host */
     private $host;

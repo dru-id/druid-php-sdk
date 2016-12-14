@@ -1,10 +1,12 @@
 <?php
 namespace Genetsis\core\Config\Beans;
 
-use Genetsis\core\Config\Beans\Cache\File;
-use Genetsis\core\Config\Beans\Cache\Memcached;
+use Genetsis\core\Config\Beans\Cache\AbstractCache;
+use Genetsis\core\Config\Beans\Log\AbstractLog;
 
 /**
+ * This class stores all configuration parameters for the current process.
+ *
  * @package  Genetsis
  * @category Bean
  */
@@ -12,15 +14,17 @@ class Config {
 
     /** @var string $server_name */
     private $server_name = '';
-    /** @var Log|null $log */
+    /** @var AbstractLog|null $log Configuration parameters for logging process. If it is not defined none of all
+     * log calls will be processed. */
     private $log;
-    /** @var File|Memcached|null $cache */
+    /** @var AbstractCache|null $cache Configuration parameters for caching process. If it is not defined none
+     * of all caching process will be processed.*/
     private $cache;
 
     /**
      * @param string $server_name
-     * @param Log|null $log
-     * @param File|Memcached|null $cache
+     * @param AbstractLog|null $log
+     * @param AbstractCache|null $cache
      */
     public function __construct($server_name, $log = null, $cache = null)
     {
@@ -48,7 +52,7 @@ class Config {
     }
 
     /**
-     * @return Log|null
+     * @return AbstractLog|null
      */
     public function getLog()
     {
@@ -56,22 +60,22 @@ class Config {
     }
 
     /**
-     * @param Log|null $log
+     * @param AbstractLog|null $log
      * @return Config
      * @throws \InvalidArgumentException
      */
     public function setLog($log)
     {
-        if (is_null($log) || ($log instanceof Log)) {
+        if (is_null($log) || ($log instanceof AbstractLog)) {
             $this->log = $log;
             return $this;
         } else {
-            throw new \InvalidArgumentException('Invalid parameter.');
+            throw new \InvalidArgumentException('Invalid argument value.');
         }
     }
 
     /**
-     * @return File|Memcached|null
+     * @return AbstractCache|null
      */
     public function getCache()
     {
@@ -79,17 +83,17 @@ class Config {
     }
 
     /**
-     * @param File|Memcached|null $cache
+     * @param AbstractCache|null $cache
      * @return Config
      * @throws \InvalidArgumentException
      */
     public function setCache($cache)
     {
-        if (is_null($cache) || ($cache instanceof File) || ($cache instanceof Memcached)) {
+        if (is_null($cache) || ($cache instanceof AbstractCache)) {
             $this->cache = $cache;
             return $this;
         } else {
-            throw new \InvalidArgumentException('Invalid parameter.');
+            throw new \InvalidArgumentException('Invalid argument value.');
         }
     }
 }

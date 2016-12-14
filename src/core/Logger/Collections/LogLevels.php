@@ -58,4 +58,15 @@ class LogLevels {
      */
     const EMERGENCY = 'emergency';
 
+    /**
+     * Checks if it is a valid level.
+     *
+     * @param string $level
+     * @return boolean
+     */
+    public static function check($level)
+    {
+        return in_array($level, [self::DEBUG, self::INFO, self::NOTICE, self::WARNING, self::ERROR, self::CRITICAL, self::ALERT, self::EMERGENCY]);
+    }
+
 }
