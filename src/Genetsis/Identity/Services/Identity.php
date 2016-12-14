@@ -1,9 +1,9 @@
 <?php
 namespace Genetsis\Identity\Services;
 
+use Genetsis\core\Cache\Contracts\CacheServiceInterface;
 use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
-use Genetsis\core\FileCache;
 use Genetsis\core\OAuth\Beans\ClientToken;
 use Genetsis\core\OAuth\Collections\TokenTypes as TokenTypesCollection;
 use Genetsis\core\OAuth\Exceptions\InvalidGrantException;
@@ -19,6 +19,8 @@ class Identity implements IdentityServiceInterface {
     protected $oauth;
     /** @var LoggerServiceInterface $logger */
     protected $logger;
+    /** @var CacheServiceInterface $cache */
+    protected $cache;
     
     /** @var boolean $synchronized Indicates if the service has been sync with the server. */
     private $synchronized = false;
@@ -28,11 +30,18 @@ class Identity implements IdentityServiceInterface {
     /**
      * @param OAuthServiceInterface $oauth
      * @param LoggerServiceInterface $logger
+     * @param CacheServiceInterface $cache
      */
-    public function __construct(OAuthServiceInterface $oauth, LoggerServiceInterface $logger)
+    public function __construct(OAuthServiceInterface $oauth, LoggerServiceInterface $logger, CacheServiceInterface $cache)
     {
         $this->oauth = $oauth;
         $this->logger = $logger;
+        $this->cache = $cache;
+
+        // TODO: use cache service.
+        $this->gid_things = (isset($_SESSION['Things']) && (($my_things = @unserialize($_SESSION['Things'])) instanceof Things))
+            ? $my_things
+            : new Things();
     }
 
     /**
@@ -52,8 +61,6 @@ class Identity implements IdentityServiceInterface {
     public function synchronizeSessionWithServer()
     {
         if (!$this->synchronized) {
-            $this->synchronized = true;
-
             try {
                 $this->logger->debug('Synchronizing session with server', __METHOD__, __LINE__);
                 $this->checkAndUpdateClientToken();
@@ -80,6 +87,8 @@ class Identity implements IdentityServiceInterface {
                         $this->clearLocalSessionData();
                     }
                 }
+
+                $this->synchronized = true;
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage(), __METHOD__, __LINE__);
             }
@@ -100,7 +109,7 @@ class Identity implements IdentityServiceInterface {
     {
         try {
             $this->logger->debug('Checking and update client_token.', __METHOD__, __LINE__);
-            if (!(($client_token = unserialize(FileCache::get('client_token'))) instanceof ClientToken) || ($client_token->getValue() == '')) {
+            if (!(($client_token = unserialize($this->cache->get('client_token'))) instanceof ClientToken) || ($client_token->getValue() == '')) {
                 $this->logger->debug('Get Client token', __METHOD__, __LINE__);
 
                 if (($this->gid_things->getClientToken() == null) || ($this->oauth->getStoredToken(TokenTypesCollection::CLIENT_TOKEN) == null)) {
@@ -114,7 +123,7 @@ class Identity implements IdentityServiceInterface {
                 } else {
                     $this->logger->debug('Client Token from session', __METHOD__, __LINE__);
                 }
-                FileCache::set('client_token', serialize($this->gid_things->getClientToken()), $this->gid_things->getClientToken()->getExpiresIn());
+                $this->cache->set('client_token', serialize($this->gid_things->getClientToken()), $this->gid_things->getClientToken()->getExpiresIn());
             } else {
                 $this->logger->debug('Client Token from cache', __METHOD__, __LINE__);
                 $this->gid_things->setClientToken($client_token);

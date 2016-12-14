@@ -11,11 +11,11 @@ use Genetsis\core\Logger\Collections\LogLevels;
  */
 class File extends AbstractLog {
 
-    /** @var string $folder Path to the folder where all logs will be stored. */
+    /** @var string $folder Full path to the folder where all logs will be stored. */
     private $folder;
 
     /**
-     * @param string $folder Path to the folder where all logs will be stored.
+     * @param string $folder Full path to the folder where all logs will be stored.
      * @param string $log_level One of defined at {@link \Genetsis\core\Logger\Collections\LogLevels}
      */
     public function __construct($folder, $log_level = LogLevels::DEBUG)

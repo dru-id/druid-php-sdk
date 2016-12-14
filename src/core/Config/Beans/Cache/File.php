@@ -9,11 +9,11 @@ namespace Genetsis\core\Config\Beans\Cache;
  */
 class File extends AbstractCache {
 
-    /** @var string $folder Path to folder where all cache files will be generated. */
+    /** @var string $folder Full path to folder where all cache files will be generated. */
     private $folder;
 
     /**
-     * @param string $folder Path to folder where all cache files will be generated. This folder must have granted write
+     * @param string $folder Full path to folder where all cache files will be generated. This folder must have granted write
      *      permissions. 
      */
     public function __construct($folder)

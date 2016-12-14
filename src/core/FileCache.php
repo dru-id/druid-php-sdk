@@ -1,7 +1,7 @@
 <?php
 
 namespace Genetsis\core;
-
+die('Deprecated: '.__FILE__);
 use Exception;
 
 /**

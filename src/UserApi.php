@@ -1,6 +1,6 @@
 <?php
 namespace Genetsiss;
-die('Deprecated!');
+die('Deprecated: '.__FILE__);
 use Exception;
 use Genetsis\core\User\Beans\Brand;
 use Genetsis\core\User;

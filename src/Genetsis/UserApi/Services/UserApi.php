@@ -2,12 +2,12 @@
 namespace Genetsis\UserApi\Services;
 
 use Exception;
+use Genetsis\core\Cache\Contracts\CacheServiceInterface;
 use Genetsis\core\Http\Contracts\HttpServiceInterface;
 use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\core\User\Beans\Brand;
 use Genetsis\core\User;
-use Genetsis\core\FileCache;
 use Genetsis\core\Http\Collections\HttpMethods as HttpMethodsCollection;
 use Genetsis\core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
 use Genetsis\DruID;
@@ -38,17 +38,21 @@ class UserApi implements UserApiServiceInterface
     protected $http;
     /** @var LoggerServiceInterface $logger */
     protected $logger;
+    /** @var CacheServiceInterface $cache */
+    protected $cache;
 
     /**
      * @param OAuthServiceInterface $oauth
      * @param HttpServiceInterface $http
      * @param LoggerServiceInterface $logger
+     * @param CacheServiceInterface $cache
      */
-    public function __construct(OAuthServiceInterface $oauth, HttpServiceInterface $http, LoggerServiceInterface $logger)
+    public function __construct(OAuthServiceInterface $oauth, HttpServiceInterface $http, LoggerServiceInterface $logger, CacheServiceInterface $cache)
     {
         $this->oauth = $oauth;
         $this->http = $http;
         $this->logger = $logger;
+        $this->cache = $cache;
     }
 
     /**
@@ -177,7 +181,7 @@ class UserApi implements UserApiServiceInterface
     {
         try {
             $this->logger->debug('Get list of Brands', __METHOD__, __LINE__);
-            if (!$brands = unserialize(FileCache::get('brands'))) {
+            if (!$brands = unserialize($this->cache->get('brands'))) {
                 $this->logger->debug('Brands not cached', __METHOD__, __LINE__);
                 if (!$client_token = DruID::identity()->getThings()->getClientToken()) {
                     throw new \Exception('The clientToken is empty');
@@ -202,7 +206,7 @@ class UserApi implements UserApiServiceInterface
                     }
                 }
 
-                FileCache::set('brands', serialize($brands), self::BRANDS_TTL);
+                $this->cache->set('brands', serialize($brands), self::BRANDS_TTL);
             }
 
             return $brands;
@@ -223,10 +227,10 @@ class UserApi implements UserApiServiceInterface
 
             if ($ckusid == null) {
                 if ((DruID::identity()->getThings()->getLoginStatus()!=null)&&(DruID::identity()->getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
-                    FileCache::delete('user-' . DruID::identity()->getThings()->getLoginStatus()->getCkUsid());
+                    $this->cache->delete('user-' . DruID::identity()->getThings()->getLoginStatus()->getCkUsid());
                 }
             } else {
-                FileCache::delete('user-' . $ckusid);
+                $this->cache->delete('user-' . $ckusid);
             }
         } catch ( Exception $e ) {
             $this->logger->error($e->getMessage(), __METHOD__, __LINE__);
@@ -243,7 +247,7 @@ class UserApi implements UserApiServiceInterface
 
         if (is_array($identifiers)) {
             try {
-                if (!$druid_user_data = FileCache::get('user-' . reset($identifiers))) {
+                if (!$druid_user_data = $this->cache->get('user-' . reset($identifiers))) {
                     $this->logger->debug('Identifier: ' . reset($identifiers) . ' is Not in Cache System', __METHOD__, __LINE__);
 
                     $client_token = DruID::identity()->getThings()->getClientToken();
@@ -272,7 +276,7 @@ class UserApi implements UserApiServiceInterface
                         throw new \Exception('The data retrieved is empty');
                     }
                     $druid_user = $response['result']->data;
-                    FileCache::set('user-' . reset($identifiers), $druid_user, self::USER_TTL);
+                    $this->cache->set('user-' . reset($identifiers), $druid_user, self::USER_TTL);
                 } else {
                     $this->logger->debug('Identifier: ' . reset($identifiers) . ' is in Cache System', __METHOD__, __LINE__);
                     $druid_user = json_decode(json_encode($druid_user_data));

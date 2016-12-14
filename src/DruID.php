@@ -1,7 +1,11 @@
 <?php
 namespace Genetsis;
 
-use Genetsis\core\Config\Beans\Cache;
+use Genetsis\core\Cache\Contracts\CacheServiceInterface;
+use Genetsis\core\Cache\Services\EmptyCache as EmptyCacheService;
+use Genetsis\core\Cache\Services\FileCache as FileCacheService;
+use Genetsis\core\Config\Beans\Cache\File as FileCacheConfig;
+use Genetsis\core\Config\Beans\Cache\Memcached as MemcachedCacheConfig;
 use Genetsis\core\Config\Beans\Config as DruIDConfig;
 use Genetsis\core\Config\Beans\Log\File as FileLogConfig;
 use Genetsis\core\Config\Beans\Log\Syslog as SyslogConfig;
@@ -36,8 +40,6 @@ class DruID {
 
     /** @var boolean $setup_done Indicates if the setup process has been done or not. */
     private static $setup_done = false;
-    /** @var boolean $sync_done Indicates if the synchronization process has been done or not. */
-    private static $sync_done = false;
 
     /** @var OAuthServiceInterface $oauth */
     private static $oauth;
@@ -45,6 +47,8 @@ class DruID {
     private static $http;
     /** @var LoggerServiceInterface $logger */
     private static $logger;
+    /** @var CacheServiceInterface $cache */
+    private static $cache;
 
     /** @var IdentityServiceInterface $identity */
     private static $identity;
@@ -78,7 +82,14 @@ class DruID {
         }
 
         // Cache service
-        // TODO: implement cache service.
+        if ($druid_config->getCache() instanceof FileCacheConfig) {
+            self::$cache = new FileCacheService($druid_config->getCache()->getFolder().'/'.$oauth_config->getClientId(), self::$logger);
+        } elseif ($druid_config->getCache() instanceof MemcachedCacheConfig) {
+            // TODO: implement memcached configuration.
+            self::$cache = new EmptyCacheService();
+        } else {
+            self::$cache = new EmptyCacheService();
+        }
 
         // Http service.
         self::$http = new Http(self::$logger);
@@ -87,9 +98,9 @@ class DruID {
         // TODO: check if there is a cache for the OAuth.
         self::$oauth = new OAuth($oauth_config, self::$http, self::$logger);
 
-        self::$identity = new Identity(self::$oauth, self::$logger);
+        self::$identity = new Identity(self::$oauth, self::$logger, self::$cache);
         self::$url_builder = new UrlBuilder(self::$oauth, self::$logger);
-        self::$user_api = new UserApi(self::$oauth, self::$http, self::$logger);
+        self::$user_api = new UserApi(self::$oauth, self::$http, self::$logger, self::$cache);
         self::$opi = new Opi(self::$oauth);
 
         self::$setup_done = true;
@@ -106,10 +117,7 @@ class DruID {
     public static function init()
     {
         self::checkSetup();
-        if (!self::$sync_done) {
-            self::$identity->synchronizeSessionWithServer();
-            self::$sync_done = true;
-        }
+        self::$identity->synchronizeSessionWithServer();
     }
 
     /**
@@ -123,16 +131,6 @@ class DruID {
     }
 
     /**
-     * @throws \Exception If the library is not synced with DruID services.
-     */
-    private static function checkSync()
-    {
-        if (!self::$sync_done) {
-            throw new \Exception('DruID library is not synced.');
-        }
-    }
-
-    /**
      * Returns an instance of identity service.
      *
      * @return IdentityServiceInterface
@@ -141,7 +139,6 @@ class DruID {
     public static function identity()
     {
         self::checkSetup();
-        self::checkSync();
         return self::$identity;
     }
 
@@ -154,7 +151,6 @@ class DruID {
     public static function urlBuilder()
     {
         self::checkSetup();
-        self::checkSync();
         return self::$url_builder;
     }
 
@@ -167,7 +163,6 @@ class DruID {
     public static function userApi()
     {
         self::checkSetup();
-        self::checkSync();
         return self::$user_api;
     }
 
@@ -180,7 +175,6 @@ class DruID {
     public static function opi()
     {
         self::checkSetup();
-        self::checkSync();
         return self::$opi;
     }
 
