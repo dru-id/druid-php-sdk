@@ -6,7 +6,6 @@ use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Config;
 use Genetsis\core\OAuth\Exceptions\InvalidGrantException;
 use Genetsis\core\User\Beans\LoginStatus;
-use Genetsis\DruID;
 use Genetsis\core\OAuth\Beans\StoredToken;
 use Genetsis\core\OAuth\Beans\AccessToken;
 use Genetsis\core\OAuth\Beans\RefreshToken;
@@ -16,6 +15,7 @@ use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\core\OAuth\Collections\AuthMethods as AuthMethodsCollection;
 use Genetsis\core\OAuth\Collections\TokenTypes as TokenTypesCollection;
 use Genetsis\core\Http\Collections\HttpMethods as HttpMethodsCollection;
+use Genetsis\DruID;
 
 /**
  * This class wraps all methods for interactions with OAuth service,

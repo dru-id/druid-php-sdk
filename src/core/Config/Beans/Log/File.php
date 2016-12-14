@@ -15,12 +15,13 @@ class File extends AbstractLog {
     private $folder;
 
     /**
+     * @param string $group Name to keep logs under the same group.
      * @param string $folder Full path to the folder where all logs will be stored.
      * @param string $log_level One of defined at {@link \Genetsis\core\Logger\Collections\LogLevels}
      */
-    public function __construct($folder, $log_level = LogLevels::DEBUG)
+    public function __construct($group, $folder, $log_level = LogLevels::DEBUG)
     {
-        parent::__construct($log_level);
+        parent::__construct($group, $log_level);
         $this->setFolder($folder);
     }
 

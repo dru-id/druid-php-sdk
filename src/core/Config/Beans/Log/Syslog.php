@@ -12,11 +12,12 @@ use Genetsis\core\Logger\Collections\LogLevels;
 class Syslog extends AbstractLog {
 
     /**
+     * @param string $group Name to keep logs under the same group.
      * @param string $log_level One of defined at {@link \Genetsis\core\Logger\Collections\LogLevels}
      */
-    public function __construct($log_level = LogLevels::DEBUG)
+    public function __construct($group, $log_level = LogLevels::DEBUG)
     {
-        parent::__construct($log_level);
+        parent::__construct($group, $log_level);
     }
 
 }

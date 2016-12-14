@@ -14,8 +14,14 @@ class Memcached extends AbstractCache {
     /** @var string $port */
     private $port;
 
-    public function __construct($host, $port)
+    /**
+     * @param string $group Name to keep logs under the same group.
+     * @param string $host
+     * @param string $port
+     */
+    public function __construct($group, $host, $port)
     {
+        parent::__construct($group);
         $this->setHost($host);
         $this->setPort($port);
     }

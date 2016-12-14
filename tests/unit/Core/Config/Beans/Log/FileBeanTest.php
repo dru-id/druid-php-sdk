@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\UnitTest\Core\Config\Beans;
+namespace Genetsis\UnitTest\Core\Config\Beans\Log;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
@@ -20,7 +20,7 @@ class FileBeanTest extends Unit {
 
     protected function _before()
     {
-        $this->log = new File('', LogLevels::DEBUG);
+        $this->log = new File('default', '', LogLevels::DEBUG);
     }
 
     protected function _after()
@@ -29,6 +29,11 @@ class FileBeanTest extends Unit {
 
     public function testSettersAndGetters()
     {
+        $this->specify('Checks setter and getter for parameter "group".', function(){
+            $this->assertInstanceOf('\Genetsis\core\Config\Beans\Log\File', $this->log->setGroup('foo'));
+            $this->assertEquals('foo', $this->log->getGroup());
+        });
+
         $this->specify('Checks setter and getter for parameter "log folder".', function(){
             $this->assertInstanceOf('\Genetsis\core\Config\Beans\Log\File', $this->log->setFolder('foo/bar'));
             $this->assertEquals('foo/bar', $this->log->getFolder());
@@ -51,20 +56,21 @@ class FileBeanTest extends Unit {
      */
     public function testConstructor()
     {
-        $this->specify('Checks constructor only with "log folder".', function(){
-            $log = new File('foo/bar');
+        $this->specify('Checks constructor.', function(){
+            $log = new File('foo', 'foo/bar');
+            $this->assertEquals('foo', $log->getGroup());
             $this->assertEquals('foo/bar', $log->getFolder());
             $this->assertEquals(LogLevels::DEBUG, $log->getLevel());
         });
 
         $this->specify('Checks constructor with all parameters".', function(){
-            $log = new File('foo/bar', LogLevels::WARNING);
+            $log = new File('default', 'foo/bar', LogLevels::WARNING);
             $this->assertEquals('foo/bar', $log->getFolder());
             $this->assertEquals(LogLevels::WARNING, $log->getLevel());
         });
 
         $this->specify('Checks if constructor throws an exception with an invalid log level.', function(){
-            new File('foo/bar', 'foo-level');
+            new File('default', 'foo/bar', 'foo-level');
         }, ['throws' => 'InvalidArgumentException']);
     }
 }

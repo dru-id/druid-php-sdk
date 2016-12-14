@@ -3,21 +3,26 @@ namespace Genetsis\UnitTest\Core\OAuth\Beans\Services;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
-use Genetsis\core\OAuth\Services\OAuthConfig;
+use Genetsis\core\Cache\Services\EmptyCache;
+use Genetsis\core\Logger\Services\EmptyLogger;
+use Genetsis\core\OAuth\Services\OAuthConfigFactory;
 
 /**
  * @package Genetsis
  * @category UnitTest
  */
-class OAuthConfigServiceTest extends Unit {
+class OAuthConfigFactoryServiceTest extends Unit {
     use Specify;
 
     /** @var \UnitTester */
     protected $tester;
+    /** @var OAuthConfigFactory $factory */
+    protected $factory;
 
     protected function _before()
     {
         $this->specifyConfig()->shallowClone(); // Speeds up testing avoiding deep clone.
+        $this->factory = new OAuthConfigFactory(new EmptyLogger(), new EmptyCache());
     }
 
     protected function _after()
@@ -27,14 +32,22 @@ class OAuthConfigServiceTest extends Unit {
     public function testBuildFromXml_v1_4()
     {
         $this->specify('Checks XML load from string.', function(){
-            $config = OAuthConfig::buildConfigFromXml(file_get_contents(OAUTHCONFIG_SAMPLE_XML_1_4), '1.4');
+            $config = $this->factory->buildConfigFromXml(file_get_contents(OAUTHCONFIG_SAMPLE_XML_1_4));
             $this->verificationSteps($config);
         });
 
         $this->specify('Checks XML load from file.', function(){
-            $config = OAuthConfig::buildConfigFromXmlFile(OAUTHCONFIG_SAMPLE_XML_1_4, '1.4');
+            $config = $this->factory->buildConfigFromXmlFile(OAUTHCONFIG_SAMPLE_XML_1_4);
             $this->verificationSteps($config);
         });
+
+        $this->specify('Checks if factory throws an exception with an empty XML', function(){
+            $this->factory->buildConfigFromXml('');
+        }, ['throws' => 'InvalidArgumentException']);
+
+        $this->specify('Checks if factory throws an exception with an invalid XML', function(){
+            $this->factory->buildConfigFromXml('<?xml ?><foo></foo>');
+        }, ['throws' => 'Exception']);
     }
 
     /**
@@ -44,6 +57,7 @@ class OAuthConfigServiceTest extends Unit {
     {
         $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $config);
 
+        $this->assertEquals('1.4', $config->getVersion());
         $this->assertEquals('XXXXXXX', $config->getClientId());
         $this->assertEquals('YYYYYYY', $config->getClientSecret());
         $this->assertEquals('My Awesome App', $config->getAppName());

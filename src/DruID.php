@@ -16,9 +16,9 @@ use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\Logger\Services\DruIDLogger;
 use Genetsis\core\Logger\Services\EmptyLogger;
 use Genetsis\core\Logger\Services\SyslogLogger;
-use Genetsis\core\OAuth\Beans\OAuthConfig\Config as OAuthConfig;
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\core\OAuth\Services\OAuth;
+use Genetsis\core\OAuth\Services\OAuthConfigFactory;
 use Genetsis\Identity\Contracts\IdentityServiceInterface;
 use Genetsis\Identity\Services\Identity;
 use Genetsis\Opi\Services\Opi;
@@ -67,14 +67,15 @@ class DruID {
      * call {@link DruID::init()}.
      *
      * @param DruIDConfig $druid_config
-     * @param OAuthConfig $oauth_config
+     * @param string $oauth_config_xml OAuth configuration XML content.
      * @return void
+     * @throws \Exception
      */
-    public static function setup(DruIDConfig $druid_config, OAuthConfig $oauth_config)
+    public static function setup(DruIDConfig $druid_config, $oauth_config_xml)
     {
         // Log service.
         if ($druid_config->getLog() instanceof FileLogConfig) {
-            self::$logger = new DruIDLogger($druid_config->getLog()->getFolder().'/'.$oauth_config->getClientId(), LogLevelsCollection::DEBUG);
+            self::$logger = new DruIDLogger($druid_config->getLog()->getFolder().'/'.$druid_config->getLog()->getGroup(), LogLevelsCollection::DEBUG);
         } elseif ($druid_config->getLog() instanceof SyslogConfig) {
             self::$logger = new SyslogLogger($druid_config->getLog()->getLevel());
         } else {
@@ -83,10 +84,9 @@ class DruID {
 
         // Cache service
         if ($druid_config->getCache() instanceof FileCacheConfig) {
-            self::$cache = new FileCacheService($druid_config->getCache()->getFolder().'/'.$oauth_config->getClientId(), self::$logger);
+            self::$cache = new FileCacheService($druid_config->getCache()->getFolder().'/'.$druid_config->getCache()->getGroup(), self::$logger);
         } elseif ($druid_config->getCache() instanceof MemcachedCacheConfig) {
-            // TODO: implement memcached configuration.
-            self::$cache = new EmptyCacheService();
+            self::$cache = new EmptyCacheService(); // TODO: implement memcached configuration.
         } else {
             self::$cache = new EmptyCacheService();
         }
@@ -95,7 +95,11 @@ class DruID {
         self::$http = new Http(self::$logger);
 
         // OAuth service
-        // TODO: check if there is a cache for the OAuth.
+        $oauth_config = (new OAuthConfigFactory(self::$logger, self::$cache))->buildConfigFromXml($oauth_config_xml);
+        if ($oauth_config->getVersion() != self::CONF_VERSION) {
+            self::$logger->error('Invalid XML version: ' . $oauth_config->getVersion() . ' (expected ' . self::CONF_VERSION . ')', __METHOD__, __LINE__);
+            throw new \Exception('Invalid version. You are trying load a configuration file for another version of the service.');
+        }
         self::$oauth = new OAuth($oauth_config, self::$http, self::$logger);
 
         self::$identity = new Identity(self::$oauth, self::$logger, self::$cache);

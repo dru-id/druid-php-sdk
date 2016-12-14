@@ -8,35 +8,46 @@
  */
 class Config {
 
+    /** @var string $version */
+    protected $version;
     /** @var string $client_id */
     protected $client_id = '';
-
     /** @var string $client_secret */
     protected $client_secret = '';
-
     /** @var string $app_name */
     protected $app_name = '';
-
     /** @var Brand $brand */
     protected $brand = null;
-
     /** @var string $opi */
     protected $opi = '';
-
     /** @var array $hosts A set of {@link EndPoint} instances. */
     protected $hosts = [];
-
     /** @var array $endpoints A set of {@link EndPoint} instances. */
     protected $endpoints = [];
-
     /** @var array $sections Entry points data. See {@link Config::getEntryPoints} for array structure. */
     protected $entry_points = ['entry_points' => [], 'default' => ''];
-
     /** @var array $redirects Redirect URLs data. See {@link Config::getRedirects} for array structure. */
     protected $redirects = [];
-
     /** @var array $apis APIs data. See {@link Config::getApis} for array structure. */
     protected $apis = [];
+
+    /**
+     * @return string
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    /**
+     * @param string $version
+     * @return Config
+     */
+    public function setVersion($version)
+    {
+        $this->version = $version;
+        return $this;
+    }
 
     /**
      * @return string

@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\UnitTest\Core\Config\Beans;
+namespace Genetsis\UnitTest\Core\Config\Beans\Log;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
@@ -20,7 +20,7 @@ class SyslogBeanTest extends Unit {
 
     protected function _before()
     {
-        $this->log = new Syslog(LogLevels::DEBUG);
+        $this->log = new Syslog('default', LogLevels::DEBUG);
     }
 
     protected function _after()
@@ -29,6 +29,11 @@ class SyslogBeanTest extends Unit {
 
     public function testSettersAndGetters()
     {
+        $this->specify('Checks setter and getter for parameter "group".', function(){
+            $this->assertInstanceOf('\Genetsis\core\Config\Beans\Log\Syslog', $this->log->setGroup('foo'));
+            $this->assertEquals('foo', $this->log->getGroup());
+        });
+
         $this->specify('Checks setter and getter for parameter "log level".', function(){
             $this->assertInstanceOf('\Genetsis\core\Config\Beans\Log\Syslog', $this->log->setLevel(LogLevels::WARNING));
             $this->assertEquals(LogLevels::WARNING, $this->log->getLevel());
@@ -45,12 +50,13 @@ class SyslogBeanTest extends Unit {
     public function testConstructor()
     {
         $this->specify('Checks constructor.', function(){
-            $log = new Syslog(LogLevels::WARNING);
+            $log = new Syslog('foo', LogLevels::WARNING);
+            $this->assertEquals('foo', $log->getGroup());
             $this->assertEquals(LogLevels::WARNING, $log->getLevel());
         });
 
         $this->specify('Checks if constructor throws an exception with an invalid log level.', function(){
-            new Syslog('foo-level');
+            new Syslog('default', 'foo-level');
         }, ['throws' => 'InvalidArgumentException']);
     }
 }

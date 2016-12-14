@@ -11,15 +11,37 @@ use Genetsis\core\Logger\Collections\LogLevels;
  */
 abstract class AbstractLog {
 
+    /** @var string $group Name to keep logs under the same group. */
+    protected $group;
     /** @var string $level Log level. One of defined at {@link \Genetsis\core\Logger\Collections\LogLevels} */
-    private $level;
+    protected $level;
 
     /**
+     * @param string $group Name to keep logs under the same group.
      * @param string $log_level One of defined at {@link \Genetsis\core\Logger\Collections\LogLevels}
      */
-    public function __construct($log_level)
+    public function __construct($group, $log_level)
     {
+        $this->setGroup($group);
         $this->setLevel($log_level);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * @param mixed $group
+     * @return AbstractLog
+     */
+    public function setGroup($group)
+    {
+        $this->group = $group;
+        return $this;
     }
 
     /**
@@ -32,7 +54,7 @@ abstract class AbstractLog {
 
     /**
      * @param mixed $level One of defined at {@link \Genetsis\core\Logger\Collections\LogLevels}
-     * @return File
+     * @return AbstractLog
      * @throws \InvalidArgumentException If the log levels is not allowed.
      */
     public function setLevel($level)
