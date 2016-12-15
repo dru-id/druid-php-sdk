@@ -1,4 +1,6 @@
-<?php namespace Genetsis\core\Logger\Collections;
+<?php
+namespace Genetsis\core\Logger\Collections;
+use Genetsis\core\Utils\Contracts\CollectionInterface;
 
 /**
  * Class to group all log levels.
@@ -6,7 +8,7 @@
  * @package   Genetsis
  * @category  Collection
  */
-class LogLevels {
+class LogLevels implements CollectionInterface {
 
     /**
      * Detailed debug information
@@ -59,14 +61,11 @@ class LogLevels {
     const EMERGENCY = 'emergency';
 
     /**
-     * Checks if it is a valid level.
-     *
-     * @param string $level
-     * @return boolean
+     * @inheritDoc
      */
-    public static function check($level)
+    public static function check($value)
     {
-        return in_array($level, [self::DEBUG, self::INFO, self::NOTICE, self::WARNING, self::ERROR, self::CRITICAL, self::ALERT, self::EMERGENCY]);
+        return ($value && in_array($value, [self::DEBUG, self::INFO, self::NOTICE, self::WARNING, self::ERROR, self::CRITICAL, self::ALERT, self::EMERGENCY]));
     }
 
 }

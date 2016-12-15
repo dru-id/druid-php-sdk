@@ -86,7 +86,7 @@ interface CookiesServiceInterface {
      * @param string $name The name of the cookie.
      * @param string $path [optional] {@see CookiesServiceInterface::get}
      * @param string $domain [optional] {@see CookiesServiceInterface::get}
-     * @return void
+     * @return boolean
      */
     public function delete($name, $path = null, $domain = null);
 

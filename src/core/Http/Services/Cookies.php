@@ -15,6 +15,9 @@ class Cookies implements CookiesServiceInterface {
      */
     public function set($name, $value = null, $expire = null, $path = null, $domain = null, $secure = null, $httponly = null)
     {
+        if (!$name) {
+            return false;
+        }
         return @setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
     }
 
@@ -51,6 +54,7 @@ class Cookies implements CookiesServiceInterface {
             unset($_COOKIE[$name]);
             @setcookie($name, '', time() - 3600, $path, $domain);
         }
+        return $this->has($name);
     }
 
 }

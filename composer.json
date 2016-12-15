@@ -28,7 +28,9 @@
     "phpunit/phpunit": "^5.6",
     "codeception/codeception": "^2.2",
     "codeception/specify": "*",
-    "upscale/http-server-mock": "^4.0"
+    "upscale/http-server-mock": "^4.0",
+    "php-mock/php-mock": "^1.0",
+    "php-mock/php-mock-prophecy": "^0.0.2"
   },
   "config": {
     "vendor-dir": "src/main/php/lib/vendor"
