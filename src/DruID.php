@@ -11,6 +11,7 @@ use Genetsis\core\Config\Beans\Log\File as FileLogConfig;
 use Genetsis\core\Config\Beans\Log\Syslog as SyslogConfig;
 use Genetsis\core\Http\Contracts\CookiesServiceInterface;
 use Genetsis\core\Http\Contracts\HttpServiceInterface;
+use Genetsis\core\Http\Contracts\SessionServiceInterface;
 use Genetsis\core\Http\Services\Cookies;
 use Genetsis\core\Http\Services\Http;
 use Genetsis\core\Logger\Collections\LogLevels as LogLevelsCollection;
@@ -47,6 +48,8 @@ class DruID {
     private static $oauth;
     /** @var HttpServiceInterface $http */
     private static $http;
+    /** @var SessionServiceInterface $session */
+    private static $session;
     /** @var CookiesServiceInterface $cookie */
     private static $cookie;
     /** @var LoggerServiceInterface $logger */
@@ -109,7 +112,7 @@ class DruID {
         }
         self::$oauth = new OAuth($oauth_config, self::$http, self::$cookie, self::$logger);
 
-        self::$identity = new Identity(self::$oauth, self::$cookie, self::$logger, self::$cache);
+        self::$identity = new Identity(self::$oauth, self::$session, self::$cookie, self::$logger, self::$cache);
         self::$url_builder = new UrlBuilder(self::$oauth, self::$logger);
         self::$user_api = new UserApi(self::$oauth, self::$http, self::$logger, self::$cache);
         self::$opi = new Opi(self::$oauth);

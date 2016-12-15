@@ -1,23 +1,24 @@
 <?php
-namespace Genetsis\core\Cache\Contracts;
+namespace Genetsis\core\Http\Contracts;
 
 /**
- * Cache service interface.
+ * Session service interface.
+ *
+ * This interface explains how to implement a session handler service which will centralize the session management.
  *
  * @package  Genetsis
  * @category Contract
  */
-interface CacheServiceInterface {
+interface SessionServiceInterface {
 
     /**
-     * Stores data to cache.
+     * Stores data to session.
      *
      * @param string $key An identifier for the data.
      * @param mixed $data The data to be saved.
-     * @param integer $ttl Lifetime of the stored data. In seconds.
      * @returns boolean TRUE on success, FALSE otherwise.
      */
-    public function set($key, $data = false, $ttl = 3600);
+    public function set($key, $data);
 
     /**
      * Search for a key and returns stored data if exists.
@@ -29,6 +30,14 @@ interface CacheServiceInterface {
     public function get($key, $default = null);
 
     /**
+     * Returns all session data.
+     *
+     * @return array Returns a key=value array, which the key is the session key and the value the stored value. It
+     *      could be empty.
+     */
+    public function all();
+
+    /**
      * Checks if there is data stored based on a key.
      *
      * @param string $key The identifier.
@@ -37,18 +46,11 @@ interface CacheServiceInterface {
     public function has($key);
 
     /**
-     * Removes a key, regardless of its expiry time.
+     * Removes a stored data.
      *
      * @param string $key The identifier to be deleted.
      * @return boolean TRUE on success, FALSE otherwise.
      */
     public function delete($key);
-
-    /**
-     * Cleans file cache.
-     *
-     * @return boolean TRUE on success, FALSE otherwise.
-     */
-    public function clean();
 
 }

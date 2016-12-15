@@ -3,6 +3,7 @@ namespace Genetsis\Identity\Services;
 
 use Genetsis\core\Cache\Contracts\CacheServiceInterface;
 use Genetsis\core\Http\Contracts\CookiesServiceInterface;
+use Genetsis\core\Http\Contracts\SessionServiceInterface;
 use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\core\OAuth\Beans\ClientToken;
@@ -18,6 +19,8 @@ class Identity implements IdentityServiceInterface {
 
     /** @var OAuthServiceInterface $oauth */
     protected $oauth;
+    /** @var SessionServiceInterface $session */
+    protected $session;
     /** @var CookiesServiceInterface $cookie */
     protected $cookie;
     /** @var LoggerServiceInterface $logger */
@@ -32,19 +35,21 @@ class Identity implements IdentityServiceInterface {
 
     /**
      * @param OAuthServiceInterface $oauth
+     * @param SessionServiceInterface $session
      * @param CookiesServiceInterface $cookie
      * @param LoggerServiceInterface $logger
      * @param CacheServiceInterface $cache
      */
-    public function __construct(OAuthServiceInterface $oauth, CookiesServiceInterface $cookie, LoggerServiceInterface $logger, CacheServiceInterface $cache)
+    public function __construct(OAuthServiceInterface $oauth, SessionServiceInterface $session, CookiesServiceInterface $cookie, LoggerServiceInterface $logger, CacheServiceInterface $cache)
     {
         $this->oauth = $oauth;
+        $this->session = $session;
         $this->cookie = $cookie;
         $this->logger = $logger;
         $this->cache = $cache;
 
         // TODO: use cache service.
-        $this->gid_things = (isset($_SESSION['Things']) && (($my_things = @unserialize($_SESSION['Things'])) instanceof Things))
+        $this->gid_things = ($this->session->has('things') && (($my_things = @unserialize($this->session->get('things'))) instanceof Things))
             ? $my_things
             : new Things();
     }
@@ -97,7 +102,8 @@ class Identity implements IdentityServiceInterface {
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage(), __METHOD__, __LINE__);
             }
-            $_SESSION['Things'] = @serialize($this->gid_things);
+
+            $this->session->set('things', @serialize($this->gid_things));
         }
     }
 
@@ -238,12 +244,10 @@ class Identity implements IdentityServiceInterface {
         $this->oauth->deleteStoredToken(TokenTypesCollection::ACCESS_TOKEN);
         $this->oauth->deleteStoredToken(TokenTypesCollection::REFRESH_TOKEN);
 
-        if (isset($_SESSION)) {
-            unset($_SESSION['Things']);
-            foreach ($_SESSION as $key => $val) {
-                if (preg_match('#^headerAuth#Ui', $key) || in_array($key, array('nickUserLogged', 'isConnected'))) {
-                    unset($_SESSION[$key]);
-                }
+        $this->session->delete('things');
+        foreach ($this->session->all() as $key => $val) {
+            if (preg_match('#^headerAuth#Ui', $key) || in_array($key, ['nickUserLogged', 'isConnected'])) {
+                $this->session->delete($key);
             }
         }
     }
@@ -326,7 +330,7 @@ class Identity implements IdentityServiceInterface {
             $this->gid_things->setRefreshToken($response['refresh_token']);
             $this->gid_things->setLoginStatus($response['login_status']);
 
-            $_SESSION['Things'] = @serialize($this->gid_things);
+            $this->session->set('things', @serialize($this->gid_things));
 
         } catch (InvalidGrantException $e) {
             $this->logger->error($e->getMessage(), __METHOD__, __LINE__);

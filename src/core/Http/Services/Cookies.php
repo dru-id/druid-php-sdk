@@ -3,6 +3,8 @@ namespace Genetsis\core\Http\Services;
 use Genetsis\core\Http\Contracts\CookiesServiceInterface;
 
 /**
+ * Cookies handler implementation.
+ *
  * @package  Genetsis
  * @category Service
  */
@@ -19,9 +21,9 @@ class Cookies implements CookiesServiceInterface {
     /**
      * @inheritDoc
      */
-    public function get($name)
+    public function get($name, $default = null)
     {
-        return $this->has($name) ? $_COOKIE[$name] : null;
+        return $this->has($name) ? $_COOKIE[$name] : $default;
     }
 
     /**

@@ -55,9 +55,10 @@ interface CookiesServiceInterface {
      * Retrieves a cookie value.
      *
      * @param string $name The name of the cookie.
+     * @param mixed $default Default value returned if the key is not found.
      * @return string|null If cookie does not exist then NULL will be returned.
      */
-    public function get($name);
+    public function get($name, $default = null);
 
     /**
      * Returns all available cookies.
