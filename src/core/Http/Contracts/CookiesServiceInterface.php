@@ -60,6 +60,14 @@ interface CookiesServiceInterface {
     public function get($name);
 
     /**
+     * Returns all available cookies.
+     *
+     * @return array Returns a key=value array, which the key is the cookie name and the value the cookie value. It
+     *      could be empty.
+     */
+    public function all();
+
+    /**
      * Checks if a cookie exists.
      *
      * @param string $name The name of the cookie.

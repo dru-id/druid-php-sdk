@@ -109,7 +109,7 @@ class DruID {
         }
         self::$oauth = new OAuth($oauth_config, self::$http, self::$cookie, self::$logger);
 
-        self::$identity = new Identity(self::$oauth, self::$logger, self::$cache);
+        self::$identity = new Identity(self::$oauth, self::$cookie, self::$logger, self::$cache);
         self::$url_builder = new UrlBuilder(self::$oauth, self::$logger);
         self::$user_api = new UserApi(self::$oauth, self::$http, self::$logger, self::$cache);
         self::$opi = new Opi(self::$oauth);

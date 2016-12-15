@@ -2,6 +2,7 @@
 namespace Genetsis\Identity\Services;
 
 use Genetsis\core\Cache\Contracts\CacheServiceInterface;
+use Genetsis\core\Http\Contracts\CookiesServiceInterface;
 use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\core\OAuth\Beans\ClientToken;
@@ -17,6 +18,8 @@ class Identity implements IdentityServiceInterface {
 
     /** @var OAuthServiceInterface $oauth */
     protected $oauth;
+    /** @var CookiesServiceInterface $cookie */
+    protected $cookie;
     /** @var LoggerServiceInterface $logger */
     protected $logger;
     /** @var CacheServiceInterface $cache */
@@ -29,12 +32,14 @@ class Identity implements IdentityServiceInterface {
 
     /**
      * @param OAuthServiceInterface $oauth
+     * @param CookiesServiceInterface $cookie
      * @param LoggerServiceInterface $logger
      * @param CacheServiceInterface $cache
      */
-    public function __construct(OAuthServiceInterface $oauth, LoggerServiceInterface $logger, CacheServiceInterface $cache)
+    public function __construct(OAuthServiceInterface $oauth, CookiesServiceInterface $cookie, LoggerServiceInterface $logger, CacheServiceInterface $cache)
     {
         $this->oauth = $oauth;
+        $this->cookie = $cookie;
         $this->logger = $logger;
         $this->cache = $cache;
 
@@ -147,23 +152,17 @@ class Identity implements IdentityServiceInterface {
     private function checkSSO()
     {
         try {
-            $datr = call_user_func(function(){
-                if (!isset($_COOKIE) || !is_array($_COOKIE)) {
-                    return false;
+            $datr = call_user_func(function(CookiesServiceInterface $cookie) {
+                if ($this->cookie->has(OAuth::SSO_COOKIE_NAME) && $this->cookie->get(OAuth::SSO_COOKIE_NAME)) {
+                    return $this->cookie->get(OAuth::SSO_COOKIE_NAME);
                 }
-
-                if (isset($_COOKIE['datr']) && !empty($_COOKIE['datr'])) {
-                    return $_COOKIE['datr'];
-                }
-
-                foreach ($_COOKIE as $key => $val) {
-                    if (strpos($key, 'datr_') === 0) {
+                foreach ($cookie->all() as $key => $val) {
+                    if (strpos($key, OAuth::SSO_COOKIE_NAME.'_') === 0) {
                         return $val;
                     }
                 }
-
                 return false;
-            });
+            }, $this->cookie);
 
             if ($datr) {
                 $this->logger->info('DATR cookie was found.', __METHOD__, __LINE__);
@@ -180,9 +179,7 @@ class Identity implements IdentityServiceInterface {
                 $this->logger->debug('DATR cookie not exist, user is not logged', __METHOD__, __LINE__);
             }
         } catch (InvalidGrantException $e) {
-            unset($_COOKIE[OAuth::SSO_COOKIE_NAME]);
-            setcookie(OAuth::SSO_COOKIE_NAME, null, -1, null);
-
+            $this->cookie->delete(OAuth::SSO_COOKIE_NAME);
             $this->logger->warn('Invalid Grant, check an invalid DATR', __METHOD__, __LINE__);
             throw $e;
         } catch (\Exception $e) {

@@ -27,6 +27,14 @@ class Cookies implements CookiesServiceInterface {
     /**
      * @inheritDoc
      */
+    public function all()
+    {
+        return (isset($_COOKIE) && is_array($_COOKIE)) ? $_COOKIE : [];
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function has($name)
     {
         return ($name && isset($_COOKIE) && is_array($_COOKIE) && array_key_exists($name, $_COOKIE));
