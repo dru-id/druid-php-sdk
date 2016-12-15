@@ -1,6 +1,7 @@
 <?php namespace Genetsis\core\OAuth\Services;
 
 use Genetsis\core\Encryption\Services\Encryption;
+use Genetsis\core\Http\Contracts\CookiesServiceInterface;
 use Genetsis\core\Http\Contracts\HttpServiceInterface;
 use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Config;
@@ -42,6 +43,8 @@ class OAuth implements OAuthServiceInterface
     private $config = null;
     /** @var HttpServiceInterface $http */
     private $http;
+    /** @var CookiesServiceInterface $cookie */
+    private $cookie;
     /** @var LoggerServiceInterface $logger */
     private $logger;
 
@@ -49,11 +52,13 @@ class OAuth implements OAuthServiceInterface
      * @param Config $config
      * @param HttpServiceInterface $http
      * @param LoggerServiceInterface $logger
+     * @param CookiesServiceInterface $cookie
      */
-    public function __construct(Config $config, HttpServiceInterface $http, LoggerServiceInterface $logger)
+    public function __construct(Config $config, HttpServiceInterface $http, CookiesServiceInterface $cookie, LoggerServiceInterface $logger)
     {
         $this->setConfig($config);
         $this->http = $http;
+        $this->cookie = $cookie;
         $this->logger = $logger;
     }
 
@@ -119,6 +124,7 @@ class OAuth implements OAuthServiceInterface
      * @param array $response Where we will search errors.
      * @return void
      * @throws \Exception If there is an error in the response.
+     * @throws InvalidGrantException
      */
     private function checkErrors($response)
     {
@@ -140,11 +146,12 @@ class OAuth implements OAuthServiceInterface
      * Stores a token in a cookie
      *
      * @param StoredTokenInterface $token An object with token data to be stored.
+     * @return boolean
      * @throws \Exception
      */
     public function storeToken (StoredTokenInterface $token)
     {
-        @setcookie($token->getName(), (new Encryption($this->config->getClientId()))->encode($token->getValue()), $token->getExpiresAt(), $token->getPath(), '', false, true);
+        return $this->cookie->set($token->getName(), (new Encryption($this->config->getClientId()))->encode($token->getValue()), $token->getExpiresAt(), $token->getPath(), '', false, true);
     }
 
     /**
@@ -422,8 +429,7 @@ class OAuth implements OAuthServiceInterface
             $this->http->execute($endpoint_url, $params, HttpMethodsCollection::POST);
             unset ($refresh_token);
 
-            unset($_COOKIE[self::SSO_COOKIE_NAME]);
-            setcookie(self::SSO_COOKIE_NAME, null, -1,null,'.cocacola.es');
+            $this->cookie->delete(self::SSO_COOKIE_NAME);
 
             self::deleteStoredToken(TokenTypesCollection::ACCESS_TOKEN);
             self::deleteStoredToken(TokenTypesCollection::REFRESH_TOKEN);
@@ -443,10 +449,7 @@ class OAuth implements OAuthServiceInterface
      */
     public function deleteStoredToken ($name)
     {
-        if (isset($_COOKIE[$name])) {
-            setcookie($name, '', time()-42000, '/');
-            unset($_COOKIE[$name]);
-        }
+        $this->cookie->delete($name);
     }
 
 
@@ -476,8 +479,8 @@ class OAuth implements OAuthServiceInterface
             throw new \Exception ('Token type not exist');
         }
 
-        return (isset($_COOKIE[$name]) && $_COOKIE[$name])
-            ? StoredToken::factory($name, (new Encryption($this->config->getClientId()))->decode($_COOKIE[$name]), 0, 0, '/')
+        return ($this->cookie->has($name) && $this->cookie->get($name))
+            ? StoredToken::factory($name, (new Encryption($this->config->getClientId()))->decode($this->cookie->get($name)), 0, 0, '/')
             : null;
     }
 

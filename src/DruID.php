@@ -9,7 +9,9 @@ use Genetsis\core\Config\Beans\Cache\Memcached as MemcachedCacheConfig;
 use Genetsis\core\Config\Beans\Config as DruIDConfig;
 use Genetsis\core\Config\Beans\Log\File as FileLogConfig;
 use Genetsis\core\Config\Beans\Log\Syslog as SyslogConfig;
+use Genetsis\core\Http\Contracts\CookiesServiceInterface;
 use Genetsis\core\Http\Contracts\HttpServiceInterface;
+use Genetsis\core\Http\Services\Cookies;
 use Genetsis\core\Http\Services\Http;
 use Genetsis\core\Logger\Collections\LogLevels as LogLevelsCollection;
 use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
@@ -45,6 +47,8 @@ class DruID {
     private static $oauth;
     /** @var HttpServiceInterface $http */
     private static $http;
+    /** @var CookiesServiceInterface $cookie */
+    private static $cookie;
     /** @var LoggerServiceInterface $logger */
     private static $logger;
     /** @var CacheServiceInterface $cache */
@@ -94,13 +98,16 @@ class DruID {
         // Http service.
         self::$http = new Http(self::$logger);
 
+        // Cookie service.
+        self::$cookie = new Cookies();
+
         // OAuth service
         $oauth_config = (new OAuthConfigFactory(self::$logger, self::$cache))->buildConfigFromXml($oauth_config_xml);
         if ($oauth_config->getVersion() != self::CONF_VERSION) {
             self::$logger->error('Invalid XML version: ' . $oauth_config->getVersion() . ' (expected ' . self::CONF_VERSION . ')', __METHOD__, __LINE__);
             throw new \Exception('Invalid version. You are trying load a configuration file for another version of the service.');
         }
-        self::$oauth = new OAuth($oauth_config, self::$http, self::$logger);
+        self::$oauth = new OAuth($oauth_config, self::$http, self::$cookie, self::$logger);
 
         self::$identity = new Identity(self::$oauth, self::$logger, self::$cache);
         self::$url_builder = new UrlBuilder(self::$oauth, self::$logger);

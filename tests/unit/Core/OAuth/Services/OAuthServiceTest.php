@@ -3,6 +3,7 @@ namespace Genetsis\UnitTest\OAuth\Beans\Services;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
+use Genetsis\core\Http\Services\Cookies;
 use Genetsis\core\Http\Services\Http;
 use Genetsis\core\Logger\Services\EmptyLogger;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Config;
@@ -30,7 +31,7 @@ class OAuthServiceTest extends Unit {
     public function testSettersAndGetters()
     {
         $this->specify('Checks setter and getter for "config" property.', function(){
-            $oauth = new OAuth((new Config())->setClientId('foo'), new Http(new EmptyLogger()), new EmptyLogger());
+            $oauth = new OAuth((new Config())->setClientId('foo'), new Http(new EmptyLogger()), new Cookies(), new EmptyLogger());
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $oauth->getConfig());
             $this->assertEquals('foo', $oauth->getConfig()->getClientId());
             $this->assertInstanceOf('\Genetsis\core\OAuth\Services\OAuth', $oauth->setConfig((new Config())->setClientId('bar')));

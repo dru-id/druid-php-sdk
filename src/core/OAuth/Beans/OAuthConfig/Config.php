@@ -1,7 +1,8 @@
-<?php namespace Genetsis\core\OAuth\Beans\OAuthConfig;
+<?php
+namespace Genetsis\core\OAuth\Beans\OAuthConfig;
 
 /**
- * Class to store the configuration data for OAuth library.
+ * This class stores all data from an oauth configuration file.
  *
  * @package   Genetsis
  * @category  Bean

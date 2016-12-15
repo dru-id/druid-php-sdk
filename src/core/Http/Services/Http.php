@@ -8,8 +8,8 @@ use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 /**
  * Class to performs HTTP request calls.
  *
- * @package   Genetsis
- * @category  Service
+ * @package  Genetsis
+ * @category Service
  */
 class Http implements HttpServiceInterface {
 
