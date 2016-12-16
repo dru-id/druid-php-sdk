@@ -1,9 +1,10 @@
 <?php
 namespace Genetsis;
 
-use Genetsis\core\Cache\Contracts\CacheServiceInterface;
-use Genetsis\core\Cache\Services\EmptyCache as EmptyCacheService;
-use Genetsis\core\Cache\Services\FileCache as FileCacheService;
+use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
+use Doctrine\Common\Cache\FilesystemCache;
+use Doctrine\Common\Cache\MemcachedCache;
+use Doctrine\Common\Cache\VoidCache;
 use Genetsis\core\Config\Beans\Cache\File as FileCacheConfig;
 use Genetsis\core\Config\Beans\Cache\Memcached as MemcachedCacheConfig;
 use Genetsis\core\Config\Beans\Config as DruIDConfig;
@@ -14,6 +15,7 @@ use Genetsis\core\Http\Contracts\HttpServiceInterface;
 use Genetsis\core\Http\Contracts\SessionServiceInterface;
 use Genetsis\core\Http\Services\Cookies;
 use Genetsis\core\Http\Services\Http;
+use Genetsis\core\Http\Services\Session;
 use Genetsis\core\Logger\Collections\LogLevels as LogLevelsCollection;
 use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\Logger\Services\DruIDLogger;
@@ -54,7 +56,7 @@ class DruID {
     private static $cookie;
     /** @var LoggerServiceInterface $logger */
     private static $logger;
-    /** @var CacheServiceInterface $cache */
+    /** @var DoctrineCacheInterface $cache {@see http://doctrine-orm.readthedocs.io/projects/doctrine-orm/en/latest/reference/caching.html} */
     private static $cache;
 
     /** @var IdentityServiceInterface $identity */
@@ -91,11 +93,21 @@ class DruID {
 
         // Cache service
         if ($druid_config->getCache() instanceof FileCacheConfig) {
-            self::$cache = new FileCacheService($druid_config->getCache()->getFolder().'/'.$druid_config->getCache()->getGroup(), self::$logger);
+            self::$cache = new FilesystemCache($druid_config->getCache()->getFolder().'/'.$druid_config->getCache()->getGroup());
         } elseif ($druid_config->getCache() instanceof MemcachedCacheConfig) {
-            self::$cache = new EmptyCacheService(); // TODO: implement memcached configuration.
-        } else {
-            self::$cache = new EmptyCacheService();
+            if (class_exists('\Memcached')) {
+                $memcached = new \Memcached();
+                $memcached->addServer($druid_config->getCache()->getHost(), $druid_config->getCache()->getPort());
+                self::$cache = new MemcachedCache();
+                self::$cache->setMemcached($memcached);
+            } else {
+                self::$logger->warn('Memcached cache required but Memcached is not available in this server. A void cache will be used instead.', __METHOD__, __LINE__);
+            }
+        }
+        // If cache service is not provided then we will use a VoidCache in order to avoid messing things up with
+        // conditional controls around the code.
+        if (!isset(self::$cache) || !(self::$cache instanceof DoctrineCacheInterface)) {
+            self::$cache = new VoidCache();
         }
 
         // Http service.
@@ -103,6 +115,9 @@ class DruID {
 
         // Cookie service.
         self::$cookie = new Cookies();
+
+        // Session service.
+        self::$session = new Session();
 
         // OAuth service
         $oauth_config = (new OAuthConfigFactory(self::$logger, self::$cache))->buildConfigFromXml($oauth_config_xml);

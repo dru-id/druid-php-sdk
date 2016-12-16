@@ -3,7 +3,7 @@ namespace Genetsis\IntegrationTest\OAuth;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
-use Genetsis\core\Cache\Services\EmptyCache as EmptyCacheService;
+use Doctrine\Common\Cache\VoidCache;
 use Genetsis\core\Http\Collections\HttpMethods as HttpMethodsCollection;
 use Genetsis\core\Http\Contracts\CookiesServiceInterface;
 use Genetsis\core\Http\Contracts\HttpServiceInterface;
@@ -42,7 +42,7 @@ class OAuthIntegrationTest extends Unit
     {
         $this->prophet = new Prophet();
         $logger = new SyslogLogger(LogLevels::DEBUG);
-        $oauth_config = (new OAuthConfigFactory($logger, new EmptyCacheService()))->buildConfigFromXmlFile(OAUTHCONFIG_SAMPLE_XML_1_4);
+        $oauth_config = (new OAuthConfigFactory($logger, new VoidCache()))->buildConfigFromXmlFile(OAUTHCONFIG_SAMPLE_XML_1_4);
         $this->oauth = new OAuth($oauth_config, $this->getHttpService(), $this->getCookieService(), $logger);
     }
 
@@ -198,6 +198,9 @@ class OAuthIntegrationTest extends Unit
         return $prophecy->reveal();
     }
 
+    /**
+     * @return CookiesServiceInterface
+     */
     private function getCookieService()
     {
         $prophecy = $this->prophet->prophesize();

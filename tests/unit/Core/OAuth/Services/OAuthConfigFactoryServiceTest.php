@@ -3,7 +3,7 @@ namespace Genetsis\UnitTest\Core\OAuth\Beans\Services;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
-use Genetsis\core\Cache\Services\EmptyCache;
+use Doctrine\Common\Cache\VoidCache;
 use Genetsis\core\Logger\Services\EmptyLogger;
 use Genetsis\core\OAuth\Services\OAuthConfigFactory;
 
@@ -22,7 +22,7 @@ class OAuthConfigFactoryServiceTest extends Unit {
     protected function _before()
     {
         $this->specifyConfig()->shallowClone(); // Speeds up testing avoiding deep clone.
-        $this->factory = new OAuthConfigFactory(new EmptyLogger(), new EmptyCache());
+        $this->factory = new OAuthConfigFactory(new EmptyLogger(), new VoidCache());
     }
 
     protected function _after()

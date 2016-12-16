@@ -1,7 +1,7 @@
 <?php
 namespace Genetsis\Identity\Services;
 
-use Genetsis\core\Cache\Contracts\CacheServiceInterface;
+use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
 use Genetsis\core\Http\Contracts\CookiesServiceInterface;
 use Genetsis\core\Http\Contracts\SessionServiceInterface;
 use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
@@ -25,7 +25,7 @@ class Identity implements IdentityServiceInterface {
     protected $cookie;
     /** @var LoggerServiceInterface $logger */
     protected $logger;
-    /** @var CacheServiceInterface $cache */
+    /** @var DoctrineCacheInterface $cache */
     protected $cache;
     
     /** @var boolean $synchronized Indicates if the service has been sync with the server. */
@@ -38,9 +38,9 @@ class Identity implements IdentityServiceInterface {
      * @param SessionServiceInterface $session
      * @param CookiesServiceInterface $cookie
      * @param LoggerServiceInterface $logger
-     * @param CacheServiceInterface $cache
+     * @param DoctrineCacheInterface $cache
      */
-    public function __construct(OAuthServiceInterface $oauth, SessionServiceInterface $session, CookiesServiceInterface $cookie, LoggerServiceInterface $logger, CacheServiceInterface $cache)
+    public function __construct(OAuthServiceInterface $oauth, SessionServiceInterface $session, CookiesServiceInterface $cookie, LoggerServiceInterface $logger, DoctrineCacheInterface $cache)
     {
         $this->oauth = $oauth;
         $this->session = $session;
@@ -120,7 +120,7 @@ class Identity implements IdentityServiceInterface {
     {
         try {
             $this->logger->debug('Checking and update client_token.', __METHOD__, __LINE__);
-            if (!(($client_token = unserialize($this->cache->get('client_token'))) instanceof ClientToken) || ($client_token->getValue() == '')) {
+            if (!$this->cache->contains('client_token') || !(($client_token = @unserialize($this->cache->fetch('client_token'))) instanceof ClientToken) || ($client_token->getValue() == '')) {
                 $this->logger->debug('Get Client token', __METHOD__, __LINE__);
 
                 if (($this->gid_things->getClientToken() == null) || ($this->oauth->getStoredToken(TokenTypesCollection::CLIENT_TOKEN) == null)) {
@@ -134,7 +134,7 @@ class Identity implements IdentityServiceInterface {
                 } else {
                     $this->logger->debug('Client Token from session', __METHOD__, __LINE__);
                 }
-                $this->cache->set('client_token', serialize($this->gid_things->getClientToken()), $this->gid_things->getClientToken()->getExpiresIn());
+                $this->cache->save('client_token', serialize($this->gid_things->getClientToken()), $this->gid_things->getClientToken()->getExpiresIn());
             } else {
                 $this->logger->debug('Client Token from cache', __METHOD__, __LINE__);
                 $this->gid_things->setClientToken($client_token);

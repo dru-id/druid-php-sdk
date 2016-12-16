@@ -23,7 +23,7 @@ class SyslogLogger implements LoggerServiceInterface {
     {
         $this->logger = new Logger('druid');
         $handler = new SyslogHandler('DruID', LOG_USER, $this->adaptLevel($level));
-        $handler->setFormatter(new LineFormatter("%datetime% %level_name% %context.method%[%context.line%]: %message%\n", null, true));
+        $handler->setFormatter(new LineFormatter("%level_name% %context.method%[%context.line%]: %message%\n", null, true));
         $this->logger->pushHandler($handler);
     }
 

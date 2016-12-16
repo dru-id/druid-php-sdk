@@ -1,10 +1,8 @@
 <?php
 namespace Genetsis\core\OAuth\Services;
 
+use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
 use DOMDocument;
-use Genetsis\core\Cache\Contracts\CacheServiceInterface;
-use Genetsis\core\FileCache;
-use Genetsis\Config as IniConfig;
 use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Api;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Brand;
@@ -13,7 +11,6 @@ use Genetsis\core\OAuth\Beans\OAuthConfig\EndPoint;
 use Genetsis\core\OAuth\Beans\OAuthConfig\EntryPoint;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Host;
 use Genetsis\core\OAuth\Beans\OAuthConfig\RedirectUrl;
-use Genetsis\core\ServiceContainer\Services\ServiceContainer;
 
 /**
  * @package   Genetsis
@@ -23,14 +20,14 @@ class OAuthConfigFactory {
 
     /** @var LoggerServiceInterface $logger */
     protected $logger;
-    /** @var CacheServiceInterface $cache */
+    /** @var DoctrineCacheInterface $cache */
     protected $cache;
 
     /**
      * @param LoggerServiceInterface $logger
-     * @param CacheServiceInterface $cache
+     * @param DoctrineCacheInterface $cache
      */
-    public function __construct(LoggerServiceInterface $logger, CacheServiceInterface $cache)
+    public function __construct(LoggerServiceInterface $logger, DoctrineCacheInterface $cache)
     {
         $this->logger = $logger;
         $this->cache = $cache;

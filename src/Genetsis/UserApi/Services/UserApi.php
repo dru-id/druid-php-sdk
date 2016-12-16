@@ -1,8 +1,8 @@
 <?php
 namespace Genetsis\UserApi\Services;
 
+use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
 use Exception;
-use Genetsis\core\Cache\Contracts\CacheServiceInterface;
 use Genetsis\core\Http\Contracts\HttpServiceInterface;
 use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
@@ -38,16 +38,16 @@ class UserApi implements UserApiServiceInterface
     protected $http;
     /** @var LoggerServiceInterface $logger */
     protected $logger;
-    /** @var CacheServiceInterface $cache */
+    /** @var DoctrineCacheInterface $cache */
     protected $cache;
 
     /**
      * @param OAuthServiceInterface $oauth
      * @param HttpServiceInterface $http
      * @param LoggerServiceInterface $logger
-     * @param CacheServiceInterface $cache
+     * @param DoctrineCacheInterface $cache
      */
-    public function __construct(OAuthServiceInterface $oauth, HttpServiceInterface $http, LoggerServiceInterface $logger, CacheServiceInterface $cache)
+    public function __construct(OAuthServiceInterface $oauth, HttpServiceInterface $http, LoggerServiceInterface $logger, DoctrineCacheInterface $cache)
     {
         $this->oauth = $oauth;
         $this->http = $http;
@@ -181,7 +181,7 @@ class UserApi implements UserApiServiceInterface
     {
         try {
             $this->logger->debug('Get list of Brands', __METHOD__, __LINE__);
-            if (!$brands = unserialize($this->cache->get('brands'))) {
+            if (!$this->cache->contains('brands') || !($brands = @unserialize($this->cache->fetch('brands')))) {
                 $this->logger->debug('Brands not cached', __METHOD__, __LINE__);
                 if (!$client_token = DruID::identity()->getThings()->getClientToken()) {
                     throw new \Exception('The clientToken is empty');
@@ -206,7 +206,7 @@ class UserApi implements UserApiServiceInterface
                     }
                 }
 
-                $this->cache->set('brands', serialize($brands), self::BRANDS_TTL);
+                $this->cache->save('brands', serialize($brands), self::BRANDS_TTL);
             }
 
             return $brands;
@@ -247,7 +247,8 @@ class UserApi implements UserApiServiceInterface
 
         if (is_array($identifiers)) {
             try {
-                if (!$druid_user_data = $this->cache->get('user-' . reset($identifiers))) {
+                $cache_key = 'user-' . reset($identifiers);
+                if (!$this->cache->contains($cache_key) || !($druid_user_data = $this->cache->fetch($cache_key))) {
                     $this->logger->debug('Identifier: ' . reset($identifiers) . ' is Not in Cache System', __METHOD__, __LINE__);
 
                     $client_token = DruID::identity()->getThings()->getClientToken();
@@ -276,7 +277,7 @@ class UserApi implements UserApiServiceInterface
                         throw new \Exception('The data retrieved is empty');
                     }
                     $druid_user = $response['result']->data;
-                    $this->cache->set('user-' . reset($identifiers), $druid_user, self::USER_TTL);
+                    $this->cache->save($cache_key, $druid_user, self::USER_TTL);
                 } else {
                     $this->logger->debug('Identifier: ' . reset($identifiers) . ' is in Cache System', __METHOD__, __LINE__);
                     $druid_user = json_decode(json_encode($druid_user_data));
