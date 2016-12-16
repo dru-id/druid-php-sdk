@@ -1,6 +1,5 @@
 <?php
 namespace Genetsis\core\Cache\Services;
-
 use Genetsis\core\Cache\Contracts\CacheServiceInterface;
 
 /**

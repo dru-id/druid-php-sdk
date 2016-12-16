@@ -5,6 +5,7 @@ use Codeception\Specify;
 use Codeception\Test\Unit;
 use Genetsis\core\Http\Contracts\CookiesServiceInterface;
 use Genetsis\core\Http\Services\Cookies;
+use phpmock\functions\FixedValueFunction;
 use phpmock\MockBuilder;
 
 /**
@@ -25,12 +26,6 @@ class CookiesServiceTest extends Unit {
     {
         $this->specifyConfig()->shallowClone(); // Speeds up testing avoiding deep clone.
         $this->cookies = new Cookies();
-        $this->mock_builder = new MockBuilder();
-        $this->mock_builder->setNamespace(__NAMESPACE__)
-            ->setName('setcookie')
-            ->setFunction(function(){
-                return true;
-            });
     }
 
     protected function _after()
@@ -39,8 +34,8 @@ class CookiesServiceTest extends Unit {
 
     public function testCookieHandler()
     {
-        $php_mock = $this->mock_builder->build();
-        $php_mock->enable();
+        $setcookie_mock = (new MockBuilder())->setNamespace('Genetsis\core\Http\Services')->setName('setcookie')->setFunctionProvider(new FixedValueFunction(true))->build();
+        $setcookie_mock->enable();
 
         $_COOKIE['foo'] = 'foo-value';
         $_COOKIE['bar'] = 'bar-value';
@@ -74,7 +69,7 @@ class CookiesServiceTest extends Unit {
             $this->assertCount(2, $this->cookies->all());
         });
 
-        $php_mock->disable();
+        $setcookie_mock->disable();
     }
 
 }

@@ -56,7 +56,7 @@ class FileCache implements CacheServiceInterface {
      */
     public function getFolder()
     {
-        return $this;
+        return $this->folder;
     }
 
     /**
@@ -150,7 +150,7 @@ class FileCache implements CacheServiceInterface {
     public function has($key)
     {
         $key = $this->prepareCacheFilename($key);
-        return ($key && file_exists($key) && is_readable($key));
+        return ($key && is_file($key) && is_readable($key));
     }
 
     /**
