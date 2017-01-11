@@ -17,20 +17,22 @@ class EncryptionServiceTest extends Unit {
 
     protected function _before()
     {
-        $this->specifyConfig()->shallowClone(); // Speeds up testing avoiding deep clone.
     }
 
     protected function _after()
     {
     }
 
-    public function testService()
+    public function testEncryptionService()
     {
-        $encryption = new Encryption('my-key');
-        $this->assertFalse($encryption->encode(''));
-        $this->assertEquals('foo', $encryption->decode($encryption->encode('foo')));
-        $this->assertEquals('', $encryption->safe_b64encode(''));
-        $this->assertEquals('foo', $encryption->safe_b64decode($encryption->safe_b64encode('foo')));
+        $this->specify('Checks encryption service.', function(){
+            $encryption = new Encryption('my-key');
+            $this->assertFalse($encryption->encode(''));
+            $this->assertEquals('foo', $encryption->decode($encryption->encode('foo')));
+            $this->assertFalse($encryption->decode(''));
+            $this->assertEquals('', $encryption->safe_b64encode(''));
+            $this->assertEquals('foo', $encryption->safe_b64decode($encryption->safe_b64encode('foo')));
+        });
     }
 
 }

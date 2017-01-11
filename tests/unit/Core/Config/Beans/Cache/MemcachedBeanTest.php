@@ -26,27 +26,30 @@ class MemcachedBeanTest extends Unit {
     {
     }
 
-    public function testSettersAndGetters()
+    public function testSetterAndGetterGroup()
     {
         $this->specify('Checks setter and getter for parameter "group".', function(){
             $this->assertInstanceOf('\Genetsis\core\Config\Beans\Cache\Memcached', $this->cache->setGroup('foo'));
             $this->assertEquals('foo', $this->cache->getGroup());
         });
+    }
 
+    public function testSetterAndGetterHost()
+    {
         $this->specify('Checks setter and getter for parameter "host".', function(){
             $this->assertInstanceOf('\Genetsis\core\Config\Beans\Cache\Memcached', $this->cache->setHost('bar.com'));
             $this->assertEquals('bar.com', $this->cache->getHost());
         });
+    }
 
+    public function testSetterAndGetterPort()
+    {
         $this->specify('Checks setter and getter for parameter "port".', function(){
             $this->assertInstanceOf('\Genetsis\core\Config\Beans\Cache\Memcached', $this->cache->setPort('456'));
             $this->assertEquals('456', $this->cache->getPort());
         });
     }
 
-    /**
-     * @depends testSettersAndGetters
-     */
     public function testConstructor()
     {
         $this->specify('Checks constructor.', function () {

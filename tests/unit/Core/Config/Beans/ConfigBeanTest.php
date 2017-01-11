@@ -31,13 +31,16 @@ class ConfigBeanTest extends Unit {
     {
     }
 
-    public function testSettersAndGetters()
+    public function testSetterAndGetterServerName()
     {
         $this->specify('Checks setter and getter for parameter "server name".', function(){
             $this->assertInstanceOf('\Genetsis\core\Config\Beans\Config', $this->config->setServerName('foo'));
             $this->assertEquals('foo', $this->config->getServerName());
         });
+    }
 
+    public function testSetterAndGetterLog()
+    {
         $this->specify('Checks setter and getter for parameter "log".', function(){
             $this->assertInstanceOf('\Genetsis\core\Config\Beans\Config', $this->config->setLog(new FileLogConfig('default', '', LogLevels::DEBUG)));
             $this->assertInstanceOf('\Genetsis\core\Config\Beans\Log\File', $this->config->getLog());
@@ -47,6 +50,13 @@ class ConfigBeanTest extends Unit {
             $this->assertNull($this->config->getLog());
         });
 
+        $this->specify('Checks if setting an invalid log throws an exception.', function(){
+            $this->config->setLog(new \stdClass());
+        }, ['throws' => \InvalidArgumentException::class]);
+    }
+
+    public function testSetterAndGetterCache()
+    {
         $this->specify('Checks setter and getter for parameter "cache".', function(){
             $this->assertInstanceOf('\Genetsis\core\Config\Beans\Config', $this->config->setCache(new FileCacheConfig('default', '')));
             $this->assertInstanceOf('\Genetsis\core\Config\Beans\Cache\File', $this->config->getCache());
@@ -55,11 +65,12 @@ class ConfigBeanTest extends Unit {
             $this->assertInstanceOf('\Genetsis\core\Config\Beans\Config', $this->config->setCache(null));
             $this->assertNull($this->config->getCache());
         });
+
+        $this->specify('Checks if setting an invalid log throws an exception.', function(){
+            $this->config->setCache(new \stdClass());
+        }, ['throws' => \InvalidArgumentException::class]);
     }
 
-    /**
-     * @depends testSettersAndGetters
-     */
     public function testConstructor()
     {
         $this->specify('Checks constructor only with "server name".', function(){

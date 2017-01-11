@@ -27,13 +27,16 @@ class SyslogBeanTest extends Unit {
     {
     }
 
-    public function testSettersAndGetters()
+    public function testSetterAndGetterGroup()
     {
         $this->specify('Checks setter and getter for parameter "group".', function(){
             $this->assertInstanceOf('\Genetsis\core\Config\Beans\Log\Syslog', $this->log->setGroup('foo'));
             $this->assertEquals('foo', $this->log->getGroup());
         });
+    }
 
+    public function testSetterAndGetterLogLevel()
+    {
         $this->specify('Checks setter and getter for parameter "log level".', function(){
             $this->assertInstanceOf('\Genetsis\core\Config\Beans\Log\Syslog', $this->log->setLevel(LogLevels::WARNING));
             $this->assertEquals(LogLevels::WARNING, $this->log->getLevel());
@@ -44,9 +47,6 @@ class SyslogBeanTest extends Unit {
         }, ['throws' => 'InvalidArgumentException']);
     }
 
-    /**
-     * @depends testSettersAndGetters
-     */
     public function testConstructor()
     {
         $this->specify('Checks constructor.', function(){

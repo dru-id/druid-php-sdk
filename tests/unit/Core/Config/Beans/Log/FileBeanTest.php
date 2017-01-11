@@ -27,20 +27,26 @@ class FileBeanTest extends Unit {
     {
     }
 
-    public function testSettersAndGetters()
+    public function testSetterAndGetterGroup()
     {
         $this->specify('Checks setter and getter for parameter "group".', function(){
             $this->assertInstanceOf('\Genetsis\core\Config\Beans\Log\File', $this->log->setGroup('foo'));
             $this->assertEquals('foo', $this->log->getGroup());
         });
+    }
 
+    public function testSetterAndGetterLogFolder()
+    {
         $this->specify('Checks setter and getter for parameter "log folder".', function(){
             $this->assertInstanceOf('\Genetsis\core\Config\Beans\Log\File', $this->log->setFolder('foo/bar'));
             $this->assertEquals('foo/bar', $this->log->getFolder());
             $this->log->setFolder('foo/bar/biz/');
             $this->assertEquals('foo/bar/biz', $this->log->getFolder());
         });
+    }
 
+    public function testSetterAndGetterLogLevel()
+    {
         $this->specify('Checks setter and getter for parameter "log level".', function(){
             $this->assertInstanceOf('\Genetsis\core\Config\Beans\Log\File', $this->log->setLevel(LogLevels::WARNING));
             $this->assertEquals(LogLevels::WARNING, $this->log->getLevel());
@@ -51,9 +57,6 @@ class FileBeanTest extends Unit {
         }, ['throws' => 'InvalidArgumentException']);
     }
 
-    /**
-     * @depends testSettersAndGetters
-     */
     public function testConstructor()
     {
         $this->specify('Checks constructor.', function(){

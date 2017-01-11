@@ -9,6 +9,13 @@ settings:
     bootstrap: _bootstrap.php
     colors: true
     memory_limit: 1024M
+coverage:
+    enabled: true
+    whitelist:
+        include:
+            - ../src/core/*
+            - ../src/Genetsis/*
+            - ../src/DruID.php
 extensions:
     enabled:
         - Codeception\Extension\RunFailed

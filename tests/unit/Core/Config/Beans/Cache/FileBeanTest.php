@@ -26,13 +26,16 @@ class FileBeanTest extends Unit {
     {
     }
 
-    public function testSettersAndGetters()
+    public function testSetterAndGetterGroup()
     {
         $this->specify('Checks setter and getter for parameter "group".', function(){
             $this->assertInstanceOf('\Genetsis\core\Config\Beans\Cache\File', $this->cache->setGroup('foo'));
             $this->assertEquals('foo', $this->cache->getGroup());
         });
+    }
 
+    public function testSetterAndGetterFolder()
+    {
         $this->specify('Checks setter and getter for parameter "folder".', function(){
             $this->assertInstanceOf('\Genetsis\core\Config\Beans\Cache\File', $this->cache->setFolder('foo/bar/biz'));
             $this->assertEquals('foo/bar/biz', $this->cache->getFolder());
@@ -41,9 +44,6 @@ class FileBeanTest extends Unit {
         });
     }
 
-    /**
-     * @depends testSettersAndGetters
-     */
     public function testConstructor()
     {
         $this->specify('Checks constructor.', function () {
