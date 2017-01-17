@@ -4,7 +4,6 @@ namespace Genetsis\Identity\Services;
 use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
 use Genetsis\core\Http\Contracts\CookiesServiceInterface;
 use Genetsis\core\Http\Contracts\SessionServiceInterface;
-use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\core\OAuth\Beans\ClientToken;
 use Genetsis\core\OAuth\Collections\TokenTypes as TokenTypesCollection;

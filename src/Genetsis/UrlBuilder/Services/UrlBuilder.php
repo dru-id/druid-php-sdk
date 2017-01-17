@@ -1,7 +1,6 @@
 <?php
 namespace Genetsis\UrlBuilder\Services;
 
-use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\DruID;
 use Genetsis\UrlBuilder\Contracts\UrlBuilderServiceInterface;

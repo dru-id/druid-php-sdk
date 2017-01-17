@@ -1,11 +1,11 @@
 <?php namespace Genetsis\core\ServiceContainer\Facades;
 
-use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\Http\Contracts\HttpServiceInterface;
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\core\ServiceContainer\Contracts\ServiceContainerFacadeInterface;
 use Genetsis\core\ServiceContainer\Contracts\ServiceContainerInterface;
 use Genetsis\core\ServiceContainer\Exceptions\InvalidServiceException;
+use Psr\Log\LoggerInterface;
 
 /**
  * DruID service container.
@@ -33,7 +33,7 @@ class ServiceContainer implements ServiceContainerFacadeInterface {
     {
         try {
             $service = $this->sc->need('logger');
-            if (!($service instanceof LoggerServiceInterface)) {
+            if (!($service instanceof LoggerInterface)) {
                 throw new InvalidServiceException('Logger service not defined.');
             }
             return $service;

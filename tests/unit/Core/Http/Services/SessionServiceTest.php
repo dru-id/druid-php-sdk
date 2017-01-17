@@ -10,7 +10,9 @@ use Genetsis\core\Http\Services\Session;
  * @package Genetsis
  * @category UnitTest
  */
-class SessionServiceTest extends Unit {
+class SessionServiceTest extends Unit
+{
+
     use Specify;
 
     /** @var \UnitTester */
@@ -65,5 +67,4 @@ class SessionServiceTest extends Unit {
             $this->assertCount(2, $this->session->all());
         });
     }
-
 }

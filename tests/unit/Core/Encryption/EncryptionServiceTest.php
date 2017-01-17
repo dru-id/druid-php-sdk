@@ -9,7 +9,9 @@ use Genetsis\core\Encryption\Services\Encryption;
  * @package Genetsis
  * @category UnitTest
  */
-class EncryptionServiceTest extends Unit {
+class EncryptionServiceTest extends Unit
+{
+
     use Specify;
 
     /** @var \UnitTester */

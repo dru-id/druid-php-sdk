@@ -4,21 +4,20 @@ namespace Genetsis\IntegrationTest\OAuth;
 use Codeception\Specify;
 use Codeception\Test\Unit;
 use Doctrine\Common\Cache\VoidCache;
-use Genetsis\core\Http\Collections\HttpMethods as HttpMethodsCollection;
 use Genetsis\core\Http\Contracts\CookiesServiceInterface;
 use Genetsis\core\Http\Contracts\HttpServiceInterface;
-use Genetsis\core\Http\Services\Http;
-use Genetsis\core\Logger\Collections\LogLevels as LogLevelsCollection;
-use Genetsis\core\Logger\Collections\LogLevels;
-use Genetsis\core\Logger\Services\SyslogLogger;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Config;
 use Genetsis\core\OAuth\Collections\TokenTypes;
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\core\OAuth\Services\OAuth;
 use Genetsis\core\OAuth\Services\OAuthConfigFactory;
 use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\SyslogHandler;
+use Monolog\Logger;
 use Prophecy\Argument;
 use Prophecy\Prophet;
+use Psr\Log\LogLevel;
 
 /**
  * @package  Genetsis
@@ -41,7 +40,9 @@ class OAuthIntegrationTest extends Unit
     protected function _before()
     {
         $this->prophet = new Prophet();
-        $logger = new SyslogLogger(LogLevels::DEBUG);
+        $log_handler = new SyslogHandler('druid');
+        $log_handler->setFormatter(new LineFormatter("%level_name% %context.method%[%context.line%]: %message%\n", null, true));
+        $logger = new Logger('druid', [$log_handler]);
         $oauth_config = (new OAuthConfigFactory($logger, new VoidCache()))->buildConfigFromXmlFile(OAUTHCONFIG_SAMPLE_XML_1_4);
         $this->oauth = new OAuth($oauth_config, $this->getHttpService(), $this->getCookieService(), $logger);
     }
@@ -114,7 +115,7 @@ class OAuthIntegrationTest extends Unit
         $prophecy = $this->prophet->prophesize();
         $prophecy->willImplement(HttpServiceInterface::class);
 
-        $prophecy->execute(
+        $prophecy->request(
             'http://auth.ci.dru-id.com/oauth2/token',
             Argument::allOf(
                 Argument::withEntry('grant_type', 'client_credentials'),
@@ -130,7 +131,7 @@ class OAuthIntegrationTest extends Unit
             ];
         });
 
-        $prophecy->execute(
+        $prophecy->request(
             'http://auth.ci.dru-id.com/oauth2/token',
             Argument::allOf(
                 Argument::withEntry('grant_type', 'authorization_code'),
@@ -148,7 +149,7 @@ class OAuthIntegrationTest extends Unit
             ];
         });
 
-        $prophecy->execute(
+        $prophecy->request(
             'http://auth.ci.dru-id.com/oauth2/token',
             Argument::allOf(
                 Argument::withEntry('grant_type', 'urn:es.cocacola:oauth2:grant_type:validate_bearer'),
@@ -165,7 +166,7 @@ class OAuthIntegrationTest extends Unit
             ];
         });
 
-        $prophecy->execute(
+        $prophecy->request(
             'http://api.ci.dru-id.com/api/user',
             Argument::allOf(
                 Argument::withEntry('oauth_token', '231705665113870|3|2.ynv06g07QgsQGg.3600.1479906956037|Bcq3G9oU2urZo5U7OH03vYcCa8XjOIkx2aVi0WWyCsk.'),
@@ -182,7 +183,7 @@ class OAuthIntegrationTest extends Unit
             ];
         });
 
-        $prophecy->execute(
+        $prophecy->request(
             'https://auth.ci.dru-id.com/oauth2/revoke',
             Argument::allOf(
                 Argument::withEntry('token', '231705665113870|4|2.ExluRwW32ldJ0g.1209600.1481113873012-f385e71af90e7e644b4bead7ffe7380974457de9|_R8LXH_3RrAJB-3ftLskRzo1KfpGJlu33sjb6Vlks4E.'),

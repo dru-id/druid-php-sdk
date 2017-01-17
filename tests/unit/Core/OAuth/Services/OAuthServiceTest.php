@@ -5,7 +5,6 @@ use Codeception\Specify;
 use Codeception\Test\Unit;
 use Genetsis\core\Http\Services\Cookies;
 use Genetsis\core\Http\Services\Http;
-use Genetsis\core\Logger\Services\EmptyLogger;
 use Genetsis\core\Logger\Services\VoidLogger;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Config;
 use Genetsis\core\OAuth\Services\OAuth;

@@ -9,7 +9,9 @@ use Genetsis\core\Config\Beans\Cache\Memcached;
  * @package Genetsis
  * @category UnitTest
  */
-class MemcachedBeanTest extends Unit {
+class MemcachedBeanTest extends Unit
+{
+
     use Specify;
 
     /** @var \UnitTester */

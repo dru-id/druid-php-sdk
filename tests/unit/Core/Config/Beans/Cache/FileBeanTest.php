@@ -9,7 +9,9 @@ use Genetsis\core\Config\Beans\Cache\File;
  * @package Genetsis
  * @category UnitTest
  */
-class FileBeanTest extends Unit {
+class FileBeanTest extends Unit
+{
+
     use Specify;
 
     /** @var \UnitTester */

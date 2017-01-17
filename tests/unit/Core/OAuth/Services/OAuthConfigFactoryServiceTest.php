@@ -4,7 +4,6 @@ namespace Genetsis\UnitTest\Core\OAuth\Beans\Services;
 use Codeception\Specify;
 use Codeception\Test\Unit;
 use Doctrine\Common\Cache\VoidCache;
-use Genetsis\core\Logger\Services\EmptyLogger;
 use Genetsis\core\Logger\Services\VoidLogger;
 use Genetsis\core\OAuth\Services\OAuthConfigFactory;
 

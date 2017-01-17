@@ -3,7 +3,6 @@ namespace Genetsis\core\OAuth\Services;
 
 use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
 use DOMDocument;
-use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Api;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Brand;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Config;

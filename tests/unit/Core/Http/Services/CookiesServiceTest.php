@@ -12,7 +12,9 @@ use phpmock\MockBuilder;
  * @package Genetsis
  * @category UnitTest
  */
-class CookiesServiceTest extends Unit {
+class CookiesServiceTest extends Unit
+{
+
     use Specify;
 
     /** @var MockBuilder $mock_builder */
@@ -34,6 +36,7 @@ class CookiesServiceTest extends Unit {
 
     public function testCookieHandler()
     {
+        // Mocking PHP function "setcookie".
         $setcookie_mock = (new MockBuilder())->setNamespace('Genetsis\core\Http\Services')->setName('setcookie')->setFunctionProvider(new FixedValueFunction(true))->build();
         $setcookie_mock->enable();
 
@@ -71,5 +74,4 @@ class CookiesServiceTest extends Unit {
 
         $setcookie_mock->disable();
     }
-
 }
