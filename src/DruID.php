@@ -21,6 +21,7 @@ use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\Logger\Services\DruIDLogger;
 use Genetsis\core\Logger\Services\EmptyLogger;
 use Genetsis\core\Logger\Services\SyslogLogger;
+use Genetsis\core\Logger\Services\VoidLogger;
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\core\OAuth\Services\OAuth;
 use Genetsis\core\OAuth\Services\OAuthConfigFactory;
@@ -32,6 +33,17 @@ use Genetsis\UrlBuilder\Contracts\UrlBuilderServiceInterface;
 use Genetsis\UrlBuilder\Services\UrlBuilder;
 use Genetsis\UserApi\Contracts\UserApiServiceInterface;
 use Genetsis\UserApi\Services\UserApi;
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\MessageFormatter;
+use GuzzleHttp\Middleware;
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\NullHandler;
+use Monolog\Handler\RotatingFileHandler;
+use Monolog\Handler\SyslogHandler;
+use Monolog\Logger;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 /**
  * This is the main class for DruID library. All starts here.
@@ -54,7 +66,7 @@ class DruID {
     private static $session;
     /** @var CookiesServiceInterface $cookie */
     private static $cookie;
-    /** @var LoggerServiceInterface $logger */
+    /** @var LoggerInterface $logger */
     private static $logger;
     /** @var DoctrineCacheInterface $cache {@see http://doctrine-orm.readthedocs.io/projects/doctrine-orm/en/latest/reference/caching.html} */
     private static $cache;
@@ -77,19 +89,25 @@ class DruID {
      *
      * @param DruIDConfig $druid_config
      * @param string $oauth_config_xml OAuth configuration XML content.
+     * @param LoggerInterface|null $logger
      * @return void
      * @throws \Exception
      */
-    public static function setup(DruIDConfig $druid_config, $oauth_config_xml)
+    public static function setup(DruIDConfig $druid_config, $oauth_config_xml, $logger = null)
     {
-        // Log service.
-        if ($druid_config->getLog() instanceof FileLogConfig) {
-            self::$logger = new DruIDLogger($druid_config->getLog()->getFolder().'/'.$druid_config->getLog()->getGroup(), LogLevelsCollection::DEBUG);
-        } elseif ($druid_config->getLog() instanceof SyslogConfig) {
-            self::$logger = new SyslogLogger($druid_config->getLog()->getLevel());
-        } else {
-            self::$logger = new EmptyLogger();
+        // Logger service.
+        if (!($logger instanceof LoggerInterface)) {
+            $logger = new VoidLogger();
         }
+        self::$logger = $logger;
+
+//        if ($druid_config->getLog() instanceof FileLogConfig) {
+//            self::$logger = new DruIDLogger($druid_config->getLog()->getFolder().'/'.$druid_config->getLog()->getGroup(), LogLevelsCollection::DEBUG);
+//        } elseif ($druid_config->getLog() instanceof SyslogConfig) {
+//            self::$logger = new SyslogLogger($druid_config->getLog()->getLevel());
+//        } else {
+//            self::$logger = new EmptyLogger();
+//        }
 
         // Cache service
         if ($druid_config->getCache() instanceof FileCacheConfig) {
@@ -101,7 +119,7 @@ class DruID {
                 self::$cache = new MemcachedCache();
                 self::$cache->setMemcached($memcached);
             } else {
-                self::$logger->warn('Memcached cache required but Memcached is not available in this server. A void cache will be used instead.', __METHOD__, __LINE__);
+                self::$logger->warning('Memcached cache required but Memcached is not available in this server. A void cache will be used instead.', __METHOD__, __LINE__);
             }
         }
         // If cache service is not provided then we will use a VoidCache in order to avoid messing things up with
@@ -111,7 +129,12 @@ class DruID {
         }
 
         // Http service.
-        self::$http = new Http(self::$logger);
+        // We associate the logger received with the Guzzle client to register the requests.
+        $stack = HandlerStack::create();
+        $stack->push(Middleware::log(self::$logger, new MessageFormatter(), LogLevel::INFO));
+        $stack->push(Middleware::log(self::$logger, new MessageFormatter("\nREQUEST:\n{request}\n\nRESPONSE:\n{response}\n"), LogLevel::DEBUG));
+        // Do not verify SSL for self-signed certifies. Only for development.
+        self::$http = new Http(new Client(['handler' => $stack, 'http_errors' => false, 'verify' => false]), self::$logger);
 
         // Cookie service.
         self::$cookie = new Cookies();

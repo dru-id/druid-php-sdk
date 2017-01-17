@@ -5,6 +5,7 @@ use Codeception\Specify;
 use Codeception\Test\Unit;
 use Doctrine\Common\Cache\VoidCache;
 use Genetsis\core\Logger\Services\EmptyLogger;
+use Genetsis\core\Logger\Services\VoidLogger;
 use Genetsis\core\OAuth\Services\OAuthConfigFactory;
 
 /**
@@ -22,7 +23,7 @@ class OAuthConfigFactoryServiceTest extends Unit {
     protected function _before()
     {
         $this->specifyConfig()->shallowClone(); // Speeds up testing avoiding deep clone.
-        $this->factory = new OAuthConfigFactory(new EmptyLogger(), new VoidCache());
+        $this->factory = new OAuthConfigFactory(new VoidLogger(), new VoidCache());
     }
 
     protected function _after()

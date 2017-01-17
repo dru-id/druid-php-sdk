@@ -5,6 +5,7 @@ use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\DruID;
 use Genetsis\UrlBuilder\Contracts\UrlBuilderServiceInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * This class is used to build the links to different services of Genetsis ID.
@@ -18,7 +19,7 @@ class UrlBuilder implements UrlBuilderServiceInterface {
 
     /** @var OAuthServiceInterface $oauth */
     protected $oauth;
-    /** @var LoggerServiceInterface $logger */
+    /** @var LoggerInterface $logger */
     protected $logger;
 
     private static $ids = array("email", "screen_name", "national_id", "phone_number");
@@ -27,9 +28,9 @@ class UrlBuilder implements UrlBuilderServiceInterface {
 
     /**
      * @param OAuthServiceInterface $oauth
-     * @param LoggerServiceInterface $logger
+     * @param LoggerInterface $logger
      */
-    public function __construct(OAuthServiceInterface $oauth, LoggerServiceInterface $logger)
+    public function __construct(OAuthServiceInterface $oauth, LoggerInterface $logger)
     {
         $this->oauth = $oauth;
     }
@@ -117,7 +118,7 @@ class UrlBuilder implements UrlBuilderServiceInterface {
                 return $this->getUrlCompleteAccount($entry_point);
             }
         } catch (\Exception $e) {
-            $this->logger->debug($e->getMessage(), __METHOD__, __LINE__);
+            $this->logger->debug($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
         }
 
         return false;
@@ -190,7 +191,7 @@ class UrlBuilder implements UrlBuilderServiceInterface {
 
             return $endpoint_url . '?' . http_build_query($params, null, '&');
         } catch (\Exception $e) {
-            $this->logger->debug($e->getMessage(), __METHOD__, __LINE__);
+            $this->logger->debug($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
         }
 
         return false;
@@ -241,7 +242,7 @@ class UrlBuilder implements UrlBuilderServiceInterface {
 
             return $endpoint_url . '?' . http_build_query($params, null, '&');
         } catch (\Exception $e) {
-            $this->logger->debug($e->getMessage(), __METHOD__, __LINE__);
+            $this->logger->debug($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
         }
 
         return false;
@@ -280,7 +281,7 @@ class UrlBuilder implements UrlBuilderServiceInterface {
 
             return $url . '&' . http_build_query($params, null, '&');
         } catch (\Exception $e) {
-            $this->logger->debug($e->getMessage(), __METHOD__, __LINE__);
+            $this->logger->debug($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
         }
 
         return false;
@@ -331,7 +332,7 @@ class UrlBuilder implements UrlBuilderServiceInterface {
 
             return $endpoint_url . '?' . http_build_query($params, null, '&');
         } catch (\Exception $e) {
-            $this->logger->debug($e->getMessage(), __METHOD__, __LINE__);
+            $this->logger->debug($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
         }
 
         return false;

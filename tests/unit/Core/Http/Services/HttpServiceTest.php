@@ -7,6 +7,10 @@ use Genetsis\core\Http\Collections\HttpMethods;
 use Genetsis\core\Http\Services\Http as HttpService;
 use Genetsis\core\Logger\Services\SyslogLogger;
 use Genetsis\core\Logger\Collections\LogLevels as LogLevelsCollection;
+use GuzzleHttp\Client;
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\SyslogHandler;
+use Monolog\Logger;
 
 /**
  * @package Genetsis
@@ -23,7 +27,11 @@ class HttpServiceTest extends Unit {
     protected function _before()
     {
         $this->specifyConfig()->shallowClone(); // Speeds up testing avoiding deep clone.
-        $this->my_http = new HttpService(new SyslogLogger(LogLevelsCollection::DEBUG));
+        $logger = new Logger('druid');
+        $handler = new SyslogHandler('druid', LOG_USER, Logger::DEBUG);
+        $handler->setFormatter(new LineFormatter("%datetime% %level_name% %context.method%[%context.line%]: %message%\n", null, true));
+        $logger->pushHandler($handler);
+        $this->my_http = new HttpService(new Client(), $logger);
     }
 
     protected function _after()

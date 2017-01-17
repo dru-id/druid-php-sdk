@@ -4,6 +4,7 @@ namespace Genetsis\UserApi\Services;
 use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
 use Exception;
 use Genetsis\core\Http\Contracts\HttpServiceInterface;
+use Genetsis\core\Http\Exceptions\RequestException;
 use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\core\User\Beans\Brand;
@@ -12,6 +13,8 @@ use Genetsis\core\Http\Collections\HttpMethods as HttpMethodsCollection;
 use Genetsis\core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
 use Genetsis\DruID;
 use Genetsis\UserApi\Contracts\UserApiServiceInterface;
+use GuzzleHttp\Psr7\Uri;
+use Psr\Log\LoggerInterface;
 
 /**
  * This class allow you to use the User Api
@@ -36,7 +39,7 @@ class UserApi implements UserApiServiceInterface
     protected $oauth;
     /** @var HttpServiceInterface $http */
     protected $http;
-    /** @var LoggerServiceInterface $logger */
+    /** @var LoggerInterface $logger */
     protected $logger;
     /** @var DoctrineCacheInterface $cache */
     protected $cache;
@@ -44,10 +47,10 @@ class UserApi implements UserApiServiceInterface
     /**
      * @param OAuthServiceInterface $oauth
      * @param HttpServiceInterface $http
-     * @param LoggerServiceInterface $logger
+     * @param LoggerInterface $logger
      * @param DoctrineCacheInterface $cache
      */
-    public function __construct(OAuthServiceInterface $oauth, HttpServiceInterface $http, LoggerServiceInterface $logger, DoctrineCacheInterface $cache)
+    public function __construct(OAuthServiceInterface $oauth, HttpServiceInterface $http, LoggerInterface $logger, DoctrineCacheInterface $cache)
     {
         $this->oauth = $oauth;
         $this->http = $http;
@@ -61,7 +64,7 @@ class UserApi implements UserApiServiceInterface
     public function getUserLogged()
     {
         try {
-            $this->logger->debug('Get user Logged info', __METHOD__, __LINE__);
+            $this->logger->debug('Get user Logged info', ['method' => __METHOD__, 'line' => __LINE__]);
 
             if ((DruID::identity()->getThings()->getLoginStatus()!=null)&&(DruID::identity()->getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
                 $user_logged = $this->getUsers(array('id' => DruID::identity()->getThings()->getLoginStatus()->getCkUsid()));
@@ -70,7 +73,7 @@ class UserApi implements UserApiServiceInterface
                 }
             }
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage(), __METHOD__, __LINE__);
+            $this->logger->error($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
         }
         return null;
     }
@@ -80,7 +83,7 @@ class UserApi implements UserApiServiceInterface
      */
     public function getUserLoggedCkusid()
     {
-        $this->logger->debug('Get user Logged info', __METHOD__, __LINE__);
+        $this->logger->debug('Get user Logged info', ['method' => __METHOD__, 'line' => __LINE__]);
 
         if ((DruID::identity()->getThings()->getLoginStatus()!=null)&&(DruID::identity()->getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
             return DruID::identity()->getThings()->getLoginStatus()->getCkUsid();
@@ -94,7 +97,7 @@ class UserApi implements UserApiServiceInterface
      */
     public function getUserLoggedOid()
     {
-        $this->logger->debug('Get user Logged info', __METHOD__, __LINE__);
+        $this->logger->debug('Get user Logged info', ['method' => __METHOD__, 'line' => __LINE__]);
 
         if ((DruID::identity()->getThings()->getLoginStatus()!=null)&&(DruID::identity()->getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
             return DruID::identity()->getThings()->getLoginStatus()->getOid();
@@ -119,7 +122,7 @@ class UserApi implements UserApiServiceInterface
         try {
             return $this->getAvatar($userid, $width, $height, 'false');
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage(), __METHOD__, __LINE__);
+            $this->logger->error($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
             return '';
         }
     }
@@ -129,7 +132,7 @@ class UserApi implements UserApiServiceInterface
         try {
             return $this->getAvatar($userid, $width, $height, 'true');
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage(), __METHOD__, __LINE__);
+            $this->logger->error($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
             return '';
         }
     }
@@ -143,25 +146,59 @@ class UserApi implements UserApiServiceInterface
      * @throws \Exception If an error occurred
      */
     private function getAvatar($userid, $width, $height, $redirect){
-        $this->logger->debug('Get user Avatar', __METHOD__, __LINE__);
-        $params = array(
-            'width' => $width,
-            'height' => $height,
-            'redirect' => $redirect
-        );
+        $this->logger->debug('Get user Avatar', ['method' => __METHOD__, 'line' => __LINE__]);
+//        $params = array(
+//            'width' => $width,
+//            'height' => $height,
+//            'redirect' => $redirect
+//        );
+//        $response = $this->http->execute($this->oauth->getConfig()->getApi('api.activityid')->getEndpoint('public_image', true).'/'.$userid, $params, HttpMethodsCollection::GET);
 
-        $response = $this->http->execute($this->oauth->getConfig()->getApi('api.activityid')->getEndpoint('public_image', true).'/'.$userid, $params, HttpMethodsCollection::GET);
+//        $ret = null;
+//
+//        if (isset($response['code']) && ($response['code'] == 200)) {
+//            if ($redirect === 'true') {
+//                $ret = $response['result'];
+//            } else {
+//                $ret = $response['result']->url;
+//            }
+//        } else if (isset($response['code']) && ($response['code'] == 204)) { //user does not have avatar
+//            if ($redirect === 'true') {
+//                //$ret = "";
+//                throw new \Exception('not implemented. better use getAvatarUrl or getUserLoggedAvatarUrl');
+//            } else {
+//                $ret = "/assets/img/placeholder.png";
+//            }
+//        } else {
+//            throw new \Exception('Error [' . __FUNCTION__ . '] - ' . $response['code'] . ' - ' . $response['result']);
+//        }
+//
+//        return $ret;
+
+        $response = $this->http->request('GET', $this->oauth->getConfig()->getApi('api.activityid')->getEndpoint('public_image', true).'/'.$userid, [
+            'query' => [
+                'width' => $width,
+                'height' => $height,
+                'redirect' => $redirect
+            ]
+        ]);
 
         $ret = null;
 
-        if (isset($response['code']) && ($response['code'] == 200)) {
-            if ($redirect === 'true') {
-                $ret = $response['result'];
+        if ($response->getStatusCode() == 200) {
+            if ($redirect) {
+                $ret = (string)$response->getBody();
             } else {
-                $ret = $response['result']->url;
+                $response = @json_decode((string)$response->getBody(), true);
+                if (is_null($response) || !is_array($response)) {
+                    throw new RequestException('Server has responded with an invalid JSON data.');
+                }
+                if (isset($response['url'])) {
+                    $ret = $response['url'];
+                }
             }
-        } else if (isset($response['code']) && ($response['code'] == 204)) { //user does not have avatar
-            if ($redirect === 'true') {
+        } elseif ($response->getStatusCode() == 204) {
+            if ($redirect) {
                 //$ret = "";
                 throw new \Exception('not implemented. better use getAvatarUrl or getUserLoggedAvatarUrl');
             } else {
@@ -180,29 +217,44 @@ class UserApi implements UserApiServiceInterface
     public function getBrands()
     {
         try {
-            $this->logger->debug('Get list of Brands', __METHOD__, __LINE__);
+            $this->logger->debug('Get list of Brands', ['method' => __METHOD__, 'line' => __LINE__]);
             if (!$this->cache->contains('brands') || !($brands = @unserialize($this->cache->fetch('brands')))) {
-                $this->logger->debug('Brands not cached', __METHOD__, __LINE__);
+                $this->logger->debug('Brands not cached', ['method' => __METHOD__, 'line' => __LINE__]);
                 if (!$client_token = DruID::identity()->getThings()->getClientToken()) {
                     throw new \Exception('The clientToken is empty');
                 }
 
-                $header_params = array(
-                    'Authorization' => 'Bearer ' . $client_token->getValue(),
-                    'Content-Type' => 'application/json',
-                    'From' => '452200208393481-main'
-                );
+//                $header_params = array(
+//                    'Authorization' => 'Bearer ' . $client_token->getValue(),
+//                    'Content-Type' => 'application/json',
+//                    'From' => '452200208393481-main'
+//                );
+//                $response = $this->http->execute($this->oauth->getConfig()->getApi('api.activityid')->getEndpoint('brands', true), [], HttpMethodsCollection::GET, $header_params);
+//                if (($response['code'] != 200) || (!isset($response['result']->items))) {
+//                    throw new \Exception('The data retrieved is empty');
+//                }
 
-                $response = $this->http->execute($this->oauth->getConfig()->getApi('api.activityid')->getEndpoint('brands', true), [], HttpMethodsCollection::GET, $header_params);
-
-                if (($response['code'] != 200) || (!isset($response['result']->items))) {
+                $response = $this->http->request('GET', $this->oauth->getConfig()->getApi('api.activityid')->getEndpoint('brands', true), [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $client_token->getValue(),
+                        'Content-Type' => 'application/json',
+                        'From' => '452200208393481-main'
+                    ]
+                ]);
+                if ($response->getStatusCode() != 200) {
                     throw new \Exception('The data retrieved is empty');
+                }
+                $response = @json_decode((string)$response->getBody(), true);
+                if (is_null($response) || !is_array($response)) {
+                    throw new RequestException('Server has responded with an invalid JSON data.');
                 }
 
                 $brands = array();
-                foreach ($response['result']->items as $brand) {
-                    if (isset($brand->id, $brand->displayName, $brand->displayName->es_ES)) {
-                        $brands[] = new Brand(['key' => $brand->id, 'name' => $brand->displayName->es_ES]);
+                if (isset($response['items'])) {
+                    foreach ($response['items'] as $brand) {
+                        if (isset($brand['id'], $brand['displayName'], $brand['displayName']['es_ES'])) {
+                            $brands[] = new Brand(['key' => $brand['id'], 'name' => $brand['displayName']['es_ES']]);
+                        }
                     }
                 }
 
@@ -212,7 +264,7 @@ class UserApi implements UserApiServiceInterface
             return $brands;
 
         } catch ( Exception $e ) {
-            $this->logger->error($e->getMessage(), __METHOD__, __LINE__);
+            $this->logger->error($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
             return [];
         }
     }
@@ -223,7 +275,7 @@ class UserApi implements UserApiServiceInterface
     public function deleteCacheUser($ckusid = null)
     {
         try {
-            $this->logger->debug('Delete cache of user', __METHOD__, __LINE__);
+            $this->logger->debug('Delete cache of user', ['method' => __METHOD__, 'line' => __LINE__]);
 
             if ($ckusid == null) {
                 if ((DruID::identity()->getThings()->getLoginStatus()!=null)&&(DruID::identity()->getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
@@ -233,7 +285,7 @@ class UserApi implements UserApiServiceInterface
                 $this->cache->delete('user-' . $ckusid);
             }
         } catch ( Exception $e ) {
-            $this->logger->error($e->getMessage(), __METHOD__, __LINE__);
+            $this->logger->error($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
         }
         return null;
     }
@@ -249,7 +301,7 @@ class UserApi implements UserApiServiceInterface
             try {
                 $cache_key = 'user-' . reset($identifiers);
                 if (!$this->cache->contains($cache_key) || !($druid_user_data = $this->cache->fetch($cache_key))) {
-                    $this->logger->debug('Identifier: ' . reset($identifiers) . ' is Not in Cache System', __METHOD__, __LINE__);
+                    $this->logger->debug('Identifier: ' . reset($identifiers) . ' is Not in Cache System', ['method' => __METHOD__, 'line' => __LINE__]);
 
                     $client_token = DruID::identity()->getThings()->getClientToken();
 
@@ -264,26 +316,53 @@ class UserApi implements UserApiServiceInterface
                      * f (from): User
                      * w (where): param with OR w.param1&w.param2...
                      */
-                    $params = array();
-                    $params['oauth_token'] = $client_token->getValue();
-                    $params['s'] = "*";
-                    $params['f'] = "User";
+//                    $params = array();
+//                    $params['oauth_token'] = $client_token->getValue();
+//                    $params['s'] = "*";
+//                    $params['f'] = "User";
+//                    foreach ($identifiers as $key => $val) {
+//                        $params['w.' . $key] = $val;
+//                    }
+//
+//                    $response = $this->http->execute($this->oauth->getConfig()->getApi('api.user')->getEndpoint('user', true), $params, HttpMethodsCollection::POST);
+//                    if (($response['code'] != 200) || (!isset($response['result']->data)) || ($response['result']->count == '0')) {
+//                        throw new \Exception('The data retrieved is empty');
+//                    }
+//                    $druid_user = $response['result']->data;
+//                    $this->cache->save($cache_key, $druid_user, self::USER_TTL);
+                    $params = [
+                        'oauth_token' => $client_token->getValue(),
+                        's' => "*",
+                        'f' => "User"
+                    ];
                     foreach ($identifiers as $key => $val) {
                         $params['w.' . $key] = $val;
                     }
-
-                    $response = $this->http->execute($this->oauth->getConfig()->getApi('api.user')->getEndpoint('user', true), $params, HttpMethodsCollection::POST);
-                    if (($response['code'] != 200) || (!isset($response['result']->data)) || ($response['result']->count == '0')) {
+                    $response = $this->http->request('POST', $this->oauth->getConfig()->getApi('api.user')->getEndpoint('user', true), [
+                        'form_params' => $params,
+                        'headers' => [
+                            'Content-Type' => 'application/x-www-form-urlencoded'
+                        ]
+                    ]);
+                    if ($response->getStatusCode() != 200) {
                         throw new \Exception('The data retrieved is empty');
                     }
-                    $druid_user = $response['result']->data;
+                    $response = @json_decode((string)$response->getBody(), true);
+                    if (is_null($response) || !is_array($response)) {
+                        throw new RequestException('Server has responded with an invalid JSON data.');
+                    }
+                    if (!isset($response['data']) || (isset($response['count']) && ($response['count'] == 0))) {
+                        throw new \Exception('The data retrieved is empty');
+                    }
+
+                    $druid_user = $response['data'];
                     $this->cache->save($cache_key, $druid_user, self::USER_TTL);
                 } else {
-                    $this->logger->debug('Identifier: ' . reset($identifiers) . ' is in Cache System', __METHOD__, __LINE__);
+                    $this->logger->debug('Identifier: ' . reset($identifiers) . ' is in Cache System', ['method' => __METHOD__, 'line' => __LINE__]);
                     $druid_user = json_decode(json_encode($druid_user_data));
                 }
             } catch (\Exception $e) {
-                $this->logger->error($e->getMessage(), __METHOD__, __LINE__);
+                $this->logger->error($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
             }
         }
         return $druid_user;

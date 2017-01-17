@@ -11,6 +11,7 @@ use Genetsis\core\OAuth\Beans\OAuthConfig\EndPoint;
 use Genetsis\core\OAuth\Beans\OAuthConfig\EntryPoint;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Host;
 use Genetsis\core\OAuth\Beans\OAuthConfig\RedirectUrl;
+use Psr\Log\LoggerInterface;
 
 /**
  * @package   Genetsis
@@ -18,16 +19,16 @@ use Genetsis\core\OAuth\Beans\OAuthConfig\RedirectUrl;
  */
 class OAuthConfigFactory {
 
-    /** @var LoggerServiceInterface $logger */
+    /** @var LoggerInterface $logger */
     protected $logger;
     /** @var DoctrineCacheInterface $cache */
     protected $cache;
 
     /**
-     * @param LoggerServiceInterface $logger
+     * @param LoggerInterface $logger
      * @param DoctrineCacheInterface $cache
      */
-    public function __construct(LoggerServiceInterface $logger, DoctrineCacheInterface $cache)
+    public function __construct(LoggerInterface $logger, DoctrineCacheInterface $cache)
     {
         $this->logger = $logger;
         $this->cache = $cache;
@@ -43,7 +44,7 @@ class OAuthConfigFactory {
     public function buildConfigFromXmlFile($file)
     {
         if (!$file || !is_file($file) || !is_readable($file)) {
-            $this->logger->error('The oauth configuration file does not exists.', __METHOD__, __LINE__);
+            $this->logger->error('The oauth configuration file does not exists.', ['method' => __METHOD__, 'line' => __LINE__]);
             throw new \InvalidArgumentException('Invalid configuration file.');
         }
         return $this->buildConfigFromXml(file_get_contents($file));
@@ -63,13 +64,13 @@ class OAuthConfigFactory {
 
         try {
             if (!$xml) {
-                $this->logger->error('The XML is empty.', __METHOD__, __LINE__);
+                $this->logger->error('The XML is empty.', ['method' => __METHOD__, 'line' => __LINE__]);
                 throw new \InvalidArgumentException('Invalid configuration file.');
             }
 
             $xml_obj = new DOMDocument();
             if (!$xml_obj->loadXML($xml)) {
-                $this->logger->error('The XML is invalid.', __METHOD__, __LINE__);
+                $this->logger->error('The XML is invalid.', ['method' => __METHOD__, 'line' => __LINE__]);
                 throw new \InvalidArgumentException('Invalid configuration file.');
             }
 
@@ -82,14 +83,14 @@ class OAuthConfigFactory {
                 }
             }
             if (!$config->getVersion()) {
-                $this->logger->error('Unable to get the XML version.', __METHOD__, __LINE__);
+                $this->logger->error('Unable to get the XML version.', ['method' => __METHOD__, 'line' => __LINE__]);
                 throw new \Exception('Unable to verify XML version.');
             }
 
             // Client ID.
             $temp = $xml_obj->getElementsByTagName('clientid');
             if (($temp->length == 0) || !($temp->item(0) instanceof \DOMElement) || !$temp->item(0)->nodeValue) {
-                $this->logger->error('Value of "clientid" is not defined', __METHOD__, __LINE__);
+                $this->logger->error('Value of "clientid" is not defined', ['method' => __METHOD__, 'line' => __LINE__]);
                 throw new \Exception('Invalid credentials');
             }
             $config->setClientId($temp->item(0)->nodeValue);
@@ -97,7 +98,7 @@ class OAuthConfigFactory {
             // Client Secret.
             $temp = $xml_obj->getElementsByTagName('clientsecret');
             if (($temp->length == 0) || !($temp->item(0) instanceof \DOMElement) || !$temp->item(0)->nodeValue) {
-                $this->logger->error('Value of "clientsecret" is not defined', __METHOD__, __LINE__);
+                $this->logger->error('Value of "clientsecret" is not defined', ['method' => __METHOD__, 'line' => __LINE__]);
                 throw new \Exception('Invalid credentials');
             }
             $config->setClientSecret($temp->item(0)->nodeValue);
@@ -138,7 +139,7 @@ class OAuthConfigFactory {
             // Redirects.
             $temp = $xml_obj->getElementsByTagName('redirections');
             if ($temp->length == 0) {
-                $this->logger->error('The "redirections" node is not defined.', __METHOD__, __LINE__);
+                $this->logger->error('The "redirections" node is not defined.', ['method' => __METHOD__, 'line' => __LINE__]);
                 throw new \Exception('The XML is invalid.');
             }
             foreach ($temp->item(0)->childNodes as $node) {
@@ -154,7 +155,7 @@ class OAuthConfigFactory {
             // Endpoints.
             $temp = $xml_obj->getElementsByTagName('endpoints');
             if ($temp->length == 0) {
-                $this->logger->error('The "endpoints" node is not defined.', __METHOD__, __LINE__);
+                $this->logger->error('The "endpoints" node is not defined.', ['method' => __METHOD__, 'line' => __LINE__]);
                 throw new \Exception('The XML is invalid.');
             }
             foreach ($temp->item(0)->childNodes as $node) {
@@ -169,7 +170,7 @@ class OAuthConfigFactory {
             // Entry points.
             $temp = $xml_obj->getElementsByTagName('sections');
             if ($temp->length == 0) {
-                $this->logger->error('The "sections" node is not defined.', __METHOD__, __LINE__);
+                $this->logger->error('The "sections" node is not defined.', ['method' => __METHOD__, 'line' => __LINE__]);
                 throw new \Exception('The XML is invalid.');
             }
             foreach ($temp->item(0)->childNodes as $node) {

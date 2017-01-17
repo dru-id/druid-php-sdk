@@ -6,8 +6,10 @@ use Codeception\Test\Unit;
 use Genetsis\core\Http\Services\Cookies;
 use Genetsis\core\Http\Services\Http;
 use Genetsis\core\Logger\Services\EmptyLogger;
+use Genetsis\core\Logger\Services\VoidLogger;
 use Genetsis\core\OAuth\Beans\OAuthConfig\Config;
 use Genetsis\core\OAuth\Services\OAuth;
+use GuzzleHttp\Client;
 
 /**
  * @package Genetsis
@@ -31,7 +33,7 @@ class OAuthServiceTest extends Unit {
     public function testSettersAndGetters()
     {
         $this->specify('Checks setter and getter for "config" property.', function(){
-            $oauth = new OAuth((new Config())->setClientId('foo'), new Http(new EmptyLogger()), new Cookies(), new EmptyLogger());
+            $oauth = new OAuth((new Config())->setClientId('foo'), new Http(new Client(), new VoidLogger()), new Cookies(), new VoidLogger());
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $oauth->getConfig());
             $this->assertEquals('foo', $oauth->getConfig()->getClientId());
             $this->assertInstanceOf('\Genetsis\core\OAuth\Services\OAuth', $oauth->setConfig((new Config())->setClientId('bar')));

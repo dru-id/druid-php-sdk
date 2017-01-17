@@ -4,6 +4,7 @@ use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
 use Genetsis\core\Http\Contracts\HttpServiceInterface;
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\core\ServiceContainer\Exceptions\InvalidServiceException;
+use Psr\Log\LoggerInterface;
 
 /**
  * Service container facade interface.
@@ -19,7 +20,7 @@ interface ServiceContainerFacadeInterface {
     /**
      * Returns the current logger service.
      *
-     * @return LoggerServiceInterface
+     * @return LoggerInterface
      * @throws InvalidServiceException
      */
     public function getLogger();

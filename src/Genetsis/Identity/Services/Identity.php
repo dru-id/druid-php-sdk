@@ -14,6 +14,7 @@ use Genetsis\core\User\Beans\Things;
 use Genetsis\core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
 use Genetsis\DruID;
 use Genetsis\Identity\Contracts\IdentityServiceInterface;
+use Psr\Log\LoggerInterface;
 
 class Identity implements IdentityServiceInterface {
 
@@ -23,7 +24,7 @@ class Identity implements IdentityServiceInterface {
     protected $session;
     /** @var CookiesServiceInterface $cookie */
     protected $cookie;
-    /** @var LoggerServiceInterface $logger */
+    /** @var LoggerInterface $logger */
     protected $logger;
     /** @var DoctrineCacheInterface $cache */
     protected $cache;
@@ -37,10 +38,10 @@ class Identity implements IdentityServiceInterface {
      * @param OAuthServiceInterface $oauth
      * @param SessionServiceInterface $session
      * @param CookiesServiceInterface $cookie
-     * @param LoggerServiceInterface $logger
+     * @param LoggerInterface $logger
      * @param DoctrineCacheInterface $cache
      */
-    public function __construct(OAuthServiceInterface $oauth, SessionServiceInterface $session, CookiesServiceInterface $cookie, LoggerServiceInterface $logger, DoctrineCacheInterface $cache)
+    public function __construct(OAuthServiceInterface $oauth, SessionServiceInterface $session, CookiesServiceInterface $cookie, LoggerInterface $logger, DoctrineCacheInterface $cache)
     {
         $this->oauth = $oauth;
         $this->session = $session;
@@ -72,35 +73,35 @@ class Identity implements IdentityServiceInterface {
     {
         if (!$this->synchronized) {
             try {
-                $this->logger->debug('Synchronizing session with server', __METHOD__, __LINE__);
+                $this->logger->debug('Synchronizing session with server', ['method' => __METHOD__, 'line' => __LINE__]);
                 $this->checkAndUpdateClientToken();
 
                 $this->loadUserTokenFromPersistence();
 
                 if ($this->gid_things->getAccessToken() == null) {
-                    $this->logger->debug('User is not logged, check SSO', __METHOD__, __LINE__);
+                    $this->logger->debug('User is not logged, check SSO', ['method' => __METHOD__, 'line' => __LINE__]);
                     $this->checkSSO();
                     if ($this->gid_things->getRefreshToken() != null) {
-                        $this->logger->debug('User not logged but has Refresh Token', __METHOD__, __LINE__);
+                        $this->logger->debug('User not logged but has Refresh Token', ['method' => __METHOD__, 'line' => __LINE__]);
                         $this->checkAndRefreshAccessToken();
                     }
                 } else {
                     if ($this->isExpired($this->gid_things->getAccessToken()->getExpiresAt())) {
-                        $this->logger->debug('User logged but Access Token is expires', __METHOD__, __LINE__);
+                        $this->logger->debug('User logged but Access Token is expires', ['method' => __METHOD__, 'line' => __LINE__]);
                         $this->checkAndRefreshAccessToken();
                     } else {
-                        $this->logger->debug('User logged - check Validate Bearer', __METHOD__, __LINE__);
+                        $this->logger->debug('User logged - check Validate Bearer', ['method' => __METHOD__, 'line' => __LINE__]);
                         $this->checkLoginStatus();
                     }
                     if (!$this->isConnected()) {
-                        $this->logger->warn('User logged but is not connected (something wrong) - clear session data', __METHOD__, __LINE__);
+                        $this->logger->warning('User logged but is not connected (something wrong) - clear session data', ['method' => __METHOD__, 'line' => __LINE__]);
                         $this->clearLocalSessionData();
                     }
                 }
 
                 $this->synchronized = true;
             } catch (\Exception $e) {
-                $this->logger->error($e->getMessage(), __METHOD__, __LINE__);
+                $this->logger->error($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
             }
 
             $this->session->set('things', @serialize($this->gid_things));
@@ -119,24 +120,24 @@ class Identity implements IdentityServiceInterface {
     private function checkAndUpdateClientToken()
     {
         try {
-            $this->logger->debug('Checking and update client_token.', __METHOD__, __LINE__);
+            $this->logger->debug('Checking and update client_token.', ['method' => __METHOD__, 'line' => __LINE__]);
             if (!$this->cache->contains('client_token') || !(($client_token = @unserialize($this->cache->fetch('client_token'))) instanceof ClientToken) || ($client_token->getValue() == '')) {
-                $this->logger->debug('Get Client token', __METHOD__, __LINE__);
+                $this->logger->debug('Get Client token', ['method' => __METHOD__, 'line' => __LINE__]);
 
                 if (($this->gid_things->getClientToken() == null) || ($this->oauth->getStoredToken(TokenTypesCollection::CLIENT_TOKEN) == null)) {
-                    $this->logger->debug('Not has clientToken in session or cookie', __METHOD__, __LINE__);
+                    $this->logger->debug('Not has clientToken in session or cookie', ['method' => __METHOD__, 'line' => __LINE__]);
 
                     if (!$client_token = $this->oauth->getStoredToken(TokenTypesCollection::CLIENT_TOKEN)) {
-                        $this->logger->debug('Token Cookie does not exists. Requesting a new one.', __METHOD__, __LINE__);
+                        $this->logger->debug('Token Cookie does not exists. Requesting a new one.', ['method' => __METHOD__, 'line' => __LINE__]);
                         $client_token = $this->oauth->doGetClientToken((string)$this->oauth->getConfig()->getEndPoint('token_endpoint'));
                     }
                     $this->gid_things->setClientToken($client_token);
                 } else {
-                    $this->logger->debug('Client Token from session', __METHOD__, __LINE__);
+                    $this->logger->debug('Client Token from session', ['method' => __METHOD__, 'line' => __LINE__]);
                 }
                 $this->cache->save('client_token', serialize($this->gid_things->getClientToken()), $this->gid_things->getClientToken()->getExpiresIn());
             } else {
-                $this->logger->debug('Client Token from cache', __METHOD__, __LINE__);
+                $this->logger->debug('Client Token from cache', ['method' => __METHOD__, 'line' => __LINE__]);
                 $this->gid_things->setClientToken($client_token);
             }
         } catch (\Exception $e) {
@@ -171,7 +172,7 @@ class Identity implements IdentityServiceInterface {
             }, $this->cookie);
 
             if ($datr) {
-                $this->logger->info('DATR cookie was found.', __METHOD__, __LINE__);
+                $this->logger->info('DATR cookie was found.', ['method' => __METHOD__, 'line' => __LINE__]);
 
                 $response = $this->oauth->doExchangeSession(
                     (string)$this->oauth->getConfig()->getEndPoint('token_endpoint'),
@@ -182,11 +183,11 @@ class Identity implements IdentityServiceInterface {
                 $this->gid_things->setRefreshToken($response['refresh_token']);
                 $this->gid_things->setLoginStatus($response['login_status']);
             } else {
-                $this->logger->debug('DATR cookie not exist, user is not logged', __METHOD__, __LINE__);
+                $this->logger->debug('DATR cookie not exist, user is not logged', ['method' => __METHOD__, 'line' => __LINE__]);
             }
         } catch (InvalidGrantException $e) {
             $this->cookie->delete(OAuth::SSO_COOKIE_NAME);
-            $this->logger->warn('Invalid Grant, check an invalid DATR', __METHOD__, __LINE__);
+            $this->logger->warning('Invalid Grant, check an invalid DATR', ['method' => __METHOD__, 'line' => __LINE__]);
             throw $e;
         } catch (\Exception $e) {
             throw $e;
@@ -216,7 +217,7 @@ class Identity implements IdentityServiceInterface {
     private function checkAndRefreshAccessToken()
     {
         try {
-            $this->logger->debug('Checking and refreshing the AccessToken.', __METHOD__, __LINE__);
+            $this->logger->debug('Checking and refreshing the AccessToken.', ['method' => __METHOD__, 'line' => __LINE__]);
             $response = $this->oauth->doRefreshToken((string)$this->oauth->getConfig()->getEndPoint('token_endpoint'));
             $this->gid_things->setAccessToken($response['access_token']);
             $this->gid_things->setRefreshToken($response['refresh_token']);
@@ -236,7 +237,7 @@ class Identity implements IdentityServiceInterface {
      */
     private function clearLocalSessionData()
     {
-        $this->logger->debug('Clear Session Data', __METHOD__, __LINE__);
+        $this->logger->debug('Clear Session Data', ['method' => __METHOD__, 'line' => __LINE__]);
         $this->gid_things->setAccessToken(null);
         $this->gid_things->setRefreshToken(null);
         $this->gid_things->setLoginStatus(null);
@@ -262,14 +263,14 @@ class Identity implements IdentityServiceInterface {
     private function checkLoginStatus()
     {
         try {
-            $this->logger->debug('Checking login status', __METHOD__, __LINE__);
+            $this->logger->debug('Checking login status', ['method' => __METHOD__, 'line' => __LINE__]);
             if ($this->gid_things->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED) {
-                $this->logger->debug('User is connected, check access token', __METHOD__, __LINE__);
+                $this->logger->debug('User is connected, check access token', ['method' => __METHOD__, 'line' => __LINE__]);
                 $loginStatus = $this->oauth->doValidateBearer((string)$this->oauth->getConfig()->getEndPoint('token_endpoint'));
                 $this->gid_things->setLoginStatus($loginStatus);
             }
         } catch (InvalidGrantException $e) {
-            $this->logger->warn('Invalid Grant, maybe access token is expires and sdk not checkit - call to refresh token', __METHOD__, __LINE__);
+            $this->logger->warning('Invalid Grant, maybe access token is expires and sdk not checkit - call to refresh token', ['method' => __METHOD__, 'line' => __LINE__]);
             $this->checkAndRefreshAccessToken();
         } catch (\Exception $e) {
             throw $e;
@@ -319,7 +320,7 @@ class Identity implements IdentityServiceInterface {
     public function authorizeUser($code)
     {
         try {
-            $this->logger->debug('Authorize user', __METHOD__, __LINE__);
+            $this->logger->debug('Authorize user', ['method' => __METHOD__, 'line' => __LINE__]);
 
             if ($code == '') {
                 throw new \Exception('Authorize Code is empty');
@@ -333,9 +334,9 @@ class Identity implements IdentityServiceInterface {
             $this->session->set('things', @serialize($this->gid_things));
 
         } catch (InvalidGrantException $e) {
-            $this->logger->error($e->getMessage(), __METHOD__, __LINE__);
+            $this->logger->error($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage(), __METHOD__, __LINE__);
+            $this->logger->error($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
         }
     }
 
@@ -366,13 +367,13 @@ class Identity implements IdentityServiceInterface {
     {
         $userCompleted = false;
         try {
-            $this->logger->info('Checking if the user has filled its data out for this section:' . $scope, __METHOD__, __LINE__);
+            $this->logger->info('Checking if the user has filled its data out for this section:' . $scope, ['method' => __METHOD__, 'line' => __LINE__]);
 
             if ($this->isConnected()) {
                 $userCompleted = $this->oauth->doCheckUserCompleted($this->oauth->getConfig()->getApi('api.user')->getEndpoint('user', true), $scope);
             }
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage(), __METHOD__, __LINE__);
+            $this->logger->error($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
         }
         return $userCompleted;
     }
@@ -397,13 +398,13 @@ class Identity implements IdentityServiceInterface {
     {
         $status = false;
         try {
-            $this->logger->info('Checking if the user has accepted terms and conditions for this section:' . $scope, __METHOD__, __LINE__);
+            $this->logger->info('Checking if the user has accepted terms and conditions for this section:' . $scope, ['method' => __METHOD__, 'line' => __LINE__]);
 
             if ($this->isConnected()) {
                 $status = $this->oauth->doCheckUserNeedAcceptTerms($this->oauth->getConfig()->getApi('api.user')->getEndpoint('user', true), $scope);
             }
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage(), __METHOD__, __LINE__);
+            $this->logger->error($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
         }
         return $status;
     }
@@ -423,14 +424,14 @@ class Identity implements IdentityServiceInterface {
     {
         try {
             if (($this->gid_things->getAccessToken() != null) && ($this->gid_things->getRefreshToken() != null)) {
-                $this->logger->info('User Single Sign Logout', __METHOD__, __LINE__);
+                $this->logger->info('User Single Sign Logout', ['method' => __METHOD__, 'line' => __LINE__]);
                 DruID::userApi()->deleteCacheUser($this->gid_things->getLoginStatus()->getCkUsid());
 
                 $this->oauth->doLogout((string)$this->oauth->getConfig()->getEndPoint('logout_endpoint'));
                 $this->clearLocalSessionData();
             }
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage(), __METHOD__, __LINE__);
+            $this->logger->error($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
         }
     }
 
@@ -445,14 +446,14 @@ class Identity implements IdentityServiceInterface {
     {
         try {
             if (!is_null($this->gid_things->getAccessToken())) {
-                $this->logger->debug('Get AccessToken, user logged', __METHOD__, __LINE__);
+                $this->logger->debug('Get AccessToken, user logged', ['method' => __METHOD__, 'line' => __LINE__]);
                 return $this->gid_things->getAccessToken();
             } else {
-                $this->logger->debug('Get ClientToken, user is NOT logged', __METHOD__, __LINE__);
+                $this->logger->debug('Get ClientToken, user is NOT logged', ['method' => __METHOD__, 'line' => __LINE__]);
                 return $this->gid_things->getClientToken();
             }
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage(), __METHOD__, __LINE__);
+            $this->logger->error($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
             throw new \Exception('Not valid token');
         }
     }
@@ -467,7 +468,7 @@ class Identity implements IdentityServiceInterface {
     {
         try {
             if (is_null($this->gid_things->getAccessToken())){
-                $this->logger->debug('Load access token from cookie', __METHOD__, __LINE__);
+                $this->logger->debug('Load access token from cookie', ['method' => __METHOD__, 'line' => __LINE__]);
 
                 if ($this->oauth->hasToken(TokenTypesCollection::ACCESS_TOKEN)) {
                     $this->gid_things->setAccessToken($this->oauth->getStoredToken(TokenTypesCollection::ACCESS_TOKEN));
@@ -479,7 +480,7 @@ class Identity implements IdentityServiceInterface {
 
 
         } catch (\Exception $e) {
-            $this->logger->error('['.__CLASS__.']['.__FUNCTION__.']['.__LINE__.']'.$e->getMessage(), __METHOD__, __LINE__);
+            $this->logger->error('['.__CLASS__.']['.__FUNCTION__.']['.__LINE__.']'.$e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
         }
     }
 
