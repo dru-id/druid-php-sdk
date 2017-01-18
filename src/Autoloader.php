@@ -1,5 +1,6 @@
 <?php
 namespace Genetsis;
+die('Deprecated: '.__FILE__);
 
 /**
  * Genetsis ID library Autoload Class

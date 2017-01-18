@@ -13,9 +13,7 @@ coverage:
     enabled: true
     whitelist:
         include:
-            - ../src/core/*
             - ../src/Genetsis/*
-            - ../src/DruID.php
 extensions:
     enabled:
         - Codeception\Extension\RunFailed
