@@ -9,7 +9,7 @@ use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\core\User\Beans\Brand;
 use Genetsis\core\User;
 use Genetsis\core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
-use Genetsis\DruID;
+use Genetsis\DruIDFacade;
 use Genetsis\UserApi\Contracts\UserApiServiceInterface;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Log\LoggerInterface;
@@ -64,8 +64,8 @@ class UserApi implements UserApiServiceInterface
         try {
             $this->logger->debug('Get user Logged info', ['method' => __METHOD__, 'line' => __LINE__]);
 
-            if ((DruID::identity()->getThings()->getLoginStatus()!=null)&&(DruID::identity()->getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
-                $user_logged = $this->getUsers(array('id' => DruID::identity()->getThings()->getLoginStatus()->getCkUsid()));
+            if ((DruIDFacade::get()->identity()->getThings()->getLoginStatus()!=null)&&(DruIDFacade::get()->identity()->getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
+                $user_logged = $this->getUsers(array('id' => DruIDFacade::get()->identity()->getThings()->getLoginStatus()->getCkUsid()));
                 if (count($user_logged)>0) {
                     return $user_logged[0];
                 }
@@ -83,8 +83,8 @@ class UserApi implements UserApiServiceInterface
     {
         $this->logger->debug('Get user Logged info', ['method' => __METHOD__, 'line' => __LINE__]);
 
-        if ((DruID::identity()->getThings()->getLoginStatus()!=null)&&(DruID::identity()->getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
-            return DruID::identity()->getThings()->getLoginStatus()->getCkUsid();
+        if ((DruIDFacade::get()->identity()->getThings()->getLoginStatus()!=null)&&(DruIDFacade::get()->identity()->getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
+            return DruIDFacade::get()->identity()->getThings()->getLoginStatus()->getCkUsid();
         }
 
         return null;
@@ -97,8 +97,8 @@ class UserApi implements UserApiServiceInterface
     {
         $this->logger->debug('Get user Logged info', ['method' => __METHOD__, 'line' => __LINE__]);
 
-        if ((DruID::identity()->getThings()->getLoginStatus()!=null)&&(DruID::identity()->getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
-            return DruID::identity()->getThings()->getLoginStatus()->getOid();
+        if ((DruIDFacade::get()->identity()->getThings()->getLoginStatus()!=null)&&(DruIDFacade::get()->identity()->getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
+            return DruIDFacade::get()->identity()->getThings()->getLoginStatus()->getOid();
         }
 
         return null;
@@ -218,7 +218,7 @@ class UserApi implements UserApiServiceInterface
             $this->logger->debug('Get list of Brands', ['method' => __METHOD__, 'line' => __LINE__]);
             if (!$this->cache->contains('brands') || !($brands = @unserialize($this->cache->fetch('brands')))) {
                 $this->logger->debug('Brands not cached', ['method' => __METHOD__, 'line' => __LINE__]);
-                if (!$client_token = DruID::identity()->getThings()->getClientToken()) {
+                if (!$client_token = DruIDFacade::get()->identity()->getThings()->getClientToken()) {
                     throw new \Exception('The clientToken is empty');
                 }
 
@@ -276,8 +276,8 @@ class UserApi implements UserApiServiceInterface
             $this->logger->debug('Delete cache of user', ['method' => __METHOD__, 'line' => __LINE__]);
 
             if ($ckusid == null) {
-                if ((DruID::identity()->getThings()->getLoginStatus()!=null)&&(DruID::identity()->getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
-                    $this->cache->delete('user-' . DruID::identity()->getThings()->getLoginStatus()->getCkUsid());
+                if ((DruIDFacade::get()->identity()->getThings()->getLoginStatus()!=null)&&(DruIDFacade::get()->identity()->getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
+                    $this->cache->delete('user-' . DruIDFacade::get()->identity()->getThings()->getLoginStatus()->getCkUsid());
                 }
             } else {
                 $this->cache->delete('user-' . $ckusid);
@@ -301,7 +301,7 @@ class UserApi implements UserApiServiceInterface
                 if (!$this->cache->contains($cache_key) || !($druid_user_data = $this->cache->fetch($cache_key))) {
                     $this->logger->debug('Identifier: ' . reset($identifiers) . ' is Not in Cache System', ['method' => __METHOD__, 'line' => __LINE__]);
 
-                    $client_token = DruID::identity()->getThings()->getClientToken();
+                    $client_token = DruIDFacade::get()->identity()->getThings()->getClientToken();
 
                     if (is_null($client_token)) {
                         throw new \Exception('The clientToken is empty');

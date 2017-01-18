@@ -3,7 +3,7 @@ namespace Genetsis\Opi\Services;
 
 use Genetsis\core\OAuth\Beans\OAuthConfig\Brand;
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
-use Genetsis\DruID;
+use Genetsis\DruIDFacade;
 use Genetsis\Opinator\Contracts\OpiServiceInterface;
 
 /**
@@ -49,13 +49,13 @@ class Opi implements OpiServiceInterface {
         }
 
         $params = array(
-            "id" => urlencode(DruID::userApi()->getUserLoggedOid()),
+            "id" => urlencode(DruIDFacade::get()->userApi()->getUserLoggedOid()),
             "sc" => urlencode(
                 ($this->oauth->getConfig()->getBrand() instanceof Brand) ? $this->oauth->getConfig()->getBrand()->getName() : ''
             ),
             "carry_url" => urlencode($redirect_url));
 
-        $info = DruID::userApi()->getUserLogged();
+        $info = DruIDFacade::get()->userApi()->getUserLogged();
 
         // Age.
         try {

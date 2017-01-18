@@ -33,7 +33,7 @@ use Psr\Log\LogLevel;
  *
  * @package Genetsis
  */
-class DruID {
+class DruID_ {
 
     // Indicates which is the OAuth configuration file version is accepted by this library.
     const CONF_VERSION = '1.4';

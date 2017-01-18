@@ -11,7 +11,7 @@ use Genetsis\core\OAuth\Exceptions\InvalidGrantException;
 use Genetsis\core\OAuth\Services\OAuth;
 use Genetsis\core\User\Beans\Things;
 use Genetsis\core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
-use Genetsis\DruID;
+use Genetsis\DruIDFacade;
 use Genetsis\Identity\Contracts\IdentityServiceInterface;
 use Psr\Log\LoggerInterface;
 
@@ -424,7 +424,7 @@ class Identity implements IdentityServiceInterface {
         try {
             if (($this->gid_things->getAccessToken() != null) && ($this->gid_things->getRefreshToken() != null)) {
                 $this->logger->info('User Single Sign Logout', ['method' => __METHOD__, 'line' => __LINE__]);
-                DruID::userApi()->deleteCacheUser($this->gid_things->getLoginStatus()->getCkUsid());
+                DruIDFacade::get()->userApi()->deleteCacheUser($this->gid_things->getLoginStatus()->getCkUsid());
 
                 $this->oauth->doLogout((string)$this->oauth->getConfig()->getEndPoint('logout_endpoint'));
                 $this->clearLocalSessionData();
