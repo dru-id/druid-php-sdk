@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\core\Http\Contracts;
+namespace Genetsis\Core\Http\Contracts;
 
 /**
  * Cookie service interface.

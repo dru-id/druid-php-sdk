@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\core\User\Beans;
+namespace Genetsis\Core\User\Beans;
 
 /**
  * This class stores the User Brand register origin

@@ -3,7 +3,7 @@ namespace Genetsis\UnitTest\Core\OAuth\Beans\OAuthConfig;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
-use Genetsis\core\OAuth\Beans\OAuthConfig\RedirectUrl;
+use Genetsis\Core\OAuth\Beans\OAuthConfig\RedirectUrl;
 
 /**
  * @package Genetsis
@@ -33,7 +33,7 @@ class RedirectUrlBeanTest extends Unit
     public function testSetterAndGetterType()
     {
         $this->specify('Checks setter and getter for "type" property.', function() {
-            $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\RedirectUrl', $this->redirect_url->setType('type-1'));
+            $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\RedirectUrl', $this->redirect_url->setType('type-1'));
             $this->assertEquals('type-1', $this->redirect_url->getType());
         });
     }
@@ -41,7 +41,7 @@ class RedirectUrlBeanTest extends Unit
     public function testSetterAndGetterUrl()
     {
         $this->specify('Checks setter and getter for "url" property.', function() {
-            $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\RedirectUrl', $this->redirect_url->setUrl('http://www.foo.com'));
+            $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\RedirectUrl', $this->redirect_url->setUrl('http://www.foo.com'));
             $this->assertEquals('http://www.foo.com', $this->redirect_url->getUrl());
         });
     }
@@ -49,7 +49,7 @@ class RedirectUrlBeanTest extends Unit
     public function testSetterAndGetterIsDefault()
     {
         $this->specify('Checks setter and getter for "is default" property.', function() {
-            $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\RedirectUrl', $this->redirect_url->setIsDefault(true));
+            $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\RedirectUrl', $this->redirect_url->setIsDefault(true));
             $this->assertTrue($this->redirect_url->getIsDefault());
         });
     }

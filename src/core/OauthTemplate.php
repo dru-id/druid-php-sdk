@@ -1,6 +1,5 @@
 <?php
-
-namespace Genetsis\core;
+namespace Genetsis\Core;
 
 /**
  * Manages OAuth configuration file.

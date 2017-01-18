@@ -3,7 +3,7 @@ namespace Genetsis\UnitTest\Core\Http\Services;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
-use Genetsis\core\User\Collections\LoginStatusTypes;
+use Genetsis\Core\User\Collections\LoginStatusTypes;
 
 /**
  * @package Genetsis

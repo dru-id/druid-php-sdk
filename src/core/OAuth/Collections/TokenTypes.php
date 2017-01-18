@@ -1,6 +1,6 @@
 <?php
-namespace Genetsis\core\OAuth\Collections;
-use Genetsis\core\Utils\Contracts\CollectionInterface;
+namespace Genetsis\Core\OAuth\Collections;
+use Genetsis\Core\Utils\Contracts\CollectionInterface;
 
 /**
  * This class brings together the different types of existing tokens.

@@ -1,8 +1,8 @@
 <?php
 namespace Genetsis\Opi\Services;
 
-use Genetsis\core\OAuth\Beans\OAuthConfig\Brand;
-use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
+use Genetsis\Core\OAuth\Beans\OAuthConfig\Brand;
+use Genetsis\Core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\DruID;
 use Genetsis\Opinator\Contracts\OpiServiceInterface;
 

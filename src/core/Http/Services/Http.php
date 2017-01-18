@@ -1,9 +1,9 @@
 <?php
-namespace Genetsis\core\Http\Services;
+namespace Genetsis\Core\Http\Services;
 
-use Genetsis\core\Http\Contracts\HttpServiceInterface;
-use Genetsis\core\Http\Exceptions\RequestException;
-use Genetsis\core\OAuth\Exceptions\InvalidGrantException;
+use Genetsis\Core\Http\Contracts\HttpServiceInterface;
+use Genetsis\Core\Http\Exceptions\RequestException;
+use Genetsis\Core\OAuth\Exceptions\InvalidGrantException;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException as GuzzleHttpRequestException;
 use Psr\Http\Message\ResponseInterface;

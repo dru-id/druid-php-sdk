@@ -1,4 +1,4 @@
-<?php namespace Genetsis\core\OAuth\Contracts;
+<?php namespace Genetsis\Core\OAuth\Contracts;
 
 /**
  * Stored token interface.
@@ -20,7 +20,7 @@ interface StoredTokenInterface {
     /**
      * Create an instance of an access token based on the name.
      *
-     * @param string $name One of the values defined in {@link \Genetsis\core\OAuth\Collections\TokenTypes}
+     * @param string $name One of the values defined in {@link \Genetsis\Core\OAuth\Collections\TokenTypes}
      * @param string $value The token value.
      * @param integer $expires_in Number the seconds until the token expires.
      * @param integer $expires_at Date when the token expires. As UNIX timestamp.
@@ -35,14 +35,14 @@ interface StoredTokenInterface {
      * We use it for serialization the token content.
      *
      * @return string The token name.
-     * @see \Genetsis\core\OAuth\Collections\TokenTypes
+     * @see \Genetsis\Core\OAuth\Collections\TokenTypes
      */
     public function getName();
 
     /**
      * Sets the token name.
      *
-     * @param string $name One of the values defined in {@link \Genetsis\core\OAuth\Collections\TokenTypes}
+     * @param string $name One of the values defined in {@link \Genetsis\Core\OAuth\Collections\TokenTypes}
      * @return StoredTokenInterface
      * @throws \InvalidArgumentException If the name is invalid.
      */

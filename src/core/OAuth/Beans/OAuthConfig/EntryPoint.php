@@ -1,4 +1,4 @@
-<?php namespace Genetsis\core\OAuth\Beans\OAuthConfig;
+<?php namespace Genetsis\Core\OAuth\Beans\OAuthConfig;
 
 /**
  * Bean to store entry point information.

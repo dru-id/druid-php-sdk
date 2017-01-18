@@ -1,7 +1,7 @@
 <?php
-namespace Genetsis\core\Http\Services;
+namespace Genetsis\Core\Http\Services;
 
-use Genetsis\core\Http\Contracts\SessionServiceInterface;
+use Genetsis\Core\Http\Contracts\SessionServiceInterface;
 
 /**
  * Session handler implementation.

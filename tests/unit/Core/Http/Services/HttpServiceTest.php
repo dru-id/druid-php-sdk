@@ -3,9 +3,9 @@ namespace Genetsis\UnitTest\Core\Http\Services;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
-use Genetsis\core\Http\Exceptions\RequestException;
-use Genetsis\core\Http\Services\Http;
-use Genetsis\core\OAuth\Exceptions\InvalidGrantException;
+use Genetsis\Core\Http\Exceptions\RequestException;
+use Genetsis\Core\Http\Services\Http;
+use Genetsis\Core\OAuth\Exceptions\InvalidGrantException;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException as GuzzleHttpRequestException;

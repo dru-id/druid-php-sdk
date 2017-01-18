@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\core\Utils\Contracts;
+namespace Genetsis\Core\Utils\Contracts;
 
 /**
  * Interface for these classes which contains values as a collection wrapper.

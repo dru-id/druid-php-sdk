@@ -25,7 +25,7 @@ class AutoloaderClass
     public static function init()
     {
         self::addNamespace('Genetsis', dirname(__FILE__));
-        self::addNamespace('Genetsis\core', dirname(__FILE__) . '/core');
+        self::addNamespace('Genetsis\Core', dirname(__FILE__) . '/core');
         self::requireFile(dirname(__FILE__) . '/../config/Config.php');
         self::register();
     }

@@ -1,7 +1,7 @@
-<?php  namespace Genetsis\core\OAuth\Beans;
+<?php  namespace Genetsis\Core\OAuth\Beans;
 
-use Genetsis\core\OAuth\Contracts\StoredTokenInterface;
-use Genetsis\core\OAuth\Collections\TokenTypes as TokenTypesCollection;
+use Genetsis\Core\OAuth\Contracts\StoredTokenInterface;
+use Genetsis\Core\OAuth\Collections\TokenTypes as TokenTypesCollection;
 
 /**
  * Abstract class which aims to be the parent class of the different types

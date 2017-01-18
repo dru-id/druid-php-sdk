@@ -4,13 +4,13 @@ namespace Genetsis\IntegrationTest\OAuth;
 use Codeception\Specify;
 use Codeception\Test\Unit;
 use Doctrine\Common\Cache\VoidCache;
-use Genetsis\core\Http\Contracts\CookiesServiceInterface;
-use Genetsis\core\Http\Contracts\HttpServiceInterface;
-use Genetsis\core\OAuth\Beans\OAuthConfig\Config;
-use Genetsis\core\OAuth\Collections\TokenTypes;
-use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
-use Genetsis\core\OAuth\Services\OAuth;
-use Genetsis\core\OAuth\Services\OAuthConfigFactory;
+use Genetsis\Core\Http\Contracts\CookiesServiceInterface;
+use Genetsis\Core\Http\Contracts\HttpServiceInterface;
+use Genetsis\Core\OAuth\Beans\OAuthConfig\Config;
+use Genetsis\Core\OAuth\Collections\TokenTypes;
+use Genetsis\Core\OAuth\Contracts\OAuthServiceInterface;
+use Genetsis\Core\OAuth\Services\OAuth;
+use Genetsis\Core\OAuth\Services\OAuthConfigFactory;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\SyslogHandler;
 use Monolog\Logger;
@@ -43,7 +43,7 @@ class OAuthIntegrationTest extends Unit
         $log_handler->setFormatter(new LineFormatter("%level_name% %context.method%[%context.line%]: %message%\n", null, true));
         $logger = new Logger('druid', [$log_handler]);
         $oauth_config = (new OAuthConfigFactory($logger, new VoidCache()))->buildConfigFromXmlFile(OAUTHCONFIG_SAMPLE_XML_1_4);
-        $this->oauth = new OAuth($oauth_config, $this->getHttpService(), $this->getCookieService(), $logger);
+        $this->oauth = new OAuth($this->prophet->prophesize(DruID::class)->reveal(), $oauth_config, $this->getHttpService(), $this->getCookieService(), $logger);
     }
 
     protected function _after()
@@ -56,8 +56,8 @@ class OAuthIntegrationTest extends Unit
         $this->specify('Checks setter and getter for "config" parameter.', function(){
             $config = new Config();
             $config->setClientId('foobarbiz');
-            $this->assertInstanceOf('\Genetsis\core\OAuth\Contracts\OAuthServiceInterface', $this->oauth->setConfig($config));
-            $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $this->oauth->getConfig());
+            $this->assertInstanceOf('\Genetsis\Core\OAuth\Contracts\OAuthServiceInterface', $this->oauth->setConfig($config));
+            $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\Config', $this->oauth->getConfig());
             $this->assertEquals('foobarbiz', $this->oauth->getConfig()->getClientId());
         });
     }
@@ -69,7 +69,7 @@ class OAuthIntegrationTest extends Unit
         }, ['throws' => 'Exception']);
 
         $this->specify('Tests that "doGetClientToken" returns a ClientToken instance.', function () {
-            $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\ClientToken', $this->oauth->doGetClientToken('http://auth.ci.dru-id.com/oauth2/token'));
+            $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\ClientToken', $this->oauth->doGetClientToken('http://auth.ci.dru-id.com/oauth2/token'));
         });
     }
 
@@ -94,9 +94,9 @@ class OAuthIntegrationTest extends Unit
                 'http://www.foo.com/actions'
             );
             $this->assertArrayHasKey('access_token', $response);
-            $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\AccessToken', $response['access_token']);
+            $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\AccessToken', $response['access_token']);
             $this->assertArrayHasKey('refresh_token', $response);
-            $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\RefreshToken', $response['refresh_token']);
+            $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\RefreshToken', $response['refresh_token']);
             $this->assertArrayHasKey('login_status', $response);
         });
     }

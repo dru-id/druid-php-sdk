@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\core\Config\Beans\Cache;
+namespace Genetsis\Core\Config\Beans\Cache;
 
 /**
  * This class keeps config parameters when cache should be stored in files.

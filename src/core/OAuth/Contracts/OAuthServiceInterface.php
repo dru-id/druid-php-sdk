@@ -1,6 +1,6 @@
-<?php namespace Genetsis\core\OAuth\Contracts;
+<?php namespace Genetsis\Core\OAuth\Contracts;
 
-use Genetsis\core\OAuth\Beans\OAuthConfig\Config;
+use Genetsis\Core\OAuth\Beans\OAuthConfig\Config;
 
 /**
  * OAuth service interface.
@@ -25,7 +25,7 @@ interface OAuthServiceInterface {
      * Gets a "client_token" for the current web client.
      *
      * @param string $endpoint_url The endpoint where "client_token" is requested.
-     * @return mixed An instance of {@link \Genetsis\core\OAuth\Beans\ClientToken} with data retrieved or FALSE.
+     * @return mixed An instance of {@link \Genetsis\Core\OAuth\Beans\ClientToken} with data retrieved or FALSE.
      * @throws \Exception If there is an error.
      */
     public function doGetClientToken ($endpoint_url);
@@ -44,7 +44,7 @@ interface OAuthServiceInterface {
      * @param string $endpoint_url The endpoint where "access_token" is requested.
      * @param string $code The authorization code returned by Genetsis ID.
      * @param string $redirect_url Where the user will be redirected.
-     * @return mixed An instance of {@link \Genetsis\core\OAuth\Beans\AccessToken} with data retrieved or FALSE.
+     * @return mixed An instance of {@link \Genetsis\Core\OAuth\Beans\AccessToken} with data retrieved or FALSE.
      * @throws \Exception If there is an error.
      */
     public function doGetAccessToken ($endpoint_url, $code, $redirect_url);
@@ -72,7 +72,7 @@ interface OAuthServiceInterface {
      *
      * @param string $endpoint_url The endpoint where the request will be sent.
      * @param string $cookie_value The content of the cookie that stores the SSO.
-     * @return mixed An instance of {@link \Genetsis\core\OAuth\Beans\AccessToken} if its connected or NULL if not.
+     * @return mixed An instance of {@link \Genetsis\Core\OAuth\Beans\AccessToken} if its connected or NULL if not.
      * @throws \Exception If there is an error.
      */
     public function doExchangeSession ($endpoint_url, $cookie_value);
@@ -91,7 +91,7 @@ interface OAuthServiceInterface {
      *
      * It will removed from SESSION and COOKIE.
      *
-     * @param string $name The token we want to remove. Must be one value defined in {@link \Genetsis\core\OAuth\Collections\TokenTypes}
+     * @param string $name The token we want to remove. Must be one value defined in {@link \Genetsis\Core\OAuth\Collections\TokenTypes}
      * @return void
      */
     public function deleteStoredToken($name);
@@ -100,7 +100,7 @@ interface OAuthServiceInterface {
     /**
      * Checks if we have a specific token.
      *
-     * @param string $name The token we want to check. Are defined in {@link \Genetsis\core\OAuth\Collections\TokenTypes}
+     * @param string $name The token we want to check. Are defined in {@link \Genetsis\Core\OAuth\Collections\TokenTypes}
      * @return bool TRUE if exists or FALSE otherwise.
      */
     public function hasToken ($name);
@@ -109,7 +109,7 @@ interface OAuthServiceInterface {
      * Returns a specific stored token.
      * SESSION has more priority than COOKIE.
      *
-     * @param string $name The token we want to recover. Are defined in {@link \Genetsis\core\OAuth\Collections\TokenTypes}
+     * @param string $name The token we want to recover. Are defined in {@link \Genetsis\Core\OAuth\Collections\TokenTypes}
      * @return bool|StoredTokenInterface|mixed|string An instance of {@link StoredTokenInterface} or FALSE if we can't recover it.
      * @throws \Exception
      */

@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\core\Config\Beans;
+namespace Genetsis\Core\Config\Beans;
 
 /**
  * This class stores all configuration parameters for the current process.

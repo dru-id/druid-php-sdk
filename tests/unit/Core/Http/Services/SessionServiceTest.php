@@ -3,8 +3,8 @@ namespace Genetsis\UnitTest\Core\Http\Services;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
-use Genetsis\core\Http\Contracts\SessionServiceInterface;
-use Genetsis\core\Http\Services\Session;
+use Genetsis\Core\Http\Contracts\SessionServiceInterface;
+use Genetsis\Core\Http\Services\Session;
 
 /**
  * @package Genetsis

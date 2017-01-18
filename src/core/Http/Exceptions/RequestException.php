@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\core\Http\Exceptions;
+namespace Genetsis\Core\Http\Exceptions;
 
 /**
  * Request exception.

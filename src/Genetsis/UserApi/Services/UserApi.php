@@ -3,12 +3,12 @@ namespace Genetsis\UserApi\Services;
 
 use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
 use Exception;
-use Genetsis\core\Http\Contracts\HttpServiceInterface;
-use Genetsis\core\Http\Exceptions\RequestException;
-use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
-use Genetsis\core\User\Beans\Brand;
-use Genetsis\core\User;
-use Genetsis\core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
+use Genetsis\Core\Http\Contracts\HttpServiceInterface;
+use Genetsis\Core\Http\Exceptions\RequestException;
+use Genetsis\Core\OAuth\Contracts\OAuthServiceInterface;
+use Genetsis\Core\User\Beans\Brand;
+use Genetsis\Core\User;
+use Genetsis\Core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
 use Genetsis\DruID;
 use Genetsis\DruIDFacade;
 use Genetsis\UserApi\Contracts\UserApiServiceInterface;

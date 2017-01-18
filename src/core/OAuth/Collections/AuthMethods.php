@@ -1,6 +1,6 @@
 <?php
-namespace Genetsis\core\OAuth\Collections;
-use Genetsis\core\Utils\Contracts\CollectionInterface;
+namespace Genetsis\Core\OAuth\Collections;
+use Genetsis\Core\Utils\Contracts\CollectionInterface;
 
 /**
  * Class to group all authentication methods.

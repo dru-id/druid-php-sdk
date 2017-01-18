@@ -1,8 +1,8 @@
 <?php
-namespace Genetsis\core\Config\Services;
+namespace Genetsis\Core\Config\Services;
 
-use Genetsis\core\Config\Beans\Config;
-use Genetsis\core\Config\Beans\Log;
+use Genetsis\Core\Config\Beans\Config;
+use Genetsis\Core\Config\Beans\Log;
 
 
 class Factory {

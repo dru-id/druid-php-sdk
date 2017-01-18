@@ -1,15 +1,15 @@
 <?php
-namespace Genetsis\core\OAuth\Services;
+namespace Genetsis\Core\OAuth\Services;
 
 use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
 use DOMDocument;
-use Genetsis\core\OAuth\Beans\OAuthConfig\Api;
-use Genetsis\core\OAuth\Beans\OAuthConfig\Brand;
-use Genetsis\core\OAuth\Beans\OAuthConfig\Config;
-use Genetsis\core\OAuth\Beans\OAuthConfig\EndPoint;
-use Genetsis\core\OAuth\Beans\OAuthConfig\EntryPoint;
-use Genetsis\core\OAuth\Beans\OAuthConfig\Host;
-use Genetsis\core\OAuth\Beans\OAuthConfig\RedirectUrl;
+use Genetsis\Core\OAuth\Beans\OAuthConfig\Api;
+use Genetsis\Core\OAuth\Beans\OAuthConfig\Brand;
+use Genetsis\Core\OAuth\Beans\OAuthConfig\Config;
+use Genetsis\Core\OAuth\Beans\OAuthConfig\EndPoint;
+use Genetsis\Core\OAuth\Beans\OAuthConfig\EntryPoint;
+use Genetsis\Core\OAuth\Beans\OAuthConfig\Host;
+use Genetsis\Core\OAuth\Beans\OAuthConfig\RedirectUrl;
 use Psr\Log\LoggerInterface;
 
 /**

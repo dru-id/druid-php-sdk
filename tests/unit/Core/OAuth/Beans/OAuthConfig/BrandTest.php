@@ -3,7 +3,7 @@ namespace Genetsis\UnitTest\Core\OAuth\Beans\OAuthConfig;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
-use Genetsis\core\OAuth\Beans\OAuthConfig\Brand;
+use Genetsis\Core\OAuth\Beans\OAuthConfig\Brand;
 
 /**
  * @package Genetsis
@@ -33,7 +33,7 @@ class BrandTest extends Unit
     public function testSetterAndGetterKey()
     {
         $this->specify('Checks setter and getter for "key" property.', function () {
-            $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Brand', $this->brand->setKey('my-key'));
+            $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\Brand', $this->brand->setKey('my-key'));
             $this->assertEquals('my-key', $this->brand->getKey());
         });
     }
@@ -41,7 +41,7 @@ class BrandTest extends Unit
     public function testSetterAndGetterName()
     {
         $this->specify('Checks setter and getter for "name" property.', function(){
-            $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Brand', $this->brand->setName('my-name'));
+            $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\Brand', $this->brand->setName('my-name'));
             $this->assertEquals('my-name', $this->brand->getName());
         });
     }

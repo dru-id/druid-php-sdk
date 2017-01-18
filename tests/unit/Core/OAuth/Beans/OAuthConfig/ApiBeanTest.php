@@ -3,7 +3,7 @@ namespace Genetsis\UnitTest\Core\OAuth\Beans\OAuthConfig;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
-use Genetsis\core\OAuth\Beans\OAuthConfig\Api;
+use Genetsis\Core\OAuth\Beans\OAuthConfig\Api;
 
 /**
  * @package Genetsis
@@ -33,7 +33,7 @@ class ApiBeanTest extends Unit
     public function testSetterAndGetterName()
     {
         $this->specify('Checks setter and getter for "name" property.', function() {
-            $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Api', $this->api->setName('my-name'));
+            $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\Api', $this->api->setName('my-name'));
             $this->assertEquals('my-name-2', $this->api->setName('my-name-2')->getName());
         });
     }
@@ -41,7 +41,7 @@ class ApiBeanTest extends Unit
     public function testSetterAndGetterBaseUrl()
     {
         $this->specify('Checks setter and getter for "base url" property.', function() {
-            $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Api', $this->api->setBaseUrl('www.foo.com'));
+            $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\Api', $this->api->setBaseUrl('www.foo.com'));
             $this->assertEquals('www.bar.com', $this->api->setBaseUrl('www.bar.com')->getBaseUrl());
             $this->assertEquals('www.fuu.com', $this->api->setBaseUrl('www.fuu.com/')->getBaseUrl());
         });
@@ -50,10 +50,10 @@ class ApiBeanTest extends Unit
     public function testSetterAndGetterEndpoints()
     {
         $this->specify('Checks setter and getter for "endpoints" property.', function() {
-            $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Api', $this->api->setEndpoints(['a' => '/aaa', 'b' => '/bbb']));
+            $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\Api', $this->api->setEndpoints(['a' => '/aaa', 'b' => '/bbb']));
             $this->assertCount(2, $this->api->getEndpoints());
             $this->assertEquals('/bbb', $this->api->getEndpoint('b'));
-            $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Api', $this->api->addEndpoint('c', '/ccc'));
+            $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\Api', $this->api->addEndpoint('c', '/ccc'));
             $this->assertCount(3, $this->api->getEndpoints());
             $this->assertEquals('/ccc', $this->api->getEndpoint('c'));
             $this->assertCount(3, $this->api->addEndpoint('b', '/bbb')->getEndpoints());

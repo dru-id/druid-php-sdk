@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\core\OAuth\Exceptions;
+namespace Genetsis\Core\OAuth\Exceptions;
 
 /**
  * @package  Genetsis

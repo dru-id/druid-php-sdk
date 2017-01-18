@@ -3,7 +3,7 @@ namespace Genetsis\UnitTest\Core\Http\Services;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
-use Genetsis\core\OAuth\Collections\TokenTypes;
+use Genetsis\Core\OAuth\Collections\TokenTypes;
 
 /**
  * @package Genetsis

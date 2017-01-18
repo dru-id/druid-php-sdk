@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\core\Config\Beans\Cache;
+namespace Genetsis\Core\Config\Beans\Cache;
 
 /**
  * This is the common class for all configuration cache beans.

@@ -3,9 +3,9 @@ namespace Genetsis\UnitTest\Core\Config\Beans;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
-use Genetsis\core\Config\Beans\Cache\File as FileCacheConfig;
-use Genetsis\core\Config\Beans\Cache\Memcached as MemcachedConfig;
-use Genetsis\core\Config\Beans\Config;
+use Genetsis\Core\Config\Beans\Cache\File as FileCacheConfig;
+use Genetsis\Core\Config\Beans\Cache\Memcached as MemcachedConfig;
+use Genetsis\Core\Config\Beans\Config;
 
 /**
  * @package Genetsis
@@ -33,7 +33,7 @@ class ConfigBeanTest extends Unit
     public function testSetterAndGetterServerName()
     {
         $this->specify('Checks setter and getter for parameter "server name".', function(){
-            $this->assertInstanceOf('\Genetsis\core\Config\Beans\Config', $this->config->setServerName('foo'));
+            $this->assertInstanceOf('\Genetsis\Core\Config\Beans\Config', $this->config->setServerName('foo'));
             $this->assertEquals('foo', $this->config->getServerName());
         });
     }

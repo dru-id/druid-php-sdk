@@ -3,7 +3,7 @@ namespace Genetsis\UnitTest\Core\Config\Beans\Cache;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
-use Genetsis\core\Config\Beans\Cache\Memcached;
+use Genetsis\Core\Config\Beans\Cache\Memcached;
 
 /**
  * @package Genetsis
@@ -31,7 +31,7 @@ class MemcachedBeanTest extends Unit
     public function testSetterAndGetterGroup()
     {
         $this->specify('Checks setter and getter for parameter "group".', function(){
-            $this->assertInstanceOf('\Genetsis\core\Config\Beans\Cache\Memcached', $this->cache->setGroup('foo'));
+            $this->assertInstanceOf('\Genetsis\Core\Config\Beans\Cache\Memcached', $this->cache->setGroup('foo'));
             $this->assertEquals('foo', $this->cache->getGroup());
         });
     }
@@ -39,7 +39,7 @@ class MemcachedBeanTest extends Unit
     public function testSetterAndGetterHost()
     {
         $this->specify('Checks setter and getter for parameter "host".', function(){
-            $this->assertInstanceOf('\Genetsis\core\Config\Beans\Cache\Memcached', $this->cache->setHost('bar.com'));
+            $this->assertInstanceOf('\Genetsis\Core\Config\Beans\Cache\Memcached', $this->cache->setHost('bar.com'));
             $this->assertEquals('bar.com', $this->cache->getHost());
         });
     }
@@ -47,7 +47,7 @@ class MemcachedBeanTest extends Unit
     public function testSetterAndGetterPort()
     {
         $this->specify('Checks setter and getter for parameter "port".', function(){
-            $this->assertInstanceOf('\Genetsis\core\Config\Beans\Cache\Memcached', $this->cache->setPort('456'));
+            $this->assertInstanceOf('\Genetsis\Core\Config\Beans\Cache\Memcached', $this->cache->setPort('456'));
             $this->assertEquals('456', $this->cache->getPort());
         });
     }

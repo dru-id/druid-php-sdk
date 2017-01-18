@@ -2,15 +2,15 @@
 namespace Genetsis\Identity\Services;
 
 use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
-use Genetsis\core\Http\Contracts\CookiesServiceInterface;
-use Genetsis\core\Http\Contracts\SessionServiceInterface;
-use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
-use Genetsis\core\OAuth\Beans\ClientToken;
-use Genetsis\core\OAuth\Collections\TokenTypes as TokenTypesCollection;
-use Genetsis\core\OAuth\Exceptions\InvalidGrantException;
-use Genetsis\core\OAuth\Services\OAuth;
-use Genetsis\core\User\Beans\Things;
-use Genetsis\core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
+use Genetsis\Core\Http\Contracts\CookiesServiceInterface;
+use Genetsis\Core\Http\Contracts\SessionServiceInterface;
+use Genetsis\Core\OAuth\Contracts\OAuthServiceInterface;
+use Genetsis\Core\OAuth\Beans\ClientToken;
+use Genetsis\Core\OAuth\Collections\TokenTypes as TokenTypesCollection;
+use Genetsis\Core\OAuth\Exceptions\InvalidGrantException;
+use Genetsis\Core\OAuth\Services\OAuth;
+use Genetsis\Core\User\Beans\Things;
+use Genetsis\Core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
 use Genetsis\DruID;
 use Genetsis\Identity\Contracts\IdentityServiceInterface;
 use Psr\Log\LoggerInterface;

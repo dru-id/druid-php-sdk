@@ -2,12 +2,12 @@
 namespace Genetsiss;
 die('Deprecated!');
 use Exception;
-use Genetsis\core\OAuth;
-use Genetsis\core\OAuthConfig;
-use Genetsis\core\Request;
+use Genetsis\Core\OAuth;
+use Genetsis\Core\OAuthConfig;
+use Genetsis\Core\Request;
 
-use Genetsis\core\OAuth\Beans\OAuthConfig\Brand;
-use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
+use Genetsis\Core\OAuth\Beans\OAuthConfig\Brand;
+use Genetsis\Core\ServiceContainer\Services\ServiceContainer as SC;
 
 /**
  * This class wraps all methods for interactions with OPI

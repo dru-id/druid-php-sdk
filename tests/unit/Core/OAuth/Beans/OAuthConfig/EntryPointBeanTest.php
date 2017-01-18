@@ -3,7 +3,7 @@ namespace Genetsis\UnitTest\Core\OAuth\Beans\OAuthConfig;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
-use Genetsis\core\OAuth\Beans\OAuthConfig\EntryPoint;
+use Genetsis\Core\OAuth\Beans\OAuthConfig\EntryPoint;
 
 /**
  * @package Genetsis
@@ -33,7 +33,7 @@ class EntryPointBeanTest extends Unit
     public function testSetterAndGetterId()
     {
         $this->specify('Checks setter and getter for "id" property.', function() {
-            $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\EntryPoint', $this->entry_point->setId('my-id'));
+            $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\EntryPoint', $this->entry_point->setId('my-id'));
             $this->assertEquals('my-id', $this->entry_point->getId());
         });
     }
@@ -41,7 +41,7 @@ class EntryPointBeanTest extends Unit
     public function testSetterAndGetterPromotionId()
     {
         $this->specify('Checks setter and getter for "promotion ID" property.', function() {
-            $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\EntryPoint', $this->entry_point->setPromotionId('my-promotion'));
+            $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\EntryPoint', $this->entry_point->setPromotionId('my-promotion'));
             $this->assertEquals('my-promotion', $this->entry_point->getPromotionId());
         });
     }
@@ -49,7 +49,7 @@ class EntryPointBeanTest extends Unit
     public function testSetterAndGetterPrize()
     {
         $this->specify('Checks setter and getter for "prize" property.', function() {
-            $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\EntryPoint', $this->entry_point->setPrizes(['1' => 'prize-1', '2' => 'prize-2']));
+            $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\EntryPoint', $this->entry_point->setPrizes(['1' => 'prize-1', '2' => 'prize-2']));
             $this->assertCount(1, $this->entry_point->setPrizes(['1' => 'prize-1'])->getPrizes());
             $this->assertEquals('prize-1', $this->entry_point->getPrize('1'));
             $this->assertFalse($this->entry_point->getPrize('3'));

@@ -1,4 +1,4 @@
-<?php namespace Genetsis\core\Logger\Services;
+<?php namespace Genetsis\Core\Logger\Services;
 
 use Psr\Log\LoggerInterface;
 

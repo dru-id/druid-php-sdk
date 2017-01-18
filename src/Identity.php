@@ -12,20 +12,20 @@ die('Deprecated: '.__FILE__);
 require_once(dirname(__FILE__) . "/Autoloader.php");
 
 use Exception;
-use Genetsis\core\Http\Services\Http;
-use Genetsis\core\Logger\Contracts\LoggerServiceInterface;
-use Genetsis\core\Logger\Services\DruIDLogger;
-use Genetsis\core\Logger\Services\EmptyLogger;
-use Genetsis\core\OAuth\Beans\ClientToken;
-use Genetsis\core\OAuth\Exceptions\InvalidGrantException;
-use Genetsis\core\OAuth\Services\OAuth;
-use Genetsis\core\OAuth\Services\OAuthConfig as OAuthConfigService;
-use Genetsis\core\FileCache;
-use Genetsis\core\OAuth\Collections\TokenTypes as TokenTypesCollection;
-use Genetsis\core\Logger\Collections\LogLevels as LogLevelsCollection;
-use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
-use Genetsis\core\User\Beans\Things;
-use Genetsis\core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
+use Genetsis\Core\Http\Services\Http;
+use Genetsis\Core\Logger\Contracts\LoggerServiceInterface;
+use Genetsis\Core\Logger\Services\DruIDLogger;
+use Genetsis\Core\Logger\Services\EmptyLogger;
+use Genetsis\Core\OAuth\Beans\ClientToken;
+use Genetsis\Core\OAuth\Exceptions\InvalidGrantException;
+use Genetsis\Core\OAuth\Services\OAuth;
+use Genetsis\Core\OAuth\Services\OAuthConfig as OAuthConfigService;
+use Genetsis\Core\FileCache;
+use Genetsis\Core\OAuth\Collections\TokenTypes as TokenTypesCollection;
+use Genetsis\Core\Logger\Collections\LogLevels as LogLevelsCollection;
+use Genetsis\Core\ServiceContainer\Services\ServiceContainer as SC;
+use Genetsis\Core\User\Beans\Things;
+use Genetsis\Core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
 
 
 if (session_id() === '') {
@@ -72,7 +72,7 @@ class Identity
      *      - 'sync': (boolean) Indicates whether to automatically synchronize data against the server. Default is TRUE.
      *      - 'ini_path': (string) If defined should be the internal path to the configuration file of the library (the druid.ini file).
      *          If this property is not defined then the library will search for this file at the default folder.
-     *      - 'logger': (\Genetsis\core\Logger\Contracts\LoggerServiceInterface) If you want to define the logger for you application.
+     *      - 'logger': (\Genetsis\Core\Logger\Contracts\LoggerServiceInterface) If you want to define the logger for you application.
      * @return void
      * @throws \Exception
      */

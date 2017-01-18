@@ -3,12 +3,12 @@ namespace Genetsis;
 
 use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
 use Doctrine\Common\Cache\Cache;
-use Genetsis\core\Config\Beans\Config;
-use Genetsis\core\Http\Services\Cookies;
-use Genetsis\core\Http\Services\Http;
-use Genetsis\core\Http\Services\Session;
-use Genetsis\core\OAuth\Services\OAuth;
-use Genetsis\core\OAuth\Services\OAuthConfigFactory;
+use Genetsis\Core\Config\Beans\Config;
+use Genetsis\Core\Http\Services\Cookies;
+use Genetsis\Core\Http\Services\Http;
+use Genetsis\Core\Http\Services\Session;
+use Genetsis\Core\OAuth\Services\OAuth;
+use Genetsis\Core\OAuth\Services\OAuthConfigFactory;
 use Genetsis\Identity\Contracts\IdentityServiceInterface;
 use Genetsis\Identity\Services\Identity;
 use Genetsis\Opi\Services\Opi;

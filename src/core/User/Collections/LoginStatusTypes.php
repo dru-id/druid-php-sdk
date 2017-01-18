@@ -1,7 +1,7 @@
 <?php
-namespace Genetsis\core\User\Collections;
+namespace Genetsis\Core\User\Collections;
 
-use Genetsis\core\Utils\Contracts\CollectionInterface;
+use Genetsis\Core\Utils\Contracts\CollectionInterface;
 
 /**
  * Class to group all login status types.

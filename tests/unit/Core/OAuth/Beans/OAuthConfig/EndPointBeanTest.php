@@ -3,7 +3,7 @@ namespace Genetsis\UnitTest\Core\OAuth\Beans\OAuthConfig;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
-use Genetsis\core\OAuth\Beans\OAuthConfig\EndPoint;
+use Genetsis\Core\OAuth\Beans\OAuthConfig\EndPoint;
 
 /**
  * @package Genetsis
@@ -33,7 +33,7 @@ class EndPointBeanTest extends Unit
     public function testSetterAndGetterId()
     {
         $this->specify('Checks setter and getter for "id" property.', function() {
-            $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\EndPoint', $this->endpoint->setId('my-id'));
+            $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\EndPoint', $this->endpoint->setId('my-id'));
             $this->assertEquals('my-id', $this->endpoint->getId());
         });
     }
@@ -41,7 +41,7 @@ class EndPointBeanTest extends Unit
     public function testSetterAndGetterUrl()
     {
         $this->specify('Checks setter and getter for "url" property.', function() {
-            $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\EndPoint', $this->endpoint->setUrl('http://www.foo.com'));
+            $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\EndPoint', $this->endpoint->setUrl('http://www.foo.com'));
             $this->assertEquals('http://www.foo.com', $this->endpoint->getUrl());
         });
     }

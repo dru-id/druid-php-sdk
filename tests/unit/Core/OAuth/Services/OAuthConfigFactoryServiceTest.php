@@ -4,8 +4,8 @@ namespace Genetsis\UnitTest\Core\OAuth\Beans\Services;
 use Codeception\Specify;
 use Codeception\Test\Unit;
 use Doctrine\Common\Cache\VoidCache;
-use Genetsis\core\Logger\Services\VoidLogger;
-use Genetsis\core\OAuth\Services\OAuthConfigFactory;
+use Genetsis\Core\Logger\Services\VoidLogger;
+use Genetsis\Core\OAuth\Services\OAuthConfigFactory;
 
 /**
  * @package Genetsis
@@ -56,43 +56,43 @@ class OAuthConfigFactoryServiceTest extends Unit {
     }
 
     /**
-     * @param \Genetsis\core\OAuth\Beans\OAuthConfig\Config $config
+     * @param \Genetsis\Core\OAuth\Beans\OAuthConfig\Config $config
      */
     private function verificationSteps($config)
     {
-        $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $config);
+        $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\Config', $config);
 
         $this->assertEquals('1.4', $config->getVersion());
         $this->assertEquals('XXXXXXX', $config->getClientId());
         $this->assertEquals('YYYYYYY', $config->getClientSecret());
         $this->assertEquals('My Awesome App', $config->getAppName());
 
-        $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Brand', $config->getBrand());
+        $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\Brand', $config->getBrand());
         $this->assertEquals('my-brand-key', $config->getBrand()->getKey());
         $this->assertEquals('Brand Name', $config->getBrand()->getName());
 
         $this->assertEquals('my-opi-tag', $config->getOpi());
 
         $this->assertCount(2, $config->getHosts());
-        $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Host', $config->getHost('my-host-2'));
+        $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\Host', $config->getHost('my-host-2'));
         $this->assertEquals('//www.foo-host-2.com', $config->getHost('my-host-2')->getUrl());
 
         $this->assertCount(5, $config->getRedirects());
-        $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\RedirectUrl', $config->getRedirect('postLogin'));
+        $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\RedirectUrl', $config->getRedirect('postLogin'));
         $this->assertEquals('http://www.foo.com/actions', $config->getRedirect('postLogin')->getUrl());
 
         $this->assertCount(3, $config->getEntryPoints()['entry_points']);
-        $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\EntryPoint', $config->getEntryPoint('2222222-main'));
-        $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\EntryPoint', $config->getEntryPoint());
+        $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\EntryPoint', $config->getEntryPoint('2222222-main'));
+        $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\EntryPoint', $config->getEntryPoint());
         $this->assertEquals('2222222-main', $config->getEntryPoint('2222222-main')->getId());
         $this->assertEquals('1111111-main', $config->getEntryPoint()->getId());
 
         $this->assertCount(8, $config->getEndPoints());
-        $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\EndPoint', $config->getEndPoint('cancel_url'));
+        $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\EndPoint', $config->getEndPoint('cancel_url'));
         $this->assertEquals('https://auth.ci.dru-id.com/oauth2/authorize/redirect', $config->getEndPoint('cancel_url')->getUrl());
 
         $this->assertCount(3, $config->getApis());
-        $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Api', $config->getApi('api.activityid'));
+        $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\Api', $config->getApi('api.activityid'));
         $this->assertEquals('/public/v1/bookmark/acknowledge', $config->getApi('api.activityid')->getEndpoint('click_newsletter'));
     }
 

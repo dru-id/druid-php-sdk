@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\core\OAuth\Beans\OAuthConfig;
+namespace Genetsis\Core\OAuth\Beans\OAuthConfig;
 
 /**
  * @package   Genetsis

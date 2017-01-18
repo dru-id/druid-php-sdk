@@ -1,7 +1,7 @@
 <?php
 namespace Genetsis\Identity\Contracts;
 
-use Genetsis\core\User\Beans\Things;
+use Genetsis\Core\User\Beans\Things;
 
 /**
  * @package  Genetsis

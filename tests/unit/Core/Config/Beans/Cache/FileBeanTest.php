@@ -3,7 +3,7 @@ namespace Genetsis\UnitTest\Core\Config\Beans\Cache;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
-use Genetsis\core\Config\Beans\Cache\File;
+use Genetsis\Core\Config\Beans\Cache\File;
 
 /**
  * @package Genetsis
@@ -31,7 +31,7 @@ class FileBeanTest extends Unit
     public function testSetterAndGetterGroup()
     {
         $this->specify('Checks setter and getter for parameter "group".', function(){
-            $this->assertInstanceOf('\Genetsis\core\Config\Beans\Cache\File', $this->cache->setGroup('foo'));
+            $this->assertInstanceOf('\Genetsis\Core\Config\Beans\Cache\File', $this->cache->setGroup('foo'));
             $this->assertEquals('foo', $this->cache->getGroup());
         });
     }
@@ -39,7 +39,7 @@ class FileBeanTest extends Unit
     public function testSetterAndGetterFolder()
     {
         $this->specify('Checks setter and getter for parameter "folder".', function(){
-            $this->assertInstanceOf('\Genetsis\core\Config\Beans\Cache\File', $this->cache->setFolder('foo/bar/biz'));
+            $this->assertInstanceOf('\Genetsis\Core\Config\Beans\Cache\File', $this->cache->setFolder('foo/bar/biz'));
             $this->assertEquals('foo/bar/biz', $this->cache->getFolder());
             $this->cache->setFolder('foo/bar/biz/');
             $this->assertEquals('foo/bar/biz', $this->cache->getFolder());

@@ -2,12 +2,12 @@
 namespace Genetsiss;
 die('Deprecated: '.__FILE__);
 use Exception;
-use Genetsis\core\User\Beans\Brand;
-use Genetsis\core\User;
-use Genetsis\core\FileCache;
-use Genetsis\core\Http\Collections\HttpMethods as HttpMethodsCollection;
-use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
-use Genetsis\core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
+use Genetsis\Core\User\Beans\Brand;
+use Genetsis\Core\User;
+use Genetsis\Core\FileCache;
+use Genetsis\Core\Http\Collections\HttpMethods as HttpMethodsCollection;
+use Genetsis\Core\ServiceContainer\Services\ServiceContainer as SC;
+use Genetsis\Core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
 
 /**
  * This class allow you to use the User Api

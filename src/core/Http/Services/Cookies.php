@@ -1,6 +1,6 @@
 <?php
-namespace Genetsis\core\Http\Services;
-use Genetsis\core\Http\Contracts\CookiesServiceInterface;
+namespace Genetsis\Core\Http\Services;
+use Genetsis\Core\Http\Contracts\CookiesServiceInterface;
 
 /**
  * Cookies handler implementation.

@@ -2,7 +2,7 @@
 namespace Genetsiss;
 die('Deprecated!');
 use Exception;
-use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
+use Genetsis\Core\ServiceContainer\Services\ServiceContainer as SC;
 
 /**
  * This class is used to build the links to different services of Genetsis ID.

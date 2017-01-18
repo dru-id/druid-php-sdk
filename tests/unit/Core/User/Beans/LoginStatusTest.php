@@ -3,8 +3,8 @@ namespace Genetsis\UnitTest\Core\User\Beans;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
-use Genetsis\core\User\Beans\LoginStatus;
-use Genetsis\core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
+use Genetsis\Core\User\Beans\LoginStatus;
+use Genetsis\Core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
 
 /**
  * @package Genetsis
@@ -34,7 +34,7 @@ class LoginStatusTest extends Unit
     public function testSetterAndGetterCkusid()
     {
         $this->specify('Checks setter and getter for "ckusid" property.', function() {
-            $this->assertInstanceOf('\Genetsis\core\User\Beans\LoginStatus', $this->login_status->setCkusid('ckusid'));
+            $this->assertInstanceOf('\Genetsis\Core\User\Beans\LoginStatus', $this->login_status->setCkusid('ckusid'));
             $this->assertEquals('ckusid', $this->login_status->getCkusid());
         });
     }
@@ -42,7 +42,7 @@ class LoginStatusTest extends Unit
     public function testSetterAndGetterOid()
     {
         $this->specify('Checks setter and getter for "oid" property.', function() {
-            $this->assertInstanceOf('\Genetsis\core\User\Beans\LoginStatus', $this->login_status->setOid('oid'));
+            $this->assertInstanceOf('\Genetsis\Core\User\Beans\LoginStatus', $this->login_status->setOid('oid'));
             $this->assertEquals('oid', $this->login_status->getOid());
         });
     }
@@ -50,7 +50,7 @@ class LoginStatusTest extends Unit
     public function testSetterAndGetterConnectState()
     {
         $this->specify('Checks setter and getter for "connect state" property.', function() {
-            $this->assertInstanceOf('\Genetsis\core\User\Beans\LoginStatus', $this->login_status->setConnectState(LoginStatusTypesCollection::CONNECTED));
+            $this->assertInstanceOf('\Genetsis\Core\User\Beans\LoginStatus', $this->login_status->setConnectState(LoginStatusTypesCollection::CONNECTED));
             $this->assertEquals(LoginStatusTypesCollection::CONNECTED, $this->login_status->getConnectState());
             $this->assertEquals(LoginStatusTypesCollection::UNKNOWN, $this->login_status->setConnectState('foo')->getConnectState());
         });

@@ -1,8 +1,8 @@
 <?php
-namespace Genetsis\core\Http\Contracts;
+namespace Genetsis\Core\Http\Contracts;
 
-use Genetsis\core\Http\Exceptions\RequestException;
-use Genetsis\core\OAuth\Exceptions\InvalidGrantException;
+use Genetsis\Core\Http\Exceptions\RequestException;
+use Genetsis\Core\OAuth\Exceptions\InvalidGrantException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
 

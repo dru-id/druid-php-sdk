@@ -1,6 +1,6 @@
-<?php namespace Genetsis\core\OAuth\Beans;
+<?php namespace Genetsis\Core\OAuth\Beans;
 
-use Genetsis\core\OAuth\Collections\TokenTypes as TokenTypesCollection;
+use Genetsis\Core\OAuth\Collections\TokenTypes as TokenTypesCollection;
 
 /**
  * This class stores "access_token" data.

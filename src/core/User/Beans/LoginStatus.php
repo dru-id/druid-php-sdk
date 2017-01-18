@@ -1,7 +1,7 @@
 <?php
-namespace Genetsis\core\User\Beans;
+namespace Genetsis\Core\User\Beans;
 
-use Genetsis\core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
+use Genetsis\Core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
 
 /**
  * This class stores login status.
@@ -17,7 +17,7 @@ class LoginStatus
     private $ckusid = null;
     /** @var string $oid ObjectID of user logged. */
     private $oid = null;
-    /** @var string $connect_state One of the values defined in {@link \Genetsis\core\User\Collections\LoginStatusTypes}. */
+    /** @var string $connect_state One of the values defined in {@link \Genetsis\Core\User\Collections\LoginStatusTypes}. */
     private $connect_state = null;
 
     /**
