@@ -2,6 +2,7 @@
 namespace Genetsis\UrlBuilder\Services;
 
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
+use Genetsis\DruID;
 use Genetsis\DruIDFacade;
 use Genetsis\UrlBuilder\Contracts\UrlBuilderServiceInterface;
 use Psr\Log\LoggerInterface;
@@ -14,8 +15,11 @@ use Psr\Log\LoggerInterface;
  * @version   2.0
  * @access    private
  */
-class UrlBuilder implements UrlBuilderServiceInterface {
+class UrlBuilder implements UrlBuilderServiceInterface
+{
 
+    /** @var DruID $druid */
+    private $druid;
     /** @var OAuthServiceInterface $oauth */
     protected $oauth;
     /** @var LoggerInterface $logger */
@@ -26,11 +30,13 @@ class UrlBuilder implements UrlBuilderServiceInterface {
     private static $location_address = array("streetAddress", "locality", "region", "postalCode", "country");
 
     /**
+     * @param DruID $druid
      * @param OAuthServiceInterface $oauth
      * @param LoggerInterface $logger
      */
-    public function __construct(OAuthServiceInterface $oauth, LoggerInterface $logger)
+    public function __construct(DruID $druid, OAuthServiceInterface $oauth, LoggerInterface $logger)
     {
+        $this->druid = $druid;
         $this->oauth = $oauth;
     }
 
@@ -111,9 +117,9 @@ class UrlBuilder implements UrlBuilderServiceInterface {
                 throw new \Exception ('Scope section is empty');
             }
 
-            if (!DruIDFacade::get()->identity()->isConnected()) {
+            if (!$this->druid->identity()->isConnected()) {
                 return $this->getUrlLogin($entry_point);
-            } elseif (!DruIDFacade::get()->identity()->checkUserComplete($entry_point)) {
+            } elseif (!$this->druid->identity()->checkUserComplete($entry_point)) {
                 return $this->getUrlCompleteAccount($entry_point);
             }
         } catch (\Exception $e) {
@@ -223,7 +229,7 @@ class UrlBuilder implements UrlBuilderServiceInterface {
                 throw new \Exception ('Cancel URL is empty');
             }
 
-            $access_token = DruIDFacade::get()->identity()->getThings()->getAccessToken();
+            $access_token = $this->druid->identity()->getThings()->getAccessToken();
 
             if (is_null($access_token)) {
                 throw new \Exception ('Access token is empty');
@@ -312,7 +318,7 @@ class UrlBuilder implements UrlBuilderServiceInterface {
             if ($this->checkParam($cancel_url)) {
                 throw new \Exception ('Cancel URL is empty');
             }
-            $access_token = DruIDFacade::get()->identity()->getThings()->getAccessToken();
+            $access_token = $this->druid->identity()->getThings()->getAccessToken();
 
             if (is_null($access_token)) {
                 throw new \Exception ('Access token is empty');

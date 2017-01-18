@@ -75,12 +75,12 @@ class DruID
             $logger->error('Invalid XML version: ' . $oauth_config->getVersion() . ' (expected ' . self::CONF_VERSION . ')', ['method' => __METHOD__, 'line' => __LINE__]);
             throw new \Exception('Invalid version. You are trying load a configuration file for another version of the service.');
         }
-        $oauth = new OAuth($oauth_config, $http, new Cookies(), $logger);
+        $oauth = new OAuth($this, $oauth_config, $http, new Cookies(), $logger);
 
-        $this->identity = new Identity($oauth, new Session(), new Cookies(), $logger, $cache);
-        $this->url_builder = new UrlBuilder($oauth, $logger);
-        $this->user_api = new UserApi($oauth, $http, $logger, $cache);
-        $this->opi = new Opi($oauth);
+        $this->identity = new Identity($this, $oauth, new Session(), new Cookies(), $logger, $cache);
+        $this->url_builder = new UrlBuilder($this, $oauth, $logger);
+        $this->user_api = new UserApi($this, $oauth, $http, $logger, $cache);
+        $this->opi = new Opi($this, $oauth);
     }
 
     /**

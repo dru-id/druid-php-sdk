@@ -11,22 +11,25 @@ use Genetsis\core\OAuth\Exceptions\InvalidGrantException;
 use Genetsis\core\OAuth\Services\OAuth;
 use Genetsis\core\User\Beans\Things;
 use Genetsis\core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
-use Genetsis\DruIDFacade;
+use Genetsis\DruID;
 use Genetsis\Identity\Contracts\IdentityServiceInterface;
 use Psr\Log\LoggerInterface;
 
-class Identity implements IdentityServiceInterface {
+class Identity implements IdentityServiceInterface
+{
 
+    /** @var DruID $druid */
+    private $druid;
     /** @var OAuthServiceInterface $oauth */
-    protected $oauth;
+    private $oauth;
     /** @var SessionServiceInterface $session */
-    protected $session;
+    private $session;
     /** @var CookiesServiceInterface $cookie */
-    protected $cookie;
+    private $cookie;
     /** @var LoggerInterface $logger */
-    protected $logger;
+    private $logger;
     /** @var DoctrineCacheInterface $cache */
-    protected $cache;
+    private $cache;
     
     /** @var boolean $synchronized Indicates if the service has been sync with the server. */
     private $synchronized = false;
@@ -34,14 +37,16 @@ class Identity implements IdentityServiceInterface {
     private $gid_things;
 
     /**
+     * @param DruID $druid
      * @param OAuthServiceInterface $oauth
      * @param SessionServiceInterface $session
      * @param CookiesServiceInterface $cookie
      * @param LoggerInterface $logger
      * @param DoctrineCacheInterface $cache
      */
-    public function __construct(OAuthServiceInterface $oauth, SessionServiceInterface $session, CookiesServiceInterface $cookie, LoggerInterface $logger, DoctrineCacheInterface $cache)
+    public function __construct(DruID $druid, OAuthServiceInterface $oauth, SessionServiceInterface $session, CookiesServiceInterface $cookie, LoggerInterface $logger, DoctrineCacheInterface $cache)
     {
+        $this->druid = $druid;
         $this->oauth = $oauth;
         $this->session = $session;
         $this->cookie = $cookie;
@@ -424,7 +429,7 @@ class Identity implements IdentityServiceInterface {
         try {
             if (($this->gid_things->getAccessToken() != null) && ($this->gid_things->getRefreshToken() != null)) {
                 $this->logger->info('User Single Sign Logout', ['method' => __METHOD__, 'line' => __LINE__]);
-                DruIDFacade::get()->userApi()->deleteCacheUser($this->gid_things->getLoginStatus()->getCkUsid());
+                $this->druid->userApi()->deleteCacheUser($this->gid_things->getLoginStatus()->getCkUsid());
 
                 $this->oauth->doLogout((string)$this->oauth->getConfig()->getEndPoint('logout_endpoint'));
                 $this->clearLocalSessionData();

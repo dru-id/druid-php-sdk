@@ -15,7 +15,7 @@ use Genetsis\core\OAuth\Contracts\StoredTokenInterface;
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\core\OAuth\Collections\AuthMethods as AuthMethodsCollection;
 use Genetsis\core\OAuth\Collections\TokenTypes as TokenTypesCollection;
-use Genetsis\DruIDFacade;
+use Genetsis\DruID;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
 use Psr\Log\LoggerInterface;
@@ -41,6 +41,8 @@ class OAuth implements OAuthServiceInterface
     /** Cookie name for SSO (Single Sign-Out). */
     const SSO_COOKIE_NAME = 'datr';
 
+    /** @var DruID $druid */
+    private $druid;
     /** @var Config $config */
     private $config = null;
     /** @var HttpServiceInterface $http */
@@ -51,13 +53,15 @@ class OAuth implements OAuthServiceInterface
     private $logger;
 
     /**
+     * @param DruID $druid
      * @param Config $config
      * @param HttpServiceInterface $http
      * @param LoggerInterface $logger
      * @param CookiesServiceInterface $cookie
      */
-    public function __construct(Config $config, HttpServiceInterface $http, CookiesServiceInterface $cookie, LoggerInterface $logger)
+    public function __construct(DruID $druid, Config $config, HttpServiceInterface $http, CookiesServiceInterface $cookie, LoggerInterface $logger)
     {
+        $this->druid = $druid;
         $this->setConfig($config);
         $this->http = $http;
         $this->cookie = $cookie;
@@ -269,7 +273,7 @@ class OAuth implements OAuthServiceInterface
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
                 throw new \Exception ('Endpoint URL is empty');
             }
-            if (!($refresh_token = DruIDFacade::get()->identity()->getThings()->getRefreshToken()) instanceof RefreshToken) { // TODO: "Things" shouldn't be used like that.
+            if (!($refresh_token = $this->druid->identity()->getThings()->getRefreshToken()) instanceof RefreshToken) { // TODO: "Things" shouldn't be used like that.
                 throw new \Exception ('Refresh token is empty');
             }
 
@@ -344,7 +348,7 @@ class OAuth implements OAuthServiceInterface
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
                 throw new \Exception ('Endpoint URL is empty');
             }
-            if (!(($access_token = DruIDFacade::get()->identity()->getThings()->getAccessToken()) instanceof AccessToken) || ($access_token->getValue() == '')) {
+            if (!(($access_token = $this->druid->identity()->getThings()->getAccessToken()) instanceof AccessToken) || ($access_token->getValue() == '')) {
                 throw new \Exception ('Access token is empty');
             }
 
@@ -484,7 +488,7 @@ class OAuth implements OAuthServiceInterface
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
                 throw new \Exception ('Endpoint URL is empty');
             }
-            if (!($refresh_token = DruIDFacade::get()->identity()->getThings()->getRefreshToken()) instanceof RefreshToken) {
+            if (!($refresh_token = $this->druid->identity()->getThings()->getRefreshToken()) instanceof RefreshToken) {
                 throw new \Exception ('Refresh token is empty');
             }
 
@@ -642,7 +646,7 @@ class OAuth implements OAuthServiceInterface
                 throw new \Exception ('Scope is empty');
             }
 
-            if (!(($access_token = DruIDFacade::get()->identity()->getThings()->getAccessToken()) instanceof AccessToken) || ($access_token->getValue() == '')) {
+            if (!(($access_token = $this->druid->identity()->getThings()->getAccessToken()) instanceof AccessToken) || ($access_token->getValue() == '')) {
                 throw new \Exception ('Access token is empty');
             }
 
@@ -707,7 +711,7 @@ class OAuth implements OAuthServiceInterface
                 throw new \Exception ('Scope is empty');
             }
 
-            if (!(($access_token = DruIDFacade::get()->identity()->getThings()->getAccessToken()) instanceof AccessToken) || ($access_token->getValue() == '')) {
+            if (!(($access_token = $this->druid->identity()->getThings()->getAccessToken()) instanceof AccessToken) || ($access_token->getValue() == '')) {
                 throw new \Exception ('Access token is empty');
             }
 
