@@ -41,12 +41,17 @@ class OAuthConfigFactoryServiceTest extends Unit {
             $this->verificationSteps($config);
         });
 
+        $this->specify('Checks if factory throws an exception if file doesn\'t exist.', function(){
+            $config = $this->factory->buildConfigFromXmlFile(OAUTHCONFIG_SAMPLE_XML_1_4.'foo');
+            $this->verificationSteps($config);
+        }, ['throws' => \InvalidArgumentException::class]);
+
         $this->specify('Checks if factory throws an exception with an empty XML', function(){
             $this->factory->buildConfigFromXml('');
         }, ['throws' => 'InvalidArgumentException']);
 
         $this->specify('Checks if factory throws an exception with an invalid XML', function(){
-            $this->factory->buildConfigFromXml('<?xml ?><foo></foo>');
+            $this->factory->buildConfigFromXml('<?xml ?><foo</foo>');
         }, ['throws' => 'Exception']);
     }
 

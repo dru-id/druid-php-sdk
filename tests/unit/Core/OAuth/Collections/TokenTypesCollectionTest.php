@@ -9,7 +9,9 @@ use Genetsis\core\OAuth\Collections\TokenTypes;
  * @package Genetsis
  * @category UnitTest
  */
-class TokenTypesCollectionTest extends Unit {
+class TokenTypesCollectionTest extends Unit
+{
+
     use Specify;
 
     protected function _before()

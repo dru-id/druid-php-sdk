@@ -1,4 +1,5 @@
-<?php namespace Genetsis\core\User\Beans;
+<?php
+namespace Genetsis\core\User\Beans;
 
 use Genetsis\core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
 
@@ -11,6 +12,7 @@ use Genetsis\core\User\Collections\LoginStatusTypes as LoginStatusTypesCollectio
  */
 class LoginStatus
 {
+
     /** @var string $ckusid Ckusid of user logged. */
     private $ckusid = null;
     /** @var string $oid ObjectID of user logged. */
@@ -86,5 +88,4 @@ class LoginStatus
         $this->connect_state = LoginStatusTypesCollection::check($connect_state) ? $connect_state : LoginStatusTypesCollection::UNKNOWN;
         return $this;
     }
-
 }

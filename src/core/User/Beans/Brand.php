@@ -1,4 +1,5 @@
-<?php namespace Genetsis\core\User\Beans;
+<?php
+namespace Genetsis\core\User\Beans;
 
 /**
  * This class stores the User Brand register origin
@@ -8,6 +9,7 @@
  */
 class Brand
 {
+
     /** @var string $key */
     private $key = '';
     /** @var string $name */
@@ -61,5 +63,4 @@ class Brand
         $this->name = $name;
         return $this;
     }
-
-} 
+}

@@ -1,5 +1,6 @@
 <?php
 namespace Genetsis\core\User\Collections;
+
 use Genetsis\core\Utils\Contracts\CollectionInterface;
 
 /**
@@ -8,7 +9,8 @@ use Genetsis\core\Utils\Contracts\CollectionInterface;
  * @package   Genetsis
  * @category  Collection
  */
-class LoginStatusTypes implements CollectionInterface {
+class LoginStatusTypes implements CollectionInterface
+{
 
     const CONNECTED = 'connected';
     const NOT_CONNECTED = 'notConnected';
@@ -21,5 +23,4 @@ class LoginStatusTypes implements CollectionInterface {
     {
         return ($value && in_array($value, [self::CONNECTED, self::NOT_CONNECTED, self::UNKNOWN]));
     }
-
 }

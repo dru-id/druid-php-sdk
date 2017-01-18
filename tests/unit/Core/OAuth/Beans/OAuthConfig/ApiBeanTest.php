@@ -9,7 +9,9 @@ use Genetsis\core\OAuth\Beans\OAuthConfig\Api;
  * @package Genetsis
  * @category UnitTest
  */
-class ApiBeanTest extends Unit {
+class ApiBeanTest extends Unit
+{
+
     use Specify;
 
     /** @var \UnitTester */
@@ -21,27 +23,32 @@ class ApiBeanTest extends Unit {
     protected function _before()
     {
         $this->specifyConfig()->shallowClone(); // Speeds up testing avoiding deep clone.
+        $this->api = new Api();
     }
 
     protected function _after()
     {
     }
 
-    public function testSettersAndGetters()
+    public function testSetterAndGetterName()
     {
-        $this->api = new Api();
-
         $this->specify('Checks setter and getter for "name" property.', function() {
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Api', $this->api->setName('my-name'));
             $this->assertEquals('my-name-2', $this->api->setName('my-name-2')->getName());
         });
+    }
 
+    public function testSetterAndGetterBaseUrl()
+    {
         $this->specify('Checks setter and getter for "base url" property.', function() {
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Api', $this->api->setBaseUrl('www.foo.com'));
             $this->assertEquals('www.bar.com', $this->api->setBaseUrl('www.bar.com')->getBaseUrl());
             $this->assertEquals('www.fuu.com', $this->api->setBaseUrl('www.fuu.com/')->getBaseUrl());
         });
+    }
 
+    public function testSetterAndGetterEndpoints()
+    {
         $this->specify('Checks setter and getter for "endpoints" property.', function() {
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Api', $this->api->setEndpoints(['a' => '/aaa', 'b' => '/bbb']));
             $this->assertCount(2, $this->api->getEndpoints());
@@ -54,9 +61,6 @@ class ApiBeanTest extends Unit {
         });
     }
 
-    /**
-     * @depends testSettersAndGetters
-     */
     public function testConstructor()
     {
         $this->api = new Api([
@@ -65,7 +69,7 @@ class ApiBeanTest extends Unit {
             'endpoints' => ['a' => '/aaa', 'b' => '/bbb']
         ]);
 
-        $this->specify('Checks that constructor has assigned those variables properly.', function(){
+        $this->specify('Checks constructor.', function(){
             $this->assertEquals('my-name', $this->api->getName());
             $this->assertEquals('www.foo.com', $this->api->getBaseUrl());
             $this->assertEquals('/aaa', $this->api->getEndpoint('a'));

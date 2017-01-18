@@ -9,7 +9,9 @@ use Genetsis\core\OAuth\Beans\OAuthConfig\RedirectUrl;
  * @package Genetsis
  * @category UnitTest
  */
-class RedirectUrlBeanTest extends Unit {
+class RedirectUrlBeanTest extends Unit
+{
+
     use Specify;
 
     /** @var \UnitTester */
@@ -21,40 +23,45 @@ class RedirectUrlBeanTest extends Unit {
     protected function _before()
     {
         $this->specifyConfig()->shallowClone(); // Speeds up testing avoiding deep clone.
+        $this->redirect_url = new RedirectUrl();
     }
 
     protected function _after()
     {
     }
 
-    public function testSettersAndGetters()
+    public function testSetterAndGetterType()
     {
-        $this->redirect_url = new RedirectUrl();
-
         $this->specify('Checks setter and getter for "type" property.', function() {
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\RedirectUrl', $this->redirect_url->setType('type-1'));
             $this->assertEquals('type-1', $this->redirect_url->getType());
         });
+    }
 
+    public function testSetterAndGetterUrl()
+    {
         $this->specify('Checks setter and getter for "url" property.', function() {
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\RedirectUrl', $this->redirect_url->setUrl('http://www.foo.com'));
             $this->assertEquals('http://www.foo.com', $this->redirect_url->getUrl());
         });
+    }
 
+    public function testSetterAndGetterIsDefault()
+    {
         $this->specify('Checks setter and getter for "is default" property.', function() {
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\RedirectUrl', $this->redirect_url->setIsDefault(true));
             $this->assertTrue($this->redirect_url->getIsDefault());
         });
+    }
 
+    public function testSetterAndGetterEndpoint()
+    {
         $this->specify('Checks if an "endpoint" object has converted properly when is required as string.', function() {
             $this->redirect_url->setUrl('http://www.bar.com');
             $this->assertEquals('http://www.bar.com', $this->redirect_url);
         });
     }
 
-    /**
-     * @depends testSettersAndGetters
-     */
     public function testConstructor()
     {
         $this->redirect_url = new RedirectUrl([

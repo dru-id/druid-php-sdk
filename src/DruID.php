@@ -2,21 +2,14 @@
 namespace Genetsis;
 
 use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
-use Doctrine\Common\Cache\FilesystemCache;
-use Doctrine\Common\Cache\MemcachedCache;
-use Doctrine\Common\Cache\VoidCache;
-use Genetsis\core\Config\Beans\Cache\File as FileCacheConfig;
-use Genetsis\core\Config\Beans\Cache\Memcached as MemcachedCacheConfig;
-use Genetsis\core\Config\Beans\Config as DruIDConfig;
-use Genetsis\core\Config\Beans\Log\File as FileLogConfig;
-use Genetsis\core\Config\Beans\Log\Syslog as SyslogConfig;
+use Doctrine\Common\Cache\Cache;
+use Genetsis\core\Config\Beans\Config;
 use Genetsis\core\Http\Contracts\CookiesServiceInterface;
 use Genetsis\core\Http\Contracts\HttpServiceInterface;
 use Genetsis\core\Http\Contracts\SessionServiceInterface;
 use Genetsis\core\Http\Services\Cookies;
 use Genetsis\core\Http\Services\Http;
 use Genetsis\core\Http\Services\Session;
-use Genetsis\core\Logger\Services\VoidLogger;
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\core\OAuth\Services\OAuth;
 use Genetsis\core\OAuth\Services\OAuthConfigFactory;
@@ -32,11 +25,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
-use Monolog\Formatter\LineFormatter;
-use Monolog\Handler\NullHandler;
-use Monolog\Handler\RotatingFileHandler;
-use Monolog\Handler\SyslogHandler;
-use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
@@ -53,14 +41,16 @@ class DruID {
     /** @var boolean $setup_done Indicates if the setup process has been done or not. */
     private static $setup_done = false;
 
+    /** @var Config $config */
+    private static $config;
     /** @var OAuthServiceInterface $oauth */
     private static $oauth;
     /** @var HttpServiceInterface $http */
     private static $http;
     /** @var SessionServiceInterface $session */
     private static $session;
-    /** @var CookiesServiceInterface $cookie */
-    private static $cookie;
+    /** @var CookiesServiceInterface $cookies */
+    private static $cookies;
     /** @var LoggerInterface $logger */
     private static $logger;
     /** @var DoctrineCacheInterface $cache {@see http://doctrine-orm.readthedocs.io/projects/doctrine-orm/en/latest/reference/caching.html} */
@@ -82,46 +72,18 @@ class DruID {
      * This method does not make an initial call to DruID web services to synchronize the library, for this you must
      * call {@link DruID::init()}.
      *
-     * @param DruIDConfig $druid_config
+     * @param Config $config
      * @param string $oauth_config_xml OAuth configuration XML content.
-     * @param LoggerInterface|null $logger
+     * @param LoggerInterface $logger
+     * @param Cache $cache
      * @return void
      * @throws \Exception
      */
-    public static function setup(DruIDConfig $druid_config, $oauth_config_xml, $logger = null)
+    public static function setup(Config $config, $oauth_config_xml, LoggerInterface $logger, Cache $cache)
     {
-        // Logger service.
-        if (!($logger instanceof LoggerInterface)) {
-            $logger = new VoidLogger();
-        }
+        self::$config = $config;
         self::$logger = $logger;
-
-//        if ($druid_config->getLog() instanceof FileLogConfig) {
-//            self::$logger = new DruIDLogger($druid_config->getLog()->getFolder().'/'.$druid_config->getLog()->getGroup(), LogLevelsCollection::DEBUG);
-//        } elseif ($druid_config->getLog() instanceof SyslogConfig) {
-//            self::$logger = new SyslogLogger($druid_config->getLog()->getLevel());
-//        } else {
-//            self::$logger = new EmptyLogger();
-//        }
-
-        // Cache service
-        if ($druid_config->getCache() instanceof FileCacheConfig) {
-            self::$cache = new FilesystemCache($druid_config->getCache()->getFolder().'/'.$druid_config->getCache()->getGroup());
-        } elseif ($druid_config->getCache() instanceof MemcachedCacheConfig) {
-            if (class_exists('\Memcached')) {
-                $memcached = new \Memcached();
-                $memcached->addServer($druid_config->getCache()->getHost(), $druid_config->getCache()->getPort());
-                self::$cache = new MemcachedCache();
-                self::$cache->setMemcached($memcached);
-            } else {
-                self::$logger->warning('Memcached cache required but Memcached is not available in this server. A void cache will be used instead.', __METHOD__, __LINE__);
-            }
-        }
-        // If cache service is not provided then we will use a VoidCache in order to avoid messing things up with
-        // conditional controls around the code.
-        if (!isset(self::$cache) || !(self::$cache instanceof DoctrineCacheInterface)) {
-            self::$cache = new VoidCache();
-        }
+        self::$cache = $cache;
 
         // Http service.
         // We associate the logger received with the Guzzle client to register the requests.
@@ -131,8 +93,8 @@ class DruID {
         // Do not verify SSL for self-signed certifies. Only for development.
         self::$http = new Http(new Client(['handler' => $stack, 'http_errors' => false, 'verify' => false]), self::$logger);
 
-        // Cookie service.
-        self::$cookie = new Cookies();
+        // cookies service.
+        self::$cookies = new Cookies();
 
         // Session service.
         self::$session = new Session();
@@ -140,12 +102,12 @@ class DruID {
         // OAuth service
         $oauth_config = (new OAuthConfigFactory(self::$logger, self::$cache))->buildConfigFromXml($oauth_config_xml);
         if ($oauth_config->getVersion() != self::CONF_VERSION) {
-            self::$logger->error('Invalid XML version: ' . $oauth_config->getVersion() . ' (expected ' . self::CONF_VERSION . ')', __METHOD__, __LINE__);
+            self::$logger->error('Invalid XML version: ' . $oauth_config->getVersion() . ' (expected ' . self::CONF_VERSION . ')', ['method' => __METHOD__, 'line' => __LINE__]);
             throw new \Exception('Invalid version. You are trying load a configuration file for another version of the service.');
         }
-        self::$oauth = new OAuth($oauth_config, self::$http, self::$cookie, self::$logger);
+        self::$oauth = new OAuth($oauth_config, self::$http, self::$cookies, self::$logger);
 
-        self::$identity = new Identity(self::$oauth, self::$session, self::$cookie, self::$logger, self::$cache);
+        self::$identity = new Identity(self::$oauth, self::$session, self::$cookies, self::$logger, self::$cache);
         self::$url_builder = new UrlBuilder(self::$oauth, self::$logger);
         self::$user_api = new UserApi(self::$oauth, self::$http, self::$logger, self::$cache);
         self::$opi = new Opi(self::$oauth);
@@ -173,7 +135,7 @@ class DruID {
     private static function checkSetup()
     {
         if (!self::$setup_done) {
-            throw new \Exception('DruID library is not setup.');
+            throw new \Exception('DruID library is not configured.');
         }
     }
 
@@ -224,5 +186,4 @@ class DruID {
         self::checkSetup();
         return self::$opi;
     }
-
 }

@@ -9,7 +9,9 @@ use Genetsis\core\OAuth\Collections\AuthMethods;
  * @package Genetsis
  * @category UnitTest
  */
-class AuthMethodsCollectionTest extends Unit {
+class AuthMethodsCollectionTest extends Unit
+{
+
     use Specify;
 
     protected function _before()

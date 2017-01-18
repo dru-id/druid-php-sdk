@@ -15,7 +15,9 @@ use Genetsis\core\OAuth\Beans\OAuthConfig\RedirectUrl;
  * @package Genetsis
  * @category TestCase
  */
-class ConfigBeanTest extends Unit {
+class ConfigBeanTest extends Unit
+{
+
     use Specify;
 
     /** @var \UnitTester */
@@ -27,31 +29,39 @@ class ConfigBeanTest extends Unit {
     protected function _before()
     {
         $this->specifyConfig()->shallowClone(); // Speeds up testing avoiding deep clone.
+        $this->config = new Config();
     }
 
     protected function _after()
     {
     }
 
-    public function testSettersAndGetters()
+    public function testSetterAndGetterClientId()
     {
-        $this->config = new Config();
-
         $this->specify('Checks setter and getter for "client_id" property.', function(){
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $this->config->setClientId('my-id'));
             $this->assertEquals('my-id', $this->config->getClientId());
         });
+    }
 
+    public function testSetterAndGetterClientSecret()
+    {
         $this->specify('Checks setter and getter for "client_secret" property.', function(){
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $this->config->setClientSecret('my-secret'));
             $this->assertEquals('my-secret', $this->config->getClientSecret());
         });
+    }
 
+    public function testSetterAndGetterApplicationName()
+    {
         $this->specify('Checks setter and getter for "application name" property.', function(){
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $this->config->setAppName('my-app-name'));
             $this->assertEquals('my-app-name', $this->config->getAppName());
         });
+    }
 
+    public function testSetterAndGetterBrand()
+    {
         $this->specify('Checks setter and getter for "brand" property.', function() {
             $this->assertNull($this->config->getBrand());
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $this->config->setBrand(new Brand(['key' => 'my-brand-key', 'name' => 'my-brand-name'])));
@@ -60,12 +70,18 @@ class ConfigBeanTest extends Unit {
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Brand', $this->config->getBrand());
             $this->assertEquals('my-brand-key-2', $this->config->getBrand()->getKey());
         });
+    }
 
+    public function testSetterAndGetterOpi()
+    {
         $this->specify('Checks setter and getter for "opi" property.', function(){
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $this->config->setOpi('my-opi-code'));
             $this->assertEquals('my-opi-code', $this->config->getOpi());
         });
+    }
 
+    public function testSetterAndGetterHosts()
+    {
         $this->specify('Checks setter and getter for "hosts" property.', function(){
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $this->config->setHosts([
                 new Host(['id' => 1, 'url' => 'www.foo.com']),
@@ -82,7 +98,10 @@ class ConfigBeanTest extends Unit {
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Host', $this->config->getHost(3));
             $this->assertEquals('www.fuu-2.com', $this->config->getHost(3)->getUrl());
         });
+    }
 
+    public function testSetterAndGetterEndpoints()
+    {
         $this->specify('Checks setter and getter for "endpoints" property.', function(){
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $this->config->setEndPoints([
                 new EndPoint(['id' => 1, 'url' => 'www.foo.com']),
@@ -99,7 +118,10 @@ class ConfigBeanTest extends Unit {
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\EndPoint', $this->config->getEndPoint(3));
             $this->assertEquals('www.fuu-ep-2.com', $this->config->getEndPoint(3)->getUrl());
         });
+    }
 
+    public function testSetterAndGetterEntryPoints()
+    {
         $this->specify('Checks setter and getter for "entry points" property.', function(){
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $this->config->setEntryPoints([
                 new EntryPoint(['id' => 1, 'promotion_id' => 'promo1', 'prizes' => []]),
@@ -124,7 +146,10 @@ class ConfigBeanTest extends Unit {
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\EntryPoint', $this->config->getEntryPoint(3));
             $this->assertEquals('promo3_2', $this->config->getEntryPoint(3)->getPromotionId());
         });
+    }
 
+    public function testSetterAndGetterRedirects()
+    {
         $this->specify('Checks setter and getter for "redirects" property.', function(){
             $this->assertCount(0, $this->config->getRedirects());
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $this->config->setRedirects([
@@ -150,7 +175,10 @@ class ConfigBeanTest extends Unit {
             $this->assertEquals('www.type-4_2.com', $this->config->getRedirect('type-4')->getUrl());
             $this->assertEquals('www.type-4_3.com', $this->config->getRedirect('type-4', 'www.type-4_3.com')->getUrl());
         });
+    }
 
+    public function testSetterAndGetterApi()
+    {
         $this->specify('Checks setter and getter for "api" property.', function(){
             $this->assertInstanceOf('\Genetsis\core\OAuth\Beans\OAuthConfig\Config', $this->config->setApis([
                 new Api(['name' => 'api-1', 'base_url' => 'www.api-1.com', 'endpoints' => ['a1' => 'aaa1', 'b1' => 'bbb1']]),
@@ -168,5 +196,4 @@ class ConfigBeanTest extends Unit {
             $this->assertEquals('www.api-111.com', $this->config->getApi('api-1')->getBaseUrl());
         });
     }
-
 }

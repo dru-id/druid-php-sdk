@@ -1,4 +1,5 @@
-<?php namespace Genetsis\core\User\Beans;
+<?php
+namespace Genetsis\core\User\Beans;
 
 use Genetsis\core\OAuth\Beans\ClientToken;
 use Genetsis\core\OAuth\Beans\AccessToken;
@@ -14,6 +15,7 @@ use Genetsis\core\OAuth\Beans\RefreshToken;
  */
 class Things
 {
+
     /** @var ClientToken|null $client_token */
     private $client_token = null;
     /** @var AccessToken|null $access_token */

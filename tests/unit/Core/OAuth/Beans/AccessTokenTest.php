@@ -10,7 +10,9 @@ use Genetsis\core\OAuth\Collections\TokenTypes as TokenTypesCollection;
  * @package Genetsis
  * @category UnitTest
  */
-class AccessTokenTest extends Unit {
+class AccessTokenTest extends Unit
+{
+
     use Specify;
 
     /** @var \UnitTester */

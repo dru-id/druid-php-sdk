@@ -11,7 +11,6 @@ use Genetsis\core\OAuth\Collections\TokenTypes;
 use Genetsis\core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\core\OAuth\Services\OAuth;
 use Genetsis\core\OAuth\Services\OAuthConfigFactory;
-use Genetsis\core\ServiceContainer\Services\ServiceContainer as SC;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\SyslogHandler;
 use Monolog\Logger;

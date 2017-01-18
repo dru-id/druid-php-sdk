@@ -9,7 +9,8 @@ use Genetsis\core\User\Collections\LoginStatusTypes;
  * @package Genetsis
  * @category UnitTest
  */
-class LoginStatusTypesCollectionTest extends Unit {
+class LoginStatusTypesCollectionTest extends Unit
+{
     use Specify;
 
     protected function _before()
@@ -29,5 +30,4 @@ class LoginStatusTypesCollectionTest extends Unit {
             $this->assertFalse(LoginStatusTypes::check('nope'));
         });
     }
-
 }
