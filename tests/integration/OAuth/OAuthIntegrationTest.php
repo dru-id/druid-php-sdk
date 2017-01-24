@@ -6,16 +6,28 @@ use Codeception\Test\Unit;
 use Doctrine\Common\Cache\VoidCache;
 use Genetsis\Core\Http\Contracts\CookiesServiceInterface;
 use Genetsis\Core\Http\Contracts\HttpServiceInterface;
+use Genetsis\Core\OAuth\Beans\AccessToken;
+use Genetsis\Core\OAuth\Beans\ClientToken;
 use Genetsis\Core\OAuth\Beans\OAuthConfig\Config;
+use Genetsis\Core\OAuth\Beans\RefreshToken;
+use Genetsis\Core\OAuth\Collections\AuthMethods;
 use Genetsis\Core\OAuth\Collections\TokenTypes;
 use Genetsis\Core\OAuth\Contracts\OAuthServiceInterface;
+use Genetsis\Core\OAuth\Exceptions\InvalidGrantException;
 use Genetsis\Core\OAuth\Services\OAuth;
 use Genetsis\Core\OAuth\Services\OAuthConfigFactory;
+use Genetsis\Core\User\Beans\LoginStatus;
+use Genetsis\Core\User\Collections\LoginStatusTypes;
+use Genetsis\DruID;
+use Genetsis\Identity\Services\Identity;
+use Genetsis\UnitTest\Core\Http\Services\AuthMethodsCollectionTest;
+use GuzzleHttp\Psr7\Response;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\SyslogHandler;
 use Monolog\Logger;
 use Prophecy\Argument;
 use Prophecy\Prophet;
+use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
 /**
@@ -30,8 +42,12 @@ class OAuthIntegrationTest extends Unit
     protected $prophet;
     /** @var \IntegrationTester */
     protected $tester;
+    /** @var Config $config */
+    protected $config;
     /** @var HttpServiceInterface $http */
     protected $http;
+    /** @var LoggerInterface $logger */
+    protected $logger;
     /** @var OAuthServiceInterface $oauth */
     public $oauth;
 
@@ -41,9 +57,9 @@ class OAuthIntegrationTest extends Unit
         $this->prophet = new Prophet();
         $log_handler = new SyslogHandler('druid');
         $log_handler->setFormatter(new LineFormatter("%level_name% %context.method%[%context.line%]: %message%\n", null, true));
-        $logger = new Logger('druid', [$log_handler]);
-        $oauth_config = (new OAuthConfigFactory($logger, new VoidCache()))->buildConfigFromXmlFile(OAUTHCONFIG_SAMPLE_XML_1_4);
-        $this->oauth = new OAuth($this->prophet->prophesize(DruID::class)->reveal(), $oauth_config, $this->getHttpService(), $this->getCookieService(), $logger);
+        $this->logger = new Logger('druid', [$log_handler]);
+        $this->config = (new OAuthConfigFactory($this->logger, new VoidCache()))->buildConfigFromXmlFile(OAUTHCONFIG_SAMPLE_XML_1_4);
+//        $this->oauth = new OAuth($this->prophet->prophesize(DruID::class)->reveal(), $this->config, $this->getHttpService(), $this->getCookieService(), $this->logger);
     }
 
     protected function _after()
@@ -51,60 +67,292 @@ class OAuthIntegrationTest extends Unit
         $this->prophet->checkPredictions();
     }
 
-    public function testSetterAndGetterConfig()
-    {
-        $this->specify('Checks setter and getter for "config" parameter.', function(){
-            $config = new Config();
-            $config->setClientId('foobarbiz');
-            $this->assertInstanceOf('\Genetsis\Core\OAuth\Contracts\OAuthServiceInterface', $this->oauth->setConfig($config));
-            $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\OAuthConfig\Config', $this->oauth->getConfig());
-            $this->assertEquals('foobarbiz', $this->oauth->getConfig()->getClientId());
-        });
-    }
-
     public function testDoGetClientToken()
     {
         $this->specify('Tests that "doGetClientToken" throws an exception when "endpoint" parameter is not defined.', function () {
-            $this->oauth->doGetClientToken('');
+            $oauth = new OAuth($this->prophet->prophesize(DruID::class)->reveal(), $this->config, $this->prophet->prophesize(HttpServiceInterface::class)->reveal(), $this->getCookieService(), $this->logger);
+            $oauth->doGetClientToken('');
         }, ['throws' => 'Exception']);
 
-        $this->specify('Tests that "doGetClientToken" returns a ClientToken instance.', function () {
-            $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\ClientToken', $this->oauth->doGetClientToken('http://auth.ci.dru-id.com/oauth2/token'));
+        $this->specify('Checks that "doGetClientToken" returns a ClientToken instance.', function () {
+            $http_prophecy = $this->prophet->prophesize(HttpServiceInterface::class);
+            $http_prophecy->request(
+                'POST',
+                'http://auth.ci.dru-id.com/oauth2/token',
+                Argument::withEntry('form_params', [
+                    'grant_type' => 'client_credentials',
+                    'client_id' => 'XXXXXXX',
+                    'client_secret' => 'YYYYYYY'
+                ]),
+                Argument::cetera()
+            )->will(function () {
+                return new Response(200, ['Content-type: application/json'], '{"access_token":"231705665113870|3|2.ynv06g07QgsQGg.3600.1479906956037|Bcq3G9oU2urZo5U7OH03vYcCa8XjOIkx2aVi0WWyCsk.","token_type":"bearer","expires_in":3600,"expires_at":'.(time()+3600).'}');
+            });
+            $oauth = new OAuth($this->prophet->prophesize(DruID::class)->reveal(), $this->config, $http_prophecy->reveal(), $this->getCookieService(), $this->logger);
+            $this->assertInstanceOf(ClientToken::class, $oauth->doGetClientToken('http://auth.ci.dru-id.com/oauth2/token'));
+        });
+
+        $this->specify('Checks that "doGetClientToken" throws an exception when server\'s response is not a valid JSON string.', function () {
+            $http_prophecy = $this->prophet->prophesize(HttpServiceInterface::class);
+            $http_prophecy->request(
+                'POST',
+                'http://auth.ci.dru-id.com/oauth2/token',
+                Argument::withEntry('form_params', [
+                    'grant_type' => 'client_credentials',
+                    'client_id' => 'XXXXXXX',
+                    'client_secret' => 'YYYYYYY'
+                ]),
+                Argument::cetera()
+            )->will(function () {
+                return new Response(200, ['Content-type: application/json'], '{{}');
+            });
+            $oauth = new OAuth($this->prophet->prophesize(DruID::class)->reveal(), $this->config, $http_prophecy->reveal(), $this->getCookieService(), $this->logger);
+            $this->assertInstanceOf(ClientToken::class, $oauth->doGetClientToken('http://auth.ci.dru-id.com/oauth2/token'));
+        }, ['throws' => \Exception::class]);
+
+        $this->specify('Tests that "doGetClientToken" throws an exception when server\'s response does not contains information about the token.', function () {
+            $http_prophecy = $this->prophet->prophesize(HttpServiceInterface::class);
+            $http_prophecy->request(
+                'POST',
+                'http://auth.ci.dru-id.com/oauth2/token',
+                Argument::withEntry('form_params', [
+                    'grant_type' => 'client_credentials',
+                    'client_id' => 'XXXXXXX',
+                    'client_secret' => 'YYYYYYY'
+                ]),
+                Argument::cetera()
+            )->will(function () {
+                return new Response(200, ['Content-type: application/json'], '{}');
+            });
+            $oauth = new OAuth($this->prophet->prophesize(DruID::class)->reveal(), $this->config, $http_prophecy->reveal(), $this->getCookieService(), $this->logger);
+            $this->assertInstanceOf(ClientToken::class, $oauth->doGetClientToken('http://auth.ci.dru-id.com/oauth2/token'));
+        }, ['throws' => \Exception::class]);
+
+        $this->specify('Checks that "doGetClientToken" set "expires_in" value to default if this one is not present in server\'s response.', function () {
+            $http_prophecy = $this->prophet->prophesize(HttpServiceInterface::class);
+            $http_prophecy->request(
+                'POST',
+                'http://auth.ci.dru-id.com/oauth2/token',
+                Argument::withEntry('form_params', [
+                    'grant_type' => 'client_credentials',
+                    'client_id' => 'XXXXXXX',
+                    'client_secret' => 'YYYYYYY'
+                ]),
+                Argument::cetera()
+            )->will(function () {
+                return new Response(200, ['Content-type: application/json'], '{"access_token":"231705665113870|3|2.ynv06g07QgsQGg.3600.1479906956037|Bcq3G9oU2urZo5U7OH03vYcCa8XjOIkx2aVi0WWyCsk.","token_type":"bearer","expires_at":'.(time()+3600).'}');
+            });
+            $oauth = new OAuth($this->prophet->prophesize(DruID::class)->reveal(), $this->config, $http_prophecy->reveal(), $this->getCookieService(), $this->logger);
+            $token = $oauth->doGetClientToken('http://auth.ci.dru-id.com/oauth2/token');
+            $this->assertInstanceOf(ClientToken::class, $token);
+            $this->assertEquals((OAuth::DEFAULT_EXPIRES_IN - (OAuth::DEFAULT_EXPIRES_IN * OAuth::SAFETY_RANGE_EXPIRES_IN)), $token->getExpiresIn());
         });
     }
 
     public function testDoGetAccessToken()
     {
         $this->specify('Tests that "doGetAccessToken" throws an exception when "endpoint" parameter is not defined.', function() {
-            $this->oauth->doGetAccessToken('', '', '');
+            $oauth = new OAuth($this->prophet->prophesize(DruID::class)->reveal(), $this->config, $this->prophet->prophesize(HttpServiceInterface::class)->reveal(), $this->getCookieService(), $this->logger);
+            $oauth->doGetAccessToken('', '', '');
         }, ['throws' => 'Exception']);
 
         $this->specify('Tests that "doGetAccessToken" throws an exception when "code" parameter is not defined.', function() {
-            $this->oauth->doGetAccessToken('http://auth.ci.dru-id.com/oauth2/token', '', '');
+            $oauth = new OAuth($this->prophet->prophesize(DruID::class)->reveal(), $this->config, $this->prophet->prophesize(HttpServiceInterface::class)->reveal(), $this->getCookieService(), $this->logger);
+            $oauth->doGetAccessToken('http://auth.ci.dru-id.com/oauth2/token', '', '');
         }, ['throws' => 'Exception']);
 
         $this->specify('Tests that "doGetAccessToken" throws an exception when "redirect_url" parameter is not defined.', function() {
-            $this->oauth->doGetAccessToken('http://auth.ci.dru-id.com/oauth2/token', 'xxxxxxxxxx', '');
+            $oauth = new OAuth($this->prophet->prophesize(DruID::class)->reveal(), $this->config, $this->prophet->prophesize(HttpServiceInterface::class)->reveal(), $this->getCookieService(), $this->logger);
+            $oauth->doGetAccessToken('http://auth.ci.dru-id.com/oauth2/token', 'xxxxxxxxxx', '');
         }, ['throws' => 'Exception']);
 
-        $this->specify('Tests that "doGetAccessToken" returns AccessToken data.', function() {
-            $response = $this->oauth->doGetAccessToken(
+        $this->specify('Checks that "doGetAccessToken" returns a AccessToken instance.', function () {
+            $http_prophecy = $this->prophet->prophesize(HttpServiceInterface::class);
+            $http_prophecy->request(
+                'POST',
                 'http://auth.ci.dru-id.com/oauth2/token',
-                'xxxxxxxxxx',
-                'http://www.foo.com/actions'
-            );
+                Argument::withEntry('form_params', [
+                    'grant_type' => AuthMethods::GRANT_TYPE_AUTH_CODE,
+                    'code' => 'xxxxxxxxxx',
+                    'redirect_uri' => 'http://www.foo.com/actions',
+                    'client_id' => 'XXXXXXX',
+                    'client_secret' => 'YYYYYYY'
+                ]),
+                Argument::cetera()
+            )->will(function () {
+                return new Response(200, ['Content-type: application/json'], '{"access_token":"231705665113870|1|2.0h9mw60JM7iD6g.900.1484654484343-2f91af5e4f41eebd03c92f616b35fccb4ec64995|OuuEQx1gVfe5YGC4nz1FVoVGxgngU6XT1rHAuAryRls.","token_type":"bearer","expires_in":900,"expires_at":'.(time()+900).',"refresh_token":"231705665113870|4|2.sNR2wanZ1tdJ4Q.1209600.1485795426335-2f91af5e4f41eebd03c92f616b35fccb4ec64995|qxvceuX5dwwoJQm3yeel2zfgal4L73vGvap-mHzu_pY.","login_status":{"uid":11,"oid":"2f91af5e4f41eebd03c92f616b35fccb4ec64995","connect_state":"connected"}}');
+            });
+            $oauth = new OAuth($this->prophet->prophesize(DruID::class)->reveal(), $this->config, $http_prophecy->reveal(), $this->getCookieService(), $this->logger);
+            $response = $oauth->doGetAccessToken('http://auth.ci.dru-id.com/oauth2/token', 'xxxxxxxxxx', 'http://www.foo.com/actions');
             $this->assertArrayHasKey('access_token', $response);
-            $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\AccessToken', $response['access_token']);
+            $this->assertInstanceOf(AccessToken::class, $response['access_token']);
             $this->assertArrayHasKey('refresh_token', $response);
-            $this->assertInstanceOf('\Genetsis\Core\OAuth\Beans\RefreshToken', $response['refresh_token']);
+            $this->assertInstanceOf(RefreshToken::class, $response['refresh_token']);
             $this->assertArrayHasKey('login_status', $response);
+            $this->assertInstanceOf(LoginStatus::class, $response['login_status']);
+            $this->assertEquals('11', $response['login_status']->getCkusid());
+            $this->assertEquals('2f91af5e4f41eebd03c92f616b35fccb4ec64995', $response['login_status']->getOid());
+            $this->assertEquals(LoginStatusTypes::CONNECTED, $response['login_status']->getConnectState());
         });
-    }
 
-    public function testDoRefreshToken()
-    {
+        $this->specify('Checks that "doGetAccessToken" throws an exception when server\'s response is not a valid JSON string.', function () {
+            $http_prophecy = $this->prophet->prophesize(HttpServiceInterface::class);
+            $http_prophecy->request(
+                'POST',
+                'http://auth.ci.dru-id.com/oauth2/token',
+                Argument::withEntry('form_params', [
+                    'grant_type' => AuthMethods::GRANT_TYPE_AUTH_CODE,
+                    'code' => 'xxxxxxxxxx',
+                    'redirect_uri' => 'http://www.foo.com/actions',
+                    'client_id' => 'XXXXXXX',
+                    'client_secret' => 'YYYYYYY'
+                ]),
+                Argument::cetera()
+            )->will(function () {
+                return new Response(200, ['Content-type: application/json'], '{{}');
+            });
+            $oauth = new OAuth($this->prophet->prophesize(DruID::class)->reveal(), $this->config, $http_prophecy->reveal(), $this->getCookieService(), $this->logger);
+            $oauth->doGetAccessToken('http://auth.ci.dru-id.com/oauth2/token', 'xxxxxxxxxx', 'http://www.foo.com/actions');
+        }, ['throws' => \Exception::class]);
 
+        $this->specify('Checks that "doGetAccessToken" throws an exception when server\'s response does not contains "access_token" information.', function () {
+            $http_prophecy = $this->prophet->prophesize(HttpServiceInterface::class);
+            $http_prophecy->request(
+                'POST',
+                'http://auth.ci.dru-id.com/oauth2/token',
+                Argument::withEntry('form_params', [
+                    'grant_type' => AuthMethods::GRANT_TYPE_AUTH_CODE,
+                    'code' => 'xxxxxxxxxx',
+                    'redirect_uri' => 'http://www.foo.com/actions',
+                    'client_id' => 'XXXXXXX',
+                    'client_secret' => 'YYYYYYY'
+                ]),
+                Argument::cetera()
+            )->will(function () {
+                return new Response(200, ['Content-type: application/json'], '{"token_type":"bearer","expires_in":900,"expires_at":'.(time()+900).',"refresh_token":"231705665113870|4|2.sNR2wanZ1tdJ4Q.1209600.1485795426335-2f91af5e4f41eebd03c92f616b35fccb4ec64995|qxvceuX5dwwoJQm3yeel2zfgal4L73vGvap-mHzu_pY.","login_status":{"uid":11,"oid":"2f91af5e4f41eebd03c92f616b35fccb4ec64995","connect_state":"connected"}}');
+            });
+            $oauth = new OAuth($this->prophet->prophesize(DruID::class)->reveal(), $this->config, $http_prophecy->reveal(), $this->getCookieService(), $this->logger);
+            $oauth->doGetAccessToken('http://auth.ci.dru-id.com/oauth2/token', 'xxxxxxxxxx', 'http://www.foo.com/actions');
+        }, ['throws' => \Exception::class]);
+
+        $this->specify('Checks that "doGetAccessToken" throws an exception when server\'s response does not contains "refresh_token" information.', function () {
+            $http_prophecy = $this->prophet->prophesize(HttpServiceInterface::class);
+            $http_prophecy->request(
+                'POST',
+                'http://auth.ci.dru-id.com/oauth2/token',
+                Argument::withEntry('form_params', [
+                    'grant_type' => AuthMethods::GRANT_TYPE_AUTH_CODE,
+                    'code' => 'xxxxxxxxxx',
+                    'redirect_uri' => 'http://www.foo.com/actions',
+                    'client_id' => 'XXXXXXX',
+                    'client_secret' => 'YYYYYYY'
+                ]),
+                Argument::cetera()
+            )->will(function () {
+                return new Response(200, ['Content-type: application/json'], '{"access_token":"231705665113870|1|2.0h9mw60JM7iD6g.900.1484654484343-2f91af5e4f41eebd03c92f616b35fccb4ec64995|OuuEQx1gVfe5YGC4nz1FVoVGxgngU6XT1rHAuAryRls.","token_type":"bearer","expires_in":900,"expires_at":'.(time()+900).',"login_status":{"uid":11,"oid":"2f91af5e4f41eebd03c92f616b35fccb4ec64995","connect_state":"connected"}}');
+            });
+            $oauth = new OAuth($this->prophet->prophesize(DruID::class)->reveal(), $this->config, $http_prophecy->reveal(), $this->getCookieService(), $this->logger);
+            $oauth->doGetAccessToken('http://auth.ci.dru-id.com/oauth2/token', 'xxxxxxxxxx', 'http://www.foo.com/actions');
+        }, ['throws' => \Exception::class]);
+
+        $this->specify('Checks that "doGetAccessToken" set "expires_in" value to default if this one is not present in the response.', function () {
+            $http_prophecy = $this->prophet->prophesize(HttpServiceInterface::class);
+            $http_prophecy->request(
+                'POST',
+                'http://auth.ci.dru-id.com/oauth2/token',
+                Argument::withEntry('form_params', [
+                    'grant_type' => AuthMethods::GRANT_TYPE_AUTH_CODE,
+                    'code' => 'xxxxxxxxxx',
+                    'redirect_uri' => 'http://www.foo.com/actions',
+                    'client_id' => 'XXXXXXX',
+                    'client_secret' => 'YYYYYYY'
+                ]),
+                Argument::cetera()
+            )->will(function () {
+                return new Response(200, ['Content-type: application/json'], '{"access_token":"231705665113870|1|2.0h9mw60JM7iD6g.900.1484654484343-2f91af5e4f41eebd03c92f616b35fccb4ec64995|OuuEQx1gVfe5YGC4nz1FVoVGxgngU6XT1rHAuAryRls.","token_type":"bearer","expires_at":'.(time()+900).',"refresh_token":"231705665113870|4|2.sNR2wanZ1tdJ4Q.1209600.1485795426335-2f91af5e4f41eebd03c92f616b35fccb4ec64995|qxvceuX5dwwoJQm3yeel2zfgal4L73vGvap-mHzu_pY.","login_status":{"uid":11,"oid":"2f91af5e4f41eebd03c92f616b35fccb4ec64995","connect_state":"connected"}}');
+            });
+            $oauth = new OAuth($this->prophet->prophesize(DruID::class)->reveal(), $this->config, $http_prophecy->reveal(), $this->getCookieService(), $this->logger);
+            $response = $oauth->doGetAccessToken('http://auth.ci.dru-id.com/oauth2/token', 'xxxxxxxxxx', 'http://www.foo.com/actions');
+            $this->assertArrayHasKey('access_token', $response);
+            $this->assertInstanceOf(AccessToken::class, $response['access_token']);
+            $this->assertEquals((OAuth::DEFAULT_EXPIRES_IN - (OAuth::DEFAULT_EXPIRES_IN * OAuth::SAFETY_RANGE_EXPIRES_IN)), $response['access_token']->getExpiresIn());
+        });
+
+        $this->specify('Checks that "doGetAccessToken" is able to handle the response if does not contains information about the login status at all.', function () {
+            $http_prophecy = $this->prophet->prophesize(HttpServiceInterface::class);
+            $http_prophecy->request(
+                'POST',
+                'http://auth.ci.dru-id.com/oauth2/token',
+                Argument::withEntry('form_params', [
+                    'grant_type' => AuthMethods::GRANT_TYPE_AUTH_CODE,
+                    'code' => 'xxxxxxxxxx',
+                    'redirect_uri' => 'http://www.foo.com/actions',
+                    'client_id' => 'XXXXXXX',
+                    'client_secret' => 'YYYYYYY'
+                ]),
+                Argument::cetera()
+            )->will(function () {
+                return new Response(200, ['Content-type: application/json'], '{"access_token":"231705665113870|1|2.0h9mw60JM7iD6g.900.1484654484343-2f91af5e4f41eebd03c92f616b35fccb4ec64995|OuuEQx1gVfe5YGC4nz1FVoVGxgngU6XT1rHAuAryRls.","token_type":"bearer","expires_in":900,"expires_at":'.(time()+900).',"refresh_token":"231705665113870|4|2.sNR2wanZ1tdJ4Q.1209600.1485795426335-2f91af5e4f41eebd03c92f616b35fccb4ec64995|qxvceuX5dwwoJQm3yeel2zfgal4L73vGvap-mHzu_pY."}');
+            });
+            $oauth = new OAuth($this->prophet->prophesize(DruID::class)->reveal(), $this->config, $http_prophecy->reveal(), $this->getCookieService(), $this->logger);
+            $response = $oauth->doGetAccessToken('http://auth.ci.dru-id.com/oauth2/token', 'xxxxxxxxxx', 'http://www.foo.com/actions');
+            $this->assertArrayHasKey('login_status', $response);
+            $this->assertInstanceOf(LoginStatus::class, $response['login_status']);
+            $this->assertEquals('', $response['login_status']->getCkusid());
+            $this->assertEquals('', $response['login_status']->getOid());
+            $this->assertEquals(LoginStatusTypes::UNKNOWN, $response['login_status']->getConnectState());
+        });
+
+        $this->specify('Checks that "doGetAccessToken" is able to handle the response if does contains partial information about the login status.', function () {
+            $http_prophecy = $this->prophet->prophesize(HttpServiceInterface::class);
+            $http_prophecy->request(
+                'POST',
+                'http://auth.ci.dru-id.com/oauth2/token',
+                Argument::withEntry('form_params', [
+                    'grant_type' => AuthMethods::GRANT_TYPE_AUTH_CODE,
+                    'code' => 'xxxxxxxxxx',
+                    'redirect_uri' => 'http://www.foo.com/actions',
+                    'client_id' => 'XXXXXXX',
+                    'client_secret' => 'YYYYYYY'
+                ]),
+                Argument::cetera()
+            )->will(function () {
+                return new Response(200, ['Content-type: application/json'], '{"access_token":"231705665113870|1|2.0h9mw60JM7iD6g.900.1484654484343-2f91af5e4f41eebd03c92f616b35fccb4ec64995|OuuEQx1gVfe5YGC4nz1FVoVGxgngU6XT1rHAuAryRls.","token_type":"bearer","expires_in":900,"expires_at":'.(time()+900).',"refresh_token":"231705665113870|4|2.sNR2wanZ1tdJ4Q.1209600.1485795426335-2f91af5e4f41eebd03c92f616b35fccb4ec64995|qxvceuX5dwwoJQm3yeel2zfgal4L73vGvap-mHzu_pY.","login_status":{}}');
+            });
+            $oauth = new OAuth($this->prophet->prophesize(DruID::class)->reveal(), $this->config, $http_prophecy->reveal(), $this->getCookieService(), $this->logger);
+            $response = $oauth->doGetAccessToken('http://auth.ci.dru-id.com/oauth2/token', 'xxxxxxxxxx', 'http://www.foo.com/actions');
+            $this->assertArrayHasKey('login_status', $response);
+            $this->assertInstanceOf(LoginStatus::class, $response['login_status']);
+            $this->assertEquals('', $response['login_status']->getCkusid());
+            $this->assertEquals('', $response['login_status']->getOid());
+            $this->assertEquals(LoginStatusTypes::UNKNOWN, $response['login_status']->getConnectState());
+        });
+
+        $this->specify('Checks that "doGetAccessToken" throws an exception if server respond with an "InvalidGrantException".', function () {
+            $http_prophecy = $this->prophet->prophesize(HttpServiceInterface::class);
+            $http_prophecy->request(
+                'POST',
+                'http://auth.ci.dru-id.com/oauth2/token',
+                Argument::withEntry('form_params', [
+                    'grant_type' => AuthMethods::GRANT_TYPE_AUTH_CODE,
+                    'code' => 'xxxxxxxxxx',
+                    'redirect_uri' => 'http://www.foo.com/actions',
+                    'client_id' => 'XXXXXXX',
+                    'client_secret' => 'YYYYYYY'
+                ]),
+                Argument::cetera()
+            )->will(function () {
+                throw new InvalidGrantException('Testing an invalid grant exception error.');
+            });
+            $oauth = new OAuth($this->prophet->prophesize(DruID::class)->reveal(), $this->config, $http_prophecy->reveal(), $this->getCookieService(), $this->logger);
+            $oauth->doGetAccessToken('http://auth.ci.dru-id.com/oauth2/token', 'xxxxxxxxxx', 'http://www.foo.com/actions');
+        }, ['throws' => InvalidGrantException::class]);
     }
+//
+//    public function testDoRefreshToken()
+//    {
+//
+//    }
 
     /**
      * @return HttpServiceInterface
@@ -115,19 +363,16 @@ class OAuthIntegrationTest extends Unit
         $prophecy->willImplement(HttpServiceInterface::class);
 
         $prophecy->request(
+            'POST',
             'http://auth.ci.dru-id.com/oauth2/token',
-            Argument::allOf(
-                Argument::withEntry('grant_type', 'client_credentials'),
-                Argument::withEntry('client_id', 'XXXXXXX'),
-                Argument::withEntry('client_secret', 'YYYYYYY')
-            ),
+            Argument::withEntry('form_params', [
+                'grant_type' => 'client_credentials',
+                'client_id' => 'XXXXXXX',
+                'client_secret' => 'YYYYYYY'
+            ]),
             Argument::cetera()
         )->will(function () {
-            return [ // Returned value
-                'result' => json_decode('{"access_token":"231705665113870|3|2.ynv06g07QgsQGg.3600.1479906956037|Bcq3G9oU2urZo5U7OH03vYcCa8XjOIkx2aVi0WWyCsk.","token_type":"bearer","expires_in":2739,"expires_at":1479906956037}'),
-                'code' => 200,
-                'content_type' => 'application/json'
-            ];
+            return new Response(200, ['Content-type: application/json'], '{"access_token":"231705665113870|3|2.ynv06g07QgsQGg.3600.1479906956037|Bcq3G9oU2urZo5U7OH03vYcCa8XjOIkx2aVi0WWyCsk.","token_type":"bearer","expires_in":2739,"expires_at":1479906956037}');
         });
 
         $prophecy->request(

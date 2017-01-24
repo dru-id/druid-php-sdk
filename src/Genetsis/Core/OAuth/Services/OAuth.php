@@ -113,14 +113,14 @@ class OAuth implements OAuthServiceInterface
             ]);
             $response = @json_decode((string)$response->getBody(), true);
             if (is_null($response) || !is_array($response)) {
-                throw new RequestException('Server has responded with an invalid JSON data.');
+                throw new RequestException('Server has responded with an invalid JSON string.');
             }
             if (!isset($response['access_token']) || !$response['access_token']) {
-                throw new \Exception('The access_token retrieved is empty');
+                throw new \Exception('The server response does not contain a valid access_token or is empty.');
             }
 
-            $expires_in = isset($response['expires_in'])
-                ? intval($response['expires_in'])
+            $expires_in = isset($response['expires_in']) && ($response['expires_in'] > 0)
+                ? (int)$response['expires_in']
                 : self::DEFAULT_EXPIRES_IN;
             $expires_in = ($expires_in - ($expires_in * self::SAFETY_RANGE_EXPIRES_IN));
             $expires_at = (time() + $expires_in);
@@ -130,7 +130,7 @@ class OAuth implements OAuthServiceInterface
             return $client_token;
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
-            throw $e;
+            throw new \Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -143,21 +143,21 @@ class OAuth implements OAuthServiceInterface
      * @throws InvalidGrantException
      * @deprecated
      */
-    private function checkErrors($response)
-    {
-        if (isset($response['result']->error)) {
-            if (isset($response['result']->type)) {
-                switch ($response['result']->type) {
-                    case 'InvalidGrantException' :
-                        throw new InvalidGrantException($response['result']->error . ' (' . (isset($response['result']->type) ? trim($response['result']->type) : '') . ')');
-                }
-            }
-            throw new \Exception($response['result']->error . ' (' . (isset($response['result']->type) ? trim($response['result']->type) : '') . ')');
-        }
-        if (isset($response['code']) && ($response['code'] != 200)) {
-            throw new \Exception('Error: ' .$response['code']);
-        }
-    }
+//    private function checkErrors($response)
+//    {
+//        if (isset($response['result']->error)) {
+//            if (isset($response['result']->type)) {
+//                switch ($response['result']->type) {
+//                    case 'InvalidGrantException' :
+//                        throw new InvalidGrantException($response['result']->error . ' (' . (isset($response['result']->type) ? trim($response['result']->type) : '') . ')');
+//                }
+//            }
+//            throw new \Exception($response['result']->error . ' (' . (isset($response['result']->type) ? trim($response['result']->type) : '') . ')');
+//        }
+//        if (isset($response['code']) && ($response['code'] != 200)) {
+//            throw new \Exception('Error: ' .$response['code']);
+//        }
+//    }
 
     /**
      * Stores a token in a cookie
@@ -172,19 +172,7 @@ class OAuth implements OAuthServiceInterface
     }
 
     /**
-     * Gets an "access_token" for the current web client.
-     *
-     * @param string $endpoint_url The endpoint where "access_token" is requested.
-     * @param string $code The authorization code returned by Genetsis ID.
-     * @param string $redirect_url Where the user will be redirected.
-     * @return array An array with the following data:
-     *      [
-     *          'access_token' => An instance of {@link AccessToken}
-     *          'refresh_token' => An instance of {@link RefreshToken}
-     *          'login_status' => An instance of {@link LoginStatus}
-     *      ]
-     * @throws \Exception If there is an error.
-     * @throws InvalidGrantException
+     * @inheritDoc
      */
     public function doGetAccessToken ($endpoint_url, $code, $redirect_url)
     {
@@ -231,8 +219,8 @@ class OAuth implements OAuthServiceInterface
                 throw new \Exception('The refresh_token retrieved is empty');
             }
 
-            $expires_in = isset($response['expires_in'])
-                ? intval($response['expires_in'])
+            $expires_in = isset($response['expires_in']) && ($response['expires_in'] > 0)
+                ? (int)$response['expires_in']
                 : self::DEFAULT_EXPIRES_IN;
             $expires_in = ($expires_in - ($expires_in * self::SAFETY_RANGE_EXPIRES_IN));
             $expires_at = (time() + $expires_in);
@@ -245,9 +233,15 @@ class OAuth implements OAuthServiceInterface
 
             $loginStatus = new LoginStatus();
             if (isset($response['login_status'])) {
-                $loginStatus->setCkusid(isset($response['login_status'], $response['login_status']['uid']) ? $response['login_status']['uid'] : '');
-                $loginStatus->setOid(isset($response['login_status'], $response['login_status']['oid']) ? $response['login_status']['oid'] : '');
-                $loginStatus->setConnectState(isset($response['login_status'], $response['login_status']['connect_state']) ? $response['login_status']['connect_state'] : '');
+                $loginStatus->setCkusid(isset($response['login_status'], $response['login_status']['uid'])
+                    ? $response['login_status']['uid']
+                    : '');
+                $loginStatus->setOid(isset($response['login_status'], $response['login_status']['oid'])
+                    ? $response['login_status']['oid']
+                    : '');
+                $loginStatus->setConnectState(isset($response['login_status'], $response['login_status']['connect_state'])
+                    ? $response['login_status']['connect_state']
+                    : '');
             }
             $result['login_status'] = $loginStatus;
 
@@ -307,8 +301,8 @@ class OAuth implements OAuthServiceInterface
                 throw new \Exception('The refresh_token retrieved is empty');
             }
 
-            $expires_in = isset($response['expires_in'])
-                ? intval($response['expires_in'])
+            $expires_in = isset($response['expires_in']) && ($response['expires_in'] > 0)
+                ? (int)$response['expires_in']
                 : self::DEFAULT_EXPIRES_IN;
             $expires_in = ($expires_in - ($expires_in * self::SAFETY_RANGE_EXPIRES_IN));
             $expires_at = (time() + $expires_in);
@@ -447,8 +441,8 @@ class OAuth implements OAuthServiceInterface
                 throw new \Exception('The refresh_token retrieved is empty');
             }
 
-            $expires_in = isset($response['expires_in'])
-                ? intval($response['expires_in'])
+            $expires_in = isset($response['expires_in']) && ($response['expires_in'] > 0)
+                ? (int)$response['expires_in']
                 : self::DEFAULT_EXPIRES_IN;
             $expires_in = ($expires_in - ($expires_in * self::SAFETY_RANGE_EXPIRES_IN));
             $expires_at = (time() + $expires_in);

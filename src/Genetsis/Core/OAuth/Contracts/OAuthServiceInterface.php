@@ -1,6 +1,7 @@
 <?php namespace Genetsis\Core\OAuth\Contracts;
 
 use Genetsis\Core\OAuth\Beans\OAuthConfig\Config;
+use Genetsis\Core\OAuth\Exceptions\InvalidGrantException;
 
 /**
  * OAuth service interface.
@@ -44,8 +45,14 @@ interface OAuthServiceInterface {
      * @param string $endpoint_url The endpoint where "access_token" is requested.
      * @param string $code The authorization code returned by Genetsis ID.
      * @param string $redirect_url Where the user will be redirected.
-     * @return mixed An instance of {@link \Genetsis\Core\OAuth\Beans\AccessToken} with data retrieved or FALSE.
+     * @return array An array with the following data:
+     *      [
+     *          'access_token' => An instance of {@link AccessToken}
+     *          'refresh_token' => An instance of {@link RefreshToken}
+     *          'login_status' => An instance of {@link LoginStatus}
+     *      ]
      * @throws \Exception If there is an error.
+     * @throws InvalidGrantException
      */
     public function doGetAccessToken ($endpoint_url, $code, $redirect_url);
 

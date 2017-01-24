@@ -18,7 +18,7 @@ class LoginStatus
     /** @var string $oid ObjectID of user logged. */
     private $oid = null;
     /** @var string $connect_state One of the values defined in {@link \Genetsis\Core\User\Collections\LoginStatusTypes}. */
-    private $connect_state = null;
+    private $connect_state = LoginStatusTypesCollection::UNKNOWN;
 
     /**
      * @param array $settings Initial settings. Array structure:
