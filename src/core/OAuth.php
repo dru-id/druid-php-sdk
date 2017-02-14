@@ -514,11 +514,21 @@ class OAuth
 
             self::checkErrors($response);
 
-            if (isset($response['code']) && ($response['code'] == 200)) {
-                return (($response['result']->data[0]->meta->value) === 'false') ? true : false;
-            } else {
+            return call_user_func(function($result){
+                if (isset($result->data) && is_array($result->data)) {
+                    foreach ($result->data as $data) {
+                        if (isset($data->meta,$data->meta->data,$data->meta->data->needsToConfirmIds) && $data->meta->data->needsToConfirmIds === 'true') {
+                            return false;
+                        }else if(isset($data->meta,$data->meta->data,$data->meta->data->needsToCompleteData) && $data->meta->data->needsToCompleteData === 'true'){
+                            return false;
+                        }else{
+                            return true;
+                        }
+                    }
+                }
                 return false;
-            }
+            }, $response['result']);
+
         } catch (Exception $e) {
             throw new Exception('Error [' . __FUNCTION__ . '] - '.$e->getMessage());
         }
@@ -559,20 +569,17 @@ class OAuth
 
             self::checkErrors($response);
 
-            if (isset($response['code']) && ($response['code'] == 200)) {
-                return call_user_func(function($result){
-                        if (isset($result->data) && is_array($result->data)) {
-                            foreach ($result->data as $data) {
-                                if (isset($data->meta->name) && ($data->meta->name === 'needsToAcceptTerms')) {
-                                    return (isset($data->meta->value) && ($data->meta->value === 'true'));
-                                }
-                            }
+            return call_user_func(function($result){
+                if (isset($result->data) && is_array($result->data)) {
+                    foreach ($result->data as $data) {
+                        if (isset($data->meta,$data->meta->data,$data->meta->data->needsToAcceptTerms)) {
+                            return $data->meta->data->needsToAcceptTerms === 'true';
                         }
-                        return false;
-                    }, $response['result']);
-            } else {
+                    }
+                }
                 return false;
-            }
+            }, $response['result']);
+
         } catch (Exception $e) {
             throw new Exception('Error [' . __FUNCTION__ . '] - '.$e->getMessage());
         }
