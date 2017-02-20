@@ -20,9 +20,9 @@ class Opi
     /**
      * redirect to a specified opi
      */
-    public static function open($opi=false, $redirect_url=false)
+    public static function open($opi=false, $redirect_url=false, $oid=false)
     {
-        header("Location: " . self::get($opi, $redirect_url));
+        header("Location: " . self::get($opi, $redirect_url, $oid));
         die();
     }
 
@@ -30,7 +30,7 @@ class Opi
      * get url redirect to a specified opi
      */
 
-    public static function get($opi=false, $redirect_url=false)
+    public static function get($opi=false, $redirect_url=false, $oid=false)
     {
         if (!$opi) {
             $opi = OAuthConfig::getOpi();
@@ -40,12 +40,12 @@ class Opi
             throw new Exception ("You must pass OPI as param, or define it in <data> part of oauthconf.xml");
         }
 
+        $info = !$oid ? UserApi::getUserLogged() : UserApi::getUsers(array('id' => $oid))[0];
+
         $params = array(
-            "id" => urlencode(UserApi::getUserLoggedOid()),
+            "id" => $info->user->oid,
             "sc" => urlencode(OAuthConfig::getBrand()),
             "carry_url" => urlencode($redirect_url));
-
-        $info = UserApi::getUserLogged();
 
         $opi_age = false;
         $opi_gender = false;
@@ -79,7 +79,7 @@ class Opi
                             } else if (25 <= $age && $age <= 34) {
                                 $opi_age = 2;
                             } elseif (35 <= $age && $age <= 44) {
-                            $opi_age = 3;
+                                $opi_age = 3;
                             } elseif (45 <= $age && $age <= 64) {
                                 $opi_age = 4;
                             }
