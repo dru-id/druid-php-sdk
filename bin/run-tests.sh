@@ -6,4 +6,4 @@ if [ ! $? -eq 0 ]; then
   exit 1
 fi
 
-php ${PWD}/../src/main/php/lib/vendor/codeception/codeception/codecept --config=${PWD}/../tests/codeception.yml run unit,integration
+php ${PWD}/../vendor/bin/codecept --config=${PWD}/../tests/codeception.yml run unit,integration

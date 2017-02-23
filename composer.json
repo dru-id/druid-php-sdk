@@ -4,12 +4,7 @@
   "description": "DRUID SDK for PHP",
   "license": "Apache-2.0",
   "minimum-stability": "dev",
-  "keywords": [
-    "dru-id",
-    "druid",
-    "sdk",
-    "php"
-  ],
+  "keywords": ["dru-id", "druid", "sdk", "php"],
   "type": "library",
   "homepage": "http://developers.dru-id.com/",
   "authors": [
@@ -34,12 +29,14 @@
     "php-mock/php-mock": "^1.0",
     "php-mock/php-mock-prophecy": "^0.0.2"
   },
-  "config": {
-    "vendor-dir": "src/main/php/lib/vendor"
-  },
   "autoload": {
     "psr-4": {
-      "Genetsis\\": "src"
+      "Genetsis\\": "src/Genetsis"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Genetsis\\": ["tests/unit/Genetsis", "tests/integration/Genetsis"]
     }
   },
   "scripts": {

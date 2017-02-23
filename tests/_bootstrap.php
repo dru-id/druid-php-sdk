@@ -1,7 +1,7 @@
 <?php
 // This is global bootstrap for autoloading
 
-include __DIR__ .'/../src/main/php/lib/vendor/autoload.php';
+include __DIR__ .'/../vendor/autoload.php';
 
 define('OAUTHCONFIG_SAMPLE_XML_1_4', __DIR__.'/_data/oauthconf-sample.xml');
 define('OAUTHCONFIG_SAMPLE_XML_WRONG_VERSION', __DIR__.'/_data/oauthconf-sample-with-wrong-version.xml');
