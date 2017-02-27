@@ -392,7 +392,9 @@ class Config {
         }
         $this->redirects[$redirect->getType()]['callbacks'][] = $redirect;
         if ($redirect->getIsDefault()) {
-            $this->redirects[$redirect->getType()]['default'] = array_pop(array_keys($this->redirects[$redirect->getType()]['callbacks']));
+            $keys = array_keys($this->redirects[$redirect->getType()]['callbacks']);
+            $this->redirects[$redirect->getType()]['default'] = array_pop($keys);
+            unset($keys);
         }
         return $this;
     }
