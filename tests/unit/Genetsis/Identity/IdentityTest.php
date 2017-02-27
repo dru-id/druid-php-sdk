@@ -24,7 +24,7 @@ use Psr\Log\LoggerInterface;
  * @package Genetsis
  * @category UnitTest
  */
-class IdentityServiceTest extends Unit
+class IdentityTest extends Unit
 {
     use Specify;
 

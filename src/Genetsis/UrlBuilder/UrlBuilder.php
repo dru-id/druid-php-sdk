@@ -39,6 +39,7 @@ class UrlBuilder implements UrlBuilderServiceInterface
     {
         $this->identity = $identity;
         $this->oauth = $oauth;
+        $this->logger = $logger;
     }
 
     /**
@@ -133,7 +134,7 @@ class UrlBuilder implements UrlBuilderServiceInterface
     /**
      *
      */
-    private static function arrayToUserJson(array $userInfo) {
+    private function arrayToUserJson(array $userInfo) {
 
 
         $user = array("objectType" => "user");
@@ -269,7 +270,6 @@ class UrlBuilder implements UrlBuilderServiceInterface
     private function buildSignupUrl($endpoint_url, $redirect_url, $entry_point = null, array $prefill = array())
     {
         try {
-
             $url = $this->buildLoginUrl($endpoint_url, $redirect_url);
             if ($this->checkParam($url)) {
                 throw new \Exception("Can't build sign up URL");
@@ -350,7 +350,7 @@ class UrlBuilder implements UrlBuilderServiceInterface
      * @param string $param The string to validate
      * @return bool True if is null, empty or blank, False in other case
      */
-    private static function checkParam($param)
+    private function checkParam($param)
     {
         $param = trim($param);
         return empty($param);
