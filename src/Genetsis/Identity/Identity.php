@@ -18,8 +18,6 @@ use Psr\Log\LoggerInterface;
 class Identity implements IdentityServiceInterface
 {
 
-    /** @var DruID $druid */
-    private $druid;
     /** @var OAuthServiceInterface $oauth */
     private $oauth;
     /** @var SessionServiceInterface $session */
@@ -37,16 +35,14 @@ class Identity implements IdentityServiceInterface
     private $gid_things;
 
     /**
-     * @param DruID $druid
      * @param OAuthServiceInterface $oauth
      * @param SessionServiceInterface $session
      * @param CookiesServiceInterface $cookie
      * @param LoggerInterface $logger
      * @param DoctrineCacheInterface $cache
      */
-    public function __construct(DruID $druid, OAuthServiceInterface $oauth, SessionServiceInterface $session, CookiesServiceInterface $cookie, LoggerInterface $logger, DoctrineCacheInterface $cache)
+    public function __construct(OAuthServiceInterface $oauth, SessionServiceInterface $session, CookiesServiceInterface $cookie, LoggerInterface $logger, DoctrineCacheInterface $cache)
     {
-        $this->druid = $druid;
         $this->oauth = $oauth;
         $this->session = $session;
         $this->cookie = $cookie;
@@ -239,7 +235,7 @@ class Identity implements IdentityServiceInterface
      *
      * @return void
      */
-    private function clearLocalSessionData()
+    public function clearLocalSessionData()
     {
         $this->logger->debug('Clear Session Data', ['method' => __METHOD__, 'line' => __LINE__]);
         $this->gid_things->setAccessToken(null);
@@ -339,101 +335,6 @@ class Identity implements IdentityServiceInterface
 
         } catch (InvalidGrantException $e) {
             $this->logger->error($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
-        } catch (\Exception $e) {
-            $this->logger->error($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
-        }
-    }
-
-    /**
-     * Checks if the user have been completed all required fields for that
-     * section.
-     *
-     * The "scope" (section) is a group of fields configured in Genetsis ID for
-     * a web client.
-     *
-     * A section can be also defined as a "part" (section) of the website
-     * (web client) that only can be accesed by a user who have filled a
-     * set of personal information configured in Genetsis ID (all of the fields
-     * required for that section).
-     *
-     * This method is commonly used for promotions or sweepstakes: if a
-     * user wants to participate in a promotion, the web client must
-     * ensure that the user have all the fields filled in order to let him
-     * participate.
-     *
-     * @param $scope string Section-key identifier of the web client. The
-     *     section-key is located in "oauthconf.xml" file.
-     * @throws \Exception
-     * @return boolean TRUE if the user have already completed all the
-     *     fields needed for that section, false in otherwise
-     */
-    public function checkUserComplete($scope)
-    {
-        $userCompleted = false;
-        try {
-            $this->logger->info('Checking if the user has filled its data out for this section:' . $scope, ['method' => __METHOD__, 'line' => __LINE__]);
-
-            if ($this->isConnected()) {
-                $userCompleted = $this->oauth->doCheckUserCompleted($this->oauth->getConfig()->getApi('api.user')->getEndpoint('user', true), $scope);
-            }
-        } catch (\Exception $e) {
-            $this->logger->error($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
-        }
-        return $userCompleted;
-    }
-
-    /**
-     * Checks if the user needs to accept terms and conditions for that section.
-     *
-     * The "scope" (section) is a group of fields configured in DruID for
-     * a web client.
-     *
-     * A section can be also defined as a "part" (section) of the website
-     * (web client) that only can be accessed by a user who have filled a
-     * set of personal information configured in DruID.
-     *
-     * @param $scope string Section-key identifier of the web client. The
-     *     section-key is located in "oauthconf.xml" file.
-     * @throws \Exception
-     * @return boolean TRUE if the user need to accept terms and conditions, FALSE if it has
-     *      already accepted them.
-     */
-    public function checkUserNeedAcceptTerms($scope)
-    {
-        $status = false;
-        try {
-            $this->logger->info('Checking if the user has accepted terms and conditions for this section:' . $scope, ['method' => __METHOD__, 'line' => __LINE__]);
-
-            if ($this->isConnected()) {
-                $status = $this->oauth->doCheckUserNeedAcceptTerms($this->oauth->getConfig()->getApi('api.user')->getEndpoint('user', true), $scope);
-            }
-        } catch (\Exception $e) {
-            $this->logger->error($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
-        }
-        return $status;
-    }
-
-    /**
-     * Performs the logout process.
-     *
-     * It makes:
-     * - The logout call to Genetsis ID
-     * - Clear cookies
-     * - Purge Tokens and local data for the logged user
-     *
-     * @return void
-     * @throws \Exception
-     */
-    public function logoutUser()
-    {
-        try {
-            if (($this->gid_things->getAccessToken() != null) && ($this->gid_things->getRefreshToken() != null)) {
-                $this->logger->info('User Single Sign Logout', ['method' => __METHOD__, 'line' => __LINE__]);
-                $this->druid->userApi()->deleteCacheUser($this->gid_things->getLoginStatus()->getCkUsid());
-
-                $this->oauth->doLogout((string)$this->oauth->getConfig()->getEndPoint('logout_endpoint'));
-                $this->clearLocalSessionData();
-            }
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
         }

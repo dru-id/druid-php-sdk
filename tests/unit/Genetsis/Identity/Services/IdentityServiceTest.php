@@ -55,14 +55,12 @@ class IdentityServiceTest extends Unit
     {
         $this->specify('Checks constructor.', function(){
             $identity = new Identity(
-                $this->prophet->prophesize(DruID::class)->reveal(),
                 $this->prophet->prophesize(OAuth::class)->reveal(),
                 $this->prophet->prophesize(SessionServiceInterface::class)->reveal(),
                 $this->prophet->prophesize(CookiesServiceInterface::class)->reveal(),
                 $this->getDefaultLoggerService(),
                 $this->getDefaultCacheService()
             );
-            $this->assertInstanceOf(DruID::class, getProperty($identity, 'druid'));
             $this->assertInstanceOf(OAuth::class, getProperty($identity, 'oauth'));
             $this->assertInstanceOf(SessionServiceInterface::class, getProperty($identity, 'session'));
             $this->assertInstanceOf(CookiesServiceInterface::class, getProperty($identity, 'cookie'));
@@ -85,7 +83,6 @@ class IdentityServiceTest extends Unit
                 return serialize(new Things());
             });
             $identity = new Identity(
-                $this->prophet->prophesize(DruID::class)->reveal(),
                 $this->prophet->prophesize(OAuth::class)->reveal(),
                 $session_prophecy->reveal(),
                 $this->prophet->prophesize(CookiesServiceInterface::class)->reveal(),

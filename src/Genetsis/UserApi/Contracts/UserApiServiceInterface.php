@@ -80,4 +80,60 @@ interface UserApiServiceInterface {
      */
     public function getUsers($identifiers);
 
+    /**
+     * Performs the logout process.
+     *
+     * It makes:
+     * - The logout call to Genetsis ID
+     * - Clear cookies
+     * - Purge Tokens and local data for the logged user
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function logoutUser();
+
+
+    /**
+     * Checks if the user have been completed all required fields for that
+     * section.
+     *
+     * The "scope" (section) is a group of fields configured in Genetsis ID for
+     * a web client.
+     *
+     * A section can be also defined as a "part" (section) of the website
+     * (web client) that only can be accesed by a user who have filled a
+     * set of personal information configured in Genetsis ID (all of the fields
+     * required for that section).
+     *
+     * This method is commonly used for promotions or sweepstakes: if a
+     * user wants to participate in a promotion, the web client must
+     * ensure that the user have all the fields filled in order to let him
+     * participate.
+     *
+     * @param $scope string Section-key identifier of the web client. The
+     *     section-key is located in "oauthconf.xml" file.
+     * @throws \Exception
+     * @return boolean TRUE if the user have already completed all the
+     *     fields needed for that section, false in otherwise
+     */
+    public function checkUserComplete($scope);
+
+    /**
+     * Checks if the user needs to accept terms and conditions for that section.
+     *
+     * The "scope" (section) is a group of fields configured in DruID for
+     * a web client.
+     *
+     * A section can be also defined as a "part" (section) of the website
+     * (web client) that only can be accessed by a user who have filled a
+     * set of personal information configured in DruID.
+     *
+     * @param $scope string Section-key identifier of the web client. The
+     *     section-key is located in "oauthconf.xml" file.
+     * @throws \Exception
+     * @return boolean TRUE if the user need to accept terms and conditions, FALSE if it has
+     *      already accepted them.
+     */
+    public function checkUserNeedAcceptTerms($scope);
 }

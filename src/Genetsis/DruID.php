@@ -77,10 +77,10 @@ class DruID
         }
         $oauth = new OAuth($this, $oauth_config, $http, new Cookies(), $logger);
 
-        $this->identity = new Identity($this, $oauth, new Session(), new Cookies(), $logger, $cache);
-        $this->url_builder = new UrlBuilder($this, $oauth, $logger);
-        $this->user_api = new UserApi($this, $oauth, $http, $logger, $cache);
-        $this->opi = new Opi($this, $oauth);
+        $this->identity = new Identity($oauth, new Session(), new Cookies(), $logger, $cache);
+        $this->url_builder = new UrlBuilder($this->identity, $oauth, $logger);
+        $this->user_api = new UserApi($this->identity, $oauth, $http, $logger, $cache);
+        $this->opi = new Opi($this->user_api, $oauth);
     }
 
     /**

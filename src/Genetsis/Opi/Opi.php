@@ -5,6 +5,7 @@ use Genetsis\Core\OAuth\Beans\OAuthConfig\Brand;
 use Genetsis\Core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\DruID;
 use Genetsis\Opinator\Contracts\OpiServiceInterface;
+use Genetsis\UserApi\Contracts\UserApiServiceInterface;
 
 /**
  * This class wraps all methods for interactions with OPI
@@ -17,18 +18,18 @@ use Genetsis\Opinator\Contracts\OpiServiceInterface;
 class Opi implements OpiServiceInterface
 {
 
-    /** @var DruID $druid */
-    private $druid;
+    /** @var UserApiServiceInterface $user_api */
+    private $user_api;
     /** @var OAuthServiceInterface $oauth */
     private $oauth;
 
     /**
-     * @param DruID $druid
+     * @param UserApiServiceInterface $user_api
      * @param OAuthServiceInterface $oauth
      */
-    public function __construct(DruID $druid, OAuthServiceInterface $oauth)
+    public function __construct(UserApiServiceInterface $user_api, OAuthServiceInterface $oauth)
     {
-        $this->druid = $druid;
+        $this->user_api = $user_api;
         $this->oauth = $oauth;
     }
 
@@ -54,13 +55,13 @@ class Opi implements OpiServiceInterface
         }
 
         $params = array(
-            "id" => urlencode($this->druid->userApi()->getUserLoggedOid()),
+            "id" => urlencode($this->user_api->getUserLoggedOid()),
             "sc" => urlencode(
                 ($this->oauth->getConfig()->getBrand() instanceof Brand) ? $this->oauth->getConfig()->getBrand()->getName() : ''
             ),
             "carry_url" => urlencode($redirect_url));
 
-        $info = $this->druid->userApi()->getUserLogged();
+        $info = $this->user_api->getUserLogged();
 
         // Age.
         try {

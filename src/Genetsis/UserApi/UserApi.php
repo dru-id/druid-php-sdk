@@ -11,6 +11,7 @@ use Genetsis\Core\User;
 use Genetsis\Core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
 use Genetsis\DruID;
 use Genetsis\DruIDFacade;
+use Genetsis\Identity\Contracts\IdentityServiceInterface;
 use Genetsis\UserApi\Contracts\UserApiServiceInterface;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Log\LoggerInterface;
@@ -35,6 +36,8 @@ class UserApi implements UserApiServiceInterface
     const USER_TTL = 3600;
     const BRANDS_TTL = 3600;
 
+    /** @var IdentityServiceInterface $identity */
+    private $identity;
     /** @var DruID $druid */
     private $druid;
     /** @var OAuthServiceInterface $oauth */
@@ -47,15 +50,15 @@ class UserApi implements UserApiServiceInterface
     private $cache;
 
     /**
-     * @param DruID $druid
+     * @param IdentityServiceInterface $identity
      * @param OAuthServiceInterface $oauth
      * @param HttpServiceInterface $http
      * @param LoggerInterface $logger
      * @param DoctrineCacheInterface $cache
      */
-    public function __construct(DruID $druid, OAuthServiceInterface $oauth, HttpServiceInterface $http, LoggerInterface $logger, DoctrineCacheInterface $cache)
+    public function __construct(IdentityServiceInterface $identity, OAuthServiceInterface $oauth, HttpServiceInterface $http, LoggerInterface $logger, DoctrineCacheInterface $cache)
     {
-        $this->druid = $druid;
+        $this->identity = $identity;
         $this->oauth = $oauth;
         $this->http = $http;
         $this->logger = $logger;
@@ -70,8 +73,8 @@ class UserApi implements UserApiServiceInterface
         try {
             $this->logger->debug('Get user Logged info', ['method' => __METHOD__, 'line' => __LINE__]);
 
-            if (($this->druid->identity()->getThings()->getLoginStatus()!=null)&&($this->druid->identity()->getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
-                $user_logged = $this->getUsers(array('id' => $this->druid->identity()->getThings()->getLoginStatus()->getCkUsid()));
+            if (($this->identity->getThings()->getLoginStatus()!=null)&&($this->identity->getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
+                $user_logged = $this->getUsers(array('id' => $this->identity->getThings()->getLoginStatus()->getCkUsid()));
                 if (count($user_logged)>0) {
                     return $user_logged[0];
                 }
@@ -89,8 +92,8 @@ class UserApi implements UserApiServiceInterface
     {
         $this->logger->debug('Get user Logged info', ['method' => __METHOD__, 'line' => __LINE__]);
 
-        if (($this->druid->identity()->getThings()->getLoginStatus()!=null)&&($this->druid->identity()->getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
-            return $this->druid->identity()->getThings()->getLoginStatus()->getCkUsid();
+        if (($this->identity->getThings()->getLoginStatus()!=null)&&($this->identity->getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
+            return $this->identity->getThings()->getLoginStatus()->getCkUsid();
         }
 
         return null;
@@ -103,8 +106,8 @@ class UserApi implements UserApiServiceInterface
     {
         $this->logger->debug('Get user Logged info', ['method' => __METHOD__, 'line' => __LINE__]);
 
-        if (($this->druid->identity()->getThings()->getLoginStatus()!=null)&&($this->druid->identity()->getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
-            return $this->druid->identity()->getThings()->getLoginStatus()->getOid();
+        if (($this->identity->getThings()->getLoginStatus()!=null)&&($this->identity->getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
+            return $this->identity->getThings()->getLoginStatus()->getOid();
         }
 
         return null;
@@ -224,7 +227,7 @@ class UserApi implements UserApiServiceInterface
             $this->logger->debug('Get list of Brands', ['method' => __METHOD__, 'line' => __LINE__]);
             if (!$this->cache->contains('brands') || !($brands = @unserialize($this->cache->fetch('brands')))) {
                 $this->logger->debug('Brands not cached', ['method' => __METHOD__, 'line' => __LINE__]);
-                if (!$client_token = $this->druid->identity()->getThings()->getClientToken()) {
+                if (!$client_token = $this->identity->getThings()->getClientToken()) {
                     throw new \Exception('The clientToken is empty');
                 }
 
@@ -282,8 +285,8 @@ class UserApi implements UserApiServiceInterface
             $this->logger->debug('Delete cache of user', ['method' => __METHOD__, 'line' => __LINE__]);
 
             if ($ckusid == null) {
-                if (($this->druid->identity()->getThings()->getLoginStatus()!=null)&&($this->druid->identity()->getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
-                    $this->cache->delete('user-' . $this->druid->identity()->getThings()->getLoginStatus()->getCkUsid());
+                if (($this->identity->getThings()->getLoginStatus()!=null)&&($this->identity->getThings()->getLoginStatus()->getConnectState() == LoginStatusTypesCollection::CONNECTED)) {
+                    $this->cache->delete('user-' . $this->identity->getThings()->getLoginStatus()->getCkUsid());
                 }
             } else {
                 $this->cache->delete('user-' . $ckusid);
@@ -307,7 +310,7 @@ class UserApi implements UserApiServiceInterface
                 if (!$this->cache->contains($cache_key) || !($druid_user_data = $this->cache->fetch($cache_key))) {
                     $this->logger->debug('Identifier: ' . reset($identifiers) . ' is Not in Cache System', ['method' => __METHOD__, 'line' => __LINE__]);
 
-                    $client_token = $this->druid->identity()->getThings()->getClientToken();
+                    $client_token = $this->identity->getThings()->getClientToken();
 
                     if (is_null($client_token)) {
                         throw new \Exception('The clientToken is empty');
@@ -370,6 +373,101 @@ class UserApi implements UserApiServiceInterface
             }
         }
         return $druid_user;
+    }
+
+    /**
+     * Performs the logout process.
+     *
+     * It makes:
+     * - The logout call to Genetsis ID
+     * - Clear cookies
+     * - Purge Tokens and local data for the logged user
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function logoutUser()
+    {
+        try {
+            if (($this->identity->getThings()->getAccessToken() != null) && ($this->identity->getThings()->getRefreshToken() != null)) {
+                $this->logger->info('User Single Sign Logout', ['method' => __METHOD__, 'line' => __LINE__]);
+                $this->druid->userApi()->deleteCacheUser($this->identity->getThings()->getLoginStatus()->getCkUsid());
+
+                $this->oauth->doLogout((string)$this->oauth->getConfig()->getEndPoint('logout_endpoint'));
+                $this->identity->clearLocalSessionData();
+            }
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
+        }
+    }
+
+    /**
+     * Checks if the user have been completed all required fields for that
+     * section.
+     *
+     * The "scope" (section) is a group of fields configured in Genetsis ID for
+     * a web client.
+     *
+     * A section can be also defined as a "part" (section) of the website
+     * (web client) that only can be accesed by a user who have filled a
+     * set of personal information configured in Genetsis ID (all of the fields
+     * required for that section).
+     *
+     * This method is commonly used for promotions or sweepstakes: if a
+     * user wants to participate in a promotion, the web client must
+     * ensure that the user have all the fields filled in order to let him
+     * participate.
+     *
+     * @param $scope string Section-key identifier of the web client. The
+     *     section-key is located in "oauthconf.xml" file.
+     * @throws \Exception
+     * @return boolean TRUE if the user have already completed all the
+     *     fields needed for that section, false in otherwise
+     */
+    public function checkUserComplete($scope)
+    {
+        $userCompleted = false;
+        try {
+            $this->logger->info('Checking if the user has filled its data out for this section:' . $scope, ['method' => __METHOD__, 'line' => __LINE__]);
+
+            if ($this->identity->isConnected()) {
+                $userCompleted = $this->oauth->doCheckUserCompleted($this->oauth->getConfig()->getApi('api.user')->getEndpoint('user', true), $scope);
+            }
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
+        }
+        return $userCompleted;
+    }
+
+    /**
+     * Checks if the user needs to accept terms and conditions for that section.
+     *
+     * The "scope" (section) is a group of fields configured in DruID for
+     * a web client.
+     *
+     * A section can be also defined as a "part" (section) of the website
+     * (web client) that only can be accessed by a user who have filled a
+     * set of personal information configured in DruID.
+     *
+     * @param $scope string Section-key identifier of the web client. The
+     *     section-key is located in "oauthconf.xml" file.
+     * @throws \Exception
+     * @return boolean TRUE if the user need to accept terms and conditions, FALSE if it has
+     *      already accepted them.
+     */
+    public function checkUserNeedAcceptTerms($scope)
+    {
+        $status = false;
+        try {
+            $this->logger->info('Checking if the user has accepted terms and conditions for this section:' . $scope, ['method' => __METHOD__, 'line' => __LINE__]);
+
+            if ($this->identity->isConnected()) {
+                $status = $this->oauth->doCheckUserNeedAcceptTerms($this->oauth->getConfig()->getApi('api.user')->getEndpoint('user', true), $scope);
+            }
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage(), ['method' => __METHOD__, 'line' => __LINE__]);
+        }
+        return $status;
     }
 
 }
