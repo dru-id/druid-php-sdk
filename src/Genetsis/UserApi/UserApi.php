@@ -354,15 +354,15 @@ class UserApi implements UserApiServiceInterface
                     if ($response->getStatusCode() != 200) {
                         throw new \Exception('The data retrieved is empty');
                     }
-                    $response = @json_decode((string)$response->getBody(), true);
-                    if (is_null($response) || !is_array($response)) {
+                    $response = @json_decode((string)$response->getBody());
+                    if (is_null($response)) {
                         throw new RequestException('Server has responded with an invalid JSON data.');
                     }
-                    if (!isset($response['data']) || (isset($response['count']) && ($response['count'] == 0))) {
+                    if (!isset($response->data) || (isset($response->count) && ($response->count == 0))) {
                         throw new \Exception('The data retrieved is empty');
                     }
 
-                    $druid_user = $response['data'];
+                    $druid_user = $response->data;
                     $this->cache->save($cache_key, $druid_user, self::USER_TTL);
                 } else {
                     $this->logger->debug('Identifier: ' . reset($identifiers) . ' is in Cache System', ['method' => __METHOD__, 'line' => __LINE__]);
@@ -391,7 +391,7 @@ class UserApi implements UserApiServiceInterface
         try {
             if (($this->identity->getThings()->getAccessToken() != null) && ($this->identity->getThings()->getRefreshToken() != null)) {
                 $this->logger->info('User Single Sign Logout', ['method' => __METHOD__, 'line' => __LINE__]);
-                $this->druid->userApi()->deleteCacheUser($this->identity->getThings()->getLoginStatus()->getCkUsid());
+                $this->deleteCacheUser($this->identity->getThings()->getLoginStatus()->getCkUsid());
 
                 $this->oauth->doLogout((string)$this->oauth->getConfig()->getEndPoint('logout_endpoint'));
                 $this->identity->clearLocalSessionData();
