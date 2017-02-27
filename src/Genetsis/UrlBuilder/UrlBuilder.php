@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\UrlBuilder\Services;
+namespace Genetsis\UrlBuilder;
 
 use Genetsis\Core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\DruID;

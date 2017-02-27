@@ -1,10 +1,10 @@
 <?php
-namespace Genetsis\UnitTest\Core\Http\Services;
+namespace Genetsis\UnitTest\Core\Http;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
 use Genetsis\Core\Http\Contracts\CookiesServiceInterface;
-use Genetsis\Core\Http\Services\Cookies;
+use Genetsis\Core\Http\Cookies;
 use phpmock\functions\FixedValueFunction;
 use phpmock\MockBuilder;
 
@@ -37,7 +37,7 @@ class CookiesServiceTest extends Unit
     public function testCookieHandler()
     {
         // Mocking PHP function "setcookie".
-        $setcookie_mock = (new MockBuilder())->setNamespace('Genetsis\Core\Http\Services')->setName('setcookie')->setFunctionProvider(new FixedValueFunction(true))->build();
+        $setcookie_mock = (new MockBuilder())->setNamespace('Genetsis\Core\Http')->setName('setcookie')->setFunctionProvider(new FixedValueFunction(true))->build();
         $setcookie_mock->enable();
 
         $_COOKIE['foo'] = 'foo-value';

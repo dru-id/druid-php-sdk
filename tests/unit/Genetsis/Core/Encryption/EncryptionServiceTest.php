@@ -3,7 +3,7 @@ namespace Genetsis\UnitTest\Core\Encryption;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
-use Genetsis\Core\Encryption\Services\Encryption;
+use Genetsis\Core\Encryption\Encryption;
 
 /**
  * @package Genetsis

@@ -1,9 +1,9 @@
 <?php
-namespace Genetsis\UnitTest\Core\Logger\Services;
+namespace Genetsis\UnitTest\Core\Logger;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
-use Genetsis\Core\Logger\Services\VoidLogger;
+use Genetsis\Core\Logger\VoidLogger;
 use Psr\Log\LoggerInterface;
 
 /**

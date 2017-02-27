@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\Identity\Services;
+namespace Genetsis\Identity;
 
 use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
 use Genetsis\Core\Http\Contracts\CookiesServiceInterface;
@@ -8,7 +8,7 @@ use Genetsis\Core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\Core\OAuth\Beans\ClientToken;
 use Genetsis\Core\OAuth\Collections\TokenTypes as TokenTypesCollection;
 use Genetsis\Core\OAuth\Exceptions\InvalidGrantException;
-use Genetsis\Core\OAuth\Services\OAuth;
+use Genetsis\Core\OAuth\OAuth;
 use Genetsis\Core\User\Beans\Things;
 use Genetsis\Core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
 use Genetsis\DruID;

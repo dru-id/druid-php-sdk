@@ -8,10 +8,10 @@ use Genetsis\Core\Config\Beans\Config;
 use Genetsis\Core\User\Beans\Brand;
 use Genetsis\DruID;
 use Genetsis\DruIDFacade;
-use Genetsis\Identity\Services\Identity;
-use Genetsis\Opi\Services\Opi;
-use Genetsis\UrlBuilder\Services\UrlBuilder;
-use Genetsis\UserApi\Services\UserApi;
+use Genetsis\Identity\Identity;
+use Genetsis\Opi\Opi;
+use Genetsis\UrlBuilder\UrlBuilder;
+use Genetsis\UserApi\UserApi;
 
 /**
  * @package Genetsis

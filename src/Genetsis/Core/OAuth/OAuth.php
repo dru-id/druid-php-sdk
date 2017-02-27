@@ -1,6 +1,6 @@
-<?php namespace Genetsis\Core\OAuth\Services;
+<?php namespace Genetsis\Core\OAuth;
 
-use Genetsis\Core\Encryption\Services\Encryption;
+use Genetsis\Core\Encryption\Encryption;
 use Genetsis\Core\Http\Contracts\CookiesServiceInterface;
 use Genetsis\Core\Http\Contracts\HttpServiceInterface;
 use Genetsis\Core\Http\Exceptions\RequestException;

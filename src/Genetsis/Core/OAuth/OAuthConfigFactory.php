@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\Core\OAuth\Services;
+namespace Genetsis\Core\OAuth;
 
 use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
 use DOMDocument;

@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\UserApi\Services;
+namespace Genetsis\UserApi;
 
 use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
 use Exception;

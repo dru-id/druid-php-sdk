@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\UnitTest\Identity\Services;
+namespace Genetsis\UnitTest\Identity;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
@@ -8,14 +8,14 @@ use Doctrine\Common\Cache\VoidCache;
 use Genetsis\Core\Config\Beans\Config;
 use Genetsis\Core\Http\Contracts\CookiesServiceInterface;
 use Genetsis\Core\Http\Contracts\SessionServiceInterface;
-use Genetsis\Core\Http\Services\Cookies;
+use Genetsis\Core\Http\Cookies;
 use Genetsis\Core\OAuth\Beans\AccessToken;
-use Genetsis\Core\OAuth\Services\OAuth;
-use Genetsis\Core\OAuth\Services\OAuthConfigFactory;
+use Genetsis\Core\OAuth\OAuth;
+use Genetsis\Core\OAuth\OAuthConfigFactory;
 use Genetsis\Core\User\Beans\Things;
 use Genetsis\DruID;
-use Genetsis\Identity\Services\Identity;
-use Genetsis\UserApi\Services\UserApi;
+use Genetsis\Identity\Identity;
+use Genetsis\UserApi\UserApi;
 use Prophecy\Argument;
 use Prophecy\Prophet;
 use Psr\Log\LoggerInterface;

@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\Core\Http\Services;
+namespace Genetsis\Core\Http;
 
 use Genetsis\Core\Http\Contracts\HttpServiceInterface;
 use Genetsis\Core\Http\Exceptions\RequestException;

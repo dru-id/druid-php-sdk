@@ -1,10 +1,10 @@
 <?php
-namespace Genetsis\UnitTest\Core\Http\Services;
+namespace Genetsis\UnitTest\Core\Http;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
 use Genetsis\Core\Http\Contracts\SessionServiceInterface;
-use Genetsis\Core\Http\Services\Session;
+use Genetsis\Core\Http\Session;
 
 /**
  * @package Genetsis

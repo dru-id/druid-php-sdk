@@ -1,10 +1,10 @@
 <?php
-namespace Genetsis\UnitTest\Core\Http\Services;
+namespace Genetsis\UnitTest\Core\Http;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
 use Genetsis\Core\Http\Exceptions\RequestException;
-use Genetsis\Core\Http\Services\Http;
+use Genetsis\Core\Http\Http;
 use Genetsis\Core\OAuth\Exceptions\InvalidGrantException;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Client;

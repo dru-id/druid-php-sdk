@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\UnitTest\Core\Http\Services;
+namespace Genetsis\UnitTest\Core\Http;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;

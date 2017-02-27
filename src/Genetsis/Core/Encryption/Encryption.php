@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\Core\Encryption\Services;
+namespace Genetsis\Core\Encryption;
 
 /**
  * This class is used to wrap encryption functions.

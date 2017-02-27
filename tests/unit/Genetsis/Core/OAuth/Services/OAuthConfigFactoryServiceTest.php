@@ -1,11 +1,11 @@
 <?php
-namespace Genetsis\UnitTest\Core\OAuth\Beans\Services;
+namespace Genetsis\UnitTest\Core\OAuth\Beans;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
 use Doctrine\Common\Cache\VoidCache;
-use Genetsis\Core\Logger\Services\VoidLogger;
-use Genetsis\Core\OAuth\Services\OAuthConfigFactory;
+use Genetsis\Core\Logger\VoidLogger;
+use Genetsis\Core\OAuth\OAuthConfigFactory;
 
 /**
  * @package Genetsis

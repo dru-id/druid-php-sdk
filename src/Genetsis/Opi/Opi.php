@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\Opi\Services;
+namespace Genetsis\Opi;
 
 use Genetsis\Core\OAuth\Beans\OAuthConfig\Brand;
 use Genetsis\Core\OAuth\Contracts\OAuthServiceInterface;

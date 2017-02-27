@@ -1,5 +1,5 @@
 <?php
-namespace Genetsis\Core\Config\Services;
+namespace Genetsis\Core\Config;
 
 use Genetsis\Core\Config\Beans\Config;
 use Genetsis\Core\Config\Beans\Log;
