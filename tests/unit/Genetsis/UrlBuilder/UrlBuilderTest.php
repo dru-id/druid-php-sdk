@@ -79,6 +79,7 @@ class UrlBuilderTest extends Unit
             $this->assertEquals('https://dru-id.foo/oauth2/authorize?client_id=111111111111111&redirect_uri=http%3A%2F%2Fdru-id.foo%2Factions%2Fcallback&response_type=code', $object->getUrlLogin());
             $this->assertEquals('https://dru-id.foo/oauth2/authorize?client_id=111111111111111&redirect_uri=http%3A%2F%2Fdru-id.foo%2Factions%2Fcallback&response_type=code&scope=my-entry-point', $object->getUrlLogin('my-entry-point'));
             $this->assertEquals('https://dru-id.foo/oauth2/authorize?client_id=111111111111111&redirect_uri=http%3A%2F%2Fwww.foo.bar%2Factions%2Fcallback&response_type=code&scope=my-entry-point&ck_auth_provider=facebook', $object->getUrlLogin('my-entry-point', 'facebook', 'http://www.foo.bar/actions/callback'));
+            $this->assertEquals('https://dru-id.foo/oauth2/authorize?client_id=111111111111111&redirect_uri=http%3A%2F%2Fdru-id.foo%2Factions%2Fcallback&response_type=code&x_prefill=eyJvYmplY3RUeXBlIjoidXNlciIsImlkcyI6eyJlbWFpbCI6eyJ2YWx1ZSI6ImZvb0BiYXIuY29tIn19fQ%3D%3D', $object->getUrlLogin(null, null, null, ['email' => 'foo@bar.com']));
         });
 
         $this->specify('Checks that URL builder works properly if the endpoint URL is empty.', function() {
@@ -156,6 +157,7 @@ class UrlBuilderTest extends Unit
             $this->assertEquals('https://dru-id.foo/oauth2/authorize?client_id=111111111111111&redirect_uri=http%3A%2F%2Fdru-id.foo%2Factions%2Fcallback&response_type=code&x_method=sign_up', $object->getUrlRegister());
             $this->assertEquals('https://dru-id.foo/oauth2/authorize?client_id=111111111111111&redirect_uri=http%3A%2F%2Fdru-id.foo%2Factions%2Fcallback&response_type=code&x_method=sign_up&scope=my-entry-point', $object->getUrlRegister('my-entry-point'));
             $this->assertEquals('https://dru-id.foo/oauth2/authorize?client_id=111111111111111&redirect_uri=http%3A%2F%2Fwww.foo.bar%2Factions%2Fcallback&response_type=code&x_method=sign_up&scope=my-entry-point', $object->getUrlRegister('my-entry-point', 'http://www.foo.bar/actions/callback'));
+            $this->assertEquals('https://dru-id.foo/oauth2/authorize?client_id=111111111111111&redirect_uri=http%3A%2F%2Fdru-id.foo%2Factions%2Fcallback&response_type=code&x_method=sign_up&x_prefill=eyJvYmplY3RUeXBlIjoidXNlciIsImlkcyI6eyJlbWFpbCI6eyJ2YWx1ZSI6ImZvb0BiYXIuY29tIn19fQ%3D%3D', $object->getUrlRegister(null, null, ['email' => 'foo@bar.com']));
         });
 
         $this->specify('Checks that URL builder works properly if the endpoint URL is empty.', function() {
@@ -688,6 +690,71 @@ class UrlBuilderTest extends Unit
                 $this->prophet->prophesize(LoggerInterface::class)->reveal()
             );
             $this->assertFalse($object->buildSignupPromotionUrl(''));
+        });
+    }
+    
+    public function testArrayToUserJson ()
+    {
+        $this->specify('Checks if json data is properly built.', function() {
+            $object = new UrlBuilder(
+                $this->prophet->prophesize(Identity::class)->reveal(),
+                $this->prophet->prophesize(UserApi::class)->reveal(),
+                $this->prophet->prophesize(OAuthServiceInterface::class)->reveal(),
+                $this->prophet->prophesize(LoggerInterface::class)->reveal()
+            );
+            $this->assertEquals(json_encode(['objectType' => 'user']), callMethod($object, 'arrayToUserJson', [[]]));
+            $this->assertEquals(
+                json_encode([
+                    'objectType' => 'user',
+                    'datas' => [
+                        'foo' => [
+                            'value' => 'bar'
+                        ]
+                    ]
+                ])
+                , callMethod($object, 'arrayToUserJson', [['foo' => 'bar']])
+            );
+            $this->assertEquals(
+                json_encode([
+                    'objectType' => 'user',
+                    'ids' => [
+                        'email' => [
+                            'value' => 'foo@bar.com'
+                        ],
+                        'screen_name' => [
+                            'value' => 'foo'
+                        ],
+                        'national_id' => [
+                            'value' => '12345678Z'
+                        ],
+                        'phone_number' => [
+                            'value' => '665454545'
+                         ]
+                    ],
+                    'location' => [
+                        'telephone' => '916543212',
+                        'address' => [
+                            'streetAddress' => 'Av. Foo',
+                            'locality' => 'Foo City',
+                            'region' => 'Foo Region',
+                            'postalCode' => '11122',
+                            'country' => 'Foo Land'
+                        ]
+                    ],
+                ])
+                ,callMethod($object, 'arrayToUserJson', [[
+                    'email' => 'foo@bar.com',
+                    'screen_name' => 'foo',
+                    'national_id' => '12345678Z',
+                    'phone_number' => '665454545',
+                    'telephone' => '916543212',
+                    'streetAddress' => 'Av. Foo',
+                    'locality' => 'Foo City',
+                    'region' => 'Foo Region',
+                    'postalCode' => '11122',
+                    'country' => 'Foo Land'
+                ]])
+            );
         });
     }
 }

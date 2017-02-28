@@ -29,9 +29,12 @@ class UrlBuilder implements UrlBuilderServiceInterface
     /** @var LoggerInterface $logger */
     protected $logger;
 
-    private static $ids = array("email", "screen_name", "national_id", "phone_number");
-    private static $location = array("telephone");
-    private static $location_address = array("streetAddress", "locality", "region", "postalCode", "country");
+    /** @var array $ids */
+    private static $ids = ['email', 'screen_name', 'national_id', 'phone_number'];
+    /** @var array $location */
+    private static $location = ['telephone'];
+    /** @var array $location_address */
+    private static $location_address = ['streetAddress', 'locality', 'region', 'postalCode', 'country'];
 
     /**
      * @param IdentityServiceInterface $identity
@@ -139,20 +142,18 @@ class UrlBuilder implements UrlBuilderServiceInterface
     /**
      *
      */
-    private function arrayToUserJson(array $userInfo) {
-
-
-        $user = array("objectType" => "user");
-
-        foreach ($userInfo as $field => $value) {
+    private function arrayToUserJson(array $user_info)
+    {
+        $user = ['objectType' => 'user'];
+        foreach ($user_info as $field => $value) {
             if (in_array($field, self::$ids)) {
-                $user["ids"][$field] = array("value" => $value);
-            } else if (in_array($field, self::$location)) {
-                $user["location"][$field] = $value;
-            } else if (in_array($field, self::$location_address)) {
-                $user["location"]["address"][$field] = $value;
+                $user['ids'][$field] = ['value' => $value];
+            } elseif (in_array($field, self::$location)) {
+                $user['location'][$field] = $value;
+            } elseif (in_array($field, self::$location_address)) {
+                $user['location']['address'][$field] = $value;
             } else { //is a data
-                $user["datas"][$field] = array("value" => $value);
+                $user['datas'][$field] = ['value' => $value];
             }
         }
 
