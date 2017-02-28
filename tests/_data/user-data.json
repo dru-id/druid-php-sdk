@@ -1,0 +1,57 @@
+{
+  "data":[
+    {
+      "user":{
+        "id":11,
+        "app":"Beefeater In-Edit (dev)",
+        "entry-point":"775522164287454-main",
+        "country_iso_code":"es",
+        "typologies":{
+          "Consumer":{
+            "value":"Consumer",
+            "label":"consumer"
+          },
+          "Bartender":{
+            "value":"Bartender",
+            "label":"bartender"
+          }
+        },
+        "confirmed":true,
+        "user_ids":{
+          "screen_name":{
+            "value":"isma",
+            "label":"screen_name",
+            "is_social":false
+          },
+          "email":{
+            "value":"ismael.salgado@genetsis.com",
+            "label":"email",
+            "confirmed":true,
+            "is_social":false
+          }
+        },
+        "user_assertions":{
+          "terms":{
+            "user":{
+              "value":"true"
+            }
+          },
+          "optin":{
+            "user":{
+              "value":"false"
+            }
+          },
+          "none":{
+
+          }
+        },
+        "oid":"2f91af5e4f41eebd03c92f616b35fccb4ec64995",
+        "brand":{
+          "key":"beefeater",
+          "name":"Beefeater"
+        }
+      }
+    }
+  ],
+  "count":1
+}

@@ -316,24 +316,149 @@ class UserApiTest extends Unit
 
     public function testGetUserLogged ()
     {
-        $this->specify('Checks that returns a valid user data.', function() {
-//            $things_proph = $this->prophet->prophesize(Things::class);
-//            $things_proph->getLoginStatus()->will(function(){
-//                return (new LoginStatus())
-//                    ->setCkusid('123')
-//                    ->setOid('abc')
-//                    ->setConnectState(LoginStatusTypes::CONNECTED);
-//            });
-//            $things_proph->getClientToken()->will(function(){
-//                return new ClientToken('111111111111111|3|2.AAAAAAAAAAAAAA.3600.1488275118786|AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.');
-//            });
-//
-//            $identity_proph = $this->prophet->prophesize(IdentityServiceInterface::class);
-//            $identity_proph->getThings()->will(function() use ($things_proph){
-//                return $things_proph->reveal();
-//            });
+        $this->specify('Checks that returns data from a logged user.', function() {
+            $cache_proph = $this->prophet->prophesize(Cache::class);
+            $cache_proph->contains(Argument::cetera())->will(function(){
+                return false;
+            });
+            $things_proph = $this->prophet->prophesize(Things::class);
+            $things_proph->getLoginStatus()->will(function(){
+                return (new LoginStatus())
+                    ->setCkusid('123')
+                    ->setOid('abc')
+                    ->setConnectState(LoginStatusTypes::CONNECTED);
+            });
+            $things_proph->getClientToken()->will(function(){
+                return new ClientToken('111111111111111|3|2.AAAAAAAAAAAAAA.3600.1488275118786|AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.');
+            });
+            $identity_proph = $this->prophet->prophesize(IdentityServiceInterface::class);
+            $identity_proph->getThings()->will(function() use ($things_proph){
+                return $things_proph->reveal();
+            });
+            $oauth_proph = $this->prophet->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig()->will(function(){
+                return (new Config())
+                    ->addApi((new Api())
+                        ->setBaseUrl('http://dru-id.foo')
+                        ->setName('api.user')
+                        ->addEndpoint('user', 'user'));
+            });
+            $http = $this->prophet->prophesize(HttpServiceInterface::class);
+            $http->request('POST', 'http://dru-id.foo/user', Argument::withEntry('form_params', [
+                'oauth_token' => '111111111111111|3|2.AAAAAAAAAAAAAA.3600.1488275118786|AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.',
+                's' => '*',
+                'f' => 'User',
+                'w.id' => 123
+            ]))->will(function(){
+                return new Response(200, [], '{"count": 1, "data": [{"id": "1"}, {"id": "2"}]}');
+            });
 
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $oauth_proph->reveal(),
+                $http->reveal(),
+                $this->prophet->prophesize(LoggerInterface::class)->reveal(),
+                $cache_proph->reveal()
+            );
+            $this->assertInstanceOf(\stdClass::class, $object->getUserLogged());
+        });
 
+        $this->specify('Checks if there is no data returned by remote server.', function() {
+            $cache_proph = $this->prophet->prophesize(Cache::class);
+            $cache_proph->contains(Argument::cetera())->will(function(){
+                return false;
+            });
+            $things_proph = $this->prophet->prophesize(Things::class);
+            $things_proph->getLoginStatus()->will(function(){
+                return (new LoginStatus())
+                    ->setCkusid('123')
+                    ->setOid('abc')
+                    ->setConnectState(LoginStatusTypes::CONNECTED);
+            });
+            $things_proph->getClientToken()->will(function(){
+                return new ClientToken('111111111111111|3|2.AAAAAAAAAAAAAA.3600.1488275118786|AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.');
+            });
+            $identity_proph = $this->prophet->prophesize(IdentityServiceInterface::class);
+            $identity_proph->getThings()->will(function() use ($things_proph){
+                return $things_proph->reveal();
+            });
+            $oauth_proph = $this->prophet->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig()->will(function(){
+                return (new Config())
+                    ->addApi((new Api())
+                        ->setBaseUrl('http://dru-id.foo')
+                        ->setName('api.user')
+                        ->addEndpoint('user', 'user'));
+            });
+            $http = $this->prophet->prophesize(HttpServiceInterface::class);
+            $http->request('POST', 'http://dru-id.foo/user', Argument::withEntry('form_params', [
+                'oauth_token' => '111111111111111|3|2.AAAAAAAAAAAAAA.3600.1488275118786|AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.',
+                's' => '*',
+                'f' => 'User',
+                'w.id' => 123
+            ]))->will(function(){
+                return new Response(200, [], '{"count": 0, "data": []}');
+            });
+
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $oauth_proph->reveal(),
+                $http->reveal(),
+                $this->prophet->prophesize(LoggerInterface::class)->reveal(),
+                $cache_proph->reveal()
+            );
+            $this->assertNull($object->getUserLogged());
+        });
+
+        $this->specify('Checks if there is no login status.', function() {
+            $cache_proph = $this->prophet->prophesize(Cache::class);
+            $cache_proph->contains(Argument::cetera())->will(function(){
+                return false;
+            });
+            $things_proph = $this->prophet->prophesize(Things::class);
+            $things_proph->getLoginStatus()->will(function(){
+                return (new LoginStatus())
+                    ->setCkusid('123')
+                    ->setOid('abc')
+                    ->setConnectState(LoginStatusTypes::NOT_CONNECTED);
+            });
+            $identity_proph = $this->prophet->prophesize(IdentityServiceInterface::class);
+            $identity_proph->getThings()->will(function() use ($things_proph){
+                return $things_proph->reveal();
+            });
+
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $this->prophesize(OAuthServiceInterface::class)->reveal(),
+                $this->prophesize(HttpServiceInterface::class)->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $cache_proph->reveal()
+            );
+            $this->assertNull($object->getUserLogged());
+        });
+
+        $this->specify('Checks if there is no user logged in.', function() {
+            $cache_proph = $this->prophet->prophesize(Cache::class);
+            $cache_proph->contains(Argument::cetera())->will(function(){
+                return false;
+            });
+            $things_proph = $this->prophet->prophesize(Things::class);
+            $things_proph->getLoginStatus()->will(function(){
+                return null;
+            });
+            $identity_proph = $this->prophet->prophesize(IdentityServiceInterface::class);
+            $identity_proph->getThings()->will(function() use ($things_proph){
+                return $things_proph->reveal();
+            });
+
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $this->prophesize(OAuthServiceInterface::class)->reveal(),
+                $this->prophesize(HttpServiceInterface::class)->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $cache_proph->reveal()
+            );
+            $this->assertNull($object->getUserLogged());
         });
     }
 }
