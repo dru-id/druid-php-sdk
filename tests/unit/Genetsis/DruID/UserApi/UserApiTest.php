@@ -417,10 +417,7 @@ class UserApiTest extends Unit
             });
             $things_proph = $this->prophet->prophesize(Things::class);
             $things_proph->getLoginStatus()->will(function(){
-                return (new LoginStatus())
-                    ->setCkusid('123')
-                    ->setOid('abc')
-                    ->setConnectState(LoginStatusTypes::NOT_CONNECTED);
+                return null;
             });
             $identity_proph = $this->prophet->prophesize(IdentityServiceInterface::class);
             $identity_proph->getThings()->will(function() use ($things_proph){
@@ -444,7 +441,10 @@ class UserApiTest extends Unit
             });
             $things_proph = $this->prophet->prophesize(Things::class);
             $things_proph->getLoginStatus()->will(function(){
-                return null;
+                return (new LoginStatus())
+                    ->setCkusid('123')
+                    ->setOid('abc')
+                    ->setConnectState(LoginStatusTypes::NOT_CONNECTED);
             });
             $identity_proph = $this->prophet->prophesize(IdentityServiceInterface::class);
             $identity_proph->getThings()->will(function() use ($things_proph){
@@ -459,6 +459,144 @@ class UserApiTest extends Unit
                 $cache_proph->reveal()
             );
             $this->assertNull($object->getUserLogged());
+        });
+    }
+
+    public function testGetUserLoggedCkusid ()
+    {
+        $this->specify('Checks if returns ckusid', function() {
+            $things_proph = $this->prophet->prophesize(Things::class);
+            $things_proph->getLoginStatus()->will(function(){
+                return (new LoginStatus())
+                    ->setCkusid('123')
+                    ->setOid('abc')
+                    ->setConnectState(LoginStatusTypes::CONNECTED);
+            });
+            $identity_proph = $this->prophet->prophesize(IdentityServiceInterface::class);
+            $identity_proph->getThings()->will(function() use ($things_proph){
+                return $things_proph->reveal();
+            });
+
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $this->prophesize(OAuthServiceInterface::class)->reveal(),
+                $this->prophesize(HttpServiceInterface::class)->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            $this->assertEquals('123', $object->getUserLoggedCkusid());
+        });
+
+        $this->specify('Checks if there is no login status.', function() {
+            $things_proph = $this->prophet->prophesize(Things::class);
+            $things_proph->getLoginStatus()->will(function () {
+                return null;
+            });
+            $identity_proph = $this->prophet->prophesize(IdentityServiceInterface::class);
+            $identity_proph->getThings()->will(function () use ($things_proph) {
+                return $things_proph->reveal();
+            });
+
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $this->prophesize(OAuthServiceInterface::class)->reveal(),
+                $this->prophesize(HttpServiceInterface::class)->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            $this->assertNull($object->getUserLoggedCkusid());
+        });
+
+        $this->specify('Checks if there is no user connected.', function() {
+            $things_proph = $this->prophet->prophesize(Things::class);
+            $things_proph->getLoginStatus()->will(function(){
+                return (new LoginStatus())
+                    ->setCkusid('123')
+                    ->setOid('abc')
+                    ->setConnectState(LoginStatusTypes::NOT_CONNECTED);
+            });
+            $identity_proph = $this->prophet->prophesize(IdentityServiceInterface::class);
+            $identity_proph->getThings()->will(function() use ($things_proph){
+                return $things_proph->reveal();
+            });
+
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $this->prophesize(OAuthServiceInterface::class)->reveal(),
+                $this->prophesize(HttpServiceInterface::class)->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            $this->assertNull($object->getUserLoggedCkusid());
+        });
+    }
+
+    public function testGetUserLoggedOid ()
+    {
+        $this->specify('Checks if returns oid', function() {
+            $things_proph = $this->prophet->prophesize(Things::class);
+            $things_proph->getLoginStatus()->will(function(){
+                return (new LoginStatus())
+                    ->setCkusid('123')
+                    ->setOid('abc')
+                    ->setConnectState(LoginStatusTypes::CONNECTED);
+            });
+            $identity_proph = $this->prophet->prophesize(IdentityServiceInterface::class);
+            $identity_proph->getThings()->will(function() use ($things_proph){
+                return $things_proph->reveal();
+            });
+
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $this->prophesize(OAuthServiceInterface::class)->reveal(),
+                $this->prophesize(HttpServiceInterface::class)->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            $this->assertEquals('abc', $object->getUserLoggedOid());
+        });
+
+        $this->specify('Checks if there is no login status.', function() {
+            $things_proph = $this->prophet->prophesize(Things::class);
+            $things_proph->getLoginStatus()->will(function () {
+                return null;
+            });
+            $identity_proph = $this->prophet->prophesize(IdentityServiceInterface::class);
+            $identity_proph->getThings()->will(function () use ($things_proph) {
+                return $things_proph->reveal();
+            });
+
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $this->prophesize(OAuthServiceInterface::class)->reveal(),
+                $this->prophesize(HttpServiceInterface::class)->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            $this->assertNull($object->getUserLoggedOid());
+        });
+
+        $this->specify('Checks if there is no user connected.', function() {
+            $things_proph = $this->prophet->prophesize(Things::class);
+            $things_proph->getLoginStatus()->will(function(){
+                return (new LoginStatus())
+                    ->setCkusid('123')
+                    ->setOid('abc')
+                    ->setConnectState(LoginStatusTypes::NOT_CONNECTED);
+            });
+            $identity_proph = $this->prophet->prophesize(IdentityServiceInterface::class);
+            $identity_proph->getThings()->will(function() use ($things_proph){
+                return $things_proph->reveal();
+            });
+
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $this->prophesize(OAuthServiceInterface::class)->reveal(),
+                $this->prophesize(HttpServiceInterface::class)->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            $this->assertNull($object->getUserLoggedOid());
         });
     }
 }
