@@ -221,13 +221,13 @@ class UrlBuilder implements UrlBuilderServiceInterface
     private function buildEditAccountUrl($endpoint_url, $next_url, $cancel_url, $entry_point = null)
     {
         try {
-            if ($this->checkParam($endpoint_url)) {
+            if (filter_var($endpoint_url, FILTER_VALIDATE_URL) === false) {
                 throw new \Exception ('Endpoint URL is empty');
             }
-            if ($this->checkParam($next_url)) {
+            if (filter_var($next_url, FILTER_VALIDATE_URL) === false) {
                 throw new \Exception ('Next URL is empty');
             }
-            if ($this->checkParam($cancel_url)) {
+            if (filter_var($cancel_url, FILTER_VALIDATE_URL) === false) {
                 throw new \Exception ('Cancel URL is empty');
             }
 
