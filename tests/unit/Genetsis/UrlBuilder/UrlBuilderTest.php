@@ -360,4 +360,191 @@ class UrlBuilderTest extends Unit
             $this->assertFalse($object->getUrlEditAccount());
         });
     }
+
+    public function testGetUrlCompleteAccount ()
+    {
+        $this->specify('Checks if the edit account URL is properly generated.', function() {
+            $config_proph = $this->prophet->prophesize(Config::class);
+            $config_proph->getClientId()->will(function(){
+                return '111111111111111';
+            });
+            $config_proph->getRedirect('postEditAccount', Argument::cetera())->will(function() {
+                return 'http://dru-id.foo/postEditAccount';
+            });
+            $config_proph->getRedirect('postEditAccount', 'http://dru-id.foo/another-callback')->will(function() {
+                return 'http://dru-id.foo/another-callback';
+            });
+            $config_proph->getEndPoint('next_url')->will(function(){
+                return 'https://dru-id.foo/next-url';
+            });
+            $config_proph->getEndPoint('cancel_url')->will(function(){
+                return 'https://dru-id.foo/cancel-url';
+            });
+            $config_proph->getEndPoint('complete_account_endpoint')->will(function() {
+                return 'https://dru-id.foo/complete-account-endpoint';
+            });
+            $oauth_proph = $this->prophet->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig(Argument::cetera())->will(function() use ($config_proph) {
+                return $config_proph->reveal();
+            });
+
+            $things_proph = $this->prophet->prophesize(Things::class);
+            $things_proph->getAccessToken()->will(function(){
+                return new AccessToken('111111111111111|3|2.AAAAAAAAAAAAAA.3600.1488275118786|AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.');
+            });
+            $identity_proph = $this->prophet->prophesize(Identity::class);
+            $identity_proph->getThings()->will(function() use ($things_proph) {
+                return $things_proph->reveal();
+            });
+
+            $object = new UrlBuilder(
+                $identity_proph->reveal(),
+                $oauth_proph->reveal(),
+                $this->prophet->prophesize(LoggerInterface::class)->reveal()
+            );
+//            $this->assertFalse('https://dru-id.foo/complete-account-endpoint?next=https%3A%2F%2Fdru-id.foo%2Fnext-url%3Fclient_id%3D111111111111111%26redirect_uri%3Dhttp%253A%252F%252Fdru-id.foo%252FpostEditAccount&cancel_url=https%3A%2F%2Fdru-id.foo%2Fcancel-url%3Fclient_id%3D111111111111111%26redirect_uri%3Dhttp%253A%252F%252Fdru-id.foo%252FpostEditAccount&oauth_token=111111111111111%7C3%7C2.AAAAAAAAAAAAAA.3600.1488275118786%7CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.', $object->getUrlCompleteAccount());
+            $this->assertFalse($object->getUrlCompleteAccount());
+            $this->assertEquals('https://dru-id.foo/complete-account-endpoint?next=https%3A%2F%2Fdru-id.foo%2Fnext-url%3Fclient_id%3D111111111111111%26redirect_uri%3Dhttp%253A%252F%252Fdru-id.foo%252FpostEditAccount&cancel_url=https%3A%2F%2Fdru-id.foo%2Fcancel-url%3Fclient_id%3D111111111111111%26redirect_uri%3Dhttp%253A%252F%252Fdru-id.foo%252FpostEditAccount&oauth_token=111111111111111%7C3%7C2.AAAAAAAAAAAAAA.3600.1488275118786%7CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.&scope=my-entry-point', $object->getUrlCompleteAccount('my-entry-point'));
+        });
+
+        $this->specify('Checks that URL builder works properly if the endpoint URL is empty.', function() {
+            $config_proph = $this->prophet->prophesize(Config::class);
+            $config_proph->getClientId()->will(function(){
+                return '111111111111111';
+            });
+            $config_proph->getRedirect('postEditAccount', Argument::cetera())->will(function() {
+                return 'http://dru-id.foo/postEditAccount';
+            });
+            $config_proph->getEndPoint('next_url')->will(function(){
+                return 'https://dru-id.foo/next-url';
+            });
+            $config_proph->getEndPoint('cancel_url')->will(function(){
+                return 'https://dru-id.foo/cancel-url';
+            });
+            $config_proph->getEndPoint('complete_account_endpoint')->will(function() {
+                return '';
+            });
+            $oauth_proph = $this->prophet->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig(Argument::cetera())->will(function() use ($config_proph) {
+                return $config_proph->reveal();
+            });
+
+            $things_proph = $this->prophet->prophesize(Things::class);
+            $things_proph->getAccessToken()->will(function(){
+                return new AccessToken('111111111111111|3|2.AAAAAAAAAAAAAA.3600.1488275118786|AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.');
+            });
+            $identity_proph = $this->prophet->prophesize(Identity::class);
+            $identity_proph->getThings()->will(function() use ($things_proph) {
+                return $things_proph->reveal();
+            });
+
+            $object = new UrlBuilder($identity_proph->reveal(), $oauth_proph->reveal(), $this->prophet->prophesize(LoggerInterface::class)->reveal());
+            $this->assertFalse($object->getUrlCompleteAccount('my-entry-point'));
+        });
+
+        $this->specify('Checks that URL builder works properly if next URL is empty.', function() {
+            $config_proph = $this->prophet->prophesize(Config::class);
+            $config_proph->getClientId()->will(function(){
+                return '111111111111111';
+            });
+            $config_proph->getRedirect('postEditAccount', Argument::cetera())->will(function() {
+                return 'http://dru-id.foo/postEditAccount';
+            });
+            $config_proph->getEndPoint('next_url')->will(function(){
+                return '';
+            });
+            $config_proph->getEndPoint('cancel_url')->will(function(){
+                return 'https://dru-id.foo/cancel-url';
+            });
+            $config_proph->getEndPoint('complete_account_endpoint')->will(function() {
+                return 'https://dru-id.foo/complete-account-endpoint';
+            });
+            $oauth_proph = $this->prophet->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig(Argument::cetera())->will(function() use ($config_proph) {
+                return $config_proph->reveal();
+            });
+
+            $things_proph = $this->prophet->prophesize(Things::class);
+            $things_proph->getAccessToken()->will(function(){
+                return new AccessToken('111111111111111|3|2.AAAAAAAAAAAAAA.3600.1488275118786|AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.');
+            });
+            $identity_proph = $this->prophet->prophesize(Identity::class);
+            $identity_proph->getThings()->will(function() use ($things_proph) {
+                return $things_proph->reveal();
+            });
+
+            $object = new UrlBuilder($identity_proph->reveal(), $oauth_proph->reveal(), $this->prophet->prophesize(LoggerInterface::class)->reveal());
+            $this->assertFalse($object->getUrlCompleteAccount('my-entry-point'));
+        });
+
+        $this->specify('Checks that URL builder works properly if cancel URL is empty.', function() {
+            $config_proph = $this->prophet->prophesize(Config::class);
+            $config_proph->getClientId()->will(function(){
+                return '111111111111111';
+            });
+            $config_proph->getRedirect('postEditAccount', Argument::cetera())->will(function() {
+                return 'http://dru-id.foo/postEditAccount';
+            });
+            $config_proph->getEndPoint('next_url')->will(function(){
+                return 'https://dru-id.foo/next-url';
+            });
+            $config_proph->getEndPoint('cancel_url')->will(function(){
+                return '';
+            });
+            $config_proph->getEndPoint('complete_account_endpoint')->will(function() {
+                return 'https://dru-id.foo/complete-account-endpoint';
+            });
+            $oauth_proph = $this->prophet->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig(Argument::cetera())->will(function() use ($config_proph) {
+                return $config_proph->reveal();
+            });
+
+            $things_proph = $this->prophet->prophesize(Things::class);
+            $things_proph->getAccessToken()->will(function(){
+                return new AccessToken('111111111111111|3|2.AAAAAAAAAAAAAA.3600.1488275118786|AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.');
+            });
+            $identity_proph = $this->prophet->prophesize(Identity::class);
+            $identity_proph->getThings()->will(function() use ($things_proph) {
+                return $things_proph->reveal();
+            });
+
+            $object = new UrlBuilder($identity_proph->reveal(), $oauth_proph->reveal(), $this->prophet->prophesize(LoggerInterface::class)->reveal());
+            $this->assertFalse($object->getUrlCompleteAccount('my-entry-point'));
+        });
+
+        $this->specify('Checks that URL builder works properly if access_token is empty.', function() {
+            $config_proph = $this->prophet->prophesize(Config::class);
+            $config_proph->getClientId()->will(function(){
+                return '111111111111111';
+            });
+            $config_proph->getRedirect('postEditAccount', Argument::cetera())->will(function() {
+                return 'http://dru-id.foo/postEditAccount';
+            });
+            $config_proph->getEndPoint('next_url')->will(function(){
+                return 'https://dru-id.foo/next-url';
+            });
+            $config_proph->getEndPoint('cancel_url')->will(function(){
+                return 'https://dru-id.foo/cancel-url';
+            });
+            $config_proph->getEndPoint('complete_account_endpoint')->will(function() {
+                return 'https://dru-id.foo/complete-account-endpoint';
+            });
+            $oauth_proph = $this->prophet->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig(Argument::cetera())->will(function() use ($config_proph) {
+                return $config_proph->reveal();
+            });
+
+            $things_proph = $this->prophet->prophesize(Things::class);
+            $things_proph->getAccessToken()->will(function(){
+                return null;
+            });
+            $identity_proph = $this->prophet->prophesize(Identity::class);
+            $identity_proph->getThings()->will(function() use ($things_proph) {
+                return $things_proph->reveal();
+            });
+
+            $object = new UrlBuilder($identity_proph->reveal(), $oauth_proph->reveal(), $this->prophet->prophesize(LoggerInterface::class)->reveal());
+            $this->assertFalse($object->getUrlCompleteAccount('my-entry-point'));
+        });
+    }
 }

@@ -310,13 +310,13 @@ class UrlBuilder implements UrlBuilderServiceInterface
     private function buildCompleteAccountUrl($endpoint_url, $next_url, $cancel_url, $entry_point)
     {
         try {
-            if ($this->checkParam($endpoint_url)) {
+            if (filter_var($endpoint_url, FILTER_VALIDATE_URL) === false) {
                 throw new \Exception ('Endpoint URL is empty');
             }
-            if ($this->checkParam($next_url)) {
+            if (filter_var($next_url, FILTER_VALIDATE_URL) === false) {
                 throw new \Exception ('Next URL is empty');
             }
-            if ($this->checkParam($cancel_url)) {
+            if (filter_var($cancel_url, FILTER_VALIDATE_URL) === false) {
                 throw new \Exception ('Cancel URL is empty');
             }
             $access_token = $this->identity->getThings()->getAccessToken();
@@ -324,6 +324,7 @@ class UrlBuilder implements UrlBuilderServiceInterface
             if (is_null($access_token)) {
                 throw new \Exception ('Access token is empty');
             }
+            // TODO: get default entry point.
             if ($this->checkParam($entry_point)) {
                 throw new \Exception ('Scope section is empty');
             }
