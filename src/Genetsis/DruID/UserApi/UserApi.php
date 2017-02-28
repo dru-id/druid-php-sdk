@@ -1,7 +1,7 @@
 <?php
 namespace Genetsis\DruID\UserApi;
 
-use Doctrine\Common\Cache\Cache as DoctrineCacheInterface;
+use Doctrine\Common\Cache\Cache;
 use Exception;
 use Genetsis\DruID\Core\Http\Contracts\HttpServiceInterface;
 use Genetsis\DruID\Core\Http\Exceptions\RequestException;
@@ -46,7 +46,7 @@ class UserApi implements UserApiServiceInterface
     private $http;
     /** @var LoggerInterface $logger */
     private $logger;
-    /** @var DoctrineCacheInterface $cache */
+    /** @var \Doctrine\Common\Cache\Cache $cache */
     private $cache;
 
     /**
@@ -54,9 +54,9 @@ class UserApi implements UserApiServiceInterface
      * @param OAuthServiceInterface $oauth
      * @param HttpServiceInterface $http
      * @param LoggerInterface $logger
-     * @param DoctrineCacheInterface $cache
+     * @param \Doctrine\Common\Cache\Cache $cache
      */
-    public function __construct(IdentityServiceInterface $identity, OAuthServiceInterface $oauth, HttpServiceInterface $http, LoggerInterface $logger, DoctrineCacheInterface $cache)
+    public function __construct(IdentityServiceInterface $identity, OAuthServiceInterface $oauth, HttpServiceInterface $http, LoggerInterface $logger, Cache $cache)
     {
         $this->identity = $identity;
         $this->oauth = $oauth;
