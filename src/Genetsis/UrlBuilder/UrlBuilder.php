@@ -6,6 +6,7 @@ use Genetsis\DruID;
 use Genetsis\DruIDFacade;
 use Genetsis\Identity\Contracts\IdentityServiceInterface;
 use Genetsis\UrlBuilder\Contracts\UrlBuilderServiceInterface;
+use Genetsis\UserApi\UserApi;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -21,6 +22,8 @@ class UrlBuilder implements UrlBuilderServiceInterface
 
     /** @var IdentityServiceInterface $identity */
     private $identity;
+    /** @var UserApi $user_api */
+    private $user_api;
     /** @var OAuthServiceInterface $oauth */
     protected $oauth;
     /** @var LoggerInterface $logger */
@@ -32,12 +35,14 @@ class UrlBuilder implements UrlBuilderServiceInterface
 
     /**
      * @param IdentityServiceInterface $identity
+     * @param UserApi $user_api
      * @param OAuthServiceInterface $oauth
      * @param LoggerInterface $logger
      */
-    public function __construct(IdentityServiceInterface $identity, OAuthServiceInterface $oauth, LoggerInterface $logger)
+    public function __construct(IdentityServiceInterface $identity, UserApi $user_api, OAuthServiceInterface $oauth, LoggerInterface $logger)
     {
         $this->identity = $identity;
+        $this->user_api = $user_api;
         $this->oauth = $oauth;
         $this->logger = $logger;
     }
@@ -121,7 +126,7 @@ class UrlBuilder implements UrlBuilderServiceInterface
 
             if (!$this->identity->isConnected()) {
                 return $this->getUrlLogin($entry_point);
-            } elseif (!$this->identity->checkUserComplete($entry_point)) {
+            } elseif (!$this->user_api->checkUserComplete($entry_point)) {
                 return $this->getUrlCompleteAccount($entry_point);
             }
         } catch (\Exception $e) {
