@@ -13,7 +13,7 @@ coverage:
     enabled: true
     whitelist:
         include:
-            - ../src/Genetsis/*
+            - ../src/*
 extensions:
     enabled:
         - Codeception\Extension\RunFailed
