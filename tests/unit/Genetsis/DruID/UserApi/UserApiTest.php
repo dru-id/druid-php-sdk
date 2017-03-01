@@ -6,9 +6,12 @@ use Codeception\Test\Unit;
 use Doctrine\Common\Cache\Cache;
 use Genetsis\DruID\Core\Http\Contracts\HttpServiceInterface;
 use Genetsis\DruID\Core\Http\Exceptions\RequestException;
+use Genetsis\DruID\Core\OAuth\Beans\AccessToken;
 use Genetsis\DruID\Core\OAuth\Beans\ClientToken;
 use Genetsis\DruID\Core\OAuth\Beans\OAuthConfig\Api;
 use Genetsis\DruID\Core\OAuth\Beans\OAuthConfig\Config;
+use Genetsis\DruID\Core\OAuth\Beans\OAuthConfig\EndPoint;
+use Genetsis\DruID\Core\OAuth\Beans\RefreshToken;
 use Genetsis\DruID\Core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\DruID\Core\User\Beans\Brand;
 use Genetsis\DruID\Core\User\Beans\LoginStatus;
@@ -1267,6 +1270,192 @@ class UserApiTest extends Unit
                 $cache_proph->reveal()
             );
             $this->assertCount(0, $object->getBrands());
+        });
+    }
+
+    public function testLogoutUser ()
+    {
+        $this->specify('Checks if we do logout logged user.', function() {
+            $cache_proph = $this->prophesize(Cache::class);
+            $cache_proph->delete('user-123')->will(function(){
+                return true;
+            });
+            $things_proph = $this->prophesize(Things::class);
+            $things_proph->getLoginStatus()->will(function () {
+                return (new LoginStatus())
+                    ->setCkusid('123')
+                    ->setOid('abc')
+                    ->setConnectState(LoginStatusTypes::CONNECTED);
+            });
+            $things_proph->getAccessToken()->will(function () {
+                return new AccessToken('AAA');
+            });
+            $things_proph->getRefreshToken()->will(function () {
+                return new RefreshToken('BBB');
+            });
+            $identity_proph = $this->prophesize(IdentityServiceInterface::class);
+            $identity_proph->getThings()->will(function () use ($things_proph) {
+                return $things_proph->reveal();
+            });
+            $identity_proph->clearLocalSessionData()->will(function(){
+                return true;
+            });
+            $oauth_proph = $this->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig()->will(function(){
+                return (new Config())->addEndPoint((new EndPoint())->setId('logout_endpoint')->setUrl('http://dru-id.foo'));
+            });
+            $oauth_proph->doLogout(Argument::cetera())->will(function(){
+                return true;
+            });
+
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $oauth_proph->reveal(),
+                $this->prophesize(HttpServiceInterface::class)->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $cache_proph->reveal()
+            );
+            $this->assertNull($object->logoutUser());
+        });
+
+        $this->specify('Checks if properly handles an error.', function() {
+            $identity_proph = $this->prophesize(IdentityServiceInterface::class);
+            $identity_proph->getThings()->will(function () {
+                throw new \Exception('Intended exception.');
+            });
+
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $this->prophesize(OAuthServiceInterface::class)->reveal(),
+                $this->prophesize(HttpServiceInterface::class)->reveal(),
+                getSyslogLogger('user-api'),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            $this->assertNull($object->logoutUser());
+        });
+    }
+
+    public function testCheckUserComplete ()
+    {
+        $this->specify('Checks if user need to be completed if the user is logged.', function() {
+            $identity_proph = $this->prophesize(IdentityServiceInterface::class);
+            $identity_proph->isConnected()->will(function(){
+                return true;
+            });
+            $oauth_proph = $this->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig()->will(function(){
+                return (new Config())
+                    ->addApi((new Api())
+                        ->setBaseUrl('http://dru-id.foo')
+                        ->setName('api.user')
+                        ->addEndpoint('user', 'user'));
+            });
+            $oauth_proph->doCheckUserCompleted(Argument::cetera())->will(function(){
+                return true;
+            });
+
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $oauth_proph->reveal(),
+                $this->prophesize(HttpServiceInterface::class)->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            $this->assertTrue($object->checkUserComplete('my-scope'));
+        });
+
+        $this->specify('Checks if user need to be completed if the user is not logged.', function() {
+            $identity_proph = $this->prophesize(IdentityServiceInterface::class);
+            $identity_proph->isConnected()->will(function(){
+                return false;
+            });
+
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $this->prophesize(OAuthServiceInterface::class)->reveal(),
+                $this->prophesize(HttpServiceInterface::class)->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            $this->assertFalse($object->checkUserComplete('my-scope'));
+        });
+
+        $this->specify('Checks if properly handles an error.', function() {
+            $identity_proph = $this->prophesize(IdentityServiceInterface::class);
+            $identity_proph->isConnected()->will(function () {
+                throw new \Exception('Intended exception.');
+            });
+
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $this->prophesize(OAuthServiceInterface::class)->reveal(),
+                $this->prophesize(HttpServiceInterface::class)->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            $this->assertFalse($object->checkUserComplete('my-scope'));
+        });
+    }
+
+    public function testCheckUserNeedAcceptTerms ()
+    {
+        $this->specify('Checks if user need to accept terms if the user is logged.', function() {
+            $identity_proph = $this->prophesize(IdentityServiceInterface::class);
+            $identity_proph->isConnected()->will(function(){
+                return true;
+            });
+            $oauth_proph = $this->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig()->will(function(){
+                return (new Config())
+                    ->addApi((new Api())
+                        ->setBaseUrl('http://dru-id.foo')
+                        ->setName('api.user')
+                        ->addEndpoint('user', 'user'));
+            });
+            $oauth_proph->doCheckUserNeedAcceptTerms(Argument::cetera())->will(function(){
+                return true;
+            });
+
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $oauth_proph->reveal(),
+                $this->prophesize(HttpServiceInterface::class)->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            $this->assertTrue($object->checkUserNeedAcceptTerms('my-scope'));
+        });
+
+        $this->specify('Checks if user need to accept terms if the user is not logged.', function() {
+            $identity_proph = $this->prophesize(IdentityServiceInterface::class);
+            $identity_proph->isConnected()->will(function(){
+                return false;
+            });
+
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $this->prophesize(OAuthServiceInterface::class)->reveal(),
+                $this->prophesize(HttpServiceInterface::class)->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            $this->assertFalse($object->checkUserNeedAcceptTerms('my-scope'));
+        });
+
+        $this->specify('Checks if properly handles an error.', function() {
+            $identity_proph = $this->prophesize(IdentityServiceInterface::class);
+            $identity_proph->isConnected()->will(function () {
+                throw new \Exception('Intended exception.');
+            });
+
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $this->prophesize(OAuthServiceInterface::class)->reveal(),
+                $this->prophesize(HttpServiceInterface::class)->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            $this->assertFalse($object->checkUserNeedAcceptTerms('my-scope'));
         });
     }
 }
