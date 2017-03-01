@@ -6,4 +6,4 @@
 #  exit 1
 #fi
 
-php ${PWD}/../vendor/bin/codecept --config=${PWD}/../tests/codeception.yml run --coverage --coverage-html unit,integration
+php ${PWD}/../vendor/bin/codecept --config=${PWD}/../tests/codeception.yml run --coverage-html unit,integration

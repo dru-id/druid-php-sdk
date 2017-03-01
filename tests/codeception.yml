@@ -2,7 +2,7 @@ actor: Tester
 paths:
     tests: ''
     log: _output
-    data: _dataphp
+    data: _data
     support: _support
     envs: _envs
 settings:

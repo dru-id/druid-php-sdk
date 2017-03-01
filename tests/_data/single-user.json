@@ -1,0 +1,66 @@
+{
+  "user": {
+    "id":1,
+    "oid":"aaaaaaa",
+    "property":"My property",
+    "entry-point":"1234567890-main",
+    "country_iso_code":"es",
+    "typologies":{
+      "Consumer":{
+        "value":"Consumer",
+        "label":"consumer"
+      }
+    },
+    "confirmed":true,
+    "user_ids":{
+      "screen_name":{
+        "value":"fooman",
+        "label":"screen_name"
+      },
+      "mobile_number":{
+        "value":"665454545",
+        "label":"mobile_number",
+        "confirmed":false
+      },
+      "email":{
+        "value":"fooman@foo.com",
+        "label":"email",
+        "confirmed":true
+      }
+    },
+    "user_data":{
+      "birthday":{
+        "value":"22/10/1974",
+        "label":"Fecha de nacimiento"
+      },
+      "gender":{
+        "value":"Hombre",
+        "label":"Género",
+        "vid":"2"
+      },
+      "surname":{
+        "value":"Man",
+        "label":"Apellidos"
+      },
+      "name":{
+        "value":"Foo",
+        "label":"Nombre"
+      }
+    },
+    "user_assertions":{
+      "terms":{
+        "consumer":{
+          "value":"true"
+        }
+      },
+      "optin":{
+        "consumer":{
+          "value":"false"
+        }
+      },
+      "none":{
+
+      }
+    }
+  }
+}

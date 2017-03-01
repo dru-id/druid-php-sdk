@@ -17,7 +17,7 @@ interface OpiServiceInterface {
      * @throws \InvalidArgumentException
      * @throws \Exception
      */
-    public function open($opi = null, $redirect_url = null);
+    public function open($opi = null, $redirect_url = null, $oid = null);
 
     /**
      * Returns the URL to an specific Opi.
@@ -29,6 +29,6 @@ interface OpiServiceInterface {
      * @throws \InvalidArgumentException
      * @throws \Exception
      */
-    public function get($opi = null, $redirect_url = null);
+    public function get($opi = null, $redirect_url = null, $oid = null);
 
 }
