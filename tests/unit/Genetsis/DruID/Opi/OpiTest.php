@@ -9,8 +9,6 @@ use Genetsis\DruID\Core\OAuth\Beans\OAuthConfig\Config;
 use Genetsis\DruID\Core\OAuth\Contracts\OAuthServiceInterface;
 use Genetsis\DruID\Opi\Opi;
 use Genetsis\DruID\UserApi\UserApi;
-use phpmock\functions\FixedValueFunction;
-use phpmock\MockBuilder;
 use Prophecy\Argument;
 use Prophecy\Prophet;
 
