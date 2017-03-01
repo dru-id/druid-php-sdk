@@ -58,12 +58,12 @@ class Opi implements OpiServiceInterface
             : $this->user_api->getUserLogged();
         $params = [
             'id' => $info->user->oid,
-            'sc' => urlencode(
-                ($this->oauth->getConfig()->getBrand() instanceof Brand)
-                    ? $this->oauth->getConfig()->getBrand()->getName()
-                    : ''
-            ),
-            'carry_url' => urlencode($redirect_url)
+            'sc' => ($this->oauth->getConfig()->getBrand() instanceof Brand)
+                ? $this->oauth->getConfig()->getBrand()->getName()
+                : '',
+            'carry_url' => ($redirect_url
+                ? $redirect_url
+                : '')
         ];
 
         // Gender
@@ -122,10 +122,6 @@ class Opi implements OpiServiceInterface
             } catch (\Exception $e) {}
         }
 
-        $query = [];
-        foreach($params as $param => $value) {
-            $query[] = "$param=$value";
-        }
-        return $this->oauth->getConfig()->getApi('opi')->getEndpoint('rules', true).'/'.$opi.'?'.implode('&', $query);
+        return $this->oauth->getConfig()->getApi('opi')->getEndpoint('rules', true) . '/' . $opi . '?' . http_build_query($params, null, '&');
     }
 }
