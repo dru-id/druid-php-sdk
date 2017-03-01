@@ -5,10 +5,12 @@ use Codeception\Specify;
 use Codeception\Test\Unit;
 use Doctrine\Common\Cache\Cache;
 use Genetsis\DruID\Core\Http\Contracts\HttpServiceInterface;
+use Genetsis\DruID\Core\Http\Exceptions\RequestException;
 use Genetsis\DruID\Core\OAuth\Beans\ClientToken;
 use Genetsis\DruID\Core\OAuth\Beans\OAuthConfig\Api;
 use Genetsis\DruID\Core\OAuth\Beans\OAuthConfig\Config;
 use Genetsis\DruID\Core\OAuth\Contracts\OAuthServiceInterface;
+use Genetsis\DruID\Core\User\Beans\Brand;
 use Genetsis\DruID\Core\User\Beans\LoginStatus;
 use Genetsis\DruID\Core\User\Beans\Things;
 use Genetsis\DruID\Core\User\Collections\LoginStatusTypes;
@@ -30,7 +32,7 @@ class UserApiTest extends Unit
     
     /** @var Prophet $prophet */
     private $prophet;
-    
+
     protected function _before()
     {
         $this->prophet = new Prophet();
@@ -717,6 +719,554 @@ class UserApiTest extends Unit
                 $this->prophesize(Cache::class)->reveal()
             );
             $this->assertNull($object->deleteCacheUser());
+        });
+    }
+
+    public function testGetAvatar ()
+    {
+        $this->specify('Checks if we get the avatar URL.', function() {
+            $oauth_proph = $this->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig()->will(function(){
+                return (new Config())
+                    ->addApi((new Api())
+                        ->setBaseUrl('http://dru-id.foo')
+                        ->setName('api.activityid')
+                        ->addEndpoint('public_image', '/public/v1/image'));
+            });
+            $http = $this->prophesize(HttpServiceInterface::class);
+            $http->request('GET', 'http://dru-id.foo/public/v1/image/1', Argument::withEntry('query', [
+                'width' => 100,
+                'height' => 200,
+                'redirect' => 'true'
+            ]))->will(function(){
+                return new Response(200, [], 'http://dru-id.foo/avatar/1');
+            });
+
+            $object = new UserApi(
+                $this->prophesize(IdentityServiceInterface::class)->reveal(),
+                $oauth_proph->reveal(),
+                $http->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            $this->assertEquals('http://dru-id.foo/avatar/1', callMethod($object, 'getAvatar', [1, 100, 200, true]));
+        });
+
+        $this->specify('Checks if we get the avatar URL with no redirect.', function() {
+            $oauth_proph = $this->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig()->will(function(){
+                return (new Config())
+                    ->addApi((new Api())
+                        ->setBaseUrl('http://dru-id.foo')
+                        ->setName('api.activityid')
+                        ->addEndpoint('public_image', '/public/v1/image'));
+            });
+            $http = $this->prophesize(HttpServiceInterface::class);
+            $http->request('GET', 'http://dru-id.foo/public/v1/image/1', Argument::withEntry('query', [
+                'width' => 100,
+                'height' => 200,
+                'redirect' => 'false'
+            ]))->will(function(){
+                return new Response(200, [], '{"url": "http://dru-id.foo/avatar/1"}');
+            });
+
+            $object = new UserApi(
+                $this->prophesize(IdentityServiceInterface::class)->reveal(),
+                $oauth_proph->reveal(),
+                $http->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            $this->assertEquals('http://dru-id.foo/avatar/1', callMethod($object, 'getAvatar', [1, 100, 200, false]));
+        });
+
+        $this->specify('Checks if we get the default avatar URL.', function() {
+            $oauth_proph = $this->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig()->will(function(){
+                return (new Config())
+                    ->addApi((new Api())
+                        ->setBaseUrl('http://dru-id.foo')
+                        ->setName('api.activityid')
+                        ->addEndpoint('public_image', '/public/v1/image'));
+            });
+            $http = $this->prophesize(HttpServiceInterface::class);
+            $http->request('GET', 'http://dru-id.foo/public/v1/image/1', Argument::withEntry('query', [
+                'width' => 100,
+                'height' => 200,
+                'redirect' => 'false'
+            ]))->will(function(){
+                return new Response(204, [], 'http://dru-id.foo/avatar/1');
+            });
+
+            $object = new UserApi(
+                $this->prophesize(IdentityServiceInterface::class)->reveal(),
+                $oauth_proph->reveal(),
+                $http->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            $this->assertEquals('/assets/img/placeholder.png', callMethod($object, 'getAvatar', [1, 100, 200, false]));
+        });
+
+        $this->specify('Checks if throws an exception if server response is invalid.', function() {
+            $oauth_proph = $this->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig()->will(function(){
+                return (new Config())
+                    ->addApi((new Api())
+                        ->setBaseUrl('http://dru-id.foo')
+                        ->setName('api.activityid')
+                        ->addEndpoint('public_image', '/public/v1/image'));
+            });
+            $http = $this->prophesize(HttpServiceInterface::class);
+            $http->request('GET', 'http://dru-id.foo/public/v1/image/1', Argument::withEntry('query', [
+                'width' => 100,
+                'height' => 200,
+                'redirect' => 'false'
+            ]))->will(function(){
+                return new Response(200, [], '{{}');
+            });
+
+            $object = new UserApi(
+                $this->prophesize(IdentityServiceInterface::class)->reveal(),
+                $oauth_proph->reveal(),
+                $http->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            callMethod($object, 'getAvatar', [1, 100, 200, false]);
+        }, ['throws' => RequestException::class]);
+
+        $this->specify('Checks if throws an exception if server response with an unexpected status code.', function() {
+            $oauth_proph = $this->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig()->will(function(){
+                return (new Config())
+                    ->addApi((new Api())
+                        ->setBaseUrl('http://dru-id.foo')
+                        ->setName('api.activityid')
+                        ->addEndpoint('public_image', '/public/v1/image'));
+            });
+            $http = $this->prophesize(HttpServiceInterface::class);
+            $http->request('GET', 'http://dru-id.foo/public/v1/image/1', Argument::withEntry('query', [
+                'width' => 100,
+                'height' => 200,
+                'redirect' => 'false'
+            ]))->will(function(){
+                return new Response(404, [], '{}');
+            });
+
+            $object = new UserApi(
+                $this->prophesize(IdentityServiceInterface::class)->reveal(),
+                $oauth_proph->reveal(),
+                $http->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            callMethod($object, 'getAvatar', [1, 100, 200, false]);
+        }, ['throws' => \Exception::class]);
+
+        $this->specify('Checks if does not return URL information.', function() {
+            $oauth_proph = $this->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig()->will(function(){
+                return (new Config())
+                    ->addApi((new Api())
+                        ->setBaseUrl('http://dru-id.foo')
+                        ->setName('api.activityid')
+                        ->addEndpoint('public_image', '/public/v1/image'));
+            });
+            $http = $this->prophesize(HttpServiceInterface::class);
+            $http->request('GET', 'http://dru-id.foo/public/v1/image/1', Argument::withEntry('query', [
+                'width' => 100,
+                'height' => 200,
+                'redirect' => 'false'
+            ]))->will(function(){
+                return new Response(200, [], '{}');
+            });
+
+            $object = new UserApi(
+                $this->prophesize(IdentityServiceInterface::class)->reveal(),
+                $oauth_proph->reveal(),
+                $http->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            $this->assertNull(callMethod($object, 'getAvatar', [1, 100, 200, false]));
+        });
+
+        $this->specify('Checks if throws an exception if response returns a 204 status code and redirect is true.', function() {
+            $oauth_proph = $this->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig()->will(function(){
+                return (new Config())
+                    ->addApi((new Api())
+                        ->setBaseUrl('http://dru-id.foo')
+                        ->setName('api.activityid')
+                        ->addEndpoint('public_image', '/public/v1/image'));
+            });
+            $http = $this->prophesize(HttpServiceInterface::class);
+            $http->request('GET', 'http://dru-id.foo/public/v1/image/1', Argument::withEntry('query', [
+                'width' => 100,
+                'height' => 200,
+                'redirect' => 'true'
+            ]))->will(function(){
+                return new Response(204, [], 'http://dru-id.foo/avatar/1');
+            });
+
+            $object = new UserApi(
+                $this->prophesize(IdentityServiceInterface::class)->reveal(),
+                $oauth_proph->reveal(),
+                $http->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            $this->assertEquals('/assets/img/placeholder.png', callMethod($object, 'getAvatar', [1, 100, 200, true]));
+        }, ['throws' => \Exception::class]);
+    }
+
+    public function testGetAvatarImg ()
+    {
+        $this->specify('Checks if we get the avatar URL with custom size.', function() {
+            $oauth_proph = $this->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig()->will(function(){
+                return (new Config())
+                    ->addApi((new Api())
+                        ->setBaseUrl('http://dru-id.foo')
+                        ->setName('api.activityid')
+                        ->addEndpoint('public_image', '/public/v1/image'));
+            });
+            $http = $this->prophesize(HttpServiceInterface::class);
+            $http->request('GET', 'http://dru-id.foo/public/v1/image/1', Argument::withEntry('query', [
+                'width' => 100,
+                'height' => 200,
+                'redirect' => 'true'
+            ]))->will(function(){
+                return new Response(200, [], 'http://dru-id.foo/avatar/1');
+            });
+
+            $object = new UserApi(
+                $this->prophesize(IdentityServiceInterface::class)->reveal(),
+                $oauth_proph->reveal(),
+                $http->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            $this->assertEquals('http://dru-id.foo/avatar/1', $object->getAvatarImg(1, 100, 200));
+        });
+
+        $this->specify('Checks if we provide an invalid user ID.', function() {
+            $oauth_proph = $this->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig()->will(function(){
+                return (new Config())
+                    ->addApi((new Api())
+                        ->setBaseUrl('http://dru-id.foo')
+                        ->setName('api.activityid')
+                        ->addEndpoint('public_image', '/public/v1/image'));
+            });
+            $http = $this->prophesize(HttpServiceInterface::class);
+            $http->request('GET', 'http://dru-id.foo/public/v1/image/1', Argument::withEntry('query', [
+                'width' => 100,
+                'height' => 200,
+                'redirect' => 'true'
+            ]))->will(function(){
+                return new Response(404, [], '');
+            });
+
+            $object = new UserApi(
+                $this->prophesize(IdentityServiceInterface::class)->reveal(),
+                $oauth_proph->reveal(),
+                $http->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            $this->assertEquals('', $object->getAvatarImg(1, 100, 200));
+        });
+    }
+
+    public function testGetAvatarUrl ()
+    {
+        $this->specify('Checks if we get the avatar URL.', function() {
+            $oauth_proph = $this->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig()->will(function(){
+                return (new Config())
+                    ->addApi((new Api())
+                        ->setBaseUrl('http://dru-id.foo')
+                        ->setName('api.activityid')
+                        ->addEndpoint('public_image', '/public/v1/image'));
+            });
+            $http = $this->prophesize(HttpServiceInterface::class);
+            $http->request('GET', 'http://dru-id.foo/public/v1/image/1', Argument::withEntry('query', [
+                'width' => 100,
+                'height' => 200,
+                'redirect' => 'true'
+            ]))->will(function(){
+                return new Response(200, [], 'http://dru-id.foo/avatar/1');
+            });
+
+            $object = new UserApi(
+                $this->prophesize(IdentityServiceInterface::class)->reveal(),
+                $oauth_proph->reveal(),
+                $http->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            $this->assertEquals('http://dru-id.foo/avatar/1', $object->getAvatarUrl(1, 100, 200));
+        });
+
+        $this->specify('Checks if we provide an invalid user ID.', function() {
+            $oauth_proph = $this->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig()->will(function(){
+                return (new Config())
+                    ->addApi((new Api())
+                        ->setBaseUrl('http://dru-id.foo')
+                        ->setName('api.activityid')
+                        ->addEndpoint('public_image', '/public/v1/image'));
+            });
+            $http = $this->prophesize(HttpServiceInterface::class);
+            $http->request('GET', 'http://dru-id.foo/public/v1/image/1', Argument::withEntry('query', [
+                'width' => 100,
+                'height' => 200,
+                'redirect' => 'true'
+            ]))->will(function(){
+                return new Response(404, [], '');
+            });
+
+            $object = new UserApi(
+                $this->prophesize(IdentityServiceInterface::class)->reveal(),
+                $oauth_proph->reveal(),
+                $http->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->prophesize(Cache::class)->reveal()
+            );
+            $this->assertEquals('', $object->getAvatarUrl(1, 100, 200));
+        });
+    }
+
+    public function testGetUserLoggedAvatarUrl ()
+    {
+        $this->specify('Checks if we get the avatar URL for the current logged user.', function() {
+            $cache_proph = $this->prophesize(Cache::class);
+            $cache_proph->contains(Argument::cetera())->will(function(){
+                return true;
+            });
+            $cache_proph->fetch(Argument::cetera())->will(function(){
+                return [['user' => ['oid' => 1]]];
+            });
+            $things_proph = $this->prophesize(Things::class);
+            $things_proph->getLoginStatus()->will(function(){
+                return (new LoginStatus())
+                    ->setCkusid('1')
+                    ->setOid('abc')
+                    ->setConnectState(LoginStatusTypes::CONNECTED);
+            });
+            $identity_proph = $this->prophesize(IdentityServiceInterface::class);
+            $identity_proph->getThings()->will(function() use ($things_proph){
+                return $things_proph->reveal();
+            });
+            $oauth_proph = $this->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig()->will(function(){
+                return (new Config())
+                    ->addApi((new Api())
+                        ->setBaseUrl('http://dru-id.foo')
+                        ->setName('api.activityid')
+                        ->addEndpoint('public_image', '/public/v1/image'));;
+            });
+            $http = $this->prophesize(HttpServiceInterface::class);
+            $http->request('GET', 'http://dru-id.foo/public/v1/image/1', Argument::withEntry('query', [
+                'width' => 100,
+                'height' => 200,
+                'redirect' => 'true'
+            ]))->will(function(){
+                return new Response(200, [], 'http://dru-id.foo/avatar/1');
+            });
+
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $oauth_proph->reveal(),
+                $http->reveal(),
+                $this->prophesize(LoggerInterface::class)->reveal(),
+                $cache_proph->reveal()
+            );
+            $this->assertEquals('http://dru-id.foo/avatar/1', $object->getUserLoggedAvatarUrl(100, 200));
+        });
+    }
+
+    public function testGetBrands ()
+    {
+        $this->specify('Checks that we can get brands data.', function() {
+            $cache_proph = $this->prophesize(Cache::class);
+            $cache_proph->contains(Argument::cetera())->will(function(){
+                return false;
+            });
+            $cache_proph->save(Argument::cetera())->will(function(){
+                return true;
+            });
+            $things_proph = $this->prophesize(Things::class);
+            $things_proph->getClientToken()->will(function(){
+                return new ClientToken('111111111111111|3|2.AAAAAAAAAAAAAA.3600.1488275118786|AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.');
+            });
+            $identity_proph = $this->prophesize(IdentityServiceInterface::class);
+            $identity_proph->getThings()->will(function() use ($things_proph){
+                return $things_proph->reveal();
+            });
+            $oauth_proph = $this->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig()->will(function(){
+                return (new Config())
+                    ->addApi((new Api())
+                        ->setBaseUrl('http://dru-id.foo')
+                        ->setName('api.activityid')
+                        ->addEndpoint('brands', 'brands'));
+            });
+            $http = $this->prophesize(HttpServiceInterface::class);
+            $http->request('GET', 'http://dru-id.foo/brands', Argument::withEntry('headers', [
+                'Authorization' => 'Bearer 111111111111111|3|2.AAAAAAAAAAAAAA.3600.1488275118786|AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.',
+                'Content-Type' => 'application/json',
+                'From' => '452200208393481-main'
+            ]))->will(function(){
+                return new Response(200, [], '{"items": [{"id": "b1", "displayName": {"es_ES": "Brand 1"}}, {"id": "b2", "displayName": {"es_ES": "Brand 2"}}]}');
+            });
+
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $oauth_proph->reveal(),
+                $http->reveal(),
+                getSyslogLogger('user-api'),
+                $cache_proph->reveal()
+            );
+            $this->assertEquals([
+                    (new Brand())->setKey('b1')->setName('Brand 1'),
+                    (new Brand())->setKey('b2')->setName('Brand 2')
+                ]
+                , $object->getBrands()
+            );
+        });
+
+        $this->specify('Checks that we can get brands data from cached system.', function() {
+            $cache_proph = $this->prophesize(Cache::class);
+            $cache_proph->contains(Argument::cetera())->will(function(){
+                return true;
+            });
+            $cache_proph->fetch('brands')->will(function(){
+                return serialize([
+                    (new Brand())->setKey('b1')->setName('Brand 1'),
+                    (new Brand())->setKey('b2')->setName('Brand 2')
+                ]);
+            });
+
+            $object = new UserApi(
+                $this->prophesize(IdentityServiceInterface::class)->reveal(),
+                $this->prophesize(OAuthServiceInterface::class)->reveal(),
+                $this->prophesize(HttpServiceInterface::class)->reveal(),
+                getSyslogLogger('user-api'),
+                $cache_proph->reveal()
+            );
+            $this->assertEquals([
+                    (new Brand())->setKey('b1')->setName('Brand 1'),
+                    (new Brand())->setKey('b2')->setName('Brand 2')
+                ]
+                , $object->getBrands()
+            );
+        });
+
+        $this->specify('Checks that no data is returned if we do not have a valid client_token.', function() {
+            $cache_proph = $this->prophesize(Cache::class);
+            $cache_proph->contains(Argument::cetera())->will(function(){
+                return false;
+            });
+            $things_proph = $this->prophesize(Things::class);
+            $things_proph->getClientToken()->will(function(){
+                return null;
+            });
+            $identity_proph = $this->prophesize(IdentityServiceInterface::class);
+            $identity_proph->getThings()->will(function() use ($things_proph){
+                return $things_proph->reveal();
+            });
+
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $this->prophesize(OAuthServiceInterface::class)->reveal(),
+                $this->prophesize(HttpServiceInterface::class)->reveal(),
+                getSyslogLogger('user-api'),
+                $cache_proph->reveal()
+            );
+            $this->assertCount(0, $object->getBrands());
+        });
+
+        $this->specify('Checks if no data is returned if server responds with a non 200 status code.', function() {
+            $cache_proph = $this->prophesize(Cache::class);
+            $cache_proph->contains(Argument::cetera())->will(function(){
+                return false;
+            });
+            $things_proph = $this->prophesize(Things::class);
+            $things_proph->getClientToken()->will(function(){
+                return new ClientToken('111111111111111|3|2.AAAAAAAAAAAAAA.3600.1488275118786|AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.');
+            });
+            $identity_proph = $this->prophesize(IdentityServiceInterface::class);
+            $identity_proph->getThings()->will(function() use ($things_proph){
+                return $things_proph->reveal();
+            });
+            $oauth_proph = $this->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig()->will(function(){
+                return (new Config())
+                    ->addApi((new Api())
+                        ->setBaseUrl('http://dru-id.foo')
+                        ->setName('api.activityid')
+                        ->addEndpoint('brands', 'brands'));
+            });
+            $http = $this->prophesize(HttpServiceInterface::class);
+            $http->request('GET', 'http://dru-id.foo/brands', Argument::withEntry('headers', [
+                'Authorization' => 'Bearer 111111111111111|3|2.AAAAAAAAAAAAAA.3600.1488275118786|AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.',
+                'Content-Type' => 'application/json',
+                'From' => '452200208393481-main'
+            ]))->will(function(){
+                return new Response(404, [], '{}');
+            });
+
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $oauth_proph->reveal(),
+                $http->reveal(),
+                getSyslogLogger('user-api'),
+                $cache_proph->reveal()
+            );
+            $this->assertCount(0, $object->getBrands());
+        });
+
+        $this->specify('Checks if no data is returned if server responds with an invalid data.', function() {
+            $cache_proph = $this->prophesize(Cache::class);
+            $cache_proph->contains(Argument::cetera())->will(function(){
+                return false;
+            });
+            $things_proph = $this->prophesize(Things::class);
+            $things_proph->getClientToken()->will(function(){
+                return new ClientToken('111111111111111|3|2.AAAAAAAAAAAAAA.3600.1488275118786|AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.');
+            });
+            $identity_proph = $this->prophesize(IdentityServiceInterface::class);
+            $identity_proph->getThings()->will(function() use ($things_proph){
+                return $things_proph->reveal();
+            });
+            $oauth_proph = $this->prophesize(OAuthServiceInterface::class);
+            $oauth_proph->getConfig()->will(function(){
+                return (new Config())
+                    ->addApi((new Api())
+                        ->setBaseUrl('http://dru-id.foo')
+                        ->setName('api.activityid')
+                        ->addEndpoint('brands', 'brands'));
+            });
+            $http = $this->prophesize(HttpServiceInterface::class);
+            $http->request('GET', 'http://dru-id.foo/brands', Argument::withEntry('headers', [
+                'Authorization' => 'Bearer 111111111111111|3|2.AAAAAAAAAAAAAA.3600.1488275118786|AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.',
+                'Content-Type' => 'application/json',
+                'From' => '452200208393481-main'
+            ]))->will(function(){
+                return new Response(200, [], '{{}');
+            });
+
+            $object = new UserApi(
+                $identity_proph->reveal(),
+                $oauth_proph->reveal(),
+                $http->reveal(),
+                getSyslogLogger('user-api'),
+                $cache_proph->reveal()
+            );
+            $this->assertCount(0, $object->getBrands());
         });
     }
 }
