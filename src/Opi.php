@@ -47,9 +47,8 @@ class Opi
             "sc" => urlencode(OAuthConfig::getBrand()),
             "carry_url" => urlencode($redirect_url));
 
-        $opi_age = false;
+        // Gender
         $opi_gender = false;
-
         try {
             $gender = isset($info->user->user_data->gender) ? $info->user->user_data->gender->vid : null;
             if ($gender == 1) { // Female
@@ -59,47 +58,48 @@ class Opi
             }
         } catch (Exception $e) {}
 
+        // Age
         if ($opi_gender) {
-            $params["carry_sexo"] =  $opi_gender;
-
+            $params['carry_sexo'] =  $opi_gender;
             try {
-                $birthday = isset($info->user->user_data->birthday) ? $info->user->user_data->birthday->value : null;
-
-                if($birthday != null){
-                    $birthday = explode("/", $birthday);
-
-                    $age = (date("md", date("U", mktime(0, 0, 0, $birthday[2], $birthday[1], $birthday[0]))) > date("md")
-                        ? ((date("Y") - $birthday[2]) - 1)
-                        : (date("Y") - $birthday[2]));
-
-                    switch ($opi_gender) {
-                        case 1: //Male
-                            if (18 <= $age && $age <= 24) {
-                                $opi_age = 1;
-                            } else if (25 <= $age && $age <= 34) {
-                                $opi_age = 2;
-                            } elseif (35 <= $age && $age <= 44) {
-                                $opi_age = 3;
-                            } elseif (45 <= $age && $age <= 64) {
-                                $opi_age = 4;
-                            }
-                            break;
-                        case 2: //Female
-                            if (18 <= $age && $age <= 24) {
-                                $opi_age = 1;
-                            } else if (25 <= $age && $age <= 34) {
-                                $opi_age = 2;
-                            } elseif (35 <= $age && $age <= 64) {
-                                $opi_age = 3;
-                            }
-                            break;
+                if (isset($info->user, $info->user->user_data, $info->user->user_data->birthday, $info->user->user_data->birthday->value) && $info->user->user_data->birthday->value) {
+                    if (($user_date = @date_create_from_format('d/m/Y', $info->user->user_data->birthday->value)) instanceof \DateTime) {
+                        $opi_age = (new \DateTime())->diff($user_date);
+                        $opi_age = ($opi_age instanceof \DateInterval)
+                            ? $opi_age->y
+                            : false;
+                        switch ($opi_gender) {
+                            case 1: //Male
+                                if ((18 <= $opi_age) && ($opi_age <= 24)) {
+                                    $opi_age = 1;
+                                } elseif ((25 <= $opi_age) && ($opi_age <= 34)) {
+                                    $opi_age = 2;
+                                } elseif ((35 <= $opi_age) && ($opi_age <= 44)) {
+                                    $opi_age = 3;
+                                } elseif ((45 <= $opi_age) && ($opi_age <= 64)) {
+                                    $opi_age = 4;
+                                } else {
+                                    $opi_age = false;
+                                }
+                                break;
+                            case 2: //Female
+                                if ((18 <= $opi_age) && ($opi_age <= 24)) {
+                                    $opi_age = 1;
+                                } elseif ((25 <= $opi_age) && ($opi_age <= 34)) {
+                                    $opi_age = 2;
+                                } elseif ((35 <= $opi_age) && ($opi_age <= 64)) {
+                                    $opi_age = 3;
+                                } else {
+                                    $opi_age = false;
+                                }
+                                break;
+                        }
+                        if ($opi_age !== false) {
+                            $params['carry_edad'] = $opi_age;
+                        }
                     }
                 }
             } catch (Exception $e) {}
-
-            if ($opi_age) {
-                $params["carry_edad"] =  $opi_age;
-            }
         }
 
         $query = array();
