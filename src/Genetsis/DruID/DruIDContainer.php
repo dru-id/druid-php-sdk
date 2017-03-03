@@ -8,7 +8,7 @@ namespace Genetsis\DruID;
  * @author Genetsis
  * @link http://developers.dru-id.com
  */
-class DruIDFacade
+class DruIDContainer
 {
 
     /** @var DruID $druid */

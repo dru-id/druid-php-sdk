@@ -10,10 +10,8 @@ use Genetsis\DruID\Core\User\Beans\Brand;
 use Genetsis\DruID\Core\User;
 use Genetsis\DruID\Core\User\Collections\LoginStatusTypes as LoginStatusTypesCollection;
 use Genetsis\DruID\DruID;
-use Genetsis\DruID\DruIDFacade;
 use Genetsis\DruID\Identity\Contracts\IdentityServiceInterface;
 use Genetsis\DruID\UserApi\Contracts\UserApiServiceInterface;
-use GuzzleHttp\Psr7\Uri;
 use Psr\Log\LoggerInterface;
 
 /**

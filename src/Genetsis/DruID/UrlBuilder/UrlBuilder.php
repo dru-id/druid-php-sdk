@@ -2,8 +2,6 @@
 namespace Genetsis\DruID\UrlBuilder;
 
 use Genetsis\DruID\Core\OAuth\Contracts\OAuthServiceInterface;
-use Genetsis\DruID\DruID;
-use Genetsis\DruID\DruIDFacade;
 use Genetsis\DruID\Identity\Contracts\IdentityServiceInterface;
 use Genetsis\DruID\UrlBuilder\Contracts\UrlBuilderServiceInterface;
 use Genetsis\DruID\UserApi\UserApi;

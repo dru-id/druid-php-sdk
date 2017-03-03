@@ -5,14 +5,14 @@ use Codeception\Specify;
 use Doctrine\Common\Cache\VoidCache;
 use Genetsis\DruID\Core\Config\Beans\Config;
 use Genetsis\DruID\DruID;
-use Genetsis\DruID\DruIDFacade;
+use Genetsis\DruID\DruIDContainer;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @package Genetsis\DruID
  * @category UnitTest
  */
-class DruIDFacadeTest extends TestCase
+class DruIDContainerTest extends TestCase
 {
     use Specify;
 
@@ -27,16 +27,16 @@ class DruIDFacadeTest extends TestCase
     public function testFacadeExceptions()
     {
         $this->specify('Checks if the facade throws an exception when using before setup.', function () {
-            DruIDFacade::get();
+            DruIDContainer::get();
         }, ['throws' => \Exception::class]);
     }
 
     public function testFacade()
     {
         $this->specify('Checks facade setup.', function () {
-            DruIDFacade::setup($this->druid);
-            $this->assertTrue(getStaticProperty(DruIDFacade::class, 'setup_done'));
-            $this->assertInstanceOf(DruID::class, DruIDFacade::get());
+            DruIDContainer::setup($this->druid);
+            $this->assertTrue(getStaticProperty(DruIDContainer::class, 'setup_done'));
+            $this->assertInstanceOf(DruID::class, DruIDContainer::get());
         });
     }
 }
