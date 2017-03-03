@@ -7,6 +7,17 @@ define('OAUTHCONFIG_SAMPLE_XML_1_4', __DIR__.'/_data/oauthconf-sample.xml');
 define('OAUTHCONFIG_SAMPLE_XML_WRONG_VERSION', __DIR__.'/_data/oauthconf-sample-with-wrong-version.xml');
 
 /**
+ * Returns data directory.
+ *
+ * @param string $path Relative path inside data dir.
+ * @return string
+ */
+function dataDir($path = '')
+{
+    return __DIR__.'/_data/'.ltrim($path, '/');
+}
+
+/**
  * Gets an object's property, even if it is public, protected or private. Use this function only for testing purposes.
  *
  * @param object $obj
@@ -95,4 +106,21 @@ function getSyslogLogger($key)
     $log_handler = new \Monolog\Handler\SyslogHandler($key);
     $log_handler->setFormatter(new \Monolog\Formatter\LineFormatter("%level_name% %context.method%[%context.line%]: %message%\n", null, true));
     return new \Monolog\Logger($key, [$log_handler]);
+}
+
+/**
+ * @param string $key Logger key.
+ * @return \Psr\Log\LoggerInterface
+ */
+function getDefaultLoggerService($key)
+{
+    return getSyslogLogger($key);
+}
+
+/**
+ * @return \Doctrine\Common\Cache\Cache
+ */
+function getDefaultCacheService()
+{
+    return new \Doctrine\Common\Cache\VoidCache();
 }

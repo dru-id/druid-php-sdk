@@ -1,9 +1,4 @@
 #!/bin/bash
 
-#ps cax | grep "start-mock" > /dev/null
-#if [ ! $? -eq 0 ]; then
-#  echo "Mock server not detected. Please start mock server running first 'start-mock-server.sh'."
-#  exit 1
-#fi
+php ${PWD}/../vendor/bin/phpunit -c ${PWD}/../phpunit.xml --coverage-html ${PWD}/../tests/_output/coverage
 
-php ${PWD}/../vendor/bin/codecept --config=${PWD}/../tests/codeception.yml run --coverage-html unit,integration
