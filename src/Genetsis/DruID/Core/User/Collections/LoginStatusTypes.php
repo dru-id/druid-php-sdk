@@ -6,8 +6,8 @@ use Genetsis\DruID\Core\Utils\Contracts\CollectionInterface;
 /**
  * Class to group all login status types.
  *
- * @package   Genetsis\DruID
- * @category  Collection
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class LoginStatusTypes implements CollectionInterface
 {
@@ -17,7 +17,7 @@ class LoginStatusTypes implements CollectionInterface
     const UNKNOWN = 'unknown';
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function check($value)
     {

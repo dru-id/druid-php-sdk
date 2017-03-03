@@ -4,8 +4,8 @@ namespace Genetsis\DruID\Core\Config\Beans\Cache;
 /**
  * This is the common class for all configuration cache beans.
  *
- * @package  Genetsis\DruID
- * @category Bean
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 abstract class AbstractCache {
 

@@ -2,8 +2,8 @@
 namespace Genetsis\DruID\Opi\Contracts;
 
 /**
- * @package  Genetsis\DruID
- * @category Contract
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 interface OpiServiceInterface {
 

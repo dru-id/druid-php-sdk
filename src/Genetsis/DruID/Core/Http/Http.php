@@ -12,8 +12,8 @@ use Psr\Log\LoggerInterface;
 /**
  * Class to performs HTTP request calls.
  *
- * @package  Genetsis\DruID
- * @category Service
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class Http implements HttpServiceInterface {
 
@@ -33,7 +33,7 @@ class Http implements HttpServiceInterface {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function request($method, $uri, array $options = [])
     {
@@ -63,7 +63,7 @@ class Http implements HttpServiceInterface {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function checkErrorMessage(ResponseInterface $response)
     {

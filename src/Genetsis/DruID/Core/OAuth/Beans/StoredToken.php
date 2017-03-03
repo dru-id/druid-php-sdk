@@ -7,11 +7,8 @@ use Genetsis\DruID\Core\OAuth\Collections\TokenTypes as TokenTypesCollection;
  * Abstract class which aims to be the parent class of the different types
  * of tokens.
  *
- * @package   Genetsis\DruID
- * @category  Bean
- * @version   1.0
- * @access    public
- * @since     2011-09-08
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class StoredToken implements StoredTokenInterface
 {
@@ -27,7 +24,7 @@ class StoredToken implements StoredTokenInterface
     protected $path = '/';
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function __construct($value, $expires_in = 0, $expires_at = 0, $path = '/')
     {
@@ -38,7 +35,7 @@ class StoredToken implements StoredTokenInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function factory($name, $value, $expires_in = 0, $expires_at = 0, $path = '/')
     {
@@ -55,7 +52,7 @@ class StoredToken implements StoredTokenInterface
 
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getName()
     {
@@ -63,7 +60,7 @@ class StoredToken implements StoredTokenInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function setName($name)
     {
@@ -76,7 +73,7 @@ class StoredToken implements StoredTokenInterface
 
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getValue()
     {
@@ -84,7 +81,7 @@ class StoredToken implements StoredTokenInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function setValue($value)
     {
@@ -93,7 +90,7 @@ class StoredToken implements StoredTokenInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getExpiresIn()
     {
@@ -101,7 +98,7 @@ class StoredToken implements StoredTokenInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function setExpiresIn($expires_in)
     {
@@ -113,7 +110,7 @@ class StoredToken implements StoredTokenInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getExpiresAt()
     {
@@ -121,7 +118,7 @@ class StoredToken implements StoredTokenInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function setExpiresAt($expires_at)
     {
@@ -133,7 +130,7 @@ class StoredToken implements StoredTokenInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getPath()
     {
@@ -141,7 +138,7 @@ class StoredToken implements StoredTokenInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function setPath($path)
     {

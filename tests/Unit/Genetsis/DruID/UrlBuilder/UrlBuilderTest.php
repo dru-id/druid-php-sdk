@@ -17,7 +17,6 @@ use Psr\Log\LoggerInterface;
 /**
  * @package UnitTest\Genetsis\DruID\UrlBuilder
  * @category UnitTest
- * @author Ismael Salgado <ismael.salgado@genetsis.com>
  */
 class UrlBuilderTest extends TestCase
 {

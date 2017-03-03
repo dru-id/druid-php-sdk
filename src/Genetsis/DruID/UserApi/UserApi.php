@@ -22,13 +22,8 @@ use Psr\Log\LoggerInterface;
  * {@link UserApi} makes calls internally to the API to
  * request user Data.
  *
- * @package   Genetsis\DruID
- * @category  Bean
- * @version   2.0
- * @access    public
- * @author    Israel Dominguez
- * @revision  Alejandro Sánchez
- * @see       http://developers.dru-id.com
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class UserApi implements UserApiServiceInterface
 {
@@ -66,7 +61,7 @@ class UserApi implements UserApiServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getUserLogged()
     {
@@ -86,7 +81,7 @@ class UserApi implements UserApiServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getUserLoggedCkusid()
     {
@@ -100,7 +95,7 @@ class UserApi implements UserApiServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getUserLoggedOid()
     {
@@ -114,7 +109,7 @@ class UserApi implements UserApiServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getUserLoggedAvatarUrl($width = 150, $height = 150)
     {
@@ -122,7 +117,7 @@ class UserApi implements UserApiServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getAvatarUrl($userid, $width = 150, $height = 150)
     {
@@ -191,7 +186,7 @@ class UserApi implements UserApiServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getBrands()
     {
@@ -238,7 +233,7 @@ class UserApi implements UserApiServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function deleteCacheUser($ckusid = null)
     {
@@ -259,7 +254,7 @@ class UserApi implements UserApiServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getUsers($identifiers)
     {

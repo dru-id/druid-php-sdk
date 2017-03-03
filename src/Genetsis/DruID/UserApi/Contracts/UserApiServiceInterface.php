@@ -2,8 +2,8 @@
 namespace Genetsis\DruID\UserApi\Contracts;
 
 /**
- * @package  Genetsis\DruID
- * @category Contract
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 interface UserApiServiceInterface {
 

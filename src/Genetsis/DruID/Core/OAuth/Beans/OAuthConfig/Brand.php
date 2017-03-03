@@ -2,8 +2,8 @@
 namespace Genetsis\DruID\Core\OAuth\Beans\OAuthConfig;
 
 /**
- * @package   Genetsis\DruID
- * @category  Bean
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class Brand
 {

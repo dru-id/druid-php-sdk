@@ -3,8 +3,8 @@
 /**
  * Class to store endpoint information.
  *
- * @package   Genetsis\DruID
- * @category  Bean
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class EndPoint {
 

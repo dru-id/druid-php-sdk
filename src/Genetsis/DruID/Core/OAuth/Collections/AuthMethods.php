@@ -6,8 +6,8 @@ use Genetsis\DruID\Core\Utils\Contracts\CollectionInterface;
 /**
  * Class to group all authentication methods.
  *
- * @package   Genetsis\DruID
- * @category  Collection
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class AuthMethods implements CollectionInterface {
 
@@ -18,7 +18,7 @@ class AuthMethods implements CollectionInterface {
     const GRANT_TYPE_EXCHANGE_SESSION = 'urn:es.cocacola:oauth2:grant_type:exchange_session';
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function check($value)
     {

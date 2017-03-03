@@ -6,9 +6,8 @@ use Genetsis\DruID\Core\User\Collections\LoginStatusTypes as LoginStatusTypesCol
 /**
  * This class stores login status.
  *
- * @package   Genetsis\DruID
- * @category  Bean
- * @access    private
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class LoginStatus
 {

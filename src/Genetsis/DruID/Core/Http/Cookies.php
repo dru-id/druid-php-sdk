@@ -6,13 +6,13 @@ use Genetsis\DruID\Core\Http\Contracts\CookiesServiceInterface;
 /**
  * Cookies handler implementation.
  *
- * @package  Genetsis\DruID
- * @category Service
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class Cookies implements CookiesServiceInterface {
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function set($name, $value = null, $expire = null, $path = null, $domain = null, $secure = null, $httponly = null)
     {
@@ -23,7 +23,7 @@ class Cookies implements CookiesServiceInterface {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function get($name, $default = null)
     {
@@ -31,7 +31,7 @@ class Cookies implements CookiesServiceInterface {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function all()
     {
@@ -39,7 +39,7 @@ class Cookies implements CookiesServiceInterface {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function has($name)
     {
@@ -47,7 +47,7 @@ class Cookies implements CookiesServiceInterface {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function delete($name, $path = null, $domain = null)
     {

@@ -4,8 +4,8 @@ namespace Genetsis\DruID\Core\Encryption;
 /**
  * This class is used to wrap encryption functions.
  *
- * @package   Genetsis\DruID
- * @category  Service
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class Encryption {
 

@@ -6,8 +6,8 @@ namespace Genetsis\DruID\Core\Http\Contracts;
  *
  * This interface explains how to implement a cookie handler service which will centralize the cookie management.
  *
- * @package  Genetsis\DruID
- * @category Contract
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 interface CookiesServiceInterface {
 

@@ -9,10 +9,8 @@ use Genetsis\DruID\UserApi\Contracts\UserApiServiceInterface;
 /**
  * This class wraps all methods for interactions with OPI
  *
- * @package   Genetsis\DruID
- * @category  Helper
- * @version   1.0
- * @access    private
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class Opi implements OpiServiceInterface
 {
@@ -33,7 +31,7 @@ class Opi implements OpiServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function open($opi = null, $redirect_url = null, $oid = null)
     {
@@ -42,7 +40,7 @@ class Opi implements OpiServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function get($opi = null, $redirect_url = null, $oid = null)
     {

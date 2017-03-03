@@ -4,10 +4,8 @@ namespace Genetsis\DruID\Core;
 /**
  * Manages OAuth configuration file.
  *
- * @package   Genetsis\DruID
- * @category  Helper
- * @version   1.0
- * @access    private
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class OauthTemplate
 {

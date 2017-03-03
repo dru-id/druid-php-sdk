@@ -6,8 +6,8 @@ use Genetsis\DruID\Core\OAuth\Exceptions\InvalidGrantException;
 /**
  * OAuth service interface.
  *
- * @package   Genetsis\DruID
- * @category  Contract
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 interface OAuthServiceInterface {
 

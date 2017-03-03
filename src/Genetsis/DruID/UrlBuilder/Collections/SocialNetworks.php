@@ -4,8 +4,8 @@ namespace Genetsis\DruID\UrlBuilder\Collections;
 /**
  * Class to group all allowed social networks.
  *
- * @package  Genetsis\DruID
- * @category Collection
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class SocialNetworks
 {

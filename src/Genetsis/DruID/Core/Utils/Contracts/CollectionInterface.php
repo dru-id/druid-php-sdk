@@ -4,8 +4,8 @@ namespace Genetsis\DruID\Core\Utils\Contracts;
 /**
  * Interface for these classes which contains values as a collection wrapper.
  *
- * @package  Genetsis\DruID
- * @category Contract
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 interface CollectionInterface {
 

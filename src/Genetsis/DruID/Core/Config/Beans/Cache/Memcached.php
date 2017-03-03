@@ -4,8 +4,8 @@ namespace Genetsis\DruID\Core\Config\Beans\Cache;
 /**
  * This class keeps config parameters when cache should be stored in memcached.
  *
- * @package  Genetsis\DruID
- * @category Bean
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class Memcached extends AbstractCache {
 

@@ -27,7 +27,6 @@ use Psr\Log\LoggerInterface;
 /**
  * @package UnitTest\Genetsis\DruID\UserApi
  * @category UnitTest
- * @author Ismael Salgado <ismael.salgado@genetsis.com>
  */
 class UserApiTest extends TestCase
 {

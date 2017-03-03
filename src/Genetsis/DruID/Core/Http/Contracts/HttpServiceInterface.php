@@ -9,8 +9,8 @@ use Psr\Http\Message\UriInterface;
 /**
  * HTTP service interface.
  *
- * @package  Genetsis\DruID
- * @category Contract
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 interface HttpServiceInterface
 {

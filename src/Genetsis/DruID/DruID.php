@@ -27,7 +27,8 @@ use Psr\Log\LogLevel;
 /**
  * This is the main class for DruID library. All starts here.
  *
- * @package Genetsis\DruID
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class DruID
 {

@@ -4,7 +4,10 @@ namespace Genetsis\DruID\Core\Config;
 use Genetsis\DruID\Core\Config\Beans\Config;
 use Genetsis\DruID\Core\Config\Beans\Log;
 
-
+/**
+ * @author Genetsis
+ * @link http://developers.dru-id.com
+ */
 class Factory {
 
     /**

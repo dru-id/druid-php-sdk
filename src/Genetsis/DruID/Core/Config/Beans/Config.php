@@ -4,8 +4,8 @@ namespace Genetsis\DruID\Core\Config\Beans;
 /**
  * This class stores all configuration parameters for the current process.
  *
- * @package  Genetsis\DruID
- * @category Bean
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class Config {
 

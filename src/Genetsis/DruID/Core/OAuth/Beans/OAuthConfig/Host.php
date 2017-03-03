@@ -3,8 +3,8 @@
 /**
  * Class to store host information.
  *
- * @package   Genetsis\DruID
- * @category  Bean
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class Host {
 

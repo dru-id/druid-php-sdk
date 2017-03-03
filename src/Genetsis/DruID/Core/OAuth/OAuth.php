@@ -25,10 +25,8 @@ use Psr\Log\LoggerInterface;
  * for user authentication and validation. Also generates the URLs to
  * perform this operations as register or login.
  *
- * @package   Genetsis\DruID
- * @category  Helper
- * @version   1.0
- * @access    private
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class OAuth implements OAuthServiceInterface
 {
@@ -69,7 +67,7 @@ class OAuth implements OAuthServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getConfig()
     {
@@ -77,7 +75,7 @@ class OAuth implements OAuthServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function setConfig(Config $config)
     {
@@ -86,7 +84,7 @@ class OAuth implements OAuthServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function doGetClientToken ($endpoint_url)
     {
@@ -172,7 +170,7 @@ class OAuth implements OAuthServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function doGetAccessToken ($endpoint_url, $code, $redirect_url)
     {

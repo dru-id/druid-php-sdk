@@ -15,6 +15,10 @@ use Genetsis\DruID\DruID;
 use Genetsis\DruID\Identity\Contracts\IdentityServiceInterface;
 use Psr\Log\LoggerInterface;
 
+/**
+ * @author Genetsis
+ * @link http://developers.dru-id.com
+ */
 class Identity implements IdentityServiceInterface
 {
 

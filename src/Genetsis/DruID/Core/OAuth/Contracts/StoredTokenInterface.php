@@ -3,8 +3,8 @@
 /**
  * Stored token interface.
  *
- * @package   Genetsis\DruID
- * @category  Contract
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 interface StoredTokenInterface {
 

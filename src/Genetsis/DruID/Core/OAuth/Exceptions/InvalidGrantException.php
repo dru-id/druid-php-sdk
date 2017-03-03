@@ -2,7 +2,7 @@
 namespace Genetsis\DruID\Core\OAuth\Exceptions;
 
 /**
- * @package  Genetsis\DruID
- * @category Exception
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class InvalidGrantException extends \Exception {}

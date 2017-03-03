@@ -8,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 /**
  * @package UnitTest\Genetsis\DruID\UrlBuilder\Collections
  * @category UnitTest
- * @author Ismael Salgado <ismael.salgado@genetsis.com>
  */
 class SocialNetworksCollectionTest extends TestCase
 {

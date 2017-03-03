@@ -5,8 +5,8 @@ namespace Genetsis\DruID;
  * Facade to allow to have the DruID library configured wherever the code requires it. The DruID library must be
  * configured first. See {@link DruID}
  *
- * @package  DruID
- * @category Facade
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class DruIDFacade
 {

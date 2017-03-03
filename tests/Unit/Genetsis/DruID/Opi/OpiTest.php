@@ -15,7 +15,6 @@ use Prophecy\Prophet;
 /**
  * @package UnitTest\Genetsis\DruID\Opi
  * @category UnitTest
- * @author Ismael Salgado <ismael.salgado@genetsis.com>
  */
 class OpiTest extends TestCase
 {

@@ -13,8 +13,8 @@ use Genetsis\DruID\Core\OAuth\Beans\OAuthConfig\RedirectUrl;
 use Psr\Log\LoggerInterface;
 
 /**
- * @package   Genetsis\DruID
- * @category  Service
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class OAuthConfigFactory {
 

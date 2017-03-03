@@ -6,8 +6,8 @@ use Genetsis\DruID\Core\Utils\Contracts\CollectionInterface;
 /**
  * This class brings together the different types of existing tokens.
  *
- * @package   Genetsis\DruID
- * @category  Collection
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class TokenTypes implements CollectionInterface {
 
@@ -16,7 +16,7 @@ class TokenTypes implements CollectionInterface {
     const REFRESH_TOKEN = '__urs';
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function check($value)
     {

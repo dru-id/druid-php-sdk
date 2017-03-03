@@ -6,8 +6,8 @@ namespace Genetsis\DruID\Core\Http\Contracts;
  *
  * This interface explains how to implement a session handler service which will centralize the session management.
  *
- * @package  Genetsis\DruID
- * @category Contract
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 interface SessionServiceInterface {
 

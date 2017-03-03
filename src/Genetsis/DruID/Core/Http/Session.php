@@ -6,13 +6,13 @@ use Genetsis\DruID\Core\Http\Contracts\SessionServiceInterface;
 /**
  * Session handler implementation.
  *
- * @package  Genetsis\DruID
- * @category Service
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class Session implements SessionServiceInterface {
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function set($key, $data)
     {
@@ -24,7 +24,7 @@ class Session implements SessionServiceInterface {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function get($key, $default = null)
     {
@@ -32,7 +32,7 @@ class Session implements SessionServiceInterface {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function all()
     {
@@ -40,7 +40,7 @@ class Session implements SessionServiceInterface {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function has($key)
     {
@@ -48,7 +48,7 @@ class Session implements SessionServiceInterface {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function delete($key)
     {

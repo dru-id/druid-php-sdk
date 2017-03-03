@@ -4,8 +4,8 @@ namespace Genetsis\DruID\Core\OAuth\Beans\OAuthConfig;
 /**
  * This class stores all data from an oauth configuration file.
  *
- * @package   Genetsis\DruID
- * @category  Bean
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class Config {
 

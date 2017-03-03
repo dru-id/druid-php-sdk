@@ -12,10 +12,8 @@ use Psr\Log\LoggerInterface;
 /**
  * This class is used to build the links to different services of Genetsis ID.
  *
- * @package   Genetsis\DruID
- * @category  Helper
- * @version   2.0
- * @access    private
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class UrlBuilder implements UrlBuilderServiceInterface
 {
@@ -51,7 +49,7 @@ class UrlBuilder implements UrlBuilderServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getUrlLogin($entry_point = null, $social = null, $urlCallback = null, array $prefill = array())
     {
@@ -65,7 +63,7 @@ class UrlBuilder implements UrlBuilderServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getUrlRegister($entry_point = null, $urlCallback = null, array $prefill = array())
     {
@@ -78,7 +76,7 @@ class UrlBuilder implements UrlBuilderServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getUrlEditAccount($entry_point = null, $urlCallback = null)
     {
@@ -98,7 +96,7 @@ class UrlBuilder implements UrlBuilderServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getUrlCompleteAccount($entry_point = null)
     {
@@ -118,7 +116,7 @@ class UrlBuilder implements UrlBuilderServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function buildSignupPromotionUrl($entry_point)
     {

@@ -3,8 +3,8 @@
     {
       "user":{
         "id":11,
-        "app":"Beefeater In-Edit (dev)",
-        "entry-point":"775522164287454-main",
+        "app":"My Foo App",
+        "entry-point":"1234567890abcde-main",
         "country_iso_code":"es",
         "typologies":{
           "Consumer":{
@@ -19,12 +19,12 @@
         "confirmed":true,
         "user_ids":{
           "screen_name":{
-            "value":"isma",
+            "value":"foo",
             "label":"screen_name",
             "is_social":false
           },
           "email":{
-            "value":"ismael.salgado@genetsis.com",
+            "value":"foo@bar.com",
             "label":"email",
             "confirmed":true,
             "is_social":false
@@ -45,10 +45,10 @@
 
           }
         },
-        "oid":"2f91af5e4f41eebd03c92f616b35fccb4ec64995",
+        "oid":"1234567890123456789012345678901234567890",
         "brand":{
-          "key":"beefeater",
-          "name":"Beefeater"
+          "key":"foo-brand",
+          "name":"Foo Brand"
         }
       }
     }

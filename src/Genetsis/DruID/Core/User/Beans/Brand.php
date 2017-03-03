@@ -4,8 +4,8 @@ namespace Genetsis\DruID\Core\User\Beans;
 /**
  * This class stores the User Brand register origin
  *
- * @package   Genetsis\DruID
- * @category  Bean
+ * @author Genetsis
+ * @link http://developers.dru-id.com
  */
 class Brand
 {
