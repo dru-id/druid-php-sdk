@@ -95,13 +95,15 @@ class URLBuilder
      *
      * @param string $scope Section-key Identifier of the web client. The
      *     section-key is located in "oauthconf.xml" file.
+     * @param string $urlCallback Url for callback. A list of url is defined in "oauthconf.xml"
+     *     If it's NULL the default url will be used.
      * @return string The URL for complete process.
      */
-    public static function getUrlCompleteAccount($scope = null)
+    public static function getUrlCompleteAccount($scope = null, $urlCallback = null)
     {
         $params = array();
         $params['client_id'] = OAuthConfig::getClientid();
-        $params['redirect_uri'] = OAuthConfig::getRedirectUrl('postEditAccount');
+        $params['redirect_uri'] = OAuthConfig::getRedirectUrl('postEditAccount', $urlCallback);
         $next_url = OAuthConfig::getEndpointUrl('next_url') . '?' . http_build_query($params);
         $cancel_url = OAuthConfig::getEndpointUrl('cancel_url') . '?' . http_build_query($params);
         unset($params);
