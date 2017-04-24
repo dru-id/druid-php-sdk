@@ -1,4 +1,4 @@
-<?php namespace Genetsis\Extension;
+<?php namespace Genetsis\extension\ExactTarget;
 
 use Genetsis\Identity;
 use Genetsis\core\OAuthConfig;
