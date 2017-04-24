@@ -24,7 +24,7 @@ class ExactTarget
         'xmlloc' => __DIR__ . '/ExactTargetWSDL.xml',
     );
 
-    public static function init(array $params = null, $devMode = false)
+    public static function init(array $params = array(), $devMode = false)
     {
         try {
 
