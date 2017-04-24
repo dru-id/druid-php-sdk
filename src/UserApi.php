@@ -86,6 +86,19 @@ class UserApi
         return null;
     }
 
+    public static function getUserLoggedConsumerOptin()
+    {
+        $optin = null;
+
+        if (isset(self::getUserLogged()->user->user_assertions->optin->consumer)) {
+            $optin = self::getUserLogged()->user->user_assertions->optin->consumer->value;
+        } else if (isset(self::getUserLogged()->user->user_assertions->optin->user)) {
+            $optin = self::getUserLogged()->user->user_assertions->optin->user->value;
+        }
+
+        return $optin;
+    }
+
     /**
      * Method to get User Logged Profile Image available
      *
