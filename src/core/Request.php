@@ -54,7 +54,8 @@ class Request
         $curl_options = array(
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST => $http_method,
-            CURLOPT_USERAGENT => $_SERVER['HTTP_USER_AGENT']
+            CURLOPT_USERAGENT => $_SERVER['HTTP_USER_AGENT'],
+            CURLOPT_FOLLOWLOCATION => true
         );
 
         if ($is_ssl) {
