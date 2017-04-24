@@ -9,7 +9,7 @@ class ExactTarget
     protected static $et_client;
 
     private static $DEV_SUFFIX = "_dev";
-    private static $devMode = "_dev";
+    private static $devMode;
 
     private static $MASTER_TABLE = "Local_MasterActivity_SPA";
     private static $PARTICIPATION_TABLE = "DE_Consumer_Participation";
