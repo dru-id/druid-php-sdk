@@ -2,7 +2,13 @@
 
 use Genetsis\Identity;
 use Genetsis\core\OAuthConfig;
+use Genetsis\UserApi;
 
+/**
+ * Class ExactTarget
+ * Simple ExacTarget wrapper. This wrapper uses Genetsis\Identity library. eg Brand and activity name are obtained from there
+ * @package Genetsis\extension\ExactTarget
+ */
 class ExactTarget
 {
 
@@ -24,6 +30,12 @@ class ExactTarget
         'xmlloc' => __DIR__ . '/ExactTargetWSDL.xml',
     );
 
+    /**
+     * Initalize library
+     *
+     * @param array $params Initialization params needed for underlying ET_Client class
+     * @param bool $devMode if devMode active, all operation will be donde in *_dev tables from ET
+     */
     public static function init(array $params = array(), $devMode = false)
     {
         try {
@@ -51,6 +63,17 @@ class ExactTarget
         }
     }
 
+    /**
+     * Add an activity to ET
+     *
+     * @param ActivityType $act_type type of the activity
+     * @param string $city city where activity happened
+     * @param string $postalCode postal code where activity happened
+     * @param string $contactPerson contact name of person responsible of the activity
+     * @param string $contactEmail email of person responsible of the activity
+     * @param string $venueName name of physical site where activity happened
+     * @param string $address addrees where activity happened
+     */
     public static function activity(
         ActivityType $act_type,
         $city = null,
@@ -91,37 +114,6 @@ class ExactTarget
         }
 
         $DRRow = self::buildActivityDER($act_type, extra);
-
-        $result = $DRRow->post();
-        self::checkResult($result);
-
-    }
-
-
-    public static function participate(
-        ActivityType $act_type,
-        $oid = null,
-        $url = null,
-        $thumbnail = null)
-    {
-
-        self::check();
-
-        $extra = array();
-
-        if ($oid != null) {
-            $extra["Object_Id"] = $oid;
-        }
-
-        if ($url != null) {
-            $extra["URL"] = $url;
-        }
-
-        if ($thumbnail != null) {
-            $extra["URLThumbnail"] = $thumbnail;
-        }
-
-        $DRRow = self::buildParticipationDER($act_type);
 
         $result = $DRRow->post();
         self::checkResult($result);
@@ -216,6 +208,71 @@ class ExactTarget
 
     }
 
+    /**
+     * @param ActivityType $act_type type of the activity
+     * @param String $url
+     * @param String $thumbnail
+     * @param string $oid objectId of user. if this parameter is not defined or is null, logged user will be used
+     */
+    public static function participate(
+        ActivityType $act_type,
+        $url = null,
+        $thumbnail = null,
+        $oid = null)
+    {
+
+        self::check();
+
+        $extra = array();
+
+        if ($url != null) {
+            $extra["URL"] = $url;
+        }
+
+        if ($thumbnail != null) {
+            $extra["URLThumbnail"] = $thumbnail;
+        }
+
+        $extra["Object_Id"] = $oid == null ? UserApi::getUserLoggedOid() : $oid;
+
+        $DRRow = self::buildParticipationDER($act_type);
+
+        $result = $DRRow->post();
+        self::checkResult($result);
+
+    }
+
+    /**
+     * @param ActivityType $act_type type of the activity
+     * @param String $question_id
+     * @param String $answer_id
+     * @param string $consumer_email email of user. if this parameter is not defined or is null, logged user will be used
+     */
+    public static function poll(
+        ActivityType $act_type,
+        $question_id,
+        $answer_id,
+        $consumer_email = null)
+    {
+
+        self::check();
+
+        $extra = array();
+
+
+        $extra["IdQuestionAnswer"] = $question_id;
+
+        $extra["IdAnswer"] = $answer_id;
+
+        $extra["EmailAddress"] = $consumer_email == null ? UserApi::getUserLoggedOid() : $consumer_email;
+
+        $DRRow = self::buildQuestionaireDER($act_type);
+
+        $result = $DRRow->post();
+        self::checkResult($result);
+
+    }
+
     private static function checkResult($result)
     {
         if (!$result->status) {
@@ -246,7 +303,7 @@ class ExactTarget
                 "ModETDate" => $act_date
             ), $params);
 
-        $DRRow->Name = getTable(self::$MASTER_TABLE);
+        $DRRow->Name = self::getTable(self::$MASTER_TABLE);
 
         return $DRRow;
     }
@@ -265,7 +322,7 @@ class ExactTarget
                 "CreatedOn" => $act_date,
                 "ActivityID" => $act_date . "-" . $act_brand . "-" . $act_type . "-" . $act_name,
             ), $params);
-        $DRRow->Name = getTable(self::$PARTICIPATION_TABLE);
+        $DRRow->Name = self::getTable(self::$PARTICIPATION_TABLE);
 
         return $DRRow;
     }
@@ -284,7 +341,24 @@ class ExactTarget
                 "ActivityID" => $act_date . "-" . $act_brand . "-" . $act_type . "-" . $act_name,
                 "ModETDate" => $act_date
             ), $params);
-        $DRRow->Name = getTable(self::$EVALUATION_TABLE);
+        $DRRow->Name = self::getTable(self::$EVALUATION_TABLE);
+    }
+
+    private static function buildQuestionaireDER(ActivityType $act_type, array $params)
+    {
+
+        $act_name = OAuthConfig::getAppName();
+        $act_brand = OAuthConfig::getBrand();
+        $act_date = (new \DateTime())->format('m-d-Y H:i:s');
+
+        $DRRow = new \ET_DataExtension_Row();
+        $DRRow->authStub = self::$et_client;
+        $DRRow->props = array_merge(
+            array(
+                "ActivityID" => $act_date . "-" . $act_brand . "-" . $act_type . "-" . $act_name,
+                "ModETDate" => $act_date
+            ), $params);
+        $DRRow->Name = self::getTable(self::$QUESTIONAIRE_TABLE);
     }
 
     private static function getTable($tblName)

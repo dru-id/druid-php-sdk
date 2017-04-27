@@ -73,7 +73,7 @@ class UserApi
      * Returns ObjectID of user Logged, stored in Things {@link Things}
      * You must use this method to get the oid of user logged
      *
-     * @return integer ObjectID or null if user is not logged
+     * @return string ObjectID or null if user is not logged
      */
     public static function getUserLoggedOid()
     {
