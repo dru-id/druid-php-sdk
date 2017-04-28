@@ -66,7 +66,7 @@ class ExactTarget
     /**
      * Add an activity to ET
      *
-     * @param ActivityType $act_type type of the activity
+     * @param string type of the activity (@see ActivityType constants)
      * @param string $city city where activity happened
      * @param string $postalCode postal code where activity happened
      * @param string $contactPerson contact name of person responsible of the activity
@@ -75,7 +75,7 @@ class ExactTarget
      * @param string $address addrees where activity happened
      */
     public static function activity(
-        ActivityType $act_type,
+        $act_type,
         $city = null,
         $postalCode = null,
         $contactPerson = null,
@@ -121,7 +121,7 @@ class ExactTarget
     }
 
     public static function evaluate(
-        ActivityType $act_type,
+        $act_type,
         $capacity = null,
         $womenpc = null,
         $menpc = null,
@@ -209,13 +209,13 @@ class ExactTarget
     }
 
     /**
-     * @param ActivityType $act_type type of the activity
-     * @param String $url
-     * @param String $thumbnail
+     * @param string type of the activity (@see ActivityType constants)
+     * @param string $url
+     * @param string $thumbnail
      * @param string $oid objectId of user. if this parameter is not defined or is null, logged user will be used
      */
     public static function participate(
-        ActivityType $act_type,
+        $act_type,
         $url = null,
         $thumbnail = null,
         $oid = null)
@@ -243,13 +243,13 @@ class ExactTarget
     }
 
     /**
-     * @param ActivityType $act_type type of the activity
+     * @param string type of the activity (@see ActivityType constants)
      * @param String $question_id
      * @param String $answer_id
      * @param string $consumer_email email of user. if this parameter is not defined or is null, logged user will be used
      */
     public static function poll(
-        ActivityType $act_type,
+        $act_type,
         $question_id,
         $answer_id,
         $consumer_email = null)
@@ -282,7 +282,7 @@ class ExactTarget
         }
     }
 
-    private static function buildActivityDER(ActivityType $act_type, array $params)
+    private static function buildActivityDER($act_type, array $params)
     {
 
         $act_name = OAuthConfig::getAppName();
@@ -308,7 +308,7 @@ class ExactTarget
         return $DRRow;
     }
 
-    private static function buildParticipationDER(ActivityType $act_type, array $params)
+    private static function buildParticipationDER($act_type, array $params)
     {
 
         $act_name = OAuthConfig::getAppName();
@@ -327,7 +327,7 @@ class ExactTarget
         return $DRRow;
     }
 
-    private static function buildEvaluationDER(ActivityType $act_type, array $params)
+    private static function buildEvaluationDER($act_type, array $params)
     {
 
         $act_name = OAuthConfig::getAppName();
@@ -344,7 +344,7 @@ class ExactTarget
         $DRRow->Name = self::getTable(self::$EVALUATION_TABLE);
     }
 
-    private static function buildQuestionaireDER(ActivityType $act_type, array $params)
+    private static function buildQuestionaireDER($act_type, array $params)
     {
 
         $act_name = OAuthConfig::getAppName();
