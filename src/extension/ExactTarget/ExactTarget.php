@@ -342,6 +342,8 @@ class ExactTarget
                 "ModETDate" => $act_date
             ), $params);
         $DRRow->Name = self::getTable(self::$EVALUATION_TABLE);
+
+        return $DRRow;
     }
 
     private static function buildQuestionaireDER($act_type, array $params)
