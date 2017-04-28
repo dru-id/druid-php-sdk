@@ -113,7 +113,7 @@ class ExactTarget
             $extra["Address"] = $address;
         }
 
-        $DRRow = self::buildActivityDER($act_type, extra);
+        $DRRow = self::buildActivityDER($act_type, $extra);
 
         $result = $DRRow->post();
         self::checkResult($result);
