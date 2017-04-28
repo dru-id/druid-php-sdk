@@ -72,16 +72,16 @@ class ExactTarget
      * @param string $contactPerson contact name of person responsible of the activity
      * @param string $contactEmail email of person responsible of the activity
      * @param string $venueName name of physical site where activity happened
-     * @param string $address addrees where activity happened
+     * @param string|null $address addrees where activity happened
      */
     public static function activity(
         $act_type,
-        $city = null,
-        $postalCode = null,
-        $contactPerson = null,
-        $contactEmail = null,
-        $venueName = null,
-        $address = null)
+        $city,
+        $postalCode,
+        $contactPerson,
+        $venueName,
+        $address,
+        $contactEmail = null)
     {
 
         self::check();
@@ -89,29 +89,12 @@ class ExactTarget
 
         $extra = array();
 
-        if ($city != null) {
-            $extra["City"] = $city;
-        }
-
-        if ($postalCode != null) {
-            $extra["PostalCode"] = $postalCode;
-        }
-
-        if ($contactPerson != null) {
-            $extra["ContactPerson"] = $contactPerson;
-        }
-
-        if ($contactEmail != null) {
-            $extra["EmailContact"] = $contactEmail;
-        }
-
-        if ($venueName != null) {
-            $extra["VenueName"] = $venueName;
-        }
-
-        if ($address != null) {
-            $extra["Address"] = $address;
-        }
+        $extra["City"] = $city;
+        $extra["PostalCode"] = $postalCode;
+        $extra["ContactPerson"] = $contactPerson;
+        $extra["EmailContact"] = $contactEmail;
+        $extra["VenueName"] = $venueName;
+        $extra["Address"] = $address;
 
         $DRRow = self::buildActivityDER($act_type, $extra);
 
@@ -120,86 +103,64 @@ class ExactTarget
 
     }
 
+
+    /**
+     * Add evaluation of a party to ET
+     *
+     * @param $act_type
+     * @param string $capacity
+     * @param string $womenpc
+     * @param string $menpc
+     * @param string $afinity
+     * @param string $priceBottle
+     * @param string $boughBottles
+     * @param string $tastings
+     * @param string $bottlesLeft
+     * @param string $partyValuation
+     * @param string $material
+     * @param string $numCapacity
+     * @param \DateTime $startedOn
+     * @param \DateTime $finishedOn
+     * @param string $observations
+     */
     public static function evaluate(
         $act_type,
-        $capacity = null,
-        $womenpc = null,
-        $menpc = null,
-        $afinity = null,
-        $priceBottle = null,
-        $boughBottles = null,
-        $tastings = null,
-        $bottlesLeft = null,
-        $party = null,
-        $material = null,
-        $observations = null,
-        $numCapacity = null,
-        $startedOn = null,
-        $finishedOn = null)
+        $capacity,
+        $womenpc,
+        $menpc,
+        $afinity,
+        $priceBottle,
+        $boughBottles,
+        $tastings,
+        $bottlesLeft,
+        $partyValuation,
+        $material,
+        $numCapacity,
+        \DateTime $startedOn,
+        \DateTime $finishedOn,
+        $observations = '')
     {
 
         self::check();
 
-
         $extra = array();
 
-        if ($capacity != null) {
-            $extra["Capacity"] = $capacity;
-        }
 
-        if ($womenpc != null) {
-            $extra["Women"] = $womenpc;
-        }
-
-        if ($menpc != null) {
-            $extra["Men"] = $menpc;
-        }
-
-        if ($afinity != null) {
-            $extra["Afinity"] = $afinity;
-        }
-
+        $extra["Capacity"] = $capacity;
+        $extra["Women"] = $womenpc;
+        $extra["Men"] = $menpc;
+        $extra["Afinity"] = $afinity;
         $extra["Currency"] = "EUR";
-
-        if ($priceBottle != null) {
-            $extra["PriceBottle"] = $priceBottle;
-        }
-
-        if ($boughBottles != null) {
-            $extra["BoughBottles"] = $boughBottles;
-        }
-
-        if ($tastings != null) {
-            $extra["Tastings"] = $tastings;
-        }
-
-        if ($bottlesLeft != null) {
-            $extra["BottlesLeft"] = $bottlesLeft;
-        }
-
-        if ($party != null) {
-            $extra["Party"] = $party;
-        }
-
-        if ($material != null) {
-            $extra["Material"] = $material;
-        }
-
-        if ($observations != null) {
-            $extra["Observations"] = $observations;
-        }
-
-        if ($numCapacity != null) {
-            $extra["Num_capacity"] = $numCapacity;
-        }
-
-        if ($startedOn != null) {
-            $extra["DateHourStart"] = $startedOn;
-        }
-
-        if ($finishedOn != null) {
-            $extra["DateHourEnd"] = $finishedOn;
-        }
+        $extra["PriceBottle"] = $priceBottle;
+        $extra["BoughBottles"] = $boughBottles;
+        $extra["Tastings"] = $tastings;
+        $extra["BottlesLeft"] = $bottlesLeft;
+        $extra["Party"] = $partyValuation;
+        $extra["Material"] = $material;
+        $extra["Observations"] = $observations;
+        $extra["Num_capacity"] = $numCapacity;
+        $extra["DateHourStart"] = $startedOn->format('m-d-Y H:i:s');
+        $extra["DateHourEnd"] = $finishedOn->format('m-d-Y H:i:s');
 
         $DRRow = self::buildEvaluationDER($act_type, $extra);
 
@@ -216,8 +177,8 @@ class ExactTarget
      */
     public static function participate(
         $act_type,
-        $url = null,
-        $thumbnail = null,
+        $url,
+        $thumbnail,
         $oid = null)
     {
 
@@ -225,13 +186,8 @@ class ExactTarget
 
         $extra = array();
 
-        if ($url != null) {
-            $extra["URL"] = $url;
-        }
-
-        if ($thumbnail != null) {
-            $extra["URLThumbnail"] = $thumbnail;
-        }
+        $extra["URL"] = $url;
+        $extra["URLThumbnail"] = $thumbnail;
 
         $extra["Object_Id"] = $oid == null ? UserApi::getUserLoggedOid() : $oid;
 
