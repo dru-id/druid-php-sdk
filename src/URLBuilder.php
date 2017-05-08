@@ -27,11 +27,11 @@ class URLBuilder
      * @param string $social - to force login with social network. Optional. Values 'facebook', 'twitter'
      * @param string $urlCallback Url for callback. A list of valid url is defined in "oauthconf.xml"
      *     If it's NULL default url will be used.
-     * @param string $urlCallback Url for callback. A list of valid url is defined in "oauthconf.xml"
-     *     If it's NULL default url will be used.
+     * @param array $prefill
+     * @param string|null $state
      * @return string The URL for login process.
      */
-    public static function getUrlLogin($scope = null, $social = null, $urlCallback = null, array $prefill = array())
+    public static function getUrlLogin($scope = null, $social = null, $urlCallback = null, array $prefill = array(), $state = null)
     {
 
         return self::buildLoginUrl(
@@ -39,7 +39,8 @@ class URLBuilder
             OAuthConfig::getRedirectUrl('postLogin', $urlCallback),
             $scope,
             $social,
-            $prefill
+            $prefill,
+            $state
         );
     }
 
@@ -51,15 +52,18 @@ class URLBuilder
      *     the default section will be used.
      * @param string $urlCallback Url for callback. A list of url is defined in "oauthconf.xml"
      *     If it's NULL the default url will be used.
+     * @param array $prefill
+     * @param string|null $state
      * @return string The URL for register process.
      */
-    public static function getUrlRegister($scope = null, $urlCallback = null, array $prefill = array())
+    public static function getUrlRegister($scope = null, $urlCallback = null, array $prefill = array(), $state = null)
     {
         return self::buildSignupUrl(
             OAuthConfig::getEndpointUrl('signup_endpoint'),
             OAuthConfig::getRedirectUrl('register', $urlCallback),
             $scope,
-            $prefill
+            $prefill,
+            $state
         );
     }
 
@@ -71,9 +75,10 @@ class URLBuilder
      *     the default section will be used.
      * @param string $urlCallback Url for callback. A list of url is defined in "oauthconf.xml"
      *     If it's NULL the default url will be used.
+     * @param string|null $state
      * @return string The URL for edit account process.
      */
-    public static function getUrlEditAccount($scope = null, $urlCallback = null)
+    public static function getUrlEditAccount($scope = null, $urlCallback = null, $state = null)
     {
         $params = array();
         $params['client_id'] = OAuthConfig::getClientid();
@@ -86,7 +91,8 @@ class URLBuilder
             OAuthConfig::getEndpointUrl('edit_account_endpoint'),
             $next_url,
             $cancel_url,
-            $scope
+            $scope,
+            $state
         );
     }
 
@@ -97,9 +103,10 @@ class URLBuilder
      *     section-key is located in "oauthconf.xml" file.
      * @param string $urlCallback Url for callback. A list of url is defined in "oauthconf.xml"
      *     If it's NULL the default url will be used.
+     * @param string|null $state
      * @return string The URL for complete process.
      */
-    public static function getUrlCompleteAccount($scope = null, $urlCallback = null)
+    public static function getUrlCompleteAccount($scope = null, $urlCallback = null, $state = null)
     {
         $params = array();
         $params['client_id'] = OAuthConfig::getClientid();
@@ -112,7 +119,8 @@ class URLBuilder
             OAuthConfig::getEndpointUrl('complete_account_endpoint'),
             $next_url,
             $cancel_url,
-            $scope
+            $scope,
+            $state
         );
     }
 
@@ -247,10 +255,12 @@ class URLBuilder
      * @param string $scope Section-key identifier of the web client. The
      *     section-key is located in "oauthconf.xml" file.
      * @param string $social Social - to force login with social network. Optional. Values 'facebook', 'twitter'
+     * @param array $prefill
+     * @param string|null $state
      * @return string The URL generated.
      * @throws \Exception If there is an error.
      */
-    private static function buildLoginUrl($endpoint_url, $redirect_url, $scope = null, $social = null, array $prefill = array())
+    private static function buildLoginUrl($endpoint_url, $redirect_url, $scope = null, $social = null, array $prefill = array(), $state = null)
     {
 
         try {
@@ -278,6 +288,10 @@ class URLBuilder
                 $params['x_prefill'] = base64_encode(self::arrayToUserJson($prefill));
             }
 
+            if (!empty($state)) {
+                $params['state'] = $state;
+            }
+
             return $endpoint_url . '?' . http_build_query($params, null, '&');
         } catch (Exception $e) {
             Identity::getLogger()->debug('Error [' . __FUNCTION__ . '] - ' . $e->getMessage());
@@ -287,18 +301,19 @@ class URLBuilder
     /**
      * Builds the URL to edit the user's data.
      *
-     * @param string The endpoint. Normally the 'edit_account_endpoint' of
+     * @param string $endpoint_url The endpoint. Normally the 'edit_account_endpoint' of
      *     OAuth server.
-     * @param string Where the user will be redirected when finished
+     * @param string $next_url Where the user will be redirected when finished
      *     editing data.
-     * @param string Where the user will be redirected if the process is
+     * @param string $cancel_url Where the user will be redirected if the process is
      *     cancelled.
-     * @param string Section-key identifier of the web client. The
+     * @param string $scope Section-key identifier of the web client. The
      *     section-key is located in "oauthconf.xml" file.
+     * @param string|null $state
      * @return string The URL generated.
      * @throws \Exception If there is an error.
      */
-    private static function buildEditAccountUrl($endpoint_url, $next_url, $cancel_url, $scope = null)
+    private static function buildEditAccountUrl($endpoint_url, $next_url, $cancel_url, $scope = null, $state = null)
     {
         try {
             if (self::checkParam($endpoint_url)) {
@@ -325,6 +340,9 @@ class URLBuilder
             if (!is_null($scope)) {
                 $params ['scope'] = $scope;
             }
+            if (!is_null($state)) {
+                $params ['state'] = $state;
+            }
             unset ($access_token);
 
             return $endpoint_url . '?' . http_build_query($params, null, '&');
@@ -336,16 +354,18 @@ class URLBuilder
     /**
      * Builds the URL to sign up process.
      *
-     * @param string The endpoint. Normally the 'signup_endpoint' of OAuth
+     * @param string $endpoint_url The endpoint. Normally the 'signup_endpoint' of OAuth
      *     server.
-     * @param string Where the user will be redirected, even on success or
+     * @param string $redirect_url Where the user will be redirected, even on success or
      *     not.
-     * @param string Section-key identifier of the web client. The
+     * @param string $scope Section-key identifier of the web client. The
      *     section-key is located in "oauthconf.xml" file.
+     * @param array $prefill
+     * @param string|null $state
      * @return string The URL generated.
      * @throws \Exception If there is an error.
      */
-    private static function buildSignupUrl($endpoint_url, $redirect_url, $scope = null, array $prefill = array())
+    private static function buildSignupUrl($endpoint_url, $redirect_url, $scope = null, array $prefill = array(), $state = null)
     {
         try {
 
@@ -364,6 +384,10 @@ class URLBuilder
                 $params['x_prefill'] = base64_encode(self::arrayToUserJson($prefill));
             }
 
+            if (!is_null($state)) {
+                $params ['state'] = $state;
+            }
+
             return $url . '&' . http_build_query($params, null, '&');
         } catch (Exception $e) {
             Identity::getLogger()->debug('Error [' . __FUNCTION__ . '] - ' . $e->getMessage());
@@ -373,18 +397,19 @@ class URLBuilder
     /**
      * Builds the URL to fill up data for a specific section.
      *
-     * @param string The endpoint. Normally the 'edit_account_endpoint' of
+     * @param string $endpoint_url The endpoint. Normally the 'edit_account_endpoint' of
      *     OAuth server.
-     * @param string Where the user will be redirected when finished
+     * @param string $next_url Where the user will be redirected when finished
      *     fill up data.
-     * @param string Where the user will be redirected if the process is
+     * @param string $cancel_url Where the user will be redirected if the process is
      *     cancelled.
-     * @param string Section-key identifier of the web client. The
+     * @param string $scope Section-key identifier of the web client. The
      *     section-key is located in "oauthconf.xml" file.
+     * @param string|null $state
      * @return string The URL generated.
      * @throws \Exception If there is an error.
      */
-    private static function buildCompleteAccountUrl($endpoint_url, $next_url, $cancel_url, $scope)
+    private static function buildCompleteAccountUrl($endpoint_url, $next_url, $cancel_url, $scope, $state = null)
     {
         try {
             if (self::checkParam($endpoint_url)) {
@@ -412,6 +437,10 @@ class URLBuilder
             $params ['oauth_token'] = $access_token->getValue();
             unset ($access_token);
             $params['scope'] = $scope;
+
+            if (!is_null($state)) {
+                $params ['state'] = $state;
+            }
 
             return $endpoint_url . '?' . http_build_query($params, null, '&');
         } catch (Exception $e) {
