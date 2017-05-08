@@ -21,7 +21,8 @@
   "require": {
     "lib-curl": "*",
     "ext-mcrypt": "*",
-    "ext-dom": "*"
+    "ext-dom": "*",
+    "exacttarget/fuel-sdk-php": "v0.9"
   },
   "config": {
     "vendor-dir": "src/main/php/lib/vendor"
