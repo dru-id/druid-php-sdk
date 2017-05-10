@@ -33,7 +33,6 @@ class ExactTarget
      * Initalize library
      *
      * @param array $params Initialization params needed for underlying ET_Client class
-     * * @param array $activityIdBuilder Initialization params needed for underlying ET_Client class
      * @param bool $devMode if devMode active, all operation will be donde in *_dev tables from ET
      */
     public static function init(array $params, $devMode = false)
@@ -64,6 +63,11 @@ class ExactTarget
         return self;
     }
 
+    /**
+     * add ActivityId builder for each call
+     *
+     * @param array $activityIdBuilder array with data. Generally [activityStartDate, brans, activityType, activityName]
+     */
     public function setActivityIdBuilder(array $activityIdBuilder) {
         self::$activityId = implode('-', $activityIdBuilder);
         return self;
