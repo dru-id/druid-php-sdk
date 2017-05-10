@@ -80,6 +80,7 @@ class OAuthConfig
                     self::$config['name'] = $node->nodeValue;
                 } else if ($node->nodeName === 'brand') {
                     self::$config['brand'] = $node->attributes->getNamedItem('key')->nodeValue;
+                    self::$config['brand-label'] = $node->nodeValue;
                 } else if ($node->nodeName === 'opi') {
                     self::$config['opi'] = $node->nodeValue;
                 }
@@ -232,6 +233,16 @@ class OAuthConfig
     public static function getBrand()
     {
         return (isset(self::$config['brand']) ? self::$config['brand'] : false);
+    }
+
+    /**
+     * Returns Brand asociated to this App (if defined)
+     *
+     * @return string Brand associated. It could be empty
+     */
+    public static function getBrandLabel()
+    {
+        return (isset(self::$config['brand-label']) ? self::$config['brand-label'] : false);
     }
 
     /**
