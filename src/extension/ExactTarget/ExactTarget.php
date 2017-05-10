@@ -23,15 +23,20 @@ class ExactTarget
     private static $QUESTIONAIRE_TABLE = "Answers_vs_Consumer";
 
     private static $initialized = false;
+    /**
+     * @var string
+     */
+    private static $activityId;
 
 
     /**
      * Initalize library
      *
      * @param array $params Initialization params needed for underlying ET_Client class
+     * * @param array $activityIdBuilder Initialization params needed for underlying ET_Client class
      * @param bool $devMode if devMode active, all operation will be donde in *_dev tables from ET
      */
-    public static function init(array $params = array(), $devMode = false)
+    public static function init(array $params, $devMode = false)
     {
         $et_config = array(
             'appsignature' => 'none',
@@ -55,6 +60,13 @@ class ExactTarget
         } catch (\Exception $e) {
             var_dump($e, 'error', __METHOD__, __LINE__);
         }
+
+        return self;
+    }
+
+    public function setActivityIdBuilder(array $activityIdBuilder) {
+        self::$activityId = implode('-', $activityIdBuilder);
+        return self;
     }
 
     private static function check()
@@ -203,13 +215,11 @@ class ExactTarget
 
     /**
      * @param string type of the activity (@see ActivityType constants)
-     * @param String $question_id
      * @param String $answer_id
      * @param string $consumer_email email of user. if this parameter is not defined or is null, logged user will be used
      */
     public static function poll(
         $act_type,
-        $question_id,
         $answer_id,
         $consumer_email = null)
     {
@@ -218,12 +228,11 @@ class ExactTarget
 
         $extra = array();
 
+        $email = $consumer_email == null ? UserApi::getUserLoggedOid() : $consumer_email;
 
-        $extra["IdQuestionAnswer"] = $question_id;
-
-        $extra["IdAnswer"] = $answer_id;
-
-        $extra["EmailAddress"] = $consumer_email == null ? UserApi::getUserLoggedOid() : $consumer_email;
+        $extra["IdAnswer"] = implode('-', array(self::$activityId, $email, $answer_id));
+        $extra["IdQuestionAnswer"] = $answer_id;
+        $extra["EmailAddress"] = $email;
 
         $DRRow = self::buildQuestionaireDER($act_type, $extra);
 
@@ -258,7 +267,7 @@ class ExactTarget
                 "Brand" => $act_brand,
                 "ActivityType" => $act_type,
                 "LegalDisclaimerId" => "4",
-                "ActivityId" => $act_date . "-" . $act_brand . "-" . $act_type . "-" . $act_name,
+                "ActivityId" => self::$activityId,
                 "ModETDate" => $act_date
             ), $params);
 
@@ -267,11 +276,8 @@ class ExactTarget
         return $DRRow;
     }
 
-    private static function buildParticipationDER($act_type, array $params)
+    private static function buildParticipationDER(array $params)
     {
-
-        $act_name = OAuthConfig::getAppName();
-        $act_brand = OAuthConfig::getBrandLabel();
         $act_date = (new \DateTime())->format('m-d-Y H:i:s');
 
         $DRRow = new \ET_DataExtension_Row();
@@ -279,25 +285,23 @@ class ExactTarget
         $DRRow->props = array_merge(
             array(
                 "CreatedOn" => $act_date,
-                "ActivityID" => $act_date . "-" . $act_brand . "-" . $act_type . "-" . $act_name,
+                "ActivityID" => self::$activityId,
             ), $params);
         $DRRow->Name = self::getTable(self::$PARTICIPATION_TABLE);
 
         return $DRRow;
     }
 
-    private static function buildEvaluationDER($act_type, array $params)
+    private static function buildEvaluationDER(array $params)
     {
 
-        $act_name = OAuthConfig::getAppName();
-        $act_brand = OAuthConfig::getBrandLabel();
         $act_date = (new \DateTime())->format('m-d-Y H:i:s');
 
         $DRRow = new \ET_DataExtension_Row();
         $DRRow->authStub = self::$et_client;
         $DRRow->props = array_merge(
             array(
-                "ActivityID" => $act_date . "-" . $act_brand . "-" . $act_type . "-" . $act_name,
+                "ActivityID" => self::$activityId,
                 "ModETDate" => $act_date
             ), $params);
         $DRRow->Name = self::getTable(self::$EVALUATION_TABLE);
@@ -305,18 +309,15 @@ class ExactTarget
         return $DRRow;
     }
 
-    private static function buildQuestionaireDER($act_type, array $params)
+    private static function buildQuestionaireDER(array $params)
     {
-
-        $act_name = OAuthConfig::getAppName();
-        $act_brand = OAuthConfig::getBrandLabel();
         $act_date = (new \DateTime())->format('m-d-Y H:i:s');
 
         $DRRow = new \ET_DataExtension_Row();
         $DRRow->authStub = self::$et_client;
         $DRRow->props = array_merge(
             array(
-                "ActivityID" => $act_date . "-" . $act_brand . "-" . $act_type . "-" . $act_name,
+                "ActivityID" => self::$activityId,
                 "ModETDate" => $act_date
             ), $params);
         $DRRow->Name = self::getTable(self::$QUESTIONAIRE_TABLE);
