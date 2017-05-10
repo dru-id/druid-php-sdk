@@ -22,9 +22,7 @@ class ExactTarget
     private static $EVALUATION_TABLE = "Activity_Evaluation_party";
     private static $QUESTIONAIRE_TABLE = "Answers_vs_Consumer";
 
-    private static $initialized = false;
-
-    /** @var array */
+    /** @var string */
     private static $activityIdPrefix;
     /** @var string */
     private static $activityType;
@@ -76,10 +74,11 @@ class ExactTarget
     /**
      * add ActivityId builder for each call
      *
-     * @param array $activityIdPrefix array with data. Generally [activityStartDate, brans, activityType, activityName]
+     * @param array $activityIdPrefix array with data. Generally [activityStartDate, brand, activityType, activityName]
      */
     public static function setActivityIdPrefix(array $activityIdPrefix) {
-        self::$activityIdPrefix = $activityIdPrefix;
+
+        self::$activityIdPrefix = implode('-', $activityIdPrefix);
     }
 
     /**
@@ -90,13 +89,13 @@ class ExactTarget
      */
     public static function setActivityType(string $activityType) {
         self::$activityType = $activityType;
-        self::$initialized = !empty(self::$activityId);
     }
 
     private static function check()
     {
-        if (!self::$initialized) {
-            throw new \Exception("Exactarget module is not initialized correctly. Please call ExactTarget::init(...) method");
+        $initialized = self::$et_client && self::$activityType;
+        if (!$initialized) {
+            throw new \Exception("ExactTarget module is not initialized correctly. Please call ExactTarget::init(...) and ExactTarget::setActivityType(...) methods");
         }
     }
 
@@ -124,9 +123,8 @@ class ExactTarget
         if(!self::$activityIdPrefix) {
             self::$activityIdPrefix = (new \DateTime())->format('d-m-Y H:i:s');
         }
-        if (!self::$activityId) {
-            $_SESSION['Genetsis\extension\ExactTarget.activityId'] = self::$activityId = implode('-', self::$activityIdPrefix, OAuthConfig::getBrandLabel(), self::$activityType, OAuthConfig::getAppName());
-        }
+
+        $_SESSION['Genetsis\extension\ExactTarget.activityId'] = self::$activityId = implode('-', [self::$activityIdPrefix, OAuthConfig::getBrandLabel(), self::$activityType, OAuthConfig::getAppName()]);
 
         $extra = array();
 
@@ -257,7 +255,7 @@ class ExactTarget
 
         $email = $consumer_email == null ? UserApi::getUserLoggedOid() : $consumer_email;
 
-        $extra["IdAnswer"] = implode('-', array(self::$activityId, $email, $answer_id));
+        $extra["IdAnswer"] = implode('-', [self::$activityId, $email, $answer_id]);
         $extra["IdQuestionAnswer"] = $answer_id;
         $extra["EmailAddress"] = $email;
 
