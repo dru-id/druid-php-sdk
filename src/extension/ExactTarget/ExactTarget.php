@@ -15,7 +15,7 @@ class ExactTarget
     protected static $et_client;
 
     private static $DEV_SUFFIX = "_dev";
-    private static $devMode = false;
+    private static $devMode = true;
 
     private static $MASTER_TABLE = "Local_MasterActivity_SPA";
     private static $PARTICIPATION_TABLE = "DE_Consumer_Participation";
@@ -67,13 +67,13 @@ class ExactTarget
     }
 
     /**
-     * Set development mode
+     * Set production mode. If you don not call thuis method, by default, development mode
      *
-     * @param bool $devMode if devMode active, all operation will be donde in *_dev tables from ET
+     * @param bool $productionMode if true, all operation will be done in production tables from ET
      * @return ExactTarget self instance
      */
-    public function setDevMode($devMode = true) {
-        self::$devMode = $devMode;
+    public function setProductionMode($productionMode = true) {
+        self::$devMode = !$productionMode;
         return self;
     }
 
@@ -172,7 +172,6 @@ class ExactTarget
      * @param string $observations
      */
     public static function evaluate(
-        $act_type,
         $capacity,
         $womenpc,
         $menpc,
@@ -210,7 +209,7 @@ class ExactTarget
         $extra["DateHourStart"] = $startedOn->format('m-d-Y H:i:s');
         $extra["DateHourEnd"] = $finishedOn->format('m-d-Y H:i:s');
 
-        $DRRow = self::buildEvaluationDER($act_type, $extra);
+        $DRRow = self::buildEvaluationDER($extra);
 
         $result = $DRRow->post();
         self::checkResult($result);
@@ -227,7 +226,6 @@ class ExactTarget
      * @param string $oid objectId of user. if this parameter is not defined or is null, logged user will be used
      */
     public static function participate(
-        $act_type,
         $url,
         $thumbnail,
         $scope,
@@ -256,7 +254,6 @@ class ExactTarget
      * @param string $consumer_email email of user. if this parameter is not defined or is null, logged user will be used
      */
     public static function poll(
-        $act_type,
         $answer_id,
         $consumer_email = null)
     {
