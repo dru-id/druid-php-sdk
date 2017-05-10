@@ -24,11 +24,6 @@ class ExactTarget
 
     private static $initialized = false;
 
-    private static $et_config = array(
-        'appsignature' => 'none',
-        'defaultwsdl' => 'https://webservice.exacttarget.com/etframework.wsdl',
-        'xmlloc' => __DIR__ . '/ExactTargetWSDL.xml',
-    );
 
     /**
      * Initalize library
@@ -38,6 +33,12 @@ class ExactTarget
      */
     public static function init(array $params = array(), $devMode = false)
     {
+        $et_config = array(
+            'appsignature' => 'none',
+            'defaultwsdl' => 'https://webservice.exacttarget.com/etframework.wsdl',
+            'xmlloc' => __DIR__ . '/ExactTargetWSDL.xml'
+        );
+
         try {
 
             if (isset($params['sync'])) {
@@ -47,7 +48,7 @@ class ExactTarget
             }
 
             self::$devMode = $devMode;
-            self::$et_client = new \ET_Client(false, false, array_merge(self::$et_config, $params));
+            self::$et_client = new \ET_Client(false, false, array_merge($et_config, $params));
 
             self::$initialized = true;
 
@@ -59,7 +60,7 @@ class ExactTarget
     private static function check()
     {
         if (!self::$initialized) {
-            throw new Exception("Exactarget module is not initialized correctly. Please call ExactTarget::init(...) method");
+            throw new \Exception("Exactarget module is not initialized correctly. Please call ExactTarget::init(...) method");
         }
     }
 
@@ -81,7 +82,7 @@ class ExactTarget
         $contactPerson,
         $venueName,
         $address,
-        $contactEmail = null)
+        $contactEmail)
     {
 
         self::check();
@@ -173,13 +174,15 @@ class ExactTarget
      * @param string type of the activity (@see ActivityType constants)
      * @param string $url
      * @param string $thumbnail
+     * @param string $scope Scope of the participation - Field defining the type of participation
      * @param string $oid objectId of user. if this parameter is not defined or is null, logged user will be used
      */
     public static function participate(
         $act_type,
         $url,
         $thumbnail,
-        $oid = null)
+        $scope,
+        $oid)
     {
 
         self::check();
@@ -188,10 +191,10 @@ class ExactTarget
 
         $extra["URL"] = $url;
         $extra["URLThumbnail"] = $thumbnail;
-
+        $extra["Scope"] = $scope;
         $extra["Object_Id"] = $oid == null ? UserApi::getUserLoggedOid() : $oid;
 
-        $DRRow = self::buildParticipationDER($act_type);
+        $DRRow = self::buildParticipationDER($act_type, $extra);
 
         $result = $DRRow->post();
         self::checkResult($result);
@@ -222,7 +225,7 @@ class ExactTarget
 
         $extra["EmailAddress"] = $consumer_email == null ? UserApi::getUserLoggedOid() : $consumer_email;
 
-        $DRRow = self::buildQuestionaireDER($act_type);
+        $DRRow = self::buildQuestionaireDER($act_type, $extra);
 
         $result = $DRRow->post();
         self::checkResult($result);
@@ -232,9 +235,9 @@ class ExactTarget
     private static function checkResult($result)
     {
         if (!$result->status) {
-            throw new \Exception("Error posting to exactTarget. Maybe api is down");
+            throw new \Exception("Error posting to exactTarget. Maybe api is down: " . print_r($result, true));
         } else if ($result->code != 200) {
-            throw new \Exception("Operation failed: " + $result->message);
+            throw new \Exception($result->message, $result->code);
         }
     }
 
@@ -242,7 +245,7 @@ class ExactTarget
     {
 
         $act_name = OAuthConfig::getAppName();
-        $act_brand = OAuthConfig::getBrand();
+        $act_brand = OAuthConfig::getBrandLabel();
         $act_date = (new \DateTime())->format('m-d-Y H:i:s');
 
         $DRRow = new \ET_DataExtension_Row();
@@ -268,7 +271,7 @@ class ExactTarget
     {
 
         $act_name = OAuthConfig::getAppName();
-        $act_brand = OAuthConfig::getBrand();
+        $act_brand = OAuthConfig::getBrandLabel();
         $act_date = (new \DateTime())->format('m-d-Y H:i:s');
 
         $DRRow = new \ET_DataExtension_Row();
@@ -287,7 +290,7 @@ class ExactTarget
     {
 
         $act_name = OAuthConfig::getAppName();
-        $act_brand = OAuthConfig::getBrand();
+        $act_brand = OAuthConfig::getBrandLabel();
         $act_date = (new \DateTime())->format('m-d-Y H:i:s');
 
         $DRRow = new \ET_DataExtension_Row();
@@ -306,7 +309,7 @@ class ExactTarget
     {
 
         $act_name = OAuthConfig::getAppName();
-        $act_brand = OAuthConfig::getBrand();
+        $act_brand = OAuthConfig::getBrandLabel();
         $act_date = (new \DateTime())->format('m-d-Y H:i:s');
 
         $DRRow = new \ET_DataExtension_Row();
@@ -317,6 +320,8 @@ class ExactTarget
                 "ModETDate" => $act_date
             ), $params);
         $DRRow->Name = self::getTable(self::$QUESTIONAIRE_TABLE);
+
+        return $DRRow;
     }
 
     private static function getTable($tblName)
