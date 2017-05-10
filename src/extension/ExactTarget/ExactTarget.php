@@ -36,7 +36,6 @@ class ExactTarget
      * Initalize library
      *
      * @param array $params Initialization params needed for underlying ET_Client class
-     * @return ExactTarget self instance
      */
     public static function init(array $params)
     {
@@ -63,29 +62,24 @@ class ExactTarget
         if(isset($_SESSION['Genetsis\extension\ExactTarget.activityId']) && $_SESSION['Genetsis\extension\ExactTarget.activityId']){
             self::$activityId = $_SESSION['Genetsis\extension\ExactTarget.activityId'];
         }
-        return self;
     }
 
     /**
      * Set production mode. If you don not call thuis method, by default, development mode
      *
      * @param bool $productionMode if true, all operation will be done in production tables from ET
-     * @return ExactTarget self instance
      */
-    public function setProductionMode($productionMode = true) {
+    public static function setProductionMode($productionMode = true) {
         self::$devMode = !$productionMode;
-        return self;
     }
 
     /**
      * add ActivityId builder for each call
      *
      * @param array $activityIdPrefix array with data. Generally [activityStartDate, brans, activityType, activityName]
-     * @return ExactTarget self instance
      */
-    public function setActivityIdPrefix(array $activityIdPrefix) {
+    public static function setActivityIdPrefix(array $activityIdPrefix) {
         self::$activityIdPrefix = $activityIdPrefix;
-        return self;
     }
 
     /**
@@ -94,10 +88,9 @@ class ExactTarget
      * @param string $activityType activity type
      * @return ExactTarget self instance
      */
-    public function setActivityType(string $activityType) {
+    public static function setActivityType(string $activityType) {
         self::$activityType = $activityType;
         self::$initialized = !empty(self::$activityId);
-        return self;
     }
 
     private static function check()
@@ -241,7 +234,7 @@ class ExactTarget
         $extra["Scope"] = $scope;
         $extra["Object_Id"] = $oid == null ? UserApi::getUserLoggedOid() : $oid;
 
-        $DRRow = self::buildParticipationDER($act_type, $extra);
+        $DRRow = self::buildParticipationDER($extra);
 
         $result = $DRRow->post();
         self::checkResult($result);
@@ -268,7 +261,7 @@ class ExactTarget
         $extra["IdQuestionAnswer"] = $answer_id;
         $extra["EmailAddress"] = $email;
 
-        $DRRow = self::buildQuestionaireDER($act_type, $extra);
+        $DRRow = self::buildQuestionaireDER($extra);
 
         $result = $DRRow->post();
         self::checkResult($result);
