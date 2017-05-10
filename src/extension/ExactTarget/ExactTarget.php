@@ -15,7 +15,7 @@ class ExactTarget
     protected static $et_client;
 
     private static $DEV_SUFFIX = "_dev";
-    private static $devMode;
+    private static $devMode = false;
 
     private static $MASTER_TABLE = "Local_MasterActivity_SPA";
     private static $PARTICIPATION_TABLE = "DE_Consumer_Participation";
@@ -23,9 +23,12 @@ class ExactTarget
     private static $QUESTIONAIRE_TABLE = "Answers_vs_Consumer";
 
     private static $initialized = false;
-    /**
-     * @var string
-     */
+
+    /** @var array */
+    private static $activityIdPrefix;
+    /** @var string */
+    private static $activityType;
+    /** @var string */
     private static $activityId;
 
 
@@ -33,10 +36,9 @@ class ExactTarget
      * Initalize library
      *
      * @param array $params Initialization params needed for underlying ET_Client class
-     * @param bool $devMode if devMode active, all operation will be donde in *_dev tables from ET
      * @return ExactTarget self instance
      */
-    public static function init(array $params, $devMode = false)
+    public static function init(array $params)
     {
         $et_config = array(
             'appsignature' => 'none',
@@ -52,26 +54,49 @@ class ExactTarget
                 Identity::init();
             }
 
-            self::$devMode = $devMode;
             self::$et_client = new \ET_Client(false, false, array_merge($et_config, $params));
-
-            self::$initialized = true;
 
         } catch (\Exception $e) {
             var_dump($e, 'error', __METHOD__, __LINE__);
         }
 
+        if(isset($_SESSION['Genetsis\extension\ExactTarget.activityId']) && $_SESSION['Genetsis\extension\ExactTarget.activityId']){
+            self::$activityId = $_SESSION['Genetsis\extension\ExactTarget.activityId'];
+        }
+        return self;
+    }
+
+    /**
+     * Set development mode
+     *
+     * @param bool $devMode if devMode active, all operation will be donde in *_dev tables from ET
+     * @return ExactTarget self instance
+     */
+    public function setDevMode($devMode = true) {
+        self::$devMode = $devMode;
         return self;
     }
 
     /**
      * add ActivityId builder for each call
      *
-     * @param array $activityIdBuilder array with data. Generally [activityStartDate, brans, activityType, activityName]
+     * @param array $activityIdPrefix array with data. Generally [activityStartDate, brans, activityType, activityName]
      * @return ExactTarget self instance
      */
-    public function setActivityIdBuilder(array $activityIdBuilder) {
-        self::$activityId = implode('-', $activityIdBuilder);
+    public function setActivityIdPrefix(array $activityIdPrefix) {
+        self::$activityIdPrefix = $activityIdPrefix;
+        return self;
+    }
+
+    /**
+     * add ActivityId builder for each call
+     *
+     * @param string $activityType activity type
+     * @return ExactTarget self instance
+     */
+    public function setActivityType(string $activityType) {
+        self::$activityType = $activityType;
+        self::$initialized = !empty(self::$activityId);
         return self;
     }
 
@@ -85,7 +110,6 @@ class ExactTarget
     /**
      * Add an activity to ET
      *
-     * @param string type of the activity (@see ActivityType constants)
      * @param string $city city where activity happened
      * @param string $postalCode postal code where activity happened
      * @param string $contactPerson contact name of person responsible of the activity
@@ -94,7 +118,6 @@ class ExactTarget
      * @param string|null $address addrees where activity happened
      */
     public static function activity(
-        $act_type,
         $city,
         $postalCode,
         $contactPerson,
@@ -105,6 +128,12 @@ class ExactTarget
 
         self::check();
 
+        if(!self::$activityIdPrefix) {
+            self::$activityIdPrefix = (new \DateTime())->format('d-m-Y H:i:s');
+        }
+        if (!self::$activityId) {
+            $_SESSION['Genetsis\extension\ExactTarget.activityId'] = self::$activityId = implode('-', self::$activityIdPrefix, OAuthConfig::getBrandLabel(), self::$activityType, OAuthConfig::getAppName());
+        }
 
         $extra = array();
 
@@ -115,7 +144,7 @@ class ExactTarget
         $extra["VenueName"] = $venueName;
         $extra["Address"] = $address;
 
-        $DRRow = self::buildActivityDER($act_type, $extra);
+        $DRRow = self::buildActivityDER($extra);
 
         $result = $DRRow->post();
         self::checkResult($result);
@@ -185,6 +214,8 @@ class ExactTarget
 
         $result = $DRRow->post();
         self::checkResult($result);
+
+        unset($_SESSION['Genetsis\extension\ExactTarget.activityId']);
 
     }
 
@@ -256,7 +287,7 @@ class ExactTarget
         }
     }
 
-    private static function buildActivityDER($act_type, array $params)
+    private static function buildActivityDER(array $params)
     {
 
         $act_name = OAuthConfig::getAppName();
@@ -271,7 +302,7 @@ class ExactTarget
                 "ActivityStartDate" => $act_date,
                 "Country" => "Spain",
                 "Brand" => $act_brand,
-                "ActivityType" => $act_type,
+                "ActivityType" => self::$activityType,
                 "LegalDisclaimerId" => "4",
                 "ActivityId" => self::$activityId,
                 "ModETDate" => $act_date
