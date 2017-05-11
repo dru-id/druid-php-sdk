@@ -2,9 +2,7 @@
 namespace Genetsis;
 
 use Exception;
-use Genetsis\core\OAuth;
 use Genetsis\core\OAuthConfig;
-use Genetsis\core\Request;
 
 /**
  * This class wraps all methods for interactions with OPI
@@ -29,7 +27,6 @@ class Opi
     /**
      * get url redirect to a specified opi
      */
-
     public static function get($opi=false, $redirect_url=false, $oid=false)
     {
         if (!$opi) {
