@@ -125,7 +125,7 @@ class OAuth
      *     or FALSE.
      * @throws \Exception If there is an error.
      */
-    public static function doGetAccessToken($endpoint_url, $code, $redirect_url)
+    public static function doGetAccessToken($endpoint_url, $code, $redirect_url, $scope)
     {
         try {
             if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
@@ -138,10 +138,15 @@ class OAuth
                 throw new Exception ('Redirect URL is empty');
             }
 
+            if (($scope = trim(( string )$scope)) == '') {
+                throw new Exception ('scope is empty, and must be explicitly defined');
+            }
+
             $params = array();
             $params ['grant_type'] = self::GRANT_TYPE_AUTH_CODE;
             $params ['code'] = $code;
             $params ['redirect_uri'] = $redirect_url;
+            $params ['scope'] = $scope;
             $response = Request::execute($endpoint_url, $params, Request::HTTP_POST, Request::SECURED);
 
             self::checkErrors($response);

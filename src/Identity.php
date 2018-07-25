@@ -386,7 +386,7 @@ class Identity
      * @return void
      * @throws /Exception
      */
-    public static function authorizeUser($code)
+    public static function authorizeUser($code, $scope)
     {
         try {
             self::$logger->debug('Authorize user');
