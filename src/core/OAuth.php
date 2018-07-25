@@ -443,46 +443,6 @@ class OAuth
     }
 
     /**
-     * Get The Url for access to the Opinator.
-     *
-     * @param string $endpoint_url The endpoint where the request will be sent.
-     * @param string $scope Section-key identifier of the web client propietary of Opinator
-     * @param StoredToken $token Token
-     * @return mixed $token Token, an access_token if user is logged, a client_token if user is not login
-     * @throws \Exception If there is an error.
-     */
-    public static function doGetOpinator($endpoint_url, $scope, $token)
-    {
-        try {
-            if (($endpoint_url = trim(( string )$endpoint_url)) == '') {
-                throw new Exception ('Endpoint Opinator URL is empty');
-            }
-
-            if (($scope = trim((string)$scope)) == '') {
-                throw new Exception ('Scope is empty');
-            }
-
-            if (($token->getValue() == '') || (!($token instanceof StoredToken))) {
-                throw new Exception ('Token is not valid');
-            }
-
-            // Send request.
-            $params = array();
-            $params ['oauth_token'] = $token->getValue();
-            $response = Request::execute($endpoint_url . '/' . $scope, $params, Request::HTTP_POST, Request::SECURED);
-
-            if (isset($response['code']) && ($response['code'] == 200)) {
-                return $response['result'];
-            } else {
-                throw new Exception('Error [' . __FUNCTION__ . '] - ' . $response['code'] . ' - ' . $response['result']);
-            }
-
-        } catch (Exception $e) {
-            throw new Exception('Error [' . __FUNCTION__ . '] - ' . $e->getMessage());
-        }
-    }
-
-    /**
      * Checks if the user has completed all required data for the specified
      * section (scope).
      *
