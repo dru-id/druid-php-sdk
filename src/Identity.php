@@ -395,7 +395,7 @@ class Identity
                 throw new Exception('Authorize Code is empty');
             }
 
-            $response = OAuth::doGetAccessToken(OauthConfig::getEndpointUrl('token_endpoint'), $code, OauthConfig::getRedirectUrl('postLogin'));
+            $response = OAuth::doGetAccessToken(OauthConfig::getEndpointUrl('token_endpoint'), $code, OauthConfig::getRedirectUrl('postLogin'), $scope);
             self::$gid_things->setAccessToken($response['access_token']);
             self::$gid_things->setRefreshToken($response['refresh_token']);
             self::$gid_things->setLoginStatus($response['login_status']);
