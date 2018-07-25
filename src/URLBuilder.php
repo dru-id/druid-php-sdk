@@ -5,7 +5,7 @@ use Exception;
 use Genetsis\core\OAuthConfig;
 
 /**
- * This class is used to build the links to different services of Genetsis ID.
+ * This class is used to build the links to different services of DruID.
  *
  * @package   Genetsis
  * @category  Helper
@@ -137,12 +137,12 @@ class URLBuilder
      *       PII needed to enter into a section
      *     - Else will return false (user logged and completed)
      *
-     * The "scope" (section) is a group of fields configured in Genetsis ID for
+     * The "scope" (section) is a group of fields configured in DruID for
      * a web client.
      *
      * A section can be also defined as a "part" (section) of the website
      * (web client) that only can be accesed by a user who have filled a
-     * set of personal information configured in Genetsis ID (all of the fields
+     * set of personal information configured in DruID (all of the fields
      * required for that section).
      *
      * @param string Section-key Identifier of the web client. The

@@ -2,7 +2,7 @@
 namespace Genetsis;
 
 /**
- * Genetsis ID library Autoload Class
+ * DruID library Autoload Class
  *
  * @package    Genetsis
  * @copyright  Copyright (c) 2014 Genetsis

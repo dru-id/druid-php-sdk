@@ -295,7 +295,7 @@ class OAuthConfig
     }
 
     /**
-     * Returns an endpoint to interact with Genetsis ID servers.
+     * Returns an endpoint to interact with DruID servers.
      *
      * @param $type string Identifier to select an URL.
      * @return string The URL selected. It could be empty if not exists that type.

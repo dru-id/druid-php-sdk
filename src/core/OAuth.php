@@ -119,8 +119,9 @@ class OAuth
      * Gets an "access_token" for the current web client.
      *
      * @param string $endpoint_url The endpoint where "access_token" is requested.
-     * @param string $code The authorization code returned by Genetsis ID.
+     * @param string $code The authorization code returned by DruID.
      * @param string $redirect_url Where the user will be redirected.
+     * @param string $scope scope of the action.
      * @return mixed An instance of {@link AccessToken} with data retrieved
      *     or FALSE.
      * @throws \Exception If there is an error.

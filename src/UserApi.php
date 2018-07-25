@@ -247,11 +247,11 @@ class UserApi
     }
 
     /**
-     * Returns the user data stored trough the Genetsis ID personal identifier.
+     * Returns the user data stored trough the DruID personal identifier.
      * The identifiers could be: id (ckusid), screenName, email, dni
      * Sample: array('id'=>'XXXX','screenName'=>'xxxx');
      *
-     * @param array The Genetsis IDs identifier to search, 'identifier' => 'value'
+     * @param array The DruIDs identifier to search, 'identifier' => 'value'
      * @return array A vector of {@link User} objects with user's
      *     personal data. The array could be empty.
      * @throws /Exception

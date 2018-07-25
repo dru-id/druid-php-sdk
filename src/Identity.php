@@ -48,7 +48,7 @@ if (session_id() === '') {
  */
 class Identity
 {
-    /** @var Things Object to store Genetsis ID's session data. */
+    /** @var Things Object to store DruID's session data. */
     private static $gid_things;
     /** @var \Logger Object for logging actions. */
     private static $logger;
@@ -347,7 +347,7 @@ class Identity
     }
 
     /**
-     * Helper to check if the user is connected (logged on Genetsis ID)
+     * Helper to check if the user is connected (logged on DruID)
      *
      * @return boolean TRUE if is logged, FALSE otherwise.
      */
@@ -376,13 +376,14 @@ class Identity
      * code as a GET parameter.
      *
      * Once the authorization code is provided to the web client, the SDK
-     * will send it again to Genetsis ID at "token_endpoint" to obtain the
+     * will send it again to DruID at "token_endpoint" to obtain the
      * "access_token" of the user and create the cookie.
      *
      * This method is needed to authorize user when the web client takes
      * back the control of the browser.
      *
-     * @param string $code Authorization code returned by Genetsis ID.
+     * @param string $code Authorization code returned by DruID.
+     * @param string $scope scope where you want to authorize user.
      * @return void
      * @throws /Exception
      */
@@ -413,12 +414,12 @@ class Identity
      * Checks if the user have been completed all required fields for that
      * section.
      *
-     * The "scope" (section) is a group of fields configured in Genetsis ID for
+     * The "scope" (section) is a group of fields configured in DruID for
      * a web client.
      *
      * A section can be also defined as a "part" (section) of the website
      * (web client) that only can be accesed by a user who have filled a
-     * set of personal information configured in Genetsis ID (all of the fields
+     * set of personal information configured in DruID (all of the fields
      * required for that section).
      *
      * This method is commonly used for promotions or sweepstakes: if a
@@ -482,7 +483,7 @@ class Identity
      * Performs the logout process.
      *
      * It makes:
-     * - The logout call to Genetsis ID
+     * - The logout call to DruID
      * - Clear cookies
      * - Purge Tokens and local data for the logged user
      *
