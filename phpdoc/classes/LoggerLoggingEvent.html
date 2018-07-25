@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src').replace( /\\/g, '/');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/Genetsis.html">\Genetsis</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">440</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">7</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">10</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1982007367"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1982007367" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-64611066"></a>
+                                <a href="../namespaces/Genetsis.html" style="margin-left: 30px; padding-left: 0">Genetsis</a>
+            </div>
+            <div id="namespace-64611066" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-552022351"></a>
+                                <a href="../namespaces/Genetsis.core.html" style="margin-left: 30px; padding-left: 0">core</a>
+            </div>
+            <div id="namespace-552022351" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-596730674"></a>
+                                <a href="../namespaces/Genetsis.core.user.html" style="margin-left: 30px; padding-left: 0">user</a>
+            </div>
+            <div id="namespace-596730674" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.core.user.Brand.html">Brand</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Genetsis.core.iTokenTypes.html">iTokenTypes</a></li>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.core.AccessToken.html">AccessToken</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.ClientToken.html">ClientToken</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.Encryption.html">Encryption</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.FileCache.html">FileCache</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.InvalidGrantException.html">InvalidGrantException</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.LogConfig.html">LogConfig</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.LoginStatus.html">LoginStatus</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.LoginStatusType.html">LoginStatusType</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.OAuth.html">OAuth</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.OAuthConfig.html">OAuthConfig</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.OauthTemplate.html">OauthTemplate</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.RefreshToken.html">RefreshToken</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.Request.html">Request</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.StoredToken.html">StoredToken</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.Things.html">Things</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-146454457"></a>
+                                <a href="../namespaces/Genetsis.extension.html" style="margin-left: 30px; padding-left: 0">extension</a>
+            </div>
+            <div id="namespace-146454457" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1553098549"></a>
+                                <a href="../namespaces/Genetsis.extension.ExactTarget.html" style="margin-left: 30px; padding-left: 0">ExactTarget</a>
+            </div>
+            <div id="namespace-1553098549" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html">ExactTarget</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1140053393"></a>
+                                <a href="../namespaces/Genetsis.Extension.html" style="margin-left: 30px; padding-left: 0">Extension</a>
+            </div>
+            <div id="namespace-1140053393" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.Extension.ActivityType.html">ActivityType</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.AutoloaderClass.html">AutoloaderClass</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.Config.html">Config</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.Identity.html">Identity</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.URLBuilder.html">URLBuilder</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.UserApi.html">UserApi</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/LoggerConfigurationAdapter.html">LoggerConfigurationAdapter</a></li>
+                                                    <li class="interface"><a href="../classes/LoggerConfigurator.html">LoggerConfigurator</a></li>
+                                                    <li class="interface"><a href="../classes/LoggerRenderer.html">LoggerRenderer</a></li>
+                                                                                                    <li class="class"><a href="../classes/Logger.html">Logger</a></li>
+                                                    <li class="class"><a href="../classes/Logger.html">Logger</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppender.html">LoggerAppender</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderConsole.html">LoggerAppenderConsole</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderDailyFile.html">LoggerAppenderDailyFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderDailyRollingFile.html">LoggerAppenderDailyRollingFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderEcho.html">LoggerAppenderEcho</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderFile.html">LoggerAppenderFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderFirePHP.html">LoggerAppenderFirePHP</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderMail.html">LoggerAppenderMail</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderMailEvent.html">LoggerAppenderMailEvent</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderMongoDB.html">LoggerAppenderMongoDB</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderNull.html">LoggerAppenderNull</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderPDO.html">LoggerAppenderPDO</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderPhp.html">LoggerAppenderPhp</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderPool.html">LoggerAppenderPool</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderRollingFile.html">LoggerAppenderRollingFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderSocket.html">LoggerAppenderSocket</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderSyslog.html">LoggerAppenderSyslog</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAutoloader.html">LoggerAutoloader</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfigurable.html">LoggerConfigurable</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfigurationAdapterINI.html">LoggerConfigurationAdapterINI</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfigurationAdapterPHP.html">LoggerConfigurationAdapterPHP</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfigurationAdapterXML.html">LoggerConfigurationAdapterXML</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfiguratorDefault.html">LoggerConfiguratorDefault</a></li>
+                                                    <li class="class"><a href="../classes/LoggerException.html">LoggerException</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilter.html">LoggerFilter</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilterDenyAll.html">LoggerFilterDenyAll</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilterLevelMatch.html">LoggerFilterLevelMatch</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilterLevelRange.html">LoggerFilterLevelRange</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilterStringMatch.html">LoggerFilterStringMatch</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFormattingInfo.html">LoggerFormattingInfo</a></li>
+                                                    <li class="class"><a href="../classes/LoggerHierarchy.html">LoggerHierarchy</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayout.html">LoggerLayout</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutHtml.html">LoggerLayoutHtml</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutPattern.html">LoggerLayoutPattern</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutSerialized.html">LoggerLayoutSerialized</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutSimple.html">LoggerLayoutSimple</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutTTCC.html">LoggerLayoutTTCC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutXml.html">LoggerLayoutXml</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLevel.html">LoggerLevel</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLocationInfo.html">LoggerLocationInfo</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLoggingEvent.html">LoggerLoggingEvent</a></li>
+                                                    <li class="class"><a href="../classes/LoggerMDC.html">LoggerMDC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerNDC.html">LoggerNDC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerOptionConverter.html">LoggerOptionConverter</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverter.html">LoggerPatternConverter</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterClass.html">LoggerPatternConverterClass</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterCookie.html">LoggerPatternConverterCookie</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterDate.html">LoggerPatternConverterDate</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterEnvironment.html">LoggerPatternConverterEnvironment</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterFile.html">LoggerPatternConverterFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLevel.html">LoggerPatternConverterLevel</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLine.html">LoggerPatternConverterLine</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLiteral.html">LoggerPatternConverterLiteral</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLocation.html">LoggerPatternConverterLocation</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLogger.html">LoggerPatternConverterLogger</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterMDC.html">LoggerPatternConverterMDC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterMessage.html">LoggerPatternConverterMessage</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterMethod.html">LoggerPatternConverterMethod</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterNDC.html">LoggerPatternConverterNDC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterNewLine.html">LoggerPatternConverterNewLine</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterProcess.html">LoggerPatternConverterProcess</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterRelative.html">LoggerPatternConverterRelative</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterRequest.html">LoggerPatternConverterRequest</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterServer.html">LoggerPatternConverterServer</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterSession.html">LoggerPatternConverterSession</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterSessionID.html">LoggerPatternConverterSessionID</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterSuperglobal.html">LoggerPatternConverterSuperglobal</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterThrowable.html">LoggerPatternConverterThrowable</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternParser.html">LoggerPatternParser</a></li>
+                                                    <li class="class"><a href="../classes/LoggerReflectionUtils.html">LoggerReflectionUtils</a></li>
+                                                    <li class="class"><a href="../classes/LoggerRendererDefault.html">LoggerRendererDefault</a></li>
+                                                    <li class="class"><a href="../classes/LoggerRendererException.html">LoggerRendererException</a></li>
+                                                    <li class="class"><a href="../classes/LoggerRendererMap.html">LoggerRendererMap</a></li>
+                                                    <li class="class"><a href="../classes/LoggerRoot.html">LoggerRoot</a></li>
+                                                    <li class="class"><a href="../classes/LoggerThrowableInformation.html">LoggerThrowableInformation</a></li>
+                                                    <li class="class"><a href="../classes/LoggerUtils.html">LoggerUtils</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/default.html">\</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\</small>LoggerLoggingEvent</h1>
+                    <p><em>The internal representation of logging event.</em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/LoggerLoggingEvent.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#method_getFullQualifiedClassname" class="">getFullQualifiedClassname()</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#method_getLocationInformation" class="">getLocationInformation()</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#method_getLevel" class="">getLevel()</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#method_getLogger" class="">getLogger()</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#method_getLoggerName" class="">getLoggerName()</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#method_getMessage" class="">getMessage()</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#method_getNDC" class="">getNDC()</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#method_getMDC" class="">getMDC()</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#method_getMDCMap" class="">getMDCMap()</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#method_getRenderedMessage" class="">getRenderedMessage()</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#method_getStartTime" class="">getStartTime()</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#method_getTimeStamp" class="">getTimeStamp()</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#method_getRelativeTime" class="">getRelativeTime()</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#method_getTime" class="deprecated">getTime()</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#method_getThreadName" class="">getThreadName()</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#method_getThrowableInformation" class="">getThrowableInformation()</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#method_toString" class="">toString()</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#method___sleep" class="">__sleep()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/LoggerLoggingEvent.html#property_timeStamp" class="">$timeStamp</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <em>No protected methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/LoggerLoggingEvent.html#property_level" class="">$level</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <em>No private methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/LoggerLoggingEvent.html#property_startTime" class="">$startTime</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#property_fqcn" class="">$fqcn</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#property_logger" class="">$logger</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#property_categoryName" class="deprecated">$categoryName</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#property_ndc" class="">$ndc</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#property_ndcLookupRequired" class="">$ndcLookupRequired</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#property_message" class="">$message</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#property_renderedMessage" class="">$renderedMessage</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#property_threadName" class="">$threadName</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#property_locationInfo" class="">$locationInfo</a><br />
+                                                                    <a href="../classes/LoggerLoggingEvent.html#property_throwableInfo" class="">$throwableInfo</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/core.log4php.LoggerLoggingEvent.html"><div class="path-wrapper">core/log4php/LoggerLoggingEvent.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">log4php</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                    <div class="namespace-wrapper">\LoggerLoggingEvent</div>
+                            </dd>
+
+                        
+                        
+                        
+                                                
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr>
+                            <th>
+                                version
+                            </th>
+                            <td>
+                                                                                                        <p>$Revision: 1382273 $</p>
+                                                            </td>
+                        </tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_timeStamp" name="property_timeStamp" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$timeStamp</h3>
+                <pre class="signature">$timeStamp : float</pre>
+                <p><em>The number of seconds elapsed from 1/1/1970 until logging event
+was created plus microseconds if available.</em></p>
+                
+
+                                <h4>Type</h4>
+                float
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_level" name="property_level" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$level</h3>
+                <pre class="signature">$level : \LoggerLevel</pre>
+                <p><em>Level of the logging event.</em></p>
+                
+
+                                <h4>Type</h4>
+                <a href="../classes/LoggerLevel.html">\LoggerLevel</a>
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_startTime" name="property_startTime" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$startTime</h3>
+                <pre class="signature">$startTime : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_fqcn" name="property_fqcn" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$fqcn</h3>
+                <pre class="signature">$fqcn : string</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                &mdash; Fully Qualified Class Name of the calling category class.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_logger" name="property_logger" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$logger</h3>
+                <pre class="signature">$logger : \Logger</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                <a href="../classes/Logger.html">\Logger</a>
+                &mdash; reference                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_categoryName" name="property_categoryName" class="anchor"></a>
+            <article class="property">
+                <h3 class="private deprecated">$categoryName</h3>
+                <pre class="signature">$categoryName : </pre>
+                <p><em>The category (logger) name.</em></p>
+                <p>This field will be marked as private in future
+releases. Please do not access it directly.
+Use the \getLoggerName() method instead.</p>
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <aside class="alert alert-block alert-error">
+                    <h4>Deprecated</h4>
+                    
+                </aside>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_ndc" name="property_ndc" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$ndc</h3>
+                <pre class="signature">$ndc : string</pre>
+                <p><em>The nested diagnostic context (NDC) of logging event.</em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_ndcLookupRequired" name="property_ndcLookupRequired" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$ndcLookupRequired</h3>
+                <pre class="signature">$ndcLookupRequired : boolean</pre>
+                <p><em>Have we tried to do an NDC lookup? If we did, there is no need
+to do it again.	Note that its value is always false when
+serialized. Thus, a receiving SocketNode will never use it&#039;s own
+(incorrect) NDC. See also writeObject method.</em></p>
+                
+
+                                <h4>Type</h4>
+                boolean
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_message" name="property_message" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$message</h3>
+                <pre class="signature">$message : mixed</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                mixed
+                &mdash; The application supplied message of logging event.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_renderedMessage" name="property_renderedMessage" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$renderedMessage</h3>
+                <pre class="signature">$renderedMessage : string</pre>
+                <p><em>The application supplied message rendered through the log4php
+objet rendering mechanism. At present renderedMessage == message.</em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_threadName" name="property_threadName" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$threadName</h3>
+                <pre class="signature">$threadName : mixed</pre>
+                <p><em>The name of thread in which this logging event was generated.</em></p>
+                <p>log4php saves here the process id via \PHP_MANUAL#getmypid</p>
+
+                                <h4>Type</h4>
+                mixed
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_locationInfo" name="property_locationInfo" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$locationInfo</h3>
+                <pre class="signature">$locationInfo : \LoggerLocationInfo</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                <a href="../classes/LoggerLocationInfo.html">\LoggerLocationInfo</a>
+                &mdash; Location information for the caller.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_throwableInfo" name="property_throwableInfo" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$throwableInfo</h3>
+                <pre class="signature">$throwableInfo : \LoggerThrowableInformation</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                <a href="../classes/LoggerThrowableInformation.html">\LoggerThrowableInformation</a>
+                &mdash; log4php internal representation of throwable                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(string  <span class="argument">$fqcn</span>, mixed  <span class="argument">$logger</span>, \LoggerLevel  <span class="argument">$level</span>, mixed  <span class="argument">$message</span>, integer  <span class="argument">$timeStamp = null</span>, \Exception  <span class="argument">$throwable = null</span>) </pre>
+                <p><em>Instantiate a LoggingEvent from the supplied parameters.</em></p>
+                <p>Except \$timeStamp all the other fields of
+LoggerLoggingEvent are filled when actually needed.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$fqcn </td>
+                                <td><p>name of the caller class.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>mixed</td>
+                                <td>$logger </td>
+                                <td><p>The {@link Logger} category of this event or the logger name.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td><a href="../classes/LoggerLevel.html">\LoggerLevel</a></td>
+                                <td>$level </td>
+                                <td><p>The level of this event.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>mixed</td>
+                                <td>$message </td>
+                                <td><p>The message of this event.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$timeStamp </td>
+                                <td><p>the timestamp of this logging event.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>\Exception</td>
+                                <td>$throwable </td>
+                                <td><p>The throwable associated with logging event</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/LoggerLoggingEvent.html"><div class="path-wrapper">\LoggerLoggingEvent</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getFullQualifiedClassname" name="method_getFullQualifiedClassname" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getFullQualifiedClassname()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getFullQualifiedClassname() </pre>
+                <p><em>Returns the full qualified classname.</em></p>
+                <p>TODO: PHP does contain namespaces in 5.3. Those should be returned too,</p>
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/LoggerLoggingEvent.html"><div class="path-wrapper">\LoggerLoggingEvent</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getLocationInformation" name="method_getLocationInformation" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getLocationInformation()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getLocationInformation() : \LoggerLocationInfo</pre>
+                <p><em>Set the location information for this logging event. The collected
+information is cached for future use.</em></p>
+                <p>This method uses \PHP_MANUAL#debug_backtrace function (if exists)
+to collect informations about caller.</p>
+<p>It only recognize informations generated by [Logger](../classes/Logger.html) and its subclasses.</p>
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    <a href="../classes/LoggerLocationInfo.html">\LoggerLocationInfo</a>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/LoggerLoggingEvent.html"><div class="path-wrapper">\LoggerLoggingEvent</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getLevel" name="method_getLevel" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getLevel()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getLevel() : \LoggerLevel</pre>
+                <p><em>Return the level of this event. Use this form instead of directly
+accessing the {@link $level} field.</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    <a href="../classes/LoggerLevel.html">\LoggerLevel</a>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/LoggerLoggingEvent.html"><div class="path-wrapper">\LoggerLoggingEvent</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getLogger" name="method_getLogger" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getLogger()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getLogger() : \Logger</pre>
+                <p><em>Returns the logger which created the event.</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    <a href="../classes/Logger.html">\Logger</a>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/LoggerLoggingEvent.html"><div class="path-wrapper">\LoggerLoggingEvent</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getLoggerName" name="method_getLoggerName" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getLoggerName()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getLoggerName() : string</pre>
+                <p><em>Return the name of the logger. Use this form instead of directly
+accessing the {@link $categoryName} field.</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    string
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/LoggerLoggingEvent.html"><div class="path-wrapper">\LoggerLoggingEvent</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getMessage" name="method_getMessage" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getMessage()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getMessage() : mixed</pre>
+                <p><em>Return the message for this logging event.</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    mixed
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/LoggerLoggingEvent.html"><div class="path-wrapper">\LoggerLoggingEvent</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getNDC" name="method_getNDC" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getNDC()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getNDC() : string</pre>
+                <p><em>This method returns the NDC for this event. It will return the
+correct content even if the event was generated in a different
+thread or even on a different machine. The {@link LoggerNDC::get()} method
+should &lt;b&gt;never&lt;/b&gt; be called directly.</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    string
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/LoggerLoggingEvent.html"><div class="path-wrapper">\LoggerLoggingEvent</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getMDC" name="method_getMDC" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getMDC()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getMDC(  <span class="argument">$key</span>) : string</pre>
+                <p><em>Returns the the context corresponding to the &lt;code&gt;key&lt;/code&gt;
+parameter.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$key </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    string
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/LoggerLoggingEvent.html"><div class="path-wrapper">\LoggerLoggingEvent</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getMDCMap" name="method_getMDCMap" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getMDCMap()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getMDCMap() : array</pre>
+                <p><em>Returns the entire MDC context.</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    array
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/LoggerLoggingEvent.html"><div class="path-wrapper">\LoggerLoggingEvent</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getRenderedMessage" name="method_getRenderedMessage" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getRenderedMessage()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getRenderedMessage() : string</pre>
+                <p><em>Render message.</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    string
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/LoggerLoggingEvent.html"><div class="path-wrapper">\LoggerLoggingEvent</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getStartTime" name="method_getStartTime" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getStartTime()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getStartTime() : float</pre>
+                <p><em>Returns the time when the application started, as a UNIX timestamp
+with microseconds.</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    float
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/LoggerLoggingEvent.html"><div class="path-wrapper">\LoggerLoggingEvent</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getTimeStamp" name="method_getTimeStamp" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getTimeStamp()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getTimeStamp() : float</pre>
+                <p><em></em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    float
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/LoggerLoggingEvent.html"><div class="path-wrapper">\LoggerLoggingEvent</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getRelativeTime" name="method_getRelativeTime" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getRelativeTime()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getRelativeTime() : float</pre>
+                <p><em>Returns the time in seconds passed from the beginning of execution to
+the time the event was constructed.</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    float
+                                            &mdash; <p>Seconds with microseconds in decimals.</p>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/LoggerLoggingEvent.html"><div class="path-wrapper">\LoggerLoggingEvent</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getTime" name="method_getTime" class="anchor"></a>
+            <article class="method">
+                <h3 class="public deprecated">getTime()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getTime() : integer</pre>
+                <p><em>Returns the time in milliseconds passed from the beginning of execution
+to the time the event was constructed.</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    integer
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                                <aside class="alert alert-block alert-error">
+                    <h4>Deprecated</h4>
+                    This method has been replaced by getRelativeTime which
+		does not perform unneccesary multiplication and formatting.
+                </aside>
+                        <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/LoggerLoggingEvent.html"><div class="path-wrapper">\LoggerLoggingEvent</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getThreadName" name="method_getThreadName" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getThreadName()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getThreadName() : mixed</pre>
+                <p><em></em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    mixed
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/LoggerLoggingEvent.html"><div class="path-wrapper">\LoggerLoggingEvent</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getThrowableInformation" name="method_getThrowableInformation" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getThrowableInformation()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getThrowableInformation() : mixed</pre>
+                <p><em></em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    mixed
+                                            &mdash; <p>LoggerThrowableInformation</p>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/LoggerLoggingEvent.html"><div class="path-wrapper">\LoggerLoggingEvent</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_toString" name="method_toString" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">toString()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">toString() : string</pre>
+                <p><em>Serialize this object</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    string
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/LoggerLoggingEvent.html"><div class="path-wrapper">\LoggerLoggingEvent</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___sleep" name="method___sleep" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__sleep()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__sleep() </pre>
+                <p><em>Avoid serialization of the {@link $logger} object</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/LoggerLoggingEvent.html"><div class="path-wrapper">\LoggerLoggingEvent</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">LoggerLoggingEvent.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/core/log4php/LoggerLoggingEvent.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/Genetsis.html">\Genetsis</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on July 25th, 2018 at 10:58.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

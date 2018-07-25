@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+        <script type="text/javascript">
+        function loadExternalCodeSnippets() {
+            Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+                var src = pre.getAttribute('data-src').replace( /\\/g, '/');
+                var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+                var language = 'php';
+
+                var code = document.createElement('code');
+                code.className = 'language-' + language;
+
+                pre.textContent = '';
+
+                code.textContent = 'Loading…';
+
+                pre.appendChild(code);
+
+                var xhr = new XMLHttpRequest();
+
+                xhr.open('GET', src, true);
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4) {
+
+                        if (xhr.status < 400 && xhr.responseText) {
+                            code.textContent = xhr.responseText;
+
+                            Prism.highlightElement(code);
+                        }
+                        else if (xhr.status >= 400) {
+                            code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                        }
+                        else {
+                            code.textContent = '✖ Error: File does not exist or is empty';
+                        }
+                    }
+                };
+
+                xhr.send(null);
+            });
+        }
+
+        $(document).ready(function(){
+            loadExternalCodeSnippets();
+        });
+        $('#source-view').on('shown', function () {
+            loadExternalCodeSnippets();
+        })
+    </script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/Genetsis.html">\Genetsis</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">440</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">7</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">10</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1627213275"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1627213275" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-412071673"></a>
+                                <a href="../namespaces/Genetsis.html" style="margin-left: 30px; padding-left: 0">Genetsis</a>
+            </div>
+            <div id="namespace-412071673" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-294872569"></a>
+                                <a href="../namespaces/Genetsis.core.html" style="margin-left: 30px; padding-left: 0">core</a>
+            </div>
+            <div id="namespace-294872569" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-889253375"></a>
+                                <a href="../namespaces/Genetsis.core.user.html" style="margin-left: 30px; padding-left: 0">user</a>
+            </div>
+            <div id="namespace-889253375" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.core.user.Brand.html">Brand</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Genetsis.core.iTokenTypes.html">iTokenTypes</a></li>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.core.AccessToken.html">AccessToken</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.ClientToken.html">ClientToken</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.Encryption.html">Encryption</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.FileCache.html">FileCache</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.InvalidGrantException.html">InvalidGrantException</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.LogConfig.html">LogConfig</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.LoginStatus.html">LoginStatus</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.LoginStatusType.html">LoginStatusType</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.OAuth.html">OAuth</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.OAuthConfig.html">OAuthConfig</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.OauthTemplate.html">OauthTemplate</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.RefreshToken.html">RefreshToken</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.Request.html">Request</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.StoredToken.html">StoredToken</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.Things.html">Things</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-703825848"></a>
+                                <a href="../namespaces/Genetsis.extension.html" style="margin-left: 30px; padding-left: 0">extension</a>
+            </div>
+            <div id="namespace-703825848" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-263661269"></a>
+                                <a href="../namespaces/Genetsis.extension.ExactTarget.html" style="margin-left: 30px; padding-left: 0">ExactTarget</a>
+            </div>
+            <div id="namespace-263661269" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html">ExactTarget</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1385371166"></a>
+                                <a href="../namespaces/Genetsis.Extension.html" style="margin-left: 30px; padding-left: 0">Extension</a>
+            </div>
+            <div id="namespace-1385371166" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.Extension.ActivityType.html">ActivityType</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.AutoloaderClass.html">AutoloaderClass</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.Config.html">Config</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.Identity.html">Identity</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.URLBuilder.html">URLBuilder</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.UserApi.html">UserApi</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/LoggerConfigurationAdapter.html">LoggerConfigurationAdapter</a></li>
+                                                    <li class="interface"><a href="../classes/LoggerConfigurator.html">LoggerConfigurator</a></li>
+                                                    <li class="interface"><a href="../classes/LoggerRenderer.html">LoggerRenderer</a></li>
+                                                                                                    <li class="class"><a href="../classes/Logger.html">Logger</a></li>
+                                                    <li class="class"><a href="../classes/Logger.html">Logger</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppender.html">LoggerAppender</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderConsole.html">LoggerAppenderConsole</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderDailyFile.html">LoggerAppenderDailyFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderDailyRollingFile.html">LoggerAppenderDailyRollingFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderEcho.html">LoggerAppenderEcho</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderFile.html">LoggerAppenderFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderFirePHP.html">LoggerAppenderFirePHP</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderMail.html">LoggerAppenderMail</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderMailEvent.html">LoggerAppenderMailEvent</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderMongoDB.html">LoggerAppenderMongoDB</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderNull.html">LoggerAppenderNull</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderPDO.html">LoggerAppenderPDO</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderPhp.html">LoggerAppenderPhp</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderPool.html">LoggerAppenderPool</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderRollingFile.html">LoggerAppenderRollingFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderSocket.html">LoggerAppenderSocket</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderSyslog.html">LoggerAppenderSyslog</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAutoloader.html">LoggerAutoloader</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfigurable.html">LoggerConfigurable</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfigurationAdapterINI.html">LoggerConfigurationAdapterINI</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfigurationAdapterPHP.html">LoggerConfigurationAdapterPHP</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfigurationAdapterXML.html">LoggerConfigurationAdapterXML</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfiguratorDefault.html">LoggerConfiguratorDefault</a></li>
+                                                    <li class="class"><a href="../classes/LoggerException.html">LoggerException</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilter.html">LoggerFilter</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilterDenyAll.html">LoggerFilterDenyAll</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilterLevelMatch.html">LoggerFilterLevelMatch</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilterLevelRange.html">LoggerFilterLevelRange</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilterStringMatch.html">LoggerFilterStringMatch</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFormattingInfo.html">LoggerFormattingInfo</a></li>
+                                                    <li class="class"><a href="../classes/LoggerHierarchy.html">LoggerHierarchy</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayout.html">LoggerLayout</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutHtml.html">LoggerLayoutHtml</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutPattern.html">LoggerLayoutPattern</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutSerialized.html">LoggerLayoutSerialized</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutSimple.html">LoggerLayoutSimple</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutTTCC.html">LoggerLayoutTTCC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutXml.html">LoggerLayoutXml</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLevel.html">LoggerLevel</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLocationInfo.html">LoggerLocationInfo</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLoggingEvent.html">LoggerLoggingEvent</a></li>
+                                                    <li class="class"><a href="../classes/LoggerMDC.html">LoggerMDC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerNDC.html">LoggerNDC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerOptionConverter.html">LoggerOptionConverter</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverter.html">LoggerPatternConverter</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterClass.html">LoggerPatternConverterClass</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterCookie.html">LoggerPatternConverterCookie</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterDate.html">LoggerPatternConverterDate</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterEnvironment.html">LoggerPatternConverterEnvironment</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterFile.html">LoggerPatternConverterFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLevel.html">LoggerPatternConverterLevel</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLine.html">LoggerPatternConverterLine</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLiteral.html">LoggerPatternConverterLiteral</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLocation.html">LoggerPatternConverterLocation</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLogger.html">LoggerPatternConverterLogger</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterMDC.html">LoggerPatternConverterMDC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterMessage.html">LoggerPatternConverterMessage</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterMethod.html">LoggerPatternConverterMethod</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterNDC.html">LoggerPatternConverterNDC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterNewLine.html">LoggerPatternConverterNewLine</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterProcess.html">LoggerPatternConverterProcess</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterRelative.html">LoggerPatternConverterRelative</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterRequest.html">LoggerPatternConverterRequest</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterServer.html">LoggerPatternConverterServer</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterSession.html">LoggerPatternConverterSession</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterSessionID.html">LoggerPatternConverterSessionID</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterSuperglobal.html">LoggerPatternConverterSuperglobal</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterThrowable.html">LoggerPatternConverterThrowable</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternParser.html">LoggerPatternParser</a></li>
+                                                    <li class="class"><a href="../classes/LoggerReflectionUtils.html">LoggerReflectionUtils</a></li>
+                                                    <li class="class"><a href="../classes/LoggerRendererDefault.html">LoggerRendererDefault</a></li>
+                                                    <li class="class"><a href="../classes/LoggerRendererException.html">LoggerRendererException</a></li>
+                                                    <li class="class"><a href="../classes/LoggerRendererMap.html">LoggerRendererMap</a></li>
+                                                    <li class="class"><a href="../classes/LoggerRoot.html">LoggerRoot</a></li>
+                                                    <li class="class"><a href="../classes/LoggerThrowableInformation.html">LoggerThrowableInformation</a></li>
+                                                    <li class="class"><a href="../classes/LoggerUtils.html">LoggerUtils</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content file">
+                    <nav>
+                                                                    </nav>
+
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+                    <h1><small>core</small>FileCache.php</h1>
+                    <p><em></em></p>
+                    
+
+                    
+                    
+                                        <h2>Classes</h2>
+                    <table class="table table-hover">
+                                            <tr>
+                            <td><a href="../classes/Genetsis.core.FileCache.html">FileCache</a></td>
+                            <td><em>This class is used to Cache Data stored in File</em></td>
+                        </tr>
+                                        </table>
+                                    </div>
+
+                <aside class="span4 detailsbar">
+                    <dl>
+                                                    <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">\Default</div></dd>
+                        
+                        
+                    </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                                            </table>
+
+                </aside>
+            </div>
+
+            
+            
+        </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label"></h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/core/FileCache.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/Genetsis.html">\Genetsis</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on July 25th, 2018 at 10:58.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

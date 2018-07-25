@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src').replace( /\\/g, '/');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/Genetsis.html">\Genetsis</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">440</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">7</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">10</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1088163496"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1088163496" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1509967001"></a>
+                                <a href="../namespaces/Genetsis.html" style="margin-left: 30px; padding-left: 0">Genetsis</a>
+            </div>
+            <div id="namespace-1509967001" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1877199824"></a>
+                                <a href="../namespaces/Genetsis.core.html" style="margin-left: 30px; padding-left: 0">core</a>
+            </div>
+            <div id="namespace-1877199824" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-421608762"></a>
+                                <a href="../namespaces/Genetsis.core.user.html" style="margin-left: 30px; padding-left: 0">user</a>
+            </div>
+            <div id="namespace-421608762" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.core.user.Brand.html">Brand</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Genetsis.core.iTokenTypes.html">iTokenTypes</a></li>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.core.AccessToken.html">AccessToken</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.ClientToken.html">ClientToken</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.Encryption.html">Encryption</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.FileCache.html">FileCache</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.InvalidGrantException.html">InvalidGrantException</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.LogConfig.html">LogConfig</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.LoginStatus.html">LoginStatus</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.LoginStatusType.html">LoginStatusType</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.OAuth.html">OAuth</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.OAuthConfig.html">OAuthConfig</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.OauthTemplate.html">OauthTemplate</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.RefreshToken.html">RefreshToken</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.Request.html">Request</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.StoredToken.html">StoredToken</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.Things.html">Things</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1332263189"></a>
+                                <a href="../namespaces/Genetsis.extension.html" style="margin-left: 30px; padding-left: 0">extension</a>
+            </div>
+            <div id="namespace-1332263189" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1275652805"></a>
+                                <a href="../namespaces/Genetsis.extension.ExactTarget.html" style="margin-left: 30px; padding-left: 0">ExactTarget</a>
+            </div>
+            <div id="namespace-1275652805" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html">ExactTarget</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-919517274"></a>
+                                <a href="../namespaces/Genetsis.Extension.html" style="margin-left: 30px; padding-left: 0">Extension</a>
+            </div>
+            <div id="namespace-919517274" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.Extension.ActivityType.html">ActivityType</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.AutoloaderClass.html">AutoloaderClass</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.Config.html">Config</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.Identity.html">Identity</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.URLBuilder.html">URLBuilder</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.UserApi.html">UserApi</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/LoggerConfigurationAdapter.html">LoggerConfigurationAdapter</a></li>
+                                                    <li class="interface"><a href="../classes/LoggerConfigurator.html">LoggerConfigurator</a></li>
+                                                    <li class="interface"><a href="../classes/LoggerRenderer.html">LoggerRenderer</a></li>
+                                                                                                    <li class="class"><a href="../classes/Logger.html">Logger</a></li>
+                                                    <li class="class"><a href="../classes/Logger.html">Logger</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppender.html">LoggerAppender</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderConsole.html">LoggerAppenderConsole</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderDailyFile.html">LoggerAppenderDailyFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderDailyRollingFile.html">LoggerAppenderDailyRollingFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderEcho.html">LoggerAppenderEcho</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderFile.html">LoggerAppenderFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderFirePHP.html">LoggerAppenderFirePHP</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderMail.html">LoggerAppenderMail</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderMailEvent.html">LoggerAppenderMailEvent</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderMongoDB.html">LoggerAppenderMongoDB</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderNull.html">LoggerAppenderNull</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderPDO.html">LoggerAppenderPDO</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderPhp.html">LoggerAppenderPhp</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderPool.html">LoggerAppenderPool</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderRollingFile.html">LoggerAppenderRollingFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderSocket.html">LoggerAppenderSocket</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderSyslog.html">LoggerAppenderSyslog</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAutoloader.html">LoggerAutoloader</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfigurable.html">LoggerConfigurable</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfigurationAdapterINI.html">LoggerConfigurationAdapterINI</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfigurationAdapterPHP.html">LoggerConfigurationAdapterPHP</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfigurationAdapterXML.html">LoggerConfigurationAdapterXML</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfiguratorDefault.html">LoggerConfiguratorDefault</a></li>
+                                                    <li class="class"><a href="../classes/LoggerException.html">LoggerException</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilter.html">LoggerFilter</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilterDenyAll.html">LoggerFilterDenyAll</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilterLevelMatch.html">LoggerFilterLevelMatch</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilterLevelRange.html">LoggerFilterLevelRange</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilterStringMatch.html">LoggerFilterStringMatch</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFormattingInfo.html">LoggerFormattingInfo</a></li>
+                                                    <li class="class"><a href="../classes/LoggerHierarchy.html">LoggerHierarchy</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayout.html">LoggerLayout</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutHtml.html">LoggerLayoutHtml</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutPattern.html">LoggerLayoutPattern</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutSerialized.html">LoggerLayoutSerialized</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutSimple.html">LoggerLayoutSimple</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutTTCC.html">LoggerLayoutTTCC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutXml.html">LoggerLayoutXml</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLevel.html">LoggerLevel</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLocationInfo.html">LoggerLocationInfo</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLoggingEvent.html">LoggerLoggingEvent</a></li>
+                                                    <li class="class"><a href="../classes/LoggerMDC.html">LoggerMDC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerNDC.html">LoggerNDC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerOptionConverter.html">LoggerOptionConverter</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverter.html">LoggerPatternConverter</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterClass.html">LoggerPatternConverterClass</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterCookie.html">LoggerPatternConverterCookie</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterDate.html">LoggerPatternConverterDate</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterEnvironment.html">LoggerPatternConverterEnvironment</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterFile.html">LoggerPatternConverterFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLevel.html">LoggerPatternConverterLevel</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLine.html">LoggerPatternConverterLine</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLiteral.html">LoggerPatternConverterLiteral</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLocation.html">LoggerPatternConverterLocation</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLogger.html">LoggerPatternConverterLogger</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterMDC.html">LoggerPatternConverterMDC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterMessage.html">LoggerPatternConverterMessage</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterMethod.html">LoggerPatternConverterMethod</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterNDC.html">LoggerPatternConverterNDC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterNewLine.html">LoggerPatternConverterNewLine</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterProcess.html">LoggerPatternConverterProcess</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterRelative.html">LoggerPatternConverterRelative</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterRequest.html">LoggerPatternConverterRequest</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterServer.html">LoggerPatternConverterServer</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterSession.html">LoggerPatternConverterSession</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterSessionID.html">LoggerPatternConverterSessionID</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterSuperglobal.html">LoggerPatternConverterSuperglobal</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterThrowable.html">LoggerPatternConverterThrowable</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternParser.html">LoggerPatternParser</a></li>
+                                                    <li class="class"><a href="../classes/LoggerReflectionUtils.html">LoggerReflectionUtils</a></li>
+                                                    <li class="class"><a href="../classes/LoggerRendererDefault.html">LoggerRendererDefault</a></li>
+                                                    <li class="class"><a href="../classes/LoggerRendererException.html">LoggerRendererException</a></li>
+                                                    <li class="class"><a href="../classes/LoggerRendererMap.html">LoggerRendererMap</a></li>
+                                                    <li class="class"><a href="../classes/LoggerRoot.html">LoggerRoot</a></li>
+                                                    <li class="class"><a href="../classes/LoggerThrowableInformation.html">LoggerThrowableInformation</a></li>
+                                                    <li class="class"><a href="../classes/LoggerUtils.html">LoggerUtils</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/Genetsis.core.html">\Genetsis\core</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\Genetsis\core</small>RefreshToken</h1>
+                    <p><em>This class stores &quot;refresh_token&quot; data.</em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/Genetsis.core.RefreshToken.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/Genetsis.core.StoredToken.html#method_factory" class="">factory()</a><br />
+                                                                    <a href="../classes/Genetsis.core.StoredToken.html#method_getName" class="">getName()</a><br />
+                                                                    <a href="../classes/Genetsis.core.StoredToken.html#method_getValue" class="">getValue()</a><br />
+                                                                    <a href="../classes/Genetsis.core.StoredToken.html#method_setValue" class="">setValue()</a><br />
+                                                                    <a href="../classes/Genetsis.core.StoredToken.html#method_getExpiresIn" class="">getExpiresIn()</a><br />
+                                                                    <a href="../classes/Genetsis.core.StoredToken.html#method_setExpiresIn" class="">setExpiresIn()</a><br />
+                                                                    <a href="../classes/Genetsis.core.StoredToken.html#method_getExpiresAt" class="">getExpiresAt()</a><br />
+                                                                    <a href="../classes/Genetsis.core.StoredToken.html#method_setExpiresAt" class="">setExpiresAt()</a><br />
+                                                                    <a href="../classes/Genetsis.core.StoredToken.html#method_getPath" class="">getPath()</a><br />
+                                                                    <a href="../classes/Genetsis.core.StoredToken.html#method_setPath" class="">setPath()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No public properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <a href="../classes/Genetsis.core.RefreshToken.html#method_setName" class="">setName()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Genetsis.core.StoredToken.html#property_name" class="">$name</a><br />
+                                                                    <a href="../classes/Genetsis.core.StoredToken.html#property_value" class="">$value</a><br />
+                                                                    <a href="../classes/Genetsis.core.StoredToken.html#property_expires_in" class="">$expires_in</a><br />
+                                                                    <a href="../classes/Genetsis.core.StoredToken.html#property_expires_at" class="">$expires_at</a><br />
+                                                                    <a href="../classes/Genetsis.core.StoredToken.html#property_path" class="">$path</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <em>No private methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/core.RefreshToken.html"><div class="path-wrapper">core/RefreshToken.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Genetsis</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                                                                                                                                                
+                                        <div class="namespace-wrapper"><a href="../classes/Genetsis.core.StoredToken.html">\Genetsis\core\StoredToken</a></div>
+                                                                                                    <div class="namespace-wrapper">\Genetsis\core\RefreshToken</div>
+                            </dd>
+
+                        
+                        
+                        
+                                                
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr>
+                            <th>
+                                category
+                            </th>
+                            <td>
+                                                                                                        <p>Bean</p>
+                                                            </td>
+                        </tr>
+                                            <tr>
+                            <th>
+                                version
+                            </th>
+                            <td>
+                                                                    1.0                                    
+                                                            </td>
+                        </tr>
+                                            <tr>
+                            <th>
+                                access
+                            </th>
+                            <td>
+                                                                                                        <p>public</p>
+                                                            </td>
+                        </tr>
+                                            <tr>
+                            <th>
+                                since
+                            </th>
+                            <td>
+                                                                    2011-09-08                                    
+                                                            </td>
+                        </tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_name" name="property_name" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$name</h3>
+                <pre class="signature">$name : string</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                &mdash; The token name.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.StoredToken.html"><div class="path-wrapper">\Genetsis\core\StoredToken</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_value" name="property_value" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$value</h3>
+                <pre class="signature">$value : string</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                &mdash; The token value.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.StoredToken.html"><div class="path-wrapper">\Genetsis\core\StoredToken</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_expires_in" name="property_expires_in" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$expires_in</h3>
+                <pre class="signature">$expires_in : integer</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                integer
+                &mdash; integer Number the seconds until the token expires.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.StoredToken.html"><div class="path-wrapper">\Genetsis\core\StoredToken</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_expires_at" name="property_expires_at" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$expires_at</h3>
+                <pre class="signature">$expires_at : integer</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                integer
+                &mdash; Date when the token expires. As UNIX timestamp.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.StoredToken.html"><div class="path-wrapper">\Genetsis\core\StoredToken</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_path" name="property_path" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$path</h3>
+                <pre class="signature">$path : string</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                &mdash; Full path to the folder where cookies will be saved.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.StoredToken.html"><div class="path-wrapper">\Genetsis\core\StoredToken</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(  <span class="argument">$value</span>,   <span class="argument">$expires_in</span>,   <span class="argument">$expires_at</span>,   <span class="argument">$path = &#039;/&#039;</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$expires_in </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$expires_at </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$path </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.RefreshToken.html"><div class="path-wrapper">\Genetsis\core\RefreshToken</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_factory" name="method_factory" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">factory()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">factory(string  <span class="argument">$name</span>, \Genetsis\core\sting  <span class="argument">$value</span>,   <span class="argument">$expires_in</span>,   <span class="argument">$expires_at</span>,   <span class="argument">$path</span>) : boolean|\Genetsis\core\AccessToken|\Genetsis\core\ClientToken|\Genetsis\core\RefreshToken</pre>
+                <p><em>Create an instance of an access token based on the name.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$name </td>
+                                <td><p>The token name.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>\Genetsis\core\sting</td>
+                                <td>$value </td>
+                                <td><p>The token value.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$expires_in </td>
+                                <td><p>Number the seconds until the token expires.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$expires_at </td>
+                                <td><p>Date when the token expires. As UNIX timestamp.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$path </td>
+                                <td><p>Full path to the folder where cookies will be saved.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    boolean|<a href="../classes/Genetsis.core.AccessToken.html">\Genetsis\core\AccessToken</a>|<a href="../classes/Genetsis.core.ClientToken.html">\Genetsis\core\ClientToken</a>|<a href="../classes/Genetsis.core.RefreshToken.html">\Genetsis\core\RefreshToken</a>
+                                            &mdash; <p>An object of type {@link StoredToken} or FALSE if
+unable to create it.</p>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.StoredToken.html"><div class="path-wrapper">\Genetsis\core\StoredToken</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getName" name="method_getName" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getName()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getName() : string</pre>
+                <p><em>Returns the token name.</em></p>
+                <p>We use it for serialization the token content.</p>
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>The token name.</p>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.StoredToken.html"><div class="path-wrapper">\Genetsis\core\StoredToken</div></a></dd>
+                                                                            <dt>See also</dt>
+                                                                <dd><a href="../classes/Genetsis.core.iTokenTypes.html"><span class="namespace-wrapper">\Genetsis\core\iTokenTypes</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getValue" name="method_getValue" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getValue()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getValue() : string</pre>
+                <p><em>Returns the token value.</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>The token value. It could be empty.</p>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.StoredToken.html"><div class="path-wrapper">\Genetsis\core\StoredToken</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setValue" name="method_setValue" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setValue()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setValue(  <span class="argument">$value</span>) : void</pre>
+                <p><em>Sets token value.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.StoredToken.html"><div class="path-wrapper">\Genetsis\core\StoredToken</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getExpiresIn" name="method_getExpiresIn" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getExpiresIn()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getExpiresIn() : integer</pre>
+                <p><em>Returns the number of seconds when token expires.</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    integer
+                                            &mdash; <p>The number of seconds.</p>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.StoredToken.html"><div class="path-wrapper">\Genetsis\core\StoredToken</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setExpiresIn" name="method_setExpiresIn" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setExpiresIn()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setExpiresIn(  <span class="argument">$expires_in</span>) : void</pre>
+                <p><em>Sets the number of seconds when token expires.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$expires_in </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.StoredToken.html"><div class="path-wrapper">\Genetsis\core\StoredToken</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getExpiresAt" name="method_getExpiresAt" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getExpiresAt()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getExpiresAt() : integer</pre>
+                <p><em>Returns the date when the &quot;token&quot; should be dead.</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    integer
+                                            &mdash; <p>UNIX timestamp with the date. Zero if not defined.</p>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.StoredToken.html"><div class="path-wrapper">\Genetsis\core\StoredToken</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setExpiresAt" name="method_setExpiresAt" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setExpiresAt()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setExpiresAt(  <span class="argument">$expires_at</span>) : void</pre>
+                <p><em>Sets the date when the &quot;token&quot; should be dead.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$expires_at </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.StoredToken.html"><div class="path-wrapper">\Genetsis\core\StoredToken</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getPath" name="method_getPath" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getPath()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getPath() : string</pre>
+                <p><em>Returns the path to cookie folder.</em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>The full path to the folder where the cookies will be
+saved.</p>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.StoredToken.html"><div class="path-wrapper">\Genetsis\core\StoredToken</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setPath" name="method_setPath" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setPath()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setPath(  <span class="argument">$path</span>) : void</pre>
+                <p><em>Sets the path where the cookies will be saved.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$path </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.StoredToken.html"><div class="path-wrapper">\Genetsis\core\StoredToken</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                                                            <p>Checks if path exists and is writable.</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setName" name="method_setName" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">setName()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setName() : void</pre>
+                <p><em>Sets token name.</em></p>
+                <p>We delegate this method to child classes.</p>
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.RefreshToken.html"><div class="path-wrapper">\Genetsis\core\RefreshToken</div></a></dd>
+                                                                            <dt>See also</dt>
+                                                                <dd><a href="../classes/Genetsis.core.iTokenTypes.html"><span class="namespace-wrapper">\Genetsis\core\iTokenTypes</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">RefreshToken.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/core/RefreshToken.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/Genetsis.html">\Genetsis</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on July 25th, 2018 at 10:58.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

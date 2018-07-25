@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src').replace( /\\/g, '/');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/Genetsis.html">\Genetsis</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">440</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">7</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">10</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-99269803"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-99269803" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1200349361"></a>
+                                <a href="../namespaces/Genetsis.html" style="margin-left: 30px; padding-left: 0">Genetsis</a>
+            </div>
+            <div id="namespace-1200349361" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-528747227"></a>
+                                <a href="../namespaces/Genetsis.core.html" style="margin-left: 30px; padding-left: 0">core</a>
+            </div>
+            <div id="namespace-528747227" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-985075685"></a>
+                                <a href="../namespaces/Genetsis.core.user.html" style="margin-left: 30px; padding-left: 0">user</a>
+            </div>
+            <div id="namespace-985075685" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.core.user.Brand.html">Brand</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Genetsis.core.iTokenTypes.html">iTokenTypes</a></li>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.core.AccessToken.html">AccessToken</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.ClientToken.html">ClientToken</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.Encryption.html">Encryption</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.FileCache.html">FileCache</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.InvalidGrantException.html">InvalidGrantException</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.LogConfig.html">LogConfig</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.LoginStatus.html">LoginStatus</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.LoginStatusType.html">LoginStatusType</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.OAuth.html">OAuth</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.OAuthConfig.html">OAuthConfig</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.OauthTemplate.html">OauthTemplate</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.RefreshToken.html">RefreshToken</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.Request.html">Request</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.StoredToken.html">StoredToken</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.Things.html">Things</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1386403342"></a>
+                                <a href="../namespaces/Genetsis.extension.html" style="margin-left: 30px; padding-left: 0">extension</a>
+            </div>
+            <div id="namespace-1386403342" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1026338358"></a>
+                                <a href="../namespaces/Genetsis.extension.ExactTarget.html" style="margin-left: 30px; padding-left: 0">ExactTarget</a>
+            </div>
+            <div id="namespace-1026338358" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html">ExactTarget</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-663374286"></a>
+                                <a href="../namespaces/Genetsis.Extension.html" style="margin-left: 30px; padding-left: 0">Extension</a>
+            </div>
+            <div id="namespace-663374286" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.Extension.ActivityType.html">ActivityType</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.AutoloaderClass.html">AutoloaderClass</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.Config.html">Config</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.Identity.html">Identity</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.URLBuilder.html">URLBuilder</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.UserApi.html">UserApi</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/LoggerConfigurationAdapter.html">LoggerConfigurationAdapter</a></li>
+                                                    <li class="interface"><a href="../classes/LoggerConfigurator.html">LoggerConfigurator</a></li>
+                                                    <li class="interface"><a href="../classes/LoggerRenderer.html">LoggerRenderer</a></li>
+                                                                                                    <li class="class"><a href="../classes/Logger.html">Logger</a></li>
+                                                    <li class="class"><a href="../classes/Logger.html">Logger</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppender.html">LoggerAppender</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderConsole.html">LoggerAppenderConsole</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderDailyFile.html">LoggerAppenderDailyFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderDailyRollingFile.html">LoggerAppenderDailyRollingFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderEcho.html">LoggerAppenderEcho</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderFile.html">LoggerAppenderFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderFirePHP.html">LoggerAppenderFirePHP</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderMail.html">LoggerAppenderMail</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderMailEvent.html">LoggerAppenderMailEvent</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderMongoDB.html">LoggerAppenderMongoDB</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderNull.html">LoggerAppenderNull</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderPDO.html">LoggerAppenderPDO</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderPhp.html">LoggerAppenderPhp</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderPool.html">LoggerAppenderPool</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderRollingFile.html">LoggerAppenderRollingFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderSocket.html">LoggerAppenderSocket</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderSyslog.html">LoggerAppenderSyslog</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAutoloader.html">LoggerAutoloader</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfigurable.html">LoggerConfigurable</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfigurationAdapterINI.html">LoggerConfigurationAdapterINI</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfigurationAdapterPHP.html">LoggerConfigurationAdapterPHP</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfigurationAdapterXML.html">LoggerConfigurationAdapterXML</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfiguratorDefault.html">LoggerConfiguratorDefault</a></li>
+                                                    <li class="class"><a href="../classes/LoggerException.html">LoggerException</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilter.html">LoggerFilter</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilterDenyAll.html">LoggerFilterDenyAll</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilterLevelMatch.html">LoggerFilterLevelMatch</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilterLevelRange.html">LoggerFilterLevelRange</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilterStringMatch.html">LoggerFilterStringMatch</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFormattingInfo.html">LoggerFormattingInfo</a></li>
+                                                    <li class="class"><a href="../classes/LoggerHierarchy.html">LoggerHierarchy</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayout.html">LoggerLayout</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutHtml.html">LoggerLayoutHtml</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutPattern.html">LoggerLayoutPattern</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutSerialized.html">LoggerLayoutSerialized</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutSimple.html">LoggerLayoutSimple</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutTTCC.html">LoggerLayoutTTCC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutXml.html">LoggerLayoutXml</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLevel.html">LoggerLevel</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLocationInfo.html">LoggerLocationInfo</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLoggingEvent.html">LoggerLoggingEvent</a></li>
+                                                    <li class="class"><a href="../classes/LoggerMDC.html">LoggerMDC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerNDC.html">LoggerNDC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerOptionConverter.html">LoggerOptionConverter</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverter.html">LoggerPatternConverter</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterClass.html">LoggerPatternConverterClass</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterCookie.html">LoggerPatternConverterCookie</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterDate.html">LoggerPatternConverterDate</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterEnvironment.html">LoggerPatternConverterEnvironment</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterFile.html">LoggerPatternConverterFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLevel.html">LoggerPatternConverterLevel</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLine.html">LoggerPatternConverterLine</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLiteral.html">LoggerPatternConverterLiteral</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLocation.html">LoggerPatternConverterLocation</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLogger.html">LoggerPatternConverterLogger</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterMDC.html">LoggerPatternConverterMDC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterMessage.html">LoggerPatternConverterMessage</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterMethod.html">LoggerPatternConverterMethod</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterNDC.html">LoggerPatternConverterNDC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterNewLine.html">LoggerPatternConverterNewLine</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterProcess.html">LoggerPatternConverterProcess</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterRelative.html">LoggerPatternConverterRelative</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterRequest.html">LoggerPatternConverterRequest</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterServer.html">LoggerPatternConverterServer</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterSession.html">LoggerPatternConverterSession</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterSessionID.html">LoggerPatternConverterSessionID</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterSuperglobal.html">LoggerPatternConverterSuperglobal</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterThrowable.html">LoggerPatternConverterThrowable</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternParser.html">LoggerPatternParser</a></li>
+                                                    <li class="class"><a href="../classes/LoggerReflectionUtils.html">LoggerReflectionUtils</a></li>
+                                                    <li class="class"><a href="../classes/LoggerRendererDefault.html">LoggerRendererDefault</a></li>
+                                                    <li class="class"><a href="../classes/LoggerRendererException.html">LoggerRendererException</a></li>
+                                                    <li class="class"><a href="../classes/LoggerRendererMap.html">LoggerRendererMap</a></li>
+                                                    <li class="class"><a href="../classes/LoggerRoot.html">LoggerRoot</a></li>
+                                                    <li class="class"><a href="../classes/LoggerThrowableInformation.html">LoggerThrowableInformation</a></li>
+                                                    <li class="class"><a href="../classes/LoggerUtils.html">LoggerUtils</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/Genetsis.core.html">\Genetsis\core</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\Genetsis\core</small>OAuth</h1>
+                    <p><em>This class wraps all methods for interactions with OAuth service,
+for user authentication and validation. Also generates the URLs to
+perform this operations as register or login.</em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/Genetsis.core.OAuth.html#method_doGetClientToken" class="">doGetClientToken()</a><br />
+                                                                    <a href="../classes/Genetsis.core.OAuth.html#method_storeToken" class="">storeToken()</a><br />
+                                                                    <a href="../classes/Genetsis.core.OAuth.html#method_doGetAccessToken" class="">doGetAccessToken()</a><br />
+                                                                    <a href="../classes/Genetsis.core.OAuth.html#method_doRefreshToken" class="">doRefreshToken()</a><br />
+                                                                    <a href="../classes/Genetsis.core.OAuth.html#method_doValidateBearer" class="">doValidateBearer()</a><br />
+                                                                    <a href="../classes/Genetsis.core.OAuth.html#method_doExchangeSession" class="">doExchangeSession()</a><br />
+                                                                    <a href="../classes/Genetsis.core.OAuth.html#method_doLogout" class="">doLogout()</a><br />
+                                                                    <a href="../classes/Genetsis.core.OAuth.html#method_deleteStoredToken" class="">deleteStoredToken()</a><br />
+                                                                    <a href="../classes/Genetsis.core.OAuth.html#method_hasToken" class="">hasToken()</a><br />
+                                                                    <a href="../classes/Genetsis.core.OAuth.html#method_getStoredToken" class="">getStoredToken()</a><br />
+                                                                    <a href="../classes/Genetsis.core.OAuth.html#method_doCheckUserCompleted" class="">doCheckUserCompleted()</a><br />
+                                                                    <a href="../classes/Genetsis.core.OAuth.html#method_doCheckUserNeedAcceptTerms" class="">doCheckUserNeedAcceptTerms()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No public properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Genetsis.core.OAuth.html#constant_GRANT_TYPE_AUTH_CODE" class="">GRANT_TYPE_AUTH_CODE</a><br />
+                                                                    <a href="../classes/Genetsis.core.OAuth.html#constant_GRANT_TYPE_REFRESH_TOKEN" class="">GRANT_TYPE_REFRESH_TOKEN</a><br />
+                                                                    <a href="../classes/Genetsis.core.OAuth.html#constant_GRANT_TYPE_CLIENT_CREDENTIALS" class="">GRANT_TYPE_CLIENT_CREDENTIALS</a><br />
+                                                                    <a href="../classes/Genetsis.core.OAuth.html#constant_GRANT_TYPE_VALIDATE_BEARER" class="">GRANT_TYPE_VALIDATE_BEARER</a><br />
+                                                                    <a href="../classes/Genetsis.core.OAuth.html#constant_GRANT_TYPE_EXCHANGE_SESSION" class="">GRANT_TYPE_EXCHANGE_SESSION</a><br />
+                                                                    <a href="../classes/Genetsis.core.OAuth.html#constant_DEFAULT_EXPIRES_IN" class="">DEFAULT_EXPIRES_IN</a><br />
+                                                                    <a href="../classes/Genetsis.core.OAuth.html#constant_SAFETY_RANGE_EXPIRES_IN" class="">SAFETY_RANGE_EXPIRES_IN</a><br />
+                                                                    <a href="../classes/Genetsis.core.OAuth.html#constant_SSO_COOKIE_NAME" class="">SSO_COOKIE_NAME</a><br />
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <em>No protected methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No protected properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <a href="../classes/Genetsis.core.OAuth.html#method_checkErrors" class="">checkErrors()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/core.OAuth.html"><div class="path-wrapper">core/OAuth.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Genetsis</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                    <div class="namespace-wrapper">\Genetsis\core\OAuth</div>
+                            </dd>
+
+                        
+                        
+                        
+                                                
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr>
+                            <th>
+                                category
+                            </th>
+                            <td>
+                                                                                                        <p>Helper</p>
+                                                            </td>
+                        </tr>
+                                            <tr>
+                            <th>
+                                version
+                            </th>
+                            <td>
+                                                                    1.0                                    
+                                                            </td>
+                        </tr>
+                                            <tr>
+                            <th>
+                                access
+                            </th>
+                            <td>
+                                                                                                        <p>private</p>
+                                                            </td>
+                        </tr>
+                                        </table>
+                </aside>
+            </div>
+
+                                    <a id="constants" name="constants"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Constants</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_GRANT_TYPE_AUTH_CODE" name="constant_GRANT_TYPE_AUTH_CODE" class="anchor"></a>
+            <article id="constant_GRANT_TYPE_AUTH_CODE" class="constant">
+                <h3 class="">GRANT_TYPE_AUTH_CODE</h3>
+                <pre class="signature">GRANT_TYPE_AUTH_CODE = &#039;authorization_code&#039;</pre>
+                <p><em>Different AUTH method.</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_GRANT_TYPE_REFRESH_TOKEN" name="constant_GRANT_TYPE_REFRESH_TOKEN" class="anchor"></a>
+            <article id="constant_GRANT_TYPE_REFRESH_TOKEN" class="constant">
+                <h3 class="">GRANT_TYPE_REFRESH_TOKEN</h3>
+                <pre class="signature">GRANT_TYPE_REFRESH_TOKEN = &#039;refresh_token&#039;</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_GRANT_TYPE_CLIENT_CREDENTIALS" name="constant_GRANT_TYPE_CLIENT_CREDENTIALS" class="anchor"></a>
+            <article id="constant_GRANT_TYPE_CLIENT_CREDENTIALS" class="constant">
+                <h3 class="">GRANT_TYPE_CLIENT_CREDENTIALS</h3>
+                <pre class="signature">GRANT_TYPE_CLIENT_CREDENTIALS = &#039;client_credentials&#039;</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_GRANT_TYPE_VALIDATE_BEARER" name="constant_GRANT_TYPE_VALIDATE_BEARER" class="anchor"></a>
+            <article id="constant_GRANT_TYPE_VALIDATE_BEARER" class="constant">
+                <h3 class="">GRANT_TYPE_VALIDATE_BEARER</h3>
+                <pre class="signature">GRANT_TYPE_VALIDATE_BEARER = &#039;urn:es.cocacola:oauth2:grant_type:validate_bearer&#039;</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_GRANT_TYPE_EXCHANGE_SESSION" name="constant_GRANT_TYPE_EXCHANGE_SESSION" class="anchor"></a>
+            <article id="constant_GRANT_TYPE_EXCHANGE_SESSION" class="constant">
+                <h3 class="">GRANT_TYPE_EXCHANGE_SESSION</h3>
+                <pre class="signature">GRANT_TYPE_EXCHANGE_SESSION = &#039;urn:es.cocacola:oauth2:grant_type:exchange_session&#039;</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_DEFAULT_EXPIRES_IN" name="constant_DEFAULT_EXPIRES_IN" class="anchor"></a>
+            <article id="constant_DEFAULT_EXPIRES_IN" class="constant">
+                <h3 class="">DEFAULT_EXPIRES_IN</h3>
+                <pre class="signature">DEFAULT_EXPIRES_IN = 900</pre>
+                <p><em>Default expiration time. In seconds.</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_SAFETY_RANGE_EXPIRES_IN" name="constant_SAFETY_RANGE_EXPIRES_IN" class="anchor"></a>
+            <article id="constant_SAFETY_RANGE_EXPIRES_IN" class="constant">
+                <h3 class="">SAFETY_RANGE_EXPIRES_IN</h3>
+                <pre class="signature">SAFETY_RANGE_EXPIRES_IN = 0.1</pre>
+                <p><em>Indicates the percentage to be subtracted from the number of
+seconds of &quot;expires_in&quot; to not be so close to the expiration date
+of the token.</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_SSO_COOKIE_NAME" name="constant_SSO_COOKIE_NAME" class="anchor"></a>
+            <article id="constant_SSO_COOKIE_NAME" class="constant">
+                <h3 class="">SSO_COOKIE_NAME</h3>
+                <pre class="signature">SSO_COOKIE_NAME = &#039;datr&#039;</pre>
+                <p><em>Cookie name for SSO (Single Sign-Out).</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                        
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_doGetClientToken" name="method_doGetClientToken" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">doGetClientToken()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">doGetClientToken(string  <span class="argument">$endpoint_url</span>) : mixed</pre>
+                <p><em>Gets a &quot;client_token&quot; for the current web client.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$endpoint_url </td>
+                                <td><p>The endpoint where &quot;client_token&quot; is requested.</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exception</dt>
+                            <dd><p>If there is an error.</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    mixed
+                                            &mdash; <p>An instance of {@link ClientToken} with data retrieved
+or FALSE.</p>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.OAuth.html"><div class="path-wrapper">\Genetsis\core\OAuth</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_storeToken" name="method_storeToken" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">storeToken()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">storeToken(\Genetsis\core\StoredToken  <span class="argument">$token</span>) </pre>
+                <p><em>Stores a token in a cookie</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/Genetsis.core.StoredToken.html">\Genetsis\core\StoredToken</a></td>
+                                <td>$token </td>
+                                <td><p>An object with token data to be stored.</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exception</dt>
+                            <dd></dd>
+                                                                    </dl>
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.OAuth.html"><div class="path-wrapper">\Genetsis\core\OAuth</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_doGetAccessToken" name="method_doGetAccessToken" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">doGetAccessToken()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">doGetAccessToken(string  <span class="argument">$endpoint_url</span>, string  <span class="argument">$code</span>, string  <span class="argument">$redirect_url</span>, string  <span class="argument">$scope</span>) : mixed</pre>
+                <p><em>Gets an &quot;access_token&quot; for the current web client.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$endpoint_url </td>
+                                <td><p>The endpoint where &quot;access_token&quot; is requested.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$code </td>
+                                <td><p>The authorization code returned by DruID.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$redirect_url </td>
+                                <td><p>Where the user will be redirected.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$scope </td>
+                                <td><p>scope of the action.</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exception</dt>
+                            <dd><p>If there is an error.</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    mixed
+                                            &mdash; <p>An instance of {@link AccessToken} with data retrieved
+or FALSE.</p>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.OAuth.html"><div class="path-wrapper">\Genetsis\core\OAuth</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_doRefreshToken" name="method_doRefreshToken" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">doRefreshToken()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">doRefreshToken(string  <span class="argument">$endpoint_url</span>) : boolean</pre>
+                <p><em>Updates tokens.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$endpoint_url </td>
+                                <td><p>The endpoint where the request will be sent.</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exception</dt>
+                            <dd><p>If there is an error.</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>TRUE if the tokens have been updated or FALSE
+otherwise.</p>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.OAuth.html"><div class="path-wrapper">\Genetsis\core\OAuth</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_doValidateBearer" name="method_doValidateBearer" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">doValidateBearer()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">doValidateBearer(string  <span class="argument">$endpoint_url</span>) : \Genetsis\core\LoginStatus</pre>
+                <p><em>Checks if user is logged.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$endpoint_url </td>
+                                <td><p>The endpoint where the request will be sent.</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exception</dt>
+                            <dd><p>If there is an error.</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Genetsis.core.LoginStatus.html">\Genetsis\core\LoginStatus</a>
+                                            &mdash; <p>An object with user status.</p>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.OAuth.html"><div class="path-wrapper">\Genetsis\core\OAuth</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_doExchangeSession" name="method_doExchangeSession" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">doExchangeSession()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">doExchangeSession(string  <span class="argument">$endpoint_url</span>, string  <span class="argument">$cookie_value</span>) : mixed</pre>
+                <p><em>Checks if user is logged by Exchange Session (SSO)</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$endpoint_url </td>
+                                <td><p>The endpoint where the request will be sent.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$cookie_value </td>
+                                <td><p>The content of the cookie that stores the SSO.</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exception</dt>
+                            <dd><p>If there is an error.</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    mixed
+                                            &mdash; <p>An instance of {@link AccessToken} if its connected or
+NULL if not.</p>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.OAuth.html"><div class="path-wrapper">\Genetsis\core\OAuth</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_doLogout" name="method_doLogout" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">doLogout()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">doLogout(string  <span class="argument">$endpoint_url</span>) : void</pre>
+                <p><em>Performs revocation process. Removes all tokens from that user.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$endpoint_url </td>
+                                <td><p>The endpoint where the request will be sent.</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exception</dt>
+                            <dd><p>If there is an error.</p></dd>
+                                                                    </dl>
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.OAuth.html"><div class="path-wrapper">\Genetsis\core\OAuth</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_deleteStoredToken" name="method_deleteStoredToken" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">deleteStoredToken()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">deleteStoredToken(  <span class="argument">$name</span>) : void</pre>
+                <p><em>Removes a specific token.</em></p>
+                <p>It will removed from SESSION and COOKIE.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$name </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.OAuth.html"><div class="path-wrapper">\Genetsis\core\OAuth</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_hasToken" name="method_hasToken" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">hasToken()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">hasToken(string  <span class="argument">$name</span>) : boolean</pre>
+                <p><em>Checks if we have a specific token.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$name </td>
+                                <td><p>The token we want to check. Are defined in {@link iTokenTypes}</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>TRUE if exists or FALSE otherwise.</p>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.OAuth.html"><div class="path-wrapper">\Genetsis\core\OAuth</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getStoredToken" name="method_getStoredToken" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getStoredToken()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getStoredToken(string  <span class="argument">$name</span>) : boolean|\Genetsis\core\AccessToken|\Genetsis\core\ClientToken|\Genetsis\core\RefreshToken|mixed|string</pre>
+                <p><em>Returns a specific stored token.</em></p>
+                <p>SESSION has more priority than COOKIE.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$name </td>
+                                <td><p>The token we want to recover. Are defined in {@link iTokenTypes}</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exception</dt>
+                            <dd></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    boolean|<a href="../classes/Genetsis.core.AccessToken.html">\Genetsis\core\AccessToken</a>|<a href="../classes/Genetsis.core.ClientToken.html">\Genetsis\core\ClientToken</a>|<a href="../classes/Genetsis.core.RefreshToken.html">\Genetsis\core\RefreshToken</a>|mixed|string
+                                            &mdash; <p>An instance of {@link StoredToken} or FALSE if we
+can't recover it.</p>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.OAuth.html"><div class="path-wrapper">\Genetsis\core\OAuth</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_doCheckUserCompleted" name="method_doCheckUserCompleted" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">doCheckUserCompleted()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">doCheckUserCompleted(string  <span class="argument">$endpoint_url</span>, string  <span class="argument">$scope</span>) : boolean</pre>
+                <p><em>Checks if the user has completed all required data for the specified
+section (scope).</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$endpoint_url </td>
+                                <td><p>The endpoint where the request will be sent.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$scope </td>
+                                <td><p>Section-key identifier of the web client. The
+section-key is located in &quot;oauthconf.xml&quot; file.</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exception</dt>
+                            <dd><p>If there is an error.</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>TRUE if the user has completed all required data or
+FALSE if not.</p>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.OAuth.html"><div class="path-wrapper">\Genetsis\core\OAuth</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_doCheckUserNeedAcceptTerms" name="method_doCheckUserNeedAcceptTerms" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">doCheckUserNeedAcceptTerms()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">doCheckUserNeedAcceptTerms(string  <span class="argument">$endpoint_url</span>, string  <span class="argument">$scope</span>) : boolean</pre>
+                <p><em>Checks if the user has accepted terms and conditions for the specified section (scope).</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$endpoint_url </td>
+                                <td><p>The endpoint where the request will be sent.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$scope </td>
+                                <td><p>Section-key identifier of the web client. The section-key is located in &quot;oauthconf.xml&quot; file.</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exception</dt>
+                            <dd><p>If there is an error.</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>TRUE if the user need to accept the terms and conditions (not accepted yet) or
+FALSE if it has already accepted them (no action required).</p>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.OAuth.html"><div class="path-wrapper">\Genetsis\core\OAuth</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_checkErrors" name="method_checkErrors" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">checkErrors()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">checkErrors(array  <span class="argument">$response</span>) : void</pre>
+                <p><em>Checks if there are errors in the response.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$response </td>
+                                <td><p>Where we will search errors.</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exception</dt>
+                            <dd><p>If there is an error in the response.</p></dd>
+                                                                    </dl>
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.core.OAuth.html"><div class="path-wrapper">\Genetsis\core\OAuth</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">OAuth.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/core/OAuth.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/Genetsis.html">\Genetsis</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on July 25th, 2018 at 10:58.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

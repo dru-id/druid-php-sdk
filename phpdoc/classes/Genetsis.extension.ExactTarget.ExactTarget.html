@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src').replace( /\\/g, '/');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/Genetsis.html">\Genetsis</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">440</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">7</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">10</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1303357841"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1303357841" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-237045263"></a>
+                                <a href="../namespaces/Genetsis.html" style="margin-left: 30px; padding-left: 0">Genetsis</a>
+            </div>
+            <div id="namespace-237045263" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1061910047"></a>
+                                <a href="../namespaces/Genetsis.core.html" style="margin-left: 30px; padding-left: 0">core</a>
+            </div>
+            <div id="namespace-1061910047" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-922544687"></a>
+                                <a href="../namespaces/Genetsis.core.user.html" style="margin-left: 30px; padding-left: 0">user</a>
+            </div>
+            <div id="namespace-922544687" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.core.user.Brand.html">Brand</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Genetsis.core.iTokenTypes.html">iTokenTypes</a></li>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.core.AccessToken.html">AccessToken</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.ClientToken.html">ClientToken</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.Encryption.html">Encryption</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.FileCache.html">FileCache</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.InvalidGrantException.html">InvalidGrantException</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.LogConfig.html">LogConfig</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.LoginStatus.html">LoginStatus</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.LoginStatusType.html">LoginStatusType</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.OAuth.html">OAuth</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.OAuthConfig.html">OAuthConfig</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.OauthTemplate.html">OauthTemplate</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.RefreshToken.html">RefreshToken</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.Request.html">Request</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.StoredToken.html">StoredToken</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.core.Things.html">Things</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-755065388"></a>
+                                <a href="../namespaces/Genetsis.extension.html" style="margin-left: 30px; padding-left: 0">extension</a>
+            </div>
+            <div id="namespace-755065388" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-773207715"></a>
+                                <a href="../namespaces/Genetsis.extension.ExactTarget.html" style="margin-left: 30px; padding-left: 0">ExactTarget</a>
+            </div>
+            <div id="namespace-773207715" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html">ExactTarget</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-182020751"></a>
+                                <a href="../namespaces/Genetsis.Extension.html" style="margin-left: 30px; padding-left: 0">Extension</a>
+            </div>
+            <div id="namespace-182020751" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.Extension.ActivityType.html">ActivityType</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Genetsis.AutoloaderClass.html">AutoloaderClass</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.Config.html">Config</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.Identity.html">Identity</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.URLBuilder.html">URLBuilder</a></li>
+                                                    <li class="class"><a href="../classes/Genetsis.UserApi.html">UserApi</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/LoggerConfigurationAdapter.html">LoggerConfigurationAdapter</a></li>
+                                                    <li class="interface"><a href="../classes/LoggerConfigurator.html">LoggerConfigurator</a></li>
+                                                    <li class="interface"><a href="../classes/LoggerRenderer.html">LoggerRenderer</a></li>
+                                                                                                    <li class="class"><a href="../classes/Logger.html">Logger</a></li>
+                                                    <li class="class"><a href="../classes/Logger.html">Logger</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppender.html">LoggerAppender</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderConsole.html">LoggerAppenderConsole</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderDailyFile.html">LoggerAppenderDailyFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderDailyRollingFile.html">LoggerAppenderDailyRollingFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderEcho.html">LoggerAppenderEcho</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderFile.html">LoggerAppenderFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderFirePHP.html">LoggerAppenderFirePHP</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderMail.html">LoggerAppenderMail</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderMailEvent.html">LoggerAppenderMailEvent</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderMongoDB.html">LoggerAppenderMongoDB</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderNull.html">LoggerAppenderNull</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderPDO.html">LoggerAppenderPDO</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderPhp.html">LoggerAppenderPhp</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderPool.html">LoggerAppenderPool</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderRollingFile.html">LoggerAppenderRollingFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderSocket.html">LoggerAppenderSocket</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAppenderSyslog.html">LoggerAppenderSyslog</a></li>
+                                                    <li class="class"><a href="../classes/LoggerAutoloader.html">LoggerAutoloader</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfigurable.html">LoggerConfigurable</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfigurationAdapterINI.html">LoggerConfigurationAdapterINI</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfigurationAdapterPHP.html">LoggerConfigurationAdapterPHP</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfigurationAdapterXML.html">LoggerConfigurationAdapterXML</a></li>
+                                                    <li class="class"><a href="../classes/LoggerConfiguratorDefault.html">LoggerConfiguratorDefault</a></li>
+                                                    <li class="class"><a href="../classes/LoggerException.html">LoggerException</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilter.html">LoggerFilter</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilterDenyAll.html">LoggerFilterDenyAll</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilterLevelMatch.html">LoggerFilterLevelMatch</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilterLevelRange.html">LoggerFilterLevelRange</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFilterStringMatch.html">LoggerFilterStringMatch</a></li>
+                                                    <li class="class"><a href="../classes/LoggerFormattingInfo.html">LoggerFormattingInfo</a></li>
+                                                    <li class="class"><a href="../classes/LoggerHierarchy.html">LoggerHierarchy</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayout.html">LoggerLayout</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutHtml.html">LoggerLayoutHtml</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutPattern.html">LoggerLayoutPattern</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutSerialized.html">LoggerLayoutSerialized</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutSimple.html">LoggerLayoutSimple</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutTTCC.html">LoggerLayoutTTCC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLayoutXml.html">LoggerLayoutXml</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLevel.html">LoggerLevel</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLocationInfo.html">LoggerLocationInfo</a></li>
+                                                    <li class="class"><a href="../classes/LoggerLoggingEvent.html">LoggerLoggingEvent</a></li>
+                                                    <li class="class"><a href="../classes/LoggerMDC.html">LoggerMDC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerNDC.html">LoggerNDC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerOptionConverter.html">LoggerOptionConverter</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverter.html">LoggerPatternConverter</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterClass.html">LoggerPatternConverterClass</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterCookie.html">LoggerPatternConverterCookie</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterDate.html">LoggerPatternConverterDate</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterEnvironment.html">LoggerPatternConverterEnvironment</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterFile.html">LoggerPatternConverterFile</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLevel.html">LoggerPatternConverterLevel</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLine.html">LoggerPatternConverterLine</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLiteral.html">LoggerPatternConverterLiteral</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLocation.html">LoggerPatternConverterLocation</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterLogger.html">LoggerPatternConverterLogger</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterMDC.html">LoggerPatternConverterMDC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterMessage.html">LoggerPatternConverterMessage</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterMethod.html">LoggerPatternConverterMethod</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterNDC.html">LoggerPatternConverterNDC</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterNewLine.html">LoggerPatternConverterNewLine</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterProcess.html">LoggerPatternConverterProcess</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterRelative.html">LoggerPatternConverterRelative</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterRequest.html">LoggerPatternConverterRequest</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterServer.html">LoggerPatternConverterServer</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterSession.html">LoggerPatternConverterSession</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterSessionID.html">LoggerPatternConverterSessionID</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterSuperglobal.html">LoggerPatternConverterSuperglobal</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternConverterThrowable.html">LoggerPatternConverterThrowable</a></li>
+                                                    <li class="class"><a href="../classes/LoggerPatternParser.html">LoggerPatternParser</a></li>
+                                                    <li class="class"><a href="../classes/LoggerReflectionUtils.html">LoggerReflectionUtils</a></li>
+                                                    <li class="class"><a href="../classes/LoggerRendererDefault.html">LoggerRendererDefault</a></li>
+                                                    <li class="class"><a href="../classes/LoggerRendererException.html">LoggerRendererException</a></li>
+                                                    <li class="class"><a href="../classes/LoggerRendererMap.html">LoggerRendererMap</a></li>
+                                                    <li class="class"><a href="../classes/LoggerRoot.html">LoggerRoot</a></li>
+                                                    <li class="class"><a href="../classes/LoggerThrowableInformation.html">LoggerThrowableInformation</a></li>
+                                                    <li class="class"><a href="../classes/LoggerUtils.html">LoggerUtils</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/Genetsis.extension.ExactTarget.html">\Genetsis\extension\ExactTarget</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\Genetsis\extension\ExactTarget</small>ExactTarget</h1>
+                    <p><em>Class ExactTarget
+Simple ExacTarget wrapper. This wrapper uses Genetsis\Identity library. eg Brand and activity name are obtained from there</em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#method_init" class="">init()</a><br />
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#method_setProductionMode" class="">setProductionMode()</a><br />
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#method_setActivityIdPrefix" class="">setActivityIdPrefix()</a><br />
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#method_setActivityType" class="">setActivityType()</a><br />
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#method_activity" class="">activity()</a><br />
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#method_evaluate" class="">evaluate()</a><br />
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#method_participate" class="">participate()</a><br />
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#method_poll" class="">poll()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No public properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <em>No protected methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#property_et_client" class="">$et_client</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#method_check" class="">check()</a><br />
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#method_checkResult" class="">checkResult()</a><br />
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#method_buildActivityDER" class="">buildActivityDER()</a><br />
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#method_buildParticipationDER" class="">buildParticipationDER()</a><br />
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#method_buildEvaluationDER" class="">buildEvaluationDER()</a><br />
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#method_buildQuestionaireDER" class="">buildQuestionaireDER()</a><br />
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#method_getTable" class="">getTable()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#property_DEV_SUFFIX" class="">$DEV_SUFFIX</a><br />
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#property_devMode" class="">$devMode</a><br />
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#property_MASTER_TABLE" class="">$MASTER_TABLE</a><br />
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#property_PARTICIPATION_TABLE" class="">$PARTICIPATION_TABLE</a><br />
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#property_EVALUATION_TABLE" class="">$EVALUATION_TABLE</a><br />
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#property_QUESTIONAIRE_TABLE" class="">$QUESTIONAIRE_TABLE</a><br />
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#property_activityIdPrefix" class="">$activityIdPrefix</a><br />
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#property_activityType" class="">$activityType</a><br />
+                                                                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html#property_activityId" class="">$activityId</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/extension.ExactTarget.ExactTarget.html"><div class="path-wrapper">extension/ExactTarget/ExactTarget.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">extension\ExactTarget</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                    <div class="namespace-wrapper">\Genetsis\extension\ExactTarget\ExactTarget</div>
+                            </dd>
+
+                        
+                        
+                        
+                                                
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr><td colspan="2"><em>None found</em></td></tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_et_client" name="property_et_client" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$et_client</h3>
+                <pre class="signature">$et_client : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_DEV_SUFFIX" name="property_DEV_SUFFIX" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$DEV_SUFFIX</h3>
+                <pre class="signature">$DEV_SUFFIX : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_devMode" name="property_devMode" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$devMode</h3>
+                <pre class="signature">$devMode : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_MASTER_TABLE" name="property_MASTER_TABLE" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$MASTER_TABLE</h3>
+                <pre class="signature">$MASTER_TABLE : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_PARTICIPATION_TABLE" name="property_PARTICIPATION_TABLE" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$PARTICIPATION_TABLE</h3>
+                <pre class="signature">$PARTICIPATION_TABLE : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_EVALUATION_TABLE" name="property_EVALUATION_TABLE" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$EVALUATION_TABLE</h3>
+                <pre class="signature">$EVALUATION_TABLE : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_QUESTIONAIRE_TABLE" name="property_QUESTIONAIRE_TABLE" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$QUESTIONAIRE_TABLE</h3>
+                <pre class="signature">$QUESTIONAIRE_TABLE : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_activityIdPrefix" name="property_activityIdPrefix" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$activityIdPrefix</h3>
+                <pre class="signature">$activityIdPrefix : string</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_activityType" name="property_activityType" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$activityType</h3>
+                <pre class="signature">$activityType : string</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_activityId" name="property_activityId" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$activityId</h3>
+                <pre class="signature">$activityId : string</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_init" name="method_init" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">init()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">init(array  <span class="argument">$params</span>) </pre>
+                <p><em>Initalize library</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$params </td>
+                                <td><p>Initialization params needed for underlying ET_Client class</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html"><div class="path-wrapper">\Genetsis\extension\ExactTarget\ExactTarget</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setProductionMode" name="method_setProductionMode" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setProductionMode()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setProductionMode(boolean  <span class="argument">$productionMode = true</span>) </pre>
+                <p><em>Set production mode. If you don not call thuis method, by default, development mode</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$productionMode </td>
+                                <td><p>if true, all operation will be done in production tables from ET</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html"><div class="path-wrapper">\Genetsis\extension\ExactTarget\ExactTarget</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setActivityIdPrefix" name="method_setActivityIdPrefix" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setActivityIdPrefix()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setActivityIdPrefix(array  <span class="argument">$activityIdPrefix</span>) </pre>
+                <p><em>add ActivityId builder for each call</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$activityIdPrefix </td>
+                                <td><p>array with data. Generally [activityStartDate, brand, activityType, activityName]</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html"><div class="path-wrapper">\Genetsis\extension\ExactTarget\ExactTarget</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setActivityType" name="method_setActivityType" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setActivityType()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setActivityType(string  <span class="argument">$activityType</span>) : \Genetsis\extension\ExactTarget\ExactTarget</pre>
+                <p><em>add ActivityId builder for each call</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$activityType </td>
+                                <td><p>activity type</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    <a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html">\Genetsis\extension\ExactTarget\ExactTarget</a>
+                                            &mdash; <p>self instance</p>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html"><div class="path-wrapper">\Genetsis\extension\ExactTarget\ExactTarget</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_activity" name="method_activity" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">activity()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">activity(string  <span class="argument">$city</span>, string  <span class="argument">$postalCode</span>, string  <span class="argument">$contactPerson</span>, string  <span class="argument">$venueName</span>, string|null  <span class="argument">$address</span>, string  <span class="argument">$contactEmail</span>) </pre>
+                <p><em>Add an activity to ET</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$city </td>
+                                <td><p>city where activity happened</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$postalCode </td>
+                                <td><p>postal code where activity happened</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$contactPerson </td>
+                                <td><p>contact name of person responsible of the activity</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$venueName </td>
+                                <td><p>name of physical site where activity happened</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string|null</td>
+                                <td>$address </td>
+                                <td><p>addrees where activity happened</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$contactEmail </td>
+                                <td><p>email of person responsible of the activity</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html"><div class="path-wrapper">\Genetsis\extension\ExactTarget\ExactTarget</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_evaluate" name="method_evaluate" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">evaluate()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">evaluate(string  <span class="argument">$capacity</span>, string  <span class="argument">$womenpc</span>, string  <span class="argument">$menpc</span>, string  <span class="argument">$afinity</span>, string  <span class="argument">$priceBottle</span>, string  <span class="argument">$boughBottles</span>, string  <span class="argument">$tastings</span>, string  <span class="argument">$bottlesLeft</span>, string  <span class="argument">$partyValuation</span>, string  <span class="argument">$material</span>, string  <span class="argument">$numCapacity</span>, \DateTime  <span class="argument">$startedOn</span>, \DateTime  <span class="argument">$finishedOn</span>, string  <span class="argument">$observations = &#039;&#039;</span>) </pre>
+                <p><em>Add evaluation of a party to ET</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$capacity </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$womenpc </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$menpc </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$afinity </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$priceBottle </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$boughBottles </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$tastings </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$bottlesLeft </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$partyValuation </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$material </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$numCapacity </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>\DateTime</td>
+                                <td>$startedOn </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>\DateTime</td>
+                                <td>$finishedOn </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$observations </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html"><div class="path-wrapper">\Genetsis\extension\ExactTarget\ExactTarget</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_participate" name="method_participate" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">participate()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">participate(string  <span class="argument">$url</span>, string  <span class="argument">$thumbnail</span>, string  <span class="argument">$scope</span>, string  <span class="argument">$oid</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$url </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$thumbnail </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$scope </td>
+                                <td><p>Scope of the participation - Field defining the type of participation</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$oid </td>
+                                <td><p>objectId of user. if this parameter is not defined or is null, logged user will be used</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html"><div class="path-wrapper">\Genetsis\extension\ExactTarget\ExactTarget</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_poll" name="method_poll" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">poll()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">poll(String  <span class="argument">$answer_id</span>, string  <span class="argument">$consumer_email = null</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$answer_id </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$consumer_email </td>
+                                <td><p>email of user. if this parameter is not defined or is null, logged user will be used</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html"><div class="path-wrapper">\Genetsis\extension\ExactTarget\ExactTarget</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_check" name="method_check" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">check()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">check() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html"><div class="path-wrapper">\Genetsis\extension\ExactTarget\ExactTarget</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_checkResult" name="method_checkResult" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">checkResult()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">checkResult(  <span class="argument">$result</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$result </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html"><div class="path-wrapper">\Genetsis\extension\ExactTarget\ExactTarget</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_buildActivityDER" name="method_buildActivityDER" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">buildActivityDER()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">buildActivityDER(array  <span class="argument">$params</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$params </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html"><div class="path-wrapper">\Genetsis\extension\ExactTarget\ExactTarget</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_buildParticipationDER" name="method_buildParticipationDER" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">buildParticipationDER()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">buildParticipationDER(array  <span class="argument">$params</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$params </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html"><div class="path-wrapper">\Genetsis\extension\ExactTarget\ExactTarget</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_buildEvaluationDER" name="method_buildEvaluationDER" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">buildEvaluationDER()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">buildEvaluationDER(array  <span class="argument">$params</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$params </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html"><div class="path-wrapper">\Genetsis\extension\ExactTarget\ExactTarget</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_buildQuestionaireDER" name="method_buildQuestionaireDER" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">buildQuestionaireDER()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">buildQuestionaireDER(array  <span class="argument">$params</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$params </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html"><div class="path-wrapper">\Genetsis\extension\ExactTarget\ExactTarget</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getTable" name="method_getTable" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">getTable()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getTable(  <span class="argument">$tblName</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$tblName </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Genetsis.extension.ExactTarget.ExactTarget.html"><div class="path-wrapper">\Genetsis\extension\ExactTarget\ExactTarget</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">ExactTarget.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/extension/ExactTarget/ExactTarget.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/Genetsis.html">\Genetsis</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on July 25th, 2018 at 10:58.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>
