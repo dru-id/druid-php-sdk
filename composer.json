@@ -1,6 +1,6 @@
 {
   "name": "druid/php-sdk",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "DRUID SDK for PHP",
   "license": "Apache-2.0",
   "minimum-stability": "dev",
@@ -21,7 +21,6 @@
   "require": {
     "lib-curl": "*",
     "ext-dom": "*",
-    "exacttarget/fuel-sdk-php": "v0.9"
   },
   "config": {
     "vendor-dir": "src/main/php/lib/vendor"
