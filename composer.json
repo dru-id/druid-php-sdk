@@ -20,7 +20,7 @@
   ],
   "require": {
     "lib-curl": "*",
-    "ext-dom": "*",
+    "ext-dom": "*"
   },
   "config": {
     "vendor-dir": "src/main/php/lib/vendor"
