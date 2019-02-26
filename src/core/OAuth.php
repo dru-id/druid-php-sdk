@@ -382,7 +382,7 @@ class OAuth
             Request::execute($endpoint_url, $params, Request::HTTP_POST, Request::SECURED);
 
             unset($_COOKIE[self::SSO_COOKIE_NAME]);
-            setcookie(self::SSO_COOKIE_NAME, null, -1,null,'.cocacola.es');
+            setcookie(self::SSO_COOKIE_NAME, null, -1);
 
             self::deleteStoredToken(iTokenTypes::ACCESS_TOKEN);
             self::deleteStoredToken(iTokenTypes::REFRESH_TOKEN);
