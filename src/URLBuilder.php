@@ -88,7 +88,7 @@ class URLBuilder
         unset($params);
 
         return self::buildEditAccountUrl(
-            OAuthConfig::getEndpointUrl('edit_account_endpoint'),
+            OAuthConfig::getEndpointUrl('edit_account_endpoint'),getUrlLogin
             $next_url,
             $cancel_url,
             $scope,
@@ -281,7 +281,7 @@ class URLBuilder
             }
 
             if ($social != null) {
-                $params['ck_auth_provider'] = $social;
+                $params['gid_auth_provider'] = $social;
             }
 
             if (!empty($prefill)) {
