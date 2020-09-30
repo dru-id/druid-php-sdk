@@ -88,7 +88,7 @@ class URLBuilder
         unset($params);
 
         return self::buildEditAccountUrl(
-            OAuthConfig::getEndpointUrl('edit_account_endpoint'),getUrlLogin
+            OAuthConfig::getEndpointUrl('edit_account_endpoint'),
             $next_url,
             $cancel_url,
             $scope,
