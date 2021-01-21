@@ -111,6 +111,9 @@ class URLBuilder
         $params = array();
         $params['client_id'] = OAuthConfig::getClientid();
         $params['redirect_uri'] = OAuthConfig::getRedirectUrl('postEditAccount', $urlCallback);
+        if (!is_null($state)) {
+            $params ['state'] = $state;
+        }
         $next_url = OAuthConfig::getEndpointUrl('next_url') . '?' . http_build_query($params);
         $cancel_url = OAuthConfig::getEndpointUrl('cancel_url') . '?' . http_build_query($params);
         unset($params);
@@ -119,9 +122,7 @@ class URLBuilder
             OAuthConfig::getEndpointUrl('complete_account_endpoint'),
             $next_url,
             $cancel_url,
-            $scope,
-            $state
-        );
+            $scope);
     }
 
     /**
@@ -409,7 +410,7 @@ class URLBuilder
      * @return string The URL generated.
      * @throws \Exception If there is an error.
      */
-    private static function buildCompleteAccountUrl($endpoint_url, $next_url, $cancel_url, $scope, $state = null)
+    private static function buildCompleteAccountUrl($endpoint_url, $next_url, $cancel_url, $scope)
     {
         try {
             if (self::checkParam($endpoint_url)) {
@@ -423,9 +424,9 @@ class URLBuilder
             }
             $access_token = Identity::getThings()->getAccessToken();
 
-            if (is_null($access_token)) {
-                throw new Exception ('Access token is empty');
-            }
+            //if (is_null($access_token)) {
+            //    throw new Exception ('Access token is empty');
+            //}
             if (self::checkParam($scope)) {
                 throw new Exception ('Scope section is empty');
             }
@@ -434,13 +435,11 @@ class URLBuilder
             $params = array();
             $params ['next'] = $next_url;
             $params ['cancel_url'] = $cancel_url;
-            $params ['oauth_token'] = $access_token->getValue();
+            if (!is_null($access_token)) {
+                $params ['oauth_token'] = $access_token->getValue();
+            }
             unset ($access_token);
             $params['scope'] = $scope;
-
-            if (!is_null($state)) {
-                $params ['state'] = $state;
-            }
 
             return $endpoint_url . '?' . http_build_query($params, null, '&');
         } catch (Exception $e) {
