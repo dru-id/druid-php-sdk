@@ -18,6 +18,9 @@
       "homepage": "https://github.com/dru-id/druid-php-sdk/graphs/contributors"
     }
   ],
+  "require-dev": {
+    "phpunit/phpunit": "9.*"
+  },
   "require": {
     "lib-curl": "*",
     "ext-dom": "*"
@@ -27,7 +30,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Genetsis\\": "src"
+      "Genetsis\\": "src",
+      "Genetsis\\Tests\\" : "test/"
     }
   },
   "scripts": {
