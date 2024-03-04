@@ -42,6 +42,7 @@ class OAuthConfig
 
         $xmlObj = new DOMDocument();
         $xmlObj->load($file);
+        self::$config = array();
 
         try {
 

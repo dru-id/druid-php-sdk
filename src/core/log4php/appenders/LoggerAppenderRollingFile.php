@@ -207,7 +207,7 @@ class LoggerAppenderRollingFile extends LoggerAppenderFile {
 		if(flock($this->fp, LOCK_EX)) {
 			
 			// Write to locked file
-			if(fwrite($this->fp, $string) === false) {
+			if(fwrite($this->fp, (string) $string) === false) {
 				$this->warn("Failed writing to file. Closing appender.");
 				$this->closed = true;
 			}

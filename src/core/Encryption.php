@@ -49,11 +49,6 @@ class Encryption
         );
 
         return trim($this->safe_b64encode($iv . $ciphertext));
-
-        /*$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
-        $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
-        $crypttext = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $this->_skey, $value, MCRYPT_MODE_ECB, $iv);
-        return trim($this->safe_b64encode($crypttext)); */
     }
 
     /**
@@ -93,11 +88,6 @@ class Encryption
                 $iv
             )
         );
-
-        /*$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
-        $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
-        $decrypttext = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $this->_skey, $this->safe_b64decode($value), MCRYPT_MODE_ECB, $iv);
-        return trim($decrypttext); */
     }
 
     /**

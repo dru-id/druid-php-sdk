@@ -102,12 +102,12 @@ class Request
                     $curl_options[CURLOPT_POSTFIELDS] = json_encode($parameters);
                 } // No Json format
                 else {
-                    $url .= '?' . http_build_query($parameters, null, '&');
+                    $url .= '?' . http_build_query($parameters, "", '&');
                 }
                 break;
             case self::HTTP_GET:
                 if (!empty($parameters)) {
-                    $url .= '?' . http_build_query($parameters, null, '&');
+                    $url .= '?' . http_build_query($parameters, "", '&');
                 }
                 break;
             default:

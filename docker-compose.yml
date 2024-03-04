@@ -1,0 +1,8 @@
+version: "3.9"
+services:
+  web:
+    image: druidcom/sdk-v1.0.6_php8.1_apache
+    ports:
+      - "80:80"
+    volumes:
+      - ./src/main/php:/var/www

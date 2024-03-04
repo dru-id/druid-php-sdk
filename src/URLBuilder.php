@@ -293,7 +293,7 @@ class URLBuilder
                 $params['state'] = $state;
             }
 
-            return $endpoint_url . '?' . http_build_query($params, null, '&');
+            return $endpoint_url . '?' . http_build_query($params, "", '&');
         } catch (Exception $e) {
             Identity::getLogger()->debug('Error [' . __FUNCTION__ . '] - ' . $e->getMessage());
         }
@@ -346,7 +346,7 @@ class URLBuilder
             }
             unset ($access_token);
 
-            return $endpoint_url . '?' . http_build_query($params, null, '&');
+            return $endpoint_url . '?' . http_build_query($params, "", '&');
         } catch (Exception $e) {
             Identity::getLogger()->debug('Error [' . __FUNCTION__ . '] - ' . $e->getMessage());
         }
@@ -389,7 +389,7 @@ class URLBuilder
                 $params ['state'] = $state;
             }
 
-            return $url . '&' . http_build_query($params, null, '&');
+            return $url . '&' . http_build_query($params, "", '&');
         } catch (Exception $e) {
             Identity::getLogger()->debug('Error [' . __FUNCTION__ . '] - ' . $e->getMessage());
         }
@@ -441,7 +441,7 @@ class URLBuilder
             unset ($access_token);
             $params['scope'] = $scope;
 
-            return $endpoint_url . '?' . http_build_query($params, null, '&');
+            return $endpoint_url . '?' . http_build_query($params, "", '&');
         } catch (Exception $e) {
             Identity::getLogger()->debug('Error [' . __FUNCTION__ . '] - ' . $e->getMessage());
         }
