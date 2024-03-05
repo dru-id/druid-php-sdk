@@ -188,6 +188,22 @@ class URLBuilder
         return json_encode($user);
     }
 
+    /**
+     *
+     *  Builds default URL to authorization process.
+     *
+     * @param string $endpoint_url The endpoint. Normally the 'authorization_endpoint' of
+     * *     OAuth server.
+     * * @param string $redirect_url Where the user will be redirected, even on success or
+     * *     not.
+     * * @param string $scope Section-key identifier of the web client. The
+     * *     section-key is located in "oauthconf.xml" file.
+     * * @param string $social Social - to force login with social network. Optional. Values 'facebook', 'twitter'
+     * * @param array $prefill
+     * * @param string|null $state
+     * @return string|void The URL generated.
+     * @throws \Exception If there is an error.
+     */
     private static function buildAuthorizationUrl($endpoint_url, $redirect_url, $method = null, $response_type = null,
                                                   $scope = null, $social = null, array $prefill = array(), $state = null)
     {
