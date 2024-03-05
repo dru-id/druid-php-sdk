@@ -1,6 +1,6 @@
 {
   "name": "druid/php-sdk",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "DRUID SDK for PHP",
   "license": "Apache-2.0",
   "minimum-stability": "dev",
