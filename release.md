@@ -6,4 +6,4 @@ docker run -it --rm -v $(pwd):/data phpdoc/phpdoc --cache-folder /tmp -d src -t 
 
 ##release and publish
 
-TODO
+Manually generate via Github -> 'Draft new release'

@@ -201,7 +201,7 @@ class OAuthConfig
      */
     public static function getClientId()
     {
-        return (isset(self::$config['clientid']) ? self::$config['clientid'] : false);
+        return self::$config['clientid'] ?? false;
     }
 
     /**
@@ -211,7 +211,7 @@ class OAuthConfig
      */
     public static function getClientSecret()
     {
-        return (isset(self::$config['clientsecret']) ? self::$config['clientsecret'] : false);
+        return self::$config['clientsecret'] ?? false;
     }
 
     /**
@@ -221,7 +221,7 @@ class OAuthConfig
      */
     public static function getAppName()
     {
-        return (isset(self::$config['name']) ? self::$config['name'] : false);
+        return self::$config['name'] ?? false;
     }
 
     /**
@@ -231,7 +231,7 @@ class OAuthConfig
      */
     public static function getBrand()
     {
-        return (isset(self::$config['brand']) ? self::$config['brand'] : false);
+        return self::$config['brand'] ?? false;
     }
 
     /**
@@ -241,7 +241,7 @@ class OAuthConfig
      */
     public static function getBrandLabel()
     {
-        return (isset(self::$config['brand-label']) ? self::$config['brand-label'] : false);
+        return self::$config['brand-label'] ?? false;
     }
 
     /**
@@ -304,7 +304,7 @@ class OAuthConfig
     public static function getEndpointUrl($type)
     {
         $type = trim((string)$type);
-        return (isset(self::$config['endpoints'][$type]) ? self::$config['endpoints'][$type] : false);
+        return self::$config['endpoints'][$type] ?? false;
     }
 
     /**
@@ -318,7 +318,7 @@ class OAuthConfig
     {
         $type = trim((string)$type);
         $verb = trim((string)$verb);
-        return (isset(self::$config['apis'][$type][$verb]) ? self::$config['apis'][$type][$verb] : false);
+        return self::$config['apis'][$type][$verb] ?? false;
     }
 
     /**
@@ -330,7 +330,7 @@ class OAuthConfig
     public static function getSection($type)
     {
         $type = trim((string)$type);
-        return (isset(self::$config['sections'][$type]) ? self::$config['sections'][$type] : false);
+        return self::$config['sections'][$type] ?? false;
     }
 
     /**
@@ -377,7 +377,7 @@ class OAuthConfig
      */
     public static function getHost()
     {
-        return (isset(self::$config['host']) ? self::$config['host'] : false);
+        return self::$config['host'] ?? false;
     }
 
 }
