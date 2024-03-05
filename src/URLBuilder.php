@@ -188,7 +188,7 @@ class URLBuilder
         return json_encode($user);
     }
 
-    private static function buildAuthorizationUrl($endpoint_url, $redirect_url, $method, $response_type = null,
+    private static function buildAuthorizationUrl($endpoint_url, $redirect_url, $method = null, $response_type = null,
                                                   $scope = null, $social = null, array $prefill = array(), $state = null)
     {
         try {
@@ -202,8 +202,11 @@ class URLBuilder
             $endpoint_url = rtrim($endpoint_url, '?');
             $params = array();
             $params['client_id'] = OAuthConfig::getClientid();
-            $params['x_method'] = $method;
             $params['redirect_uri'] = $redirect_url;
+
+            if(!empty($method)) {
+                $params['x_method'] = $method;
+            }
 
             if(!empty($response_type)) {
                 $params['response_type'] = $response_type;
@@ -249,7 +252,7 @@ class URLBuilder
     private static function buildLoginUrl($endpoint_url, $redirect_url, $scope = null,
                                           $social = null, array $prefill = array(), $state = null)
     {
-        return self::buildAuthorizationUrl($endpoint_url, $redirect_url, 'sign_up',
+        return self::buildAuthorizationUrl($endpoint_url, $redirect_url, null,
             'code', $scope, $social, $prefill, $state);
     }
 
