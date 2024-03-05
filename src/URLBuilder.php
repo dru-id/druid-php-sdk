@@ -288,7 +288,7 @@ class URLBuilder
                                            array $prefill = array(), $state = null)
     {
         return self::buildAuthorizationUrl($endpoint_url, $redirect_url, 'sign_up',
-            null, $scope, null, $prefill, $state);
+            'code', $scope, null, $prefill, $state);
     }
 
     /**
