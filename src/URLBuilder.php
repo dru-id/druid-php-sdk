@@ -270,7 +270,7 @@ class URLBuilder
     private static function buildEditAccountUrl($endpoint_url, $redirect_url, $scope = null, $state = null)
     {
         return self::buildAuthorizationUrl($endpoint_url, $redirect_url, 'edit_account',
-            null, $scope, null, array(), $state);
+            'none', $scope, null, array(), $state);
     }
 
     /**
