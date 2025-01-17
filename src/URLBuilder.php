@@ -101,21 +101,12 @@ class URLBuilder
      */
     public static function getUrlCompleteAccount($scope = null, $urlCallback = null, $state = null)
     {
-        $params = array();
-        $params['client_id'] = OAuthConfig::getClientid();
-        $params['redirect_uri'] = OAuthConfig::getRedirectUrl('postEditAccount', $urlCallback);
-        if (!is_null($state)) {
-            $params ['state'] = $state;
-        }
-        $next_url = OAuthConfig::getEndpointUrl('next_url') . '?' . http_build_query($params);
-        $cancel_url = OAuthConfig::getEndpointUrl('cancel_url') . '?' . http_build_query($params);
-        unset($params);
-
-        return self::buildCompleteAccountUrl(
-            OAuthConfig::getEndpointUrl('complete_account_endpoint'),
-            $next_url,
-            $cancel_url,
-            $scope);
+        return self::buildEditAccountUrl(
+            OAuthConfig::getEndpointUrl('authorization_endpoint'),
+            OAuthConfig::getRedirectUrl('postEditAccount', $urlCallback),
+            $scope,
+            $state
+        );
     }
 
     /**
@@ -325,41 +316,10 @@ class URLBuilder
      * @return string The URL generated.
      * @throws \Exception If there is an error.
      */
-    private static function buildCompleteAccountUrl($endpoint_url, $next_url, $cancel_url, $scope)
+    private static function buildCompleteAccountUrl($endpoint_url, $redirect_url, $scope = null, $state = null)
     {
-        try {
-            if (self::checkParam($endpoint_url)) {
-                throw new Exception ('Endpoint URL is empty');
-            }
-            if (self::checkParam($next_url)) {
-                throw new Exception ('Next URL is empty');
-            }
-            if (self::checkParam($cancel_url)) {
-                throw new Exception ('Cancel URL is empty');
-            }
-            $access_token = Identity::getThings()->getAccessToken();
-
-            //if (is_null($access_token)) {
-            //    throw new Exception ('Access token is empty');
-            //}
-            if (self::checkParam($scope)) {
-                throw new Exception ('Scope section is empty');
-            }
-
-            $endpoint_url = rtrim($endpoint_url, '?');
-            $params = array();
-            $params ['next'] = $next_url;
-            $params ['cancel_url'] = $cancel_url;
-            if (!is_null($access_token)) {
-                $params ['oauth_token'] = $access_token->getValue();
-            }
-            unset ($access_token);
-            $params['scope'] = $scope;
-
-            return $endpoint_url . '?' . http_build_query($params, "", '&');
-        } catch (Exception $e) {
-            Identity::getLogger()->debug('Error [' . __FUNCTION__ . '] - ' . $e->getMessage());
-        }
+        return self::buildAuthorizationUrl($endpoint_url, $redirect_url, 'complete_account',
+            'none', $scope, null, array(), $state);
     }
 
     /**
